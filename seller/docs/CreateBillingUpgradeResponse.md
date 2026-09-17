@@ -1,0 +1,13 @@
+# CreateBillingUpgradeResponse
+
+## Properties
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**checkoutUrl** | **String** |  | [optional] 
+**tier** | **String** |  | 
+**interval** | **String** |  | 
+**charged** | **Bool** |  | 
+
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+
