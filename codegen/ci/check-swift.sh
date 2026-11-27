@@ -18,15 +18,20 @@ case "$(basename "$dir")" in
   *) echo "check-swift: unknown client $dir" >&2; exit 2 ;;
 esac
 echo "::group::check swift $product"
-pod="$(ls "$root/$dir"/*.podspec | head -1)"
-version="$(sed -n "s/^ *s\.version *= *'\(.*\)'.*/\1/p" "$pod" | head -1)"
-[ -n "$version" ] || { echo "check-swift: no s.version in $pod" >&2; exit 1; }
-cat > "$root/$dir/$product/Classes/OpenAPIs/CrosslySDKVersion.swift" <<EOF
+# Both packages, every time: SwiftPM may compile the other library target while building this product.
+for pair in seller:Crossly buyer:CrosslyBuyer; do
+  part="${pair%%:*}"; name="${pair##*:}"
+  pod="$(ls "$root/$part"/*.podspec | head -1)"
+  v="$(sed -n "s/^ *s\.version *= *'\(.*\)'.*/\1/p" "$pod" | head -1)"
+  [ -n "$v" ] || { echo "check-swift: no s.version in $pod" >&2; exit 1; }
+  cat > "$root/$part/$name/Classes/OpenAPIs/CrosslySDKVersion.swift" <<EOF
 // Written by codegen/ci/check-swift.sh from $(basename "$pod"): the version CrosslyClient reports as its User-Agent.
 enum CrosslySDKVersion {
-    static let current = "$version"
+    static let current = "$v"
 }
 EOF
+  if [ "$name" = "$product" ]; then version="$v"; fi
+done
 cd "$root"
 swift --version
 swift build --product "$product"

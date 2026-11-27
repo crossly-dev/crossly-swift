@@ -22,5 +22,13 @@ else
   echo "::group::check $dir (all features)"
   cargo check -q --all-features
   echo "::endgroup::"
+  # The repo-root examples/ (a crate depending on ../seller) must compile against this client. Its own
+  # target dir, outside the seller crate, so `cargo package` never sees it; removed afterwards.
+  if [ -f "$ci/../../examples/Cargo.toml" ]; then
+    echo "::group::check examples against $dir"
+    CARGO_TARGET_DIR="${RUNNER_TEMP:-/tmp}/crossly-examples-target" cargo check -q --manifest-path "$ci/../../examples/Cargo.toml"
+    rm -f "$ci/../../examples/Cargo.lock"
+    echo "::endgroup::"
+  fi
 fi
 echo "rust $dir OK"
