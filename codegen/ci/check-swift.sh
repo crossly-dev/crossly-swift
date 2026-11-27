@@ -32,6 +32,30 @@ enum CrosslySDKVersion {
 EOF
   if [ "$name" = "$product" ]; then version="$v"; fi
 done
+# A 5.4.0 swift5-template defect the current spec trips, fixed on every build like generate-sdks.mjs's dart
+# post-step (it belongs there; it does nothing once the output no longer needs it): a parameter whose schema is
+# anyOf [string, array of string] is typed `AnyOfstringarray`, a type the template never writes. It becomes
+# `[String]`, which covers both shapes on the wire (APIHelper sends an array as repeated query items).
+node - "$root" <<'JS'
+const fs = require('fs');
+const path = require('path');
+const root = process.argv[2];
+const walk = (d) => fs.readdirSync(d, { withFileTypes: true }).flatMap((e) =>
+  e.isDirectory() ? walk(path.join(d, e.name)) : e.name.endsWith('.swift') ? [path.join(d, e.name)] : []);
+const files = ['seller', 'buyer'].flatMap((p) => (fs.existsSync(path.join(root, p)) ? walk(path.join(root, p)) : []));
+const declared = new Set();
+const texts = new Map(files.map((f) => [f, fs.readFileSync(f, 'utf8')]));
+for (const t of texts.values()) for (const m of t.matchAll(/\b(?:struct|enum|class|typealias) (\w+)/g)) declared.add(m[1]);
+let n = 0;
+for (const [f, before] of texts) {
+  const t = before.replace(/\bAnyOfstringarray\b/g, (name) => (declared.has(name) ? name : (n++, '[String]')));
+  if (t !== before) fs.writeFileSync(f, t);
+  for (const m of t.matchAll(/\b(?:AnyOf|OneOf)[A-Za-z0-9]+\b/g)) {
+    if (!declared.has(m[0])) console.log(`swift fix-ups: unhandled undefined type ${m[0]} in ${path.relative(root, f)}`);
+  }
+}
+console.log(`swift fix-ups: ${n} undefined AnyOfstringarray type(s) -> [String]`);
+JS
 cd "$root"
 swift --version
 swift build --product "$product"

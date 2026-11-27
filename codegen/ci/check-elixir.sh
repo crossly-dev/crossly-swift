@@ -22,6 +22,8 @@ work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
 cp -R "$src" "$work/client"
 cd "$work/client"
+# the release build applies the same fix in place before packaging (no Model.AnyType is ever generated)
+node "$extras/patch_generated.mjs" lib
 
 echo "::group::check elixir in $1"
 mix local.hex --force >/dev/null

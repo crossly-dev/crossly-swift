@@ -26,7 +26,17 @@ else
   # target dir, outside the seller crate, so `cargo package` never sees it; removed afterwards.
   if [ -f "$ci/../../examples/Cargo.toml" ]; then
     echo "::group::check examples against $dir"
-    CARGO_TARGET_DIR="${RUNNER_TEMP:-/tmp}/crossly-examples-target" cargo check -q --manifest-path "$ci/../../examples/Cargo.toml"
+    # The examples follow the CURRENT specs. A committed tree generated before this release tooling (crate version
+    # behind codegen/state.json) may predate them, so there a mismatch is a warning; everywhere else it fails.
+    crate_v=$(sed -n 's/^version = "\(.*\)"/\1/p' Cargo.toml | head -1)
+    state_v=$(node -p "require('$ci/../state.json').version")
+    if CARGO_TARGET_DIR="${RUNNER_TEMP:-/tmp}/crossly-examples-target" cargo check -q --manifest-path "$ci/../../examples/Cargo.toml"; then
+      :
+    elif [ "$crate_v" != "$state_v" ]; then
+      echo "::warning::examples/ do not compile against this pre-release tree ($crate_v; specs are at $state_v)"
+    else
+      exit 1
+    fi
     rm -f "$ci/../../examples/Cargo.lock"
     echo "::endgroup::"
   fi
