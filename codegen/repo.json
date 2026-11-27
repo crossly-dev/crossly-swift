@@ -1,0 +1,21 @@
+{
+  "lang": "swift",
+  "vendor": [
+    {
+      "from": "extras/swift/CrosslyClient.swift",
+      "to": "seller/Crossly/Classes/OpenAPIs/CrosslyClient.swift"
+    },
+    {
+      "from": "extras/swift/seller/CrosslyGeneratedAPI.swift",
+      "to": "seller/Crossly/Classes/OpenAPIs/CrosslyGeneratedAPI.swift"
+    },
+    {
+      "from": "extras/swift/CrosslyClient.swift",
+      "to": "buyer/CrosslyBuyer/Classes/OpenAPIs/CrosslyClient.swift"
+    },
+    {
+      "from": "extras/swift/buyer/CrosslyGeneratedAPI.swift",
+      "to": "buyer/CrosslyBuyer/Classes/OpenAPIs/CrosslyGeneratedAPI.swift"
+    }
+  ]
+}

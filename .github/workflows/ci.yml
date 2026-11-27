@@ -1,0 +1,37 @@
+# Build, test and package on every push (any branch) and pull request.
+#
+# Managed by tools/sdk-repo/seed.mjs in the Crossly monorepo: edits here are overwritten on the next seed.
+name: ci
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: macos-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+
+      - name: build seller
+        run: bash codegen/ci/check.sh swift seller
+      - name: build buyer
+        run: bash codegen/ci/check.sh swift buyer
+      - name: webhook conformance vectors
+        working-directory: codegen/integrations/webhooks/swift
+        run: swiftc -parse-as-library CrosslyWebhooks.swift check_vectors.swift -o "$RUNNER_TEMP/check-vectors" && "$RUNNER_TEMP/check-vectors" ../test-vectors.json
+      - name: package
+        run: |
+          mkdir -p dist
+          v=$(node -p "require('./codegen/state.json').version")
+          git add -A seller buyer webhooks
+          git archive --format=tar.gz --prefix="crossly-swift-$v/" -o "dist/crossly-swift-$v.tar.gz" "$(git write-tree)"
+          ls -l dist
