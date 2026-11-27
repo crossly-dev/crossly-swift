@@ -14,56 +14,56 @@ public struct GetVaultMarketSetGoalResponse: Codable, JSONEncodable, Hashable {
 
     public enum Status: String, Codable, CaseIterable {
         case active = "active"
-        case complete = "complete"
         case archived = "archived"
+        case complete = "complete"
     }
     public var id: String
     public var createdAt: String
     public var status: Status
-    public var title: String
     public var category: String
+    public var title: String
     public var options: GetVaultMarketSetGoalResponseOptions
     public var completedAt: String?
-    public var progress: String
-    public var brandSlug: String
-    public var modelSlug: String
     public var target: GetVaultMarketSetGoalResponseTarget
-    public var held: Double
-    public var complete: Bool
-    public var href: String
     public var total: Double
-    public var setFound: Bool
-    public var basket: GetVaultMarketSetGoalResponseBasket?
+    public var href: String
+    public var brandSlug: String
+    public var progress: String
     public var missing: Double
+    public var held: Double
+    public var modelSlug: String
+    public var basket: GetVaultMarketSetGoalResponseBasket?
+    public var pieces: [GetVaultMarketSetGoalResponsePieces]
+    public var complete: Bool
+    public var setFound: Bool
     public var priced: Double
     public var missingMarkCents: Double
     public var tooBig: Bool
-    public var pieces: [GetVaultMarketSetGoalResponsePieces]
     public var cardSetHref: String
 
-    public init(id: String, createdAt: String, status: Status, title: String, category: String, options: GetVaultMarketSetGoalResponseOptions, completedAt: String? = nil, progress: String, brandSlug: String, modelSlug: String, target: GetVaultMarketSetGoalResponseTarget, held: Double, complete: Bool, href: String, total: Double, setFound: Bool, basket: GetVaultMarketSetGoalResponseBasket? = nil, missing: Double, priced: Double, missingMarkCents: Double, tooBig: Bool, pieces: [GetVaultMarketSetGoalResponsePieces], cardSetHref: String) {
+    public init(id: String, createdAt: String, status: Status, category: String, title: String, options: GetVaultMarketSetGoalResponseOptions, completedAt: String? = nil, target: GetVaultMarketSetGoalResponseTarget, total: Double, href: String, brandSlug: String, progress: String, missing: Double, held: Double, modelSlug: String, basket: GetVaultMarketSetGoalResponseBasket? = nil, pieces: [GetVaultMarketSetGoalResponsePieces], complete: Bool, setFound: Bool, priced: Double, missingMarkCents: Double, tooBig: Bool, cardSetHref: String) {
         self.id = id
         self.createdAt = createdAt
         self.status = status
-        self.title = title
         self.category = category
+        self.title = title
         self.options = options
         self.completedAt = completedAt
-        self.progress = progress
-        self.brandSlug = brandSlug
-        self.modelSlug = modelSlug
         self.target = target
-        self.held = held
-        self.complete = complete
-        self.href = href
         self.total = total
-        self.setFound = setFound
-        self.basket = basket
+        self.href = href
+        self.brandSlug = brandSlug
+        self.progress = progress
         self.missing = missing
+        self.held = held
+        self.modelSlug = modelSlug
+        self.basket = basket
+        self.pieces = pieces
+        self.complete = complete
+        self.setFound = setFound
         self.priced = priced
         self.missingMarkCents = missingMarkCents
         self.tooBig = tooBig
-        self.pieces = pieces
         self.cardSetHref = cardSetHref
     }
 
@@ -71,25 +71,25 @@ public struct GetVaultMarketSetGoalResponse: Codable, JSONEncodable, Hashable {
         case id
         case createdAt
         case status
-        case title
         case category
+        case title
         case options
         case completedAt
-        case progress
-        case brandSlug
-        case modelSlug
         case target
-        case held
-        case complete
-        case href
         case total
-        case setFound
-        case basket
+        case href
+        case brandSlug
+        case progress
         case missing
+        case held
+        case modelSlug
+        case basket
+        case pieces
+        case complete
+        case setFound
         case priced
         case missingMarkCents
         case tooBig
-        case pieces
         case cardSetHref
     }
 
@@ -100,25 +100,25 @@ public struct GetVaultMarketSetGoalResponse: Codable, JSONEncodable, Hashable {
         try container.encode(id, forKey: .id)
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(status, forKey: .status)
-        try container.encode(title, forKey: .title)
         try container.encode(category, forKey: .category)
+        try container.encode(title, forKey: .title)
         try container.encode(options, forKey: .options)
         try container.encodeIfPresent(completedAt, forKey: .completedAt)
-        try container.encode(progress, forKey: .progress)
-        try container.encode(brandSlug, forKey: .brandSlug)
-        try container.encode(modelSlug, forKey: .modelSlug)
         try container.encode(target, forKey: .target)
-        try container.encode(held, forKey: .held)
-        try container.encode(complete, forKey: .complete)
-        try container.encode(href, forKey: .href)
         try container.encode(total, forKey: .total)
-        try container.encode(setFound, forKey: .setFound)
-        try container.encodeIfPresent(basket, forKey: .basket)
+        try container.encode(href, forKey: .href)
+        try container.encode(brandSlug, forKey: .brandSlug)
+        try container.encode(progress, forKey: .progress)
         try container.encode(missing, forKey: .missing)
+        try container.encode(held, forKey: .held)
+        try container.encode(modelSlug, forKey: .modelSlug)
+        try container.encodeIfPresent(basket, forKey: .basket)
+        try container.encode(pieces, forKey: .pieces)
+        try container.encode(complete, forKey: .complete)
+        try container.encode(setFound, forKey: .setFound)
         try container.encode(priced, forKey: .priced)
         try container.encode(missingMarkCents, forKey: .missingMarkCents)
         try container.encode(tooBig, forKey: .tooBig)
-        try container.encode(pieces, forKey: .pieces)
         try container.encode(cardSetHref, forKey: .cardSetHref)
     }
 }

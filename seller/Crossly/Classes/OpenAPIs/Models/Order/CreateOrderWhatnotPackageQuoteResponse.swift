@@ -12,7 +12,9 @@ import AnyCodable
 
 public struct CreateOrderWhatnotPackageQuoteResponse: Codable, JSONEncodable, Hashable {
 
+    /** Cents the platform charges for the change; 0 = free. */
     public var costCents: Double
+    /** The platform's refusal of this package, when it gives one. */
     public var error: String?
 
     public init(costCents: Double, error: String? = nil) {

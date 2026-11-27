@@ -106,6 +106,55 @@ open class StallsAPI {
     }
 
     /**
+     A stall counter: the listings you picked (in order), its booth kind and capacity.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getStallBookingCounter(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetStallBookingCounterResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getStallBookingCounterWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A stall counter: the listings you picked (in order), its booth kind and capacity.
+     - GET /v1/stalls/bookings/{id}/counter
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetStallBookingCounterResponse> 
+     */
+    open class func getStallBookingCounterWithRequestBuilder(id: String) -> RequestBuilder<GetStallBookingCounterResponse> {
+        var localVariablePath = "/v1/stalls/bookings/{id}/counter"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetStallBookingCounterResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      * enum for parameter unit
      */
     public enum Unit_getStallQuote: String, CaseIterable {
@@ -173,6 +222,99 @@ open class StallsAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<GetStallQuoteResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     A street from above for booking: every spot with its owner, booth size, counter capacity and price, the street events, and who is booked on each date.
+     
+     - parameter slug: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getStallStreetAerial(slug: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetStallStreetAerialResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getStallStreetAerialWithRequestBuilder(slug: slug).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A street from above for booking: every spot with its owner, booth size, counter capacity and price, the street events, and who is booked on each date.
+     - GET /v1/stalls/streets/{slug}/aerial
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter slug: (path)  
+     - returns: RequestBuilder<GetStallStreetAerialResponse> 
+     */
+    open class func getStallStreetAerialWithRequestBuilder(slug: String) -> RequestBuilder<GetStallStreetAerialResponse> {
+        var localVariablePath = "/v1/stalls/streets/{slug}/aerial"
+        let slugPreEscape = "\(APIHelper.mapValueToPathItem(slug))"
+        let slugPostEscape = slugPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{slug}", with: slugPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetStallStreetAerialResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Search ANY of your live Crossly listings for a stall counter or convention booth: q, category, min, max (cents), street (marks what its terms allow), limit, offset.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listStallListingSearch(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListStallListingSearchResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listStallListingSearchWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Search ANY of your live Crossly listings for a stall counter or convention booth: q, category, min, max (cents), street (marks what its terms allow), limit, offset.
+     - GET /v1/stalls/listing-search
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListStallListingSearchResponse> 
+     */
+    open class func listStallListingSearchWithRequestBuilder() -> RequestBuilder<ListStallListingSearchResponse> {
+        let localVariablePath = "/v1/stalls/listing-search"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListStallListingSearchResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }

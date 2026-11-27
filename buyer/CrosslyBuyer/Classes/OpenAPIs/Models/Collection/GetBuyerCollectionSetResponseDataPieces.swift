@@ -12,41 +12,41 @@ import AnyCodable
 
 public struct GetBuyerCollectionSetResponseDataPieces: Codable, JSONEncodable, Hashable {
 
-    public var number: Double
+    public var skuId: String
     public var title: String
     public var imageUrl: String?
-    public var skuId: String
-    public var bestAskCents: Double?
+    public var number: Double
     public var owned: Bool
+    public var bestAskCents: Double?
 
-    public init(number: Double, title: String, imageUrl: String? = nil, skuId: String, bestAskCents: Double? = nil, owned: Bool) {
-        self.number = number
+    public init(skuId: String, title: String, imageUrl: String? = nil, number: Double, owned: Bool, bestAskCents: Double? = nil) {
+        self.skuId = skuId
         self.title = title
         self.imageUrl = imageUrl
-        self.skuId = skuId
-        self.bestAskCents = bestAskCents
+        self.number = number
         self.owned = owned
+        self.bestAskCents = bestAskCents
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case number
+        case skuId
         case title
         case imageUrl
-        case skuId
-        case bestAskCents
+        case number
         case owned
+        case bestAskCents
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(number, forKey: .number)
+        try container.encode(skuId, forKey: .skuId)
         try container.encode(title, forKey: .title)
         try container.encodeIfPresent(imageUrl, forKey: .imageUrl)
-        try container.encode(skuId, forKey: .skuId)
-        try container.encodeIfPresent(bestAskCents, forKey: .bestAskCents)
+        try container.encode(number, forKey: .number)
         try container.encode(owned, forKey: .owned)
+        try container.encodeIfPresent(bestAskCents, forKey: .bestAskCents)
     }
 }
 

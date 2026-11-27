@@ -13,12 +13,14 @@ import AnyCodable
 public struct ListBuyerOrdersItem: Codable, JSONEncodable, Hashable {
 
     public var id: String
+    public var orderNumber: String?
     public var status: String
     public var buyerPaidCents: Double
     public var createdAt: Date
 
-    public init(id: String, status: String, buyerPaidCents: Double, createdAt: Date) {
+    public init(id: String, orderNumber: String? = nil, status: String, buyerPaidCents: Double, createdAt: Date) {
         self.id = id
+        self.orderNumber = orderNumber
         self.status = status
         self.buyerPaidCents = buyerPaidCents
         self.createdAt = createdAt
@@ -26,6 +28,7 @@ public struct ListBuyerOrdersItem: Codable, JSONEncodable, Hashable {
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
+        case orderNumber
         case status
         case buyerPaidCents
         case createdAt
@@ -36,6 +39,7 @@ public struct ListBuyerOrdersItem: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
+        try container.encodeIfPresent(orderNumber, forKey: .orderNumber)
         try container.encode(status, forKey: .status)
         try container.encode(buyerPaidCents, forKey: .buyerPaidCents)
         try container.encode(createdAt, forKey: .createdAt)

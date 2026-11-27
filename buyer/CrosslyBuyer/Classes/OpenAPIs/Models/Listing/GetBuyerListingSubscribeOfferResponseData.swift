@@ -12,22 +12,22 @@ import AnyCodable
 
 public struct GetBuyerListingSubscribeOfferResponseData: Codable, JSONEncodable, Hashable {
 
-    public var priceCents: Double
     public var discountBps: Double
     public var intervals: [Double]
+    public var priceCents: Double
     public var subscribePriceCents: Double
 
-    public init(priceCents: Double, discountBps: Double, intervals: [Double], subscribePriceCents: Double) {
-        self.priceCents = priceCents
+    public init(discountBps: Double, intervals: [Double], priceCents: Double, subscribePriceCents: Double) {
         self.discountBps = discountBps
         self.intervals = intervals
+        self.priceCents = priceCents
         self.subscribePriceCents = subscribePriceCents
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case priceCents
         case discountBps
         case intervals
+        case priceCents
         case subscribePriceCents
     }
 
@@ -35,9 +35,9 @@ public struct GetBuyerListingSubscribeOfferResponseData: Codable, JSONEncodable,
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(priceCents, forKey: .priceCents)
         try container.encode(discountBps, forKey: .discountBps)
         try container.encode(intervals, forKey: .intervals)
+        try container.encode(priceCents, forKey: .priceCents)
         try container.encode(subscribePriceCents, forKey: .subscribePriceCents)
     }
 }

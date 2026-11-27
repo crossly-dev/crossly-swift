@@ -18,10 +18,10 @@ public struct ListWorldPlaceTradeTablesItem: Codable, JSONEncodable, Hashable {
     }
     public enum Status: String, Codable, CaseIterable {
         case _open = "open"
-        case done = "done"
         case closed = "closed"
+        case done = "done"
     }
-    public var visitor: ListWorldPlaceTradeTablesItemVisitor?
+    public var visitor: GetWorldExperiencePlaceCollabOpResponseDataFramesBy?
     public var totals: ListWorldPlaceTradeTablesItemTotals
     public var you: You?
     public var line: ListWorldPlaceTradeTablesItemLine
@@ -40,7 +40,7 @@ public struct ListWorldPlaceTradeTablesItem: Codable, JSONEncodable, Hashable {
     /** Bumped on every change, so a client can drop a stale echo. */
     public var version: Double
 
-    public init(visitor: ListWorldPlaceTradeTablesItemVisitor? = nil, totals: ListWorldPlaceTradeTablesItemTotals, you: You? = nil, line: ListWorldPlaceTradeTablesItemLine, id: String, postId: String, place: String, seller: UserIdName, mat: ListWorldPlaceTradeTablesItemMat, cash: ListWorldPlaceTradeTablesItemCash, shook: ListWorldPlaceTradeTablesItemShook, status: Status, tradeId: String? = nil, version: Double) {
+    public init(visitor: GetWorldExperiencePlaceCollabOpResponseDataFramesBy? = nil, totals: ListWorldPlaceTradeTablesItemTotals, you: You? = nil, line: ListWorldPlaceTradeTablesItemLine, id: String, postId: String, place: String, seller: UserIdName, mat: ListWorldPlaceTradeTablesItemMat, cash: ListWorldPlaceTradeTablesItemCash, shook: ListWorldPlaceTradeTablesItemShook, status: Status, tradeId: String? = nil, version: Double) {
         self.visitor = visitor
         self.totals = totals
         self.you = you

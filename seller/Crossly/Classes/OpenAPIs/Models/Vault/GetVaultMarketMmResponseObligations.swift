@@ -17,10 +17,10 @@ public struct GetVaultMarketMmResponseObligations: Codable, JSONEncodable, Hasha
     public var userId: String
     public var day: String
     public var reasons: [String]?
+    public var program: String
     public var tier: String?
     public var bookKey: String
     public var level: String?
-    public var program: String
     public var samples: Double
     public var inSpread: Double
     public var inHalfSpread: Double
@@ -31,16 +31,16 @@ public struct GetVaultMarketMmResponseObligations: Codable, JSONEncodable, Hasha
     public var met: Bool?
     public var coverageBps: Double?
 
-    public init(coveragePct: Double? = nil, updatedAt: Date, userId: String, day: String, reasons: [String]? = nil, tier: String? = nil, bookKey: String, level: String? = nil, program: String, samples: Double, inSpread: Double, inHalfSpread: Double, callsTotal: Double, callsJoined: Double, rfqInvited: Double, rfqAnsweredFast: Double, met: Bool? = nil, coverageBps: Double? = nil) {
+    public init(coveragePct: Double? = nil, updatedAt: Date, userId: String, day: String, reasons: [String]? = nil, program: String, tier: String? = nil, bookKey: String, level: String? = nil, samples: Double, inSpread: Double, inHalfSpread: Double, callsTotal: Double, callsJoined: Double, rfqInvited: Double, rfqAnsweredFast: Double, met: Bool? = nil, coverageBps: Double? = nil) {
         self.coveragePct = coveragePct
         self.updatedAt = updatedAt
         self.userId = userId
         self.day = day
         self.reasons = reasons
+        self.program = program
         self.tier = tier
         self.bookKey = bookKey
         self.level = level
-        self.program = program
         self.samples = samples
         self.inSpread = inSpread
         self.inHalfSpread = inHalfSpread
@@ -58,10 +58,10 @@ public struct GetVaultMarketMmResponseObligations: Codable, JSONEncodable, Hasha
         case userId
         case day
         case reasons
+        case program
         case tier
         case bookKey
         case level
-        case program
         case samples
         case inSpread
         case inHalfSpread
@@ -82,10 +82,10 @@ public struct GetVaultMarketMmResponseObligations: Codable, JSONEncodable, Hasha
         try container.encode(userId, forKey: .userId)
         try container.encode(day, forKey: .day)
         try container.encodeIfPresent(reasons, forKey: .reasons)
+        try container.encode(program, forKey: .program)
         try container.encodeIfPresent(tier, forKey: .tier)
         try container.encode(bookKey, forKey: .bookKey)
         try container.encodeIfPresent(level, forKey: .level)
-        try container.encode(program, forKey: .program)
         try container.encode(samples, forKey: .samples)
         try container.encode(inSpread, forKey: .inSpread)
         try container.encode(inHalfSpread, forKey: .inHalfSpread)

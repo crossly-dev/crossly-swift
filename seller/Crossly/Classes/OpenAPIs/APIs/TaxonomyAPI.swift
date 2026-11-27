@@ -13,6 +13,55 @@ import AnyCodable
 open class TaxonomyAPI {
 
     /**
+     One canonical category and the category it maps to on each marketplace.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getCategoryById(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetCategoryByIdResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getCategoryByIdWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One canonical category and the category it maps to on each marketplace.
+     - GET /v1/categories/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetCategoryByIdResponse> 
+     */
+    open class func getCategoryByIdWithRequestBuilder(id: String) -> RequestBuilder<GetCategoryByIdResponse> {
+        var localVariablePath = "/v1/categories/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetCategoryByIdResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Categories for a platform. Default is top-level; pass `?parent=<categoryId>` to drill down one level (supported on cookie platforms whose recipe returns flat parent_id-linked rows).
      
      - parameter platform: (path)  
@@ -224,6 +273,181 @@ open class TaxonomyAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<GetTaxonomyRequiredFieldResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Item specifics for a canonical category: required/optional, known values, per-marketplace names.
+     
+     - parameter id: (path)  
+     - parameter valuesLimit: (query)  (optional, default to 50)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listCategoryAspects(id: String, valuesLimit: Int? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListCategoryAspectsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listCategoryAspectsWithRequestBuilder(id: id, valuesLimit: valuesLimit).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Item specifics for a canonical category: required/optional, known values, per-marketplace names.
+     - GET /v1/categories/{id}/aspects
+     - Required-ness and cardinality come from the eBay category the concept maps to. `freeText` = any text is accepted; otherwise `values` are the known values (up to `valuesLimit`). `marketplaces` gives the attribute name each marketplace uses for the aspect. Send them as `itemSpecifics` on POST /v1/listings.
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - parameter valuesLimit: (query)  (optional, default to 50)
+     - returns: RequestBuilder<ListCategoryAspectsResponse> 
+     */
+    open class func listCategoryAspectsWithRequestBuilder(id: String, valuesLimit: Int? = nil) -> RequestBuilder<ListCategoryAspectsResponse> {
+        var localVariablePath = "/v1/categories/{id}/aspects"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "valuesLimit": valuesLimit?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListCategoryAspectsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Search or browse Crossly's canonical categories (the ids listings take as categoryId).
+     
+     - parameter q: (query)  (optional)
+     - parameter path: (query)  (optional)
+     - parameter limit: (query)  (optional, default to 25)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listCategorySearch(q: String? = nil, path: String? = nil, limit: Int? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListCategorySearchResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listCategorySearchWithRequestBuilder(q: q, path: path, limit: limit).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Search or browse Crossly's canonical categories (the ids listings take as categoryId).
+     - GET /v1/categories/search
+     - `q` matches the category name and path. `path` (e.g. \"Clothing & Shoes > Men\") limits to one branch. Without `q`, `meta.branches` lists the next level under `path` (the root when omitted) so a client can walk the tree down to a leaf.
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter q: (query)  (optional)
+     - parameter path: (query)  (optional)
+     - parameter limit: (query)  (optional, default to 25)
+     - returns: RequestBuilder<ListCategorySearchResponse> 
+     */
+    open class func listCategorySearchWithRequestBuilder(q: String? = nil, path: String? = nil, limit: Int? = nil) -> RequestBuilder<ListCategorySearchResponse> {
+        let localVariablePath = "/v1/categories/search"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "q": q?.encodeToJSON(),
+            "path": path?.encodeToJSON(),
+            "limit": limit?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListCategorySearchResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     * enum for parameter marketplace
+     */
+    public enum Marketplace_listTaxonomyEbayCharities: String, CaseIterable {
+        case us = "EBAY_US"
+        case gb = "EBAY_GB"
+    }
+
+    /**
+     Search eBay for Charity organisations (the charityId an eBay listing donates to).
+     
+     - parameter q: (query)  (optional)
+     - parameter limit: (query)  (optional, default to 20)
+     - parameter marketplace: (query)  (optional, default to .ebayUs)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listTaxonomyEbayCharities(q: String? = nil, limit: Int? = nil, marketplace: Marketplace_listTaxonomyEbayCharities? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListTaxonomyEbayCharitiesResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listTaxonomyEbayCharitiesWithRequestBuilder(q: q, limit: limit, marketplace: marketplace).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Search eBay for Charity organisations (the charityId an eBay listing donates to).
+     - GET /v1/taxonomy/ebay/charities
+     - Send the chosen `charityOrgId` as `overrides.ebay.charityId` with `overrides.ebay.donationPercentage` (10-100 in steps of 5) on a listing to donate that share of the eBay sale. `q` needs at least 2 characters.
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter q: (query)  (optional)
+     - parameter limit: (query)  (optional, default to 20)
+     - parameter marketplace: (query)  (optional, default to .ebayUs)
+     - returns: RequestBuilder<ListTaxonomyEbayCharitiesResponse> 
+     */
+    open class func listTaxonomyEbayCharitiesWithRequestBuilder(q: String? = nil, limit: Int? = nil, marketplace: Marketplace_listTaxonomyEbayCharities? = nil) -> RequestBuilder<ListTaxonomyEbayCharitiesResponse> {
+        let localVariablePath = "/v1/taxonomy/ebay/charities"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "q": q?.encodeToJSON(),
+            "limit": limit?.encodeToJSON(),
+            "marketplace": marketplace?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListTaxonomyEbayCharitiesResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }

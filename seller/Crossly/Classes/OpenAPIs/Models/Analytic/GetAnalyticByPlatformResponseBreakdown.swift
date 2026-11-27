@@ -17,13 +17,23 @@ public struct GetAnalyticByPlatformResponseBreakdown: Codable, JSONEncodable, Ha
     public var revenue: Double
     public var fees: Double
     public var netProfit: Double
+    public var pendingDetailsCount: Double
+    public var netSalesCents: Double
+    public var feesCents: Double
+    public var netProfitCents: Double
+    public var share: Double
 
-    public init(platform: String, sales: Double, revenue: Double, fees: Double, netProfit: Double) {
+    public init(platform: String, sales: Double, revenue: Double, fees: Double, netProfit: Double, pendingDetailsCount: Double, netSalesCents: Double, feesCents: Double, netProfitCents: Double, share: Double) {
         self.platform = platform
         self.sales = sales
         self.revenue = revenue
         self.fees = fees
         self.netProfit = netProfit
+        self.pendingDetailsCount = pendingDetailsCount
+        self.netSalesCents = netSalesCents
+        self.feesCents = feesCents
+        self.netProfitCents = netProfitCents
+        self.share = share
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -32,6 +42,11 @@ public struct GetAnalyticByPlatformResponseBreakdown: Codable, JSONEncodable, Ha
         case revenue
         case fees
         case netProfit
+        case pendingDetailsCount
+        case netSalesCents
+        case feesCents
+        case netProfitCents
+        case share
     }
 
     // Encodable protocol methods
@@ -43,6 +58,11 @@ public struct GetAnalyticByPlatformResponseBreakdown: Codable, JSONEncodable, Ha
         try container.encode(revenue, forKey: .revenue)
         try container.encode(fees, forKey: .fees)
         try container.encode(netProfit, forKey: .netProfit)
+        try container.encode(pendingDetailsCount, forKey: .pendingDetailsCount)
+        try container.encode(netSalesCents, forKey: .netSalesCents)
+        try container.encode(feesCents, forKey: .feesCents)
+        try container.encode(netProfitCents, forKey: .netProfitCents)
+        try container.encode(share, forKey: .share)
     }
 }
 

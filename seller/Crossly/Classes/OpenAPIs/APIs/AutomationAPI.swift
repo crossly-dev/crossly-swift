@@ -18,6 +18,7 @@ open class AutomationAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @discardableResult
     open class func createAutomationRule(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListAutomationRulesItem?, _ error: Error?) -> Void)) -> RequestTask {
         return createAutomationRuleWithRequestBuilder().execute(apiResponseQueue) { result in
@@ -33,11 +34,13 @@ open class AutomationAPI {
     /**
      Create an automation rule.
      - POST /v1/automation/rules
+     - Deprecated: automation rules are workflows now. Use /v1/workflows.
      - BASIC:
        - type: http
        - name: PersonalAccessToken
      - returns: RequestBuilder<ListAutomationRulesItem> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     open class func createAutomationRuleWithRequestBuilder() -> RequestBuilder<ListAutomationRulesItem> {
         let localVariablePath = "/v1/automation/rules"
         let localVariableURLString = CrosslyAPI.basePath + localVariablePath
@@ -63,6 +66,7 @@ open class AutomationAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @discardableResult
     open class func createAutomationRuleImport(activate: Bool? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateAutomationRuleImportResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return createAutomationRuleImportWithRequestBuilder(activate: activate).execute(apiResponseQueue) { result in
@@ -78,12 +82,14 @@ open class AutomationAPI {
     /**
      Import one or more rules from recipe JSON (single or bundle).
      - POST /v1/automation/rules/import
+     - Deprecated: automation rules are workflows now. Use /v1/workflows.
      - BASIC:
        - type: http
        - name: PersonalAccessToken
      - parameter activate: (query)  (optional, default to false)
      - returns: RequestBuilder<CreateAutomationRuleImportResponse> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     open class func createAutomationRuleImportWithRequestBuilder(activate: Bool? = nil) -> RequestBuilder<CreateAutomationRuleImportResponse> {
         let localVariablePath = "/v1/automation/rules/import"
         let localVariableURLString = CrosslyAPI.basePath + localVariablePath
@@ -112,6 +118,7 @@ open class AutomationAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @discardableResult
     open class func createAutomationRuleRunNow(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateAutomationRuleRunNowResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return createAutomationRuleRunNowWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
@@ -127,12 +134,14 @@ open class AutomationAPI {
     /**
      Fire an automation rule immediately.
      - POST /v1/automation/rules/{id}/run-now
+     - Deprecated: automation rules are workflows now. Use /v1/workflows.
      - BASIC:
        - type: http
        - name: PersonalAccessToken
      - parameter id: (path)  
      - returns: RequestBuilder<CreateAutomationRuleRunNowResponse> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     open class func createAutomationRuleRunNowWithRequestBuilder(id: UUID) -> RequestBuilder<CreateAutomationRuleRunNowResponse> {
         var localVariablePath = "/v1/automation/rules/{id}/run-now"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -161,8 +170,9 @@ open class AutomationAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @discardableResult
-    open class func createAutomationRuleToggle(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: UpdateAutomationRuleResponse?, _ error: Error?) -> Void)) -> RequestTask {
+    open class func createAutomationRuleToggle(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetAutomationRuleResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return createAutomationRuleToggleWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
@@ -176,13 +186,15 @@ open class AutomationAPI {
     /**
      Flip an automation rule between active and inactive.
      - POST /v1/automation/rules/{id}/toggle
+     - Deprecated: automation rules are workflows now. Use /v1/workflows.
      - BASIC:
        - type: http
        - name: PersonalAccessToken
      - parameter id: (path)  
-     - returns: RequestBuilder<UpdateAutomationRuleResponse> 
+     - returns: RequestBuilder<GetAutomationRuleResponse> 
      */
-    open class func createAutomationRuleToggleWithRequestBuilder(id: UUID) -> RequestBuilder<UpdateAutomationRuleResponse> {
+    @available(*, deprecated, message: "This operation is deprecated.")
+    open class func createAutomationRuleToggleWithRequestBuilder(id: UUID) -> RequestBuilder<GetAutomationRuleResponse> {
         var localVariablePath = "/v1/automation/rules/{id}/toggle"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -198,7 +210,7 @@ open class AutomationAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UpdateAutomationRuleResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<GetAutomationRuleResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -209,6 +221,7 @@ open class AutomationAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @discardableResult
     open class func createAutomationRuleValidateRecipe(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateAutomationRuleValidateRecipeResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return createAutomationRuleValidateRecipeWithRequestBuilder().execute(apiResponseQueue) { result in
@@ -224,11 +237,13 @@ open class AutomationAPI {
     /**
      Dry-run validate one or more recipes against the live catalog.
      - POST /v1/automation/rules/validate-recipe
+     - Deprecated: automation rules are workflows now. Use /v1/workflows.
      - BASIC:
        - type: http
        - name: PersonalAccessToken
      - returns: RequestBuilder<CreateAutomationRuleValidateRecipeResponse> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     open class func createAutomationRuleValidateRecipeWithRequestBuilder() -> RequestBuilder<CreateAutomationRuleValidateRecipeResponse> {
         let localVariablePath = "/v1/automation/rules/validate-recipe"
         let localVariableURLString = CrosslyAPI.basePath + localVariablePath
@@ -352,6 +367,7 @@ open class AutomationAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @discardableResult
     open class func deleteAutomationRule(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: OkResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return deleteAutomationRuleWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
@@ -367,12 +383,14 @@ open class AutomationAPI {
     /**
      Delete an automation rule.
      - DELETE /v1/automation/rules/{id}
+     - Deprecated: automation rules are workflows now. Use /v1/workflows.
      - BASIC:
        - type: http
        - name: PersonalAccessToken
      - parameter id: (path)  
      - returns: RequestBuilder<OkResponse> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     open class func deleteAutomationRuleWithRequestBuilder(id: UUID) -> RequestBuilder<OkResponse> {
         var localVariablePath = "/v1/automation/rules/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -445,6 +463,7 @@ open class AutomationAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @discardableResult
     open class func getAutomationRule(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetAutomationRuleResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return getAutomationRuleWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
@@ -460,12 +479,14 @@ open class AutomationAPI {
     /**
      Get a single automation rule.
      - GET /v1/automation/rules/{id}
+     - Deprecated: automation rules are workflows now. Use /v1/workflows.
      - BASIC:
        - type: http
        - name: PersonalAccessToken
      - parameter id: (path)  
      - returns: RequestBuilder<GetAutomationRuleResponse> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     open class func getAutomationRuleWithRequestBuilder(id: UUID) -> RequestBuilder<GetAutomationRuleResponse> {
         var localVariablePath = "/v1/automation/rules/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -493,6 +514,7 @@ open class AutomationAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @discardableResult
     open class func getAutomationRuleExport(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetAutomationRuleExportResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return getAutomationRuleExportWithRequestBuilder().execute(apiResponseQueue) { result in
@@ -508,11 +530,13 @@ open class AutomationAPI {
     /**
      Export the user's full rule library as a portable recipe bundle.
      - GET /v1/automation/rules/export
+     - Deprecated: automation rules are workflows now. Use /v1/workflows.
      - BASIC:
        - type: http
        - name: PersonalAccessToken
      - returns: RequestBuilder<GetAutomationRuleExportResponse> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     open class func getAutomationRuleExportWithRequestBuilder() -> RequestBuilder<GetAutomationRuleExportResponse> {
         let localVariablePath = "/v1/automation/rules/export"
         let localVariableURLString = CrosslyAPI.basePath + localVariablePath
@@ -538,6 +562,7 @@ open class AutomationAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @discardableResult
     open class func getAutomationRuleExportById(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetAutomationRuleExportByIdResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return getAutomationRuleExportByIdWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
@@ -553,12 +578,14 @@ open class AutomationAPI {
     /**
      Export a single automation rule as a portable recipe.
      - GET /v1/automation/rules/{id}/export
+     - Deprecated: automation rules are workflows now. Use /v1/workflows.
      - BASIC:
        - type: http
        - name: PersonalAccessToken
      - parameter id: (path)  
      - returns: RequestBuilder<GetAutomationRuleExportByIdResponse> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     open class func getAutomationRuleExportByIdWithRequestBuilder(id: UUID) -> RequestBuilder<GetAutomationRuleExportByIdResponse> {
         var localVariablePath = "/v1/automation/rules/{id}/export"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -586,6 +613,7 @@ open class AutomationAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @discardableResult
     open class func listAutomationRules(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListAutomationRulesResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return listAutomationRulesWithRequestBuilder().execute(apiResponseQueue) { result in
@@ -601,11 +629,13 @@ open class AutomationAPI {
     /**
      List automation rules.
      - GET /v1/automation/rules
+     - Deprecated: automation rules are workflows now. Use /v1/workflows.
      - BASIC:
        - type: http
        - name: PersonalAccessToken
      - returns: RequestBuilder<ListAutomationRulesResponse> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     open class func listAutomationRulesWithRequestBuilder() -> RequestBuilder<ListAutomationRulesResponse> {
         let localVariablePath = "/v1/automation/rules"
         let localVariableURLString = CrosslyAPI.basePath + localVariablePath
@@ -633,6 +663,7 @@ open class AutomationAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @discardableResult
     open class func listAutomationRuns(ruleId: UUID? = nil, chainId: UUID? = nil, limit: Int? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListAutomationRunsResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return listAutomationRunsWithRequestBuilder(ruleId: ruleId, chainId: chainId, limit: limit).execute(apiResponseQueue) { result in
@@ -648,6 +679,7 @@ open class AutomationAPI {
     /**
      Per-fire history for automation rules and workflow chain runs.
      - GET /v1/automation/runs
+     - Deprecated: use /v1/workflow-runs.
      - BASIC:
        - type: http
        - name: PersonalAccessToken
@@ -656,6 +688,7 @@ open class AutomationAPI {
      - parameter limit: (query)  (optional, default to 100)
      - returns: RequestBuilder<ListAutomationRunsResponse> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     open class func listAutomationRunsWithRequestBuilder(ruleId: UUID? = nil, chainId: UUID? = nil, limit: Int? = nil) -> RequestBuilder<ListAutomationRunsResponse> {
         let localVariablePath = "/v1/automation/runs"
         let localVariableURLString = CrosslyAPI.basePath + localVariablePath
@@ -730,8 +763,9 @@ open class AutomationAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @discardableResult
-    open class func updateAutomationRule(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: UpdateAutomationRuleResponse?, _ error: Error?) -> Void)) -> RequestTask {
+    open class func updateAutomationRule(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetAutomationRuleResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return updateAutomationRuleWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
@@ -745,13 +779,15 @@ open class AutomationAPI {
     /**
      Update an automation rule (full replace).
      - PUT /v1/automation/rules/{id}
+     - Deprecated: automation rules are workflows now. Use /v1/workflows.
      - BASIC:
        - type: http
        - name: PersonalAccessToken
      - parameter id: (path)  
-     - returns: RequestBuilder<UpdateAutomationRuleResponse> 
+     - returns: RequestBuilder<GetAutomationRuleResponse> 
      */
-    open class func updateAutomationRuleWithRequestBuilder(id: UUID) -> RequestBuilder<UpdateAutomationRuleResponse> {
+    @available(*, deprecated, message: "This operation is deprecated.")
+    open class func updateAutomationRuleWithRequestBuilder(id: UUID) -> RequestBuilder<GetAutomationRuleResponse> {
         var localVariablePath = "/v1/automation/rules/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -767,7 +803,7 @@ open class AutomationAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UpdateAutomationRuleResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<GetAutomationRuleResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }

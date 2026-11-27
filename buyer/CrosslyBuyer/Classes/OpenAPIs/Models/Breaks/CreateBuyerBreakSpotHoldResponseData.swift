@@ -12,25 +12,25 @@ import AnyCodable
 
 public struct CreateBuyerBreakSpotHoldResponseData: Codable, JSONEncodable, Hashable {
 
-    public var slug: String?
     public var heldUntil: String
+    public var slug: String?
 
-    public init(slug: String? = nil, heldUntil: String) {
-        self.slug = slug
+    public init(heldUntil: String, slug: String? = nil) {
         self.heldUntil = heldUntil
+        self.slug = slug
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case slug
         case heldUntil
+        case slug
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(slug, forKey: .slug)
         try container.encode(heldUntil, forKey: .heldUntil)
+        try container.encodeIfPresent(slug, forKey: .slug)
     }
 }
 

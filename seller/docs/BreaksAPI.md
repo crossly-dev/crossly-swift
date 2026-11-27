@@ -59,7 +59,7 @@ This endpoint does not need any parameter.
 
 # **createBreakCancel**
 ```swift
-    open class func createBreakCancel(id: String, completion: @escaping (_ data: CreateBreakCancelResponse?, _ error: Error?) -> Void)
+    open class func createBreakCancel(id: String, completion: @escaping (_ data: UpdateGroupBuyResponse?, _ error: Error?) -> Void)
 ```
 
 Cancel a break before any spot is paid for; after that, refund those orders instead (409).
@@ -92,7 +92,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**CreateBreakCancelResponse**
+**UpdateGroupBuyResponse**
 
 ### Authorization
 
@@ -155,7 +155,7 @@ Name | Type | Description  | Notes
 
 # **createBreakOpened**
 ```swift
-    open class func createBreakOpened(id: String, completion: @escaping (_ data: CreateBreakCancelResponse?, _ error: Error?) -> Void)
+    open class func createBreakOpened(id: String, completion: @escaping (_ data: UpdateGroupBuyResponse?, _ error: Error?) -> Void)
 ```
 
 Mark the product opened on stream.
@@ -188,7 +188,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**CreateBreakCancelResponse**
+**UpdateGroupBuyResponse**
 
 ### Authorization
 
@@ -203,7 +203,7 @@ Name | Type | Description  | Notes
 
 # **createBreakSpotHit**
 ```swift
-    open class func createBreakSpotHit(id: String, spotId: String, completion: @escaping (_ data: CreateBreakCancelResponse?, _ error: Error?) -> Void)
+    open class func createBreakSpotHit(id: String, spotId: String, completion: @escaping (_ data: UpdateGroupBuyResponse?, _ error: Error?) -> Void)
 ```
 
 Record what a spot pulled.
@@ -238,7 +238,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**CreateBreakCancelResponse**
+**UpdateGroupBuyResponse**
 
 ### Authorization
 

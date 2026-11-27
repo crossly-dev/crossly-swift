@@ -12,25 +12,37 @@ import AnyCodable
 
 public struct GetAnalyticBookkeepingResponseAnnualTotals: Codable, JSONEncodable, Hashable {
 
+    public var grossSales: Double
+    public var refunds: Double
     public var revenue: Double
     public var cogs: Double
     public var platformFees: Double
     public var shippingCosts: Double
+    public var mileage: Double
+    public var otherExpenses: Double
     public var netProfit: Double
 
-    public init(revenue: Double, cogs: Double, platformFees: Double, shippingCosts: Double, netProfit: Double) {
+    public init(grossSales: Double, refunds: Double, revenue: Double, cogs: Double, platformFees: Double, shippingCosts: Double, mileage: Double, otherExpenses: Double, netProfit: Double) {
+        self.grossSales = grossSales
+        self.refunds = refunds
         self.revenue = revenue
         self.cogs = cogs
         self.platformFees = platformFees
         self.shippingCosts = shippingCosts
+        self.mileage = mileage
+        self.otherExpenses = otherExpenses
         self.netProfit = netProfit
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case grossSales
+        case refunds
         case revenue
         case cogs
         case platformFees
         case shippingCosts
+        case mileage
+        case otherExpenses
         case netProfit
     }
 
@@ -38,10 +50,14 @@ public struct GetAnalyticBookkeepingResponseAnnualTotals: Codable, JSONEncodable
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(grossSales, forKey: .grossSales)
+        try container.encode(refunds, forKey: .refunds)
         try container.encode(revenue, forKey: .revenue)
         try container.encode(cogs, forKey: .cogs)
         try container.encode(platformFees, forKey: .platformFees)
         try container.encode(shippingCosts, forKey: .shippingCosts)
+        try container.encode(mileage, forKey: .mileage)
+        try container.encode(otherExpenses, forKey: .otherExpenses)
         try container.encode(netProfit, forKey: .netProfit)
     }
 }

@@ -21,8 +21,9 @@ public struct GetVaultMarketTodResponse: Codable, JSONEncodable, Hashable {
     public var sharesProblem: String?
     public var units: [GetVaultMarketTodResponseUnits]
     public var claims: [GetVaultMarketTodResponseClaims]
+    public var vaultShares: GetVaultMarketTodResponseVaultShares?
 
-    public init(gate: GetVaultMarketTodMyClaimResponseGate, accepted: Bool, acceptedVersion: String, acceptedAt: String? = nil, locked: Bool, beneficiaries: [GetVaultMarketTodResponseBeneficiaries], sharesProblem: String? = nil, units: [GetVaultMarketTodResponseUnits], claims: [GetVaultMarketTodResponseClaims]) {
+    public init(gate: GetVaultMarketTodMyClaimResponseGate, accepted: Bool, acceptedVersion: String, acceptedAt: String? = nil, locked: Bool, beneficiaries: [GetVaultMarketTodResponseBeneficiaries], sharesProblem: String? = nil, units: [GetVaultMarketTodResponseUnits], claims: [GetVaultMarketTodResponseClaims], vaultShares: GetVaultMarketTodResponseVaultShares? = nil) {
         self.gate = gate
         self.accepted = accepted
         self.acceptedVersion = acceptedVersion
@@ -32,6 +33,7 @@ public struct GetVaultMarketTodResponse: Codable, JSONEncodable, Hashable {
         self.sharesProblem = sharesProblem
         self.units = units
         self.claims = claims
+        self.vaultShares = vaultShares
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -44,6 +46,7 @@ public struct GetVaultMarketTodResponse: Codable, JSONEncodable, Hashable {
         case sharesProblem
         case units
         case claims
+        case vaultShares
     }
 
     // Encodable protocol methods
@@ -59,6 +62,7 @@ public struct GetVaultMarketTodResponse: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(sharesProblem, forKey: .sharesProblem)
         try container.encode(units, forKey: .units)
         try container.encode(claims, forKey: .claims)
+        try container.encodeIfPresent(vaultShares, forKey: .vaultShares)
     }
 }
 

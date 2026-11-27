@@ -10,6 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
+/** 1172 ratings: average stars (null before the first) and how many. */
 public struct AverageCount: Codable, JSONEncodable, Hashable {
 
     public var average: Double?

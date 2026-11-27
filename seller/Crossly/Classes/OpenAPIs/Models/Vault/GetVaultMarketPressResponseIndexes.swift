@@ -16,9 +16,9 @@ public struct GetVaultMarketPressResponseIndexes: Codable, JSONEncodable, Hashab
         case custom = "custom"
         case brand = "brand"
         case category = "category"
+        case segment = "segment"
         case curated = "curated"
         case composite = "composite"
-        case segment = "segment"
     }
     public enum Weighting: String, Codable, CaseIterable {
         case mark = "mark"
@@ -28,9 +28,9 @@ public struct GetVaultMarketPressResponseIndexes: Codable, JSONEncodable, Hashab
     }
     public enum Quality: String, Codable, CaseIterable {
         case _none = "none"
+        case c = "C"
         case a = "A"
         case b = "B"
-        case c = "C"
     }
     public var slug: String
     public var name: String

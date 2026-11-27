@@ -13,10 +13,10 @@ import AnyCodable
 public struct GetAnalyticDashboardResponseSalesByPlatform: Codable, JSONEncodable, Hashable {
 
     public var platform: String
-    public var count: String
+    public var count: Double
     public var revenue: Double
 
-    public init(platform: String, count: String, revenue: Double) {
+    public init(platform: String, count: Double, revenue: Double) {
         self.platform = platform
         self.count = count
         self.revenue = revenue

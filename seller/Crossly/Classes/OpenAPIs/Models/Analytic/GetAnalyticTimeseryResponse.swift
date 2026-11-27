@@ -12,16 +12,24 @@ import AnyCodable
 
 public struct GetAnalyticTimeseryResponse: Codable, JSONEncodable, Hashable {
 
+    public enum Granularity: String, Codable, CaseIterable {
+        case day = "day"
+        case week = "week"
+        case month = "month"
+    }
     public var days: Double
+    public var granularity: Granularity
     public var series: [GetAnalyticTimeseryResponseSeries]
 
-    public init(days: Double, series: [GetAnalyticTimeseryResponseSeries]) {
+    public init(days: Double, granularity: Granularity, series: [GetAnalyticTimeseryResponseSeries]) {
         self.days = days
+        self.granularity = granularity
         self.series = series
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case days
+        case granularity
         case series
     }
 
@@ -30,6 +38,7 @@ public struct GetAnalyticTimeseryResponse: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(days, forKey: .days)
+        try container.encode(granularity, forKey: .granularity)
         try container.encode(series, forKey: .series)
     }
 }

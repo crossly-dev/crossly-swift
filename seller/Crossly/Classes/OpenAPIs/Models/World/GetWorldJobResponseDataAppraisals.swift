@@ -13,8 +13,8 @@ import AnyCodable
 public struct GetWorldJobResponseDataAppraisals: Codable, JSONEncodable, Hashable {
 
     public enum Rail: String, Codable, CaseIterable {
-        case bucks = "bucks"
         case cbx = "cbx"
+        case bucks = "bucks"
     }
     public var id: String
     public var category: String

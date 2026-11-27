@@ -13,13 +13,16 @@ import AnyCodable
 public struct GetVaultMarketPartnerMeResponse: Codable, JSONEncodable, Hashable {
 
     public var partnership: GetVaultMarketPartnerMeResponsePartnership?
+    public var identity: GetVaultMarketPartnerMeResponseIdentity
 
-    public init(partnership: GetVaultMarketPartnerMeResponsePartnership? = nil) {
+    public init(partnership: GetVaultMarketPartnerMeResponsePartnership? = nil, identity: GetVaultMarketPartnerMeResponseIdentity) {
         self.partnership = partnership
+        self.identity = identity
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case partnership
+        case identity
     }
 
     // Encodable protocol methods
@@ -27,6 +30,7 @@ public struct GetVaultMarketPartnerMeResponse: Codable, JSONEncodable, Hashable 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(partnership, forKey: .partnership)
+        try container.encode(identity, forKey: .identity)
     }
 }
 

@@ -13,40 +13,40 @@ import AnyCodable
 public struct GetBuyerBreakResponseDataSpots: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var label: String
     public var position: Double
-    public var heldUntil: String?
-    public var hits: String?
-    public var buyer: String?
+    public var label: String
     public var taken: Bool
     public var mine: Bool
     public var heldByMe: Bool
     public var heldByOther: Bool
+    public var heldUntil: String?
+    public var buyer: String?
+    public var hits: String?
 
-    public init(id: String, label: String, position: Double, heldUntil: String? = nil, hits: String? = nil, buyer: String? = nil, taken: Bool, mine: Bool, heldByMe: Bool, heldByOther: Bool) {
+    public init(id: String, position: Double, label: String, taken: Bool, mine: Bool, heldByMe: Bool, heldByOther: Bool, heldUntil: String? = nil, buyer: String? = nil, hits: String? = nil) {
         self.id = id
-        self.label = label
         self.position = position
-        self.heldUntil = heldUntil
-        self.hits = hits
-        self.buyer = buyer
+        self.label = label
         self.taken = taken
         self.mine = mine
         self.heldByMe = heldByMe
         self.heldByOther = heldByOther
+        self.heldUntil = heldUntil
+        self.buyer = buyer
+        self.hits = hits
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case label
         case position
-        case heldUntil
-        case hits
-        case buyer
+        case label
         case taken
         case mine
         case heldByMe
         case heldByOther
+        case heldUntil
+        case buyer
+        case hits
     }
 
     // Encodable protocol methods
@@ -54,15 +54,15 @@ public struct GetBuyerBreakResponseDataSpots: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(label, forKey: .label)
         try container.encode(position, forKey: .position)
-        try container.encodeIfPresent(heldUntil, forKey: .heldUntil)
-        try container.encodeIfPresent(hits, forKey: .hits)
-        try container.encodeIfPresent(buyer, forKey: .buyer)
+        try container.encode(label, forKey: .label)
         try container.encode(taken, forKey: .taken)
         try container.encode(mine, forKey: .mine)
         try container.encode(heldByMe, forKey: .heldByMe)
         try container.encode(heldByOther, forKey: .heldByOther)
+        try container.encodeIfPresent(heldUntil, forKey: .heldUntil)
+        try container.encodeIfPresent(buyer, forKey: .buyer)
+        try container.encodeIfPresent(hits, forKey: .hits)
     }
 }
 

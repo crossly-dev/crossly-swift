@@ -11,9 +11,9 @@ import AnyCodable
 #endif
 
 public enum GetVaultAttestationResponseKindsItem: String, Codable, CaseIterable {
+    case other = "other"
     case physicalCount = "physical_count"
     case insuranceCertificate = "insurance_certificate"
     case soc1Type2 = "soc1_type2"
     case soc2 = "soc2"
-    case other = "other"
 }

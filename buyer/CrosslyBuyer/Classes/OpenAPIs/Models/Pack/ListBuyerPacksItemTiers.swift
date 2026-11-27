@@ -14,20 +14,20 @@ public struct ListBuyerPacksItemTiers: Codable, JSONEncodable, Hashable {
 
     public var id: String
     public var name: String
-    public var available: Double
-    public var minValueCents: Double?
     public var weight: Double
     public var oddsPct: Double
+    public var available: Double
+    public var minValueCents: Double?
     public var maxValueCents: Double?
     public var avgValueCents: Double
 
-    public init(id: String, name: String, available: Double, minValueCents: Double? = nil, weight: Double, oddsPct: Double, maxValueCents: Double? = nil, avgValueCents: Double) {
+    public init(id: String, name: String, weight: Double, oddsPct: Double, available: Double, minValueCents: Double? = nil, maxValueCents: Double? = nil, avgValueCents: Double) {
         self.id = id
         self.name = name
-        self.available = available
-        self.minValueCents = minValueCents
         self.weight = weight
         self.oddsPct = oddsPct
+        self.available = available
+        self.minValueCents = minValueCents
         self.maxValueCents = maxValueCents
         self.avgValueCents = avgValueCents
     }
@@ -35,10 +35,10 @@ public struct ListBuyerPacksItemTiers: Codable, JSONEncodable, Hashable {
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
         case name
-        case available
-        case minValueCents
         case weight
         case oddsPct
+        case available
+        case minValueCents
         case maxValueCents
         case avgValueCents
     }
@@ -49,10 +49,10 @@ public struct ListBuyerPacksItemTiers: Codable, JSONEncodable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
         try container.encode(name, forKey: .name)
-        try container.encode(available, forKey: .available)
-        try container.encodeIfPresent(minValueCents, forKey: .minValueCents)
         try container.encode(weight, forKey: .weight)
         try container.encode(oddsPct, forKey: .oddsPct)
+        try container.encode(available, forKey: .available)
+        try container.encodeIfPresent(minValueCents, forKey: .minValueCents)
         try container.encodeIfPresent(maxValueCents, forKey: .maxValueCents)
         try container.encode(avgValueCents, forKey: .avgValueCents)
     }

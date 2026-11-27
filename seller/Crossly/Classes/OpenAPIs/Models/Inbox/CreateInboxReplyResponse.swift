@@ -13,9 +13,9 @@ import AnyCodable
 public struct CreateInboxReplyResponse: Codable, JSONEncodable, Hashable {
 
     public enum DeliveryStatus: String, Codable, CaseIterable {
-        case failed = "failed"
-        case sent = "sent"
         case sending = "sending"
+        case sent = "sent"
+        case failed = "failed"
     }
     public var jobId: String
     public var messageId: String

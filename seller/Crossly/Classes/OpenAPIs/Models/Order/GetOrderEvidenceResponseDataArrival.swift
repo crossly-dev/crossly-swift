@@ -13,10 +13,10 @@ import AnyCodable
 public struct GetOrderEvidenceResponseDataArrival: Codable, JSONEncodable, Hashable {
 
     public enum State: String, Codable, CaseIterable {
-        case awaiting = "awaiting"
-        case submitted = "submitted"
         case declined = "declined"
+        case submitted = "submitted"
         case notRequested = "not_requested"
+        case awaiting = "awaiting"
         case windowClosed = "window_closed"
     }
     public var state: State

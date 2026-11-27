@@ -13,8 +13,8 @@ import AnyCodable
 public struct GetVaultMarketRiskReportResponsePartnerDcmPositions: Codable, JSONEncodable, Hashable {
 
     public enum Side: String, Codable, CaseIterable {
-        case long = "long"
         case short = "short"
+        case long = "long"
     }
     public var symbol: String
     public var kind: String?

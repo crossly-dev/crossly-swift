@@ -15,14 +15,15 @@ public struct ListVaultMarketShareCardsItem: Codable, JSONEncodable, Hashable {
     public enum Kind: String, Codable, CaseIterable {
         case position = "position"
         case unit = "unit"
-        case index = "index"
         case portfolio = "portfolio"
+        case index = "index"
     }
     public var id: String
     public var kind: Kind
     public var verified: Bool
     public var createdAt: String
     public var showAmounts: Bool
+    public var owner: ListVaultMarketShareCardsItemOwner
     public var title: String
     public var subtitle: String?
     public var imageUrl: String?
@@ -35,12 +36,13 @@ public struct ListVaultMarketShareCardsItem: Codable, JSONEncodable, Hashable {
     public var portfolio: ListVaultMarketShareCardsItemPortfolio?
     public var links: ListVaultMarketShareCardsItemLinks
 
-    public init(id: String, kind: Kind, verified: Bool, createdAt: String, showAmounts: Bool, title: String, subtitle: String? = nil, imageUrl: String? = nil, bookKey: String? = nil, indexSlug: String? = nil, mark: ListVaultMarketShareCardsItemMark? = nil, level: ListVaultMarketShareCardsItemLevel? = nil, change: ListVaultMarketShareCardsItemChange, amounts: ListVaultMarketShareCardsItemAmounts? = nil, portfolio: ListVaultMarketShareCardsItemPortfolio? = nil, links: ListVaultMarketShareCardsItemLinks) {
+    public init(id: String, kind: Kind, verified: Bool, createdAt: String, showAmounts: Bool, owner: ListVaultMarketShareCardsItemOwner, title: String, subtitle: String? = nil, imageUrl: String? = nil, bookKey: String? = nil, indexSlug: String? = nil, mark: ListVaultMarketShareCardsItemMark? = nil, level: ListVaultMarketShareCardsItemLevel? = nil, change: ListVaultMarketShareCardsItemChange, amounts: ListVaultMarketShareCardsItemAmounts? = nil, portfolio: ListVaultMarketShareCardsItemPortfolio? = nil, links: ListVaultMarketShareCardsItemLinks) {
         self.id = id
         self.kind = kind
         self.verified = verified
         self.createdAt = createdAt
         self.showAmounts = showAmounts
+        self.owner = owner
         self.title = title
         self.subtitle = subtitle
         self.imageUrl = imageUrl
@@ -60,6 +62,7 @@ public struct ListVaultMarketShareCardsItem: Codable, JSONEncodable, Hashable {
         case verified
         case createdAt
         case showAmounts
+        case owner
         case title
         case subtitle
         case imageUrl
@@ -82,6 +85,7 @@ public struct ListVaultMarketShareCardsItem: Codable, JSONEncodable, Hashable {
         try container.encode(verified, forKey: .verified)
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(showAmounts, forKey: .showAmounts)
+        try container.encode(owner, forKey: .owner)
         try container.encode(title, forKey: .title)
         try container.encodeIfPresent(subtitle, forKey: .subtitle)
         try container.encodeIfPresent(imageUrl, forKey: .imageUrl)

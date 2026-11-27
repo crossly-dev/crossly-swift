@@ -14,23 +14,23 @@ public struct CreateBuyerCatalogListingVideoRequestResponseData: Codable, JSONEn
 
     public var id: String
     public var createdAt: Date
-    public var videoUrl: String?
     public var status: String
+    public var videoUrl: String?
     public var platformListingId: String
-    public var sellerUserId: String
     public var buyerUserId: String
+    public var sellerUserId: String
     public var note: String?
     public var answeredAt: Date?
     public var sellerNote: String?
 
-    public init(id: String, createdAt: Date, videoUrl: String? = nil, status: String, platformListingId: String, sellerUserId: String, buyerUserId: String, note: String? = nil, answeredAt: Date? = nil, sellerNote: String? = nil) {
+    public init(id: String, createdAt: Date, status: String, videoUrl: String? = nil, platformListingId: String, buyerUserId: String, sellerUserId: String, note: String? = nil, answeredAt: Date? = nil, sellerNote: String? = nil) {
         self.id = id
         self.createdAt = createdAt
-        self.videoUrl = videoUrl
         self.status = status
+        self.videoUrl = videoUrl
         self.platformListingId = platformListingId
-        self.sellerUserId = sellerUserId
         self.buyerUserId = buyerUserId
+        self.sellerUserId = sellerUserId
         self.note = note
         self.answeredAt = answeredAt
         self.sellerNote = sellerNote
@@ -39,11 +39,11 @@ public struct CreateBuyerCatalogListingVideoRequestResponseData: Codable, JSONEn
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
         case createdAt
-        case videoUrl
         case status
+        case videoUrl
         case platformListingId
-        case sellerUserId
         case buyerUserId
+        case sellerUserId
         case note
         case answeredAt
         case sellerNote
@@ -55,11 +55,11 @@ public struct CreateBuyerCatalogListingVideoRequestResponseData: Codable, JSONEn
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
         try container.encode(createdAt, forKey: .createdAt)
-        try container.encodeIfPresent(videoUrl, forKey: .videoUrl)
         try container.encode(status, forKey: .status)
+        try container.encodeIfPresent(videoUrl, forKey: .videoUrl)
         try container.encode(platformListingId, forKey: .platformListingId)
-        try container.encode(sellerUserId, forKey: .sellerUserId)
         try container.encode(buyerUserId, forKey: .buyerUserId)
+        try container.encode(sellerUserId, forKey: .sellerUserId)
         try container.encodeIfPresent(note, forKey: .note)
         try container.encodeIfPresent(answeredAt, forKey: .answeredAt)
         try container.encodeIfPresent(sellerNote, forKey: .sellerNote)

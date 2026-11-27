@@ -17,16 +17,16 @@ public struct ListVaultMarketAgentDraftsItem: Codable, JSONEncodable, Hashable {
         case sell = "sell"
     }
     public enum Funding: String, Codable, CaseIterable {
+        case vault = "vault"
         case card = "card"
         case custodian = "custodian"
-        case vault = "vault"
     }
     public enum Status: String, Codable, CaseIterable {
         case cancelled = "cancelled"
         case expired = "expired"
+        case drafted = "drafted"
         case rejected = "rejected"
         case placing = "placing"
-        case drafted = "drafted"
         case placed = "placed"
     }
     public var id: String

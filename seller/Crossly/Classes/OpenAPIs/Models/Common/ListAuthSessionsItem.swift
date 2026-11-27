@@ -17,11 +17,11 @@ public struct ListAuthSessionsItem: Codable, JSONEncodable, Hashable {
     public var userAgent: String?
     public var ipAddress: String?
     public var ipCountry: String?
-    public var createdAt: Date
-    public var lastUsedAt: Date
-    public var expiresAt: Date
+    public var createdAt: String?
+    public var lastUsedAt: String?
+    public var expiresAt: String?
 
-    public init(isCurrent: Bool, id: String, userAgent: String? = nil, ipAddress: String? = nil, ipCountry: String? = nil, createdAt: Date, lastUsedAt: Date, expiresAt: Date) {
+    public init(isCurrent: Bool, id: String, userAgent: String? = nil, ipAddress: String? = nil, ipCountry: String? = nil, createdAt: String? = nil, lastUsedAt: String? = nil, expiresAt: String? = nil) {
         self.isCurrent = isCurrent
         self.id = id
         self.userAgent = userAgent
@@ -52,9 +52,9 @@ public struct ListAuthSessionsItem: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(userAgent, forKey: .userAgent)
         try container.encodeIfPresent(ipAddress, forKey: .ipAddress)
         try container.encodeIfPresent(ipCountry, forKey: .ipCountry)
-        try container.encode(createdAt, forKey: .createdAt)
-        try container.encode(lastUsedAt, forKey: .lastUsedAt)
-        try container.encode(expiresAt, forKey: .expiresAt)
+        try container.encodeIfPresent(createdAt, forKey: .createdAt)
+        try container.encodeIfPresent(lastUsedAt, forKey: .lastUsedAt)
+        try container.encodeIfPresent(expiresAt, forKey: .expiresAt)
     }
 }
 

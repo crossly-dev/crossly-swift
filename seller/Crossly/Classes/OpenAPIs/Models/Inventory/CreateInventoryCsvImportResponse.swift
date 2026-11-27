@@ -15,16 +15,21 @@ public struct CreateInventoryCsvImportResponse: Codable, JSONEncodable, Hashable
     public var problems: [CreateInventoryCsvImportResponseProblems]
     public var problemCount: Double
     public var maxRows: Double
+    /** New items written — or, on a dry run, that WOULD be written. */
     public var created: Double
+    /** Existing items updated by SKU — or, on a dry run, that would be. */
     public var updated: Double
-    /** Rows that mapped cleanly. `created + updated` when not a dry run. */
+    /** Rows that can be imported: `created + updated + skippedOverLimit`. Zero means the file has nothing usable in it. */
     public var usable: Double
     public var totalRows: Double
     public var listingsCreated: Double
+    /** New rows left out because the monthly item limit was reached. */
+    public var skippedOverLimit: Double
+    public var capacity: CreateInventoryCsvImportResponseCapacity
     /** True when nothing was written — a preview pass. */
     public var dryRun: Bool
 
-    public init(problems: [CreateInventoryCsvImportResponseProblems], problemCount: Double, maxRows: Double, created: Double, updated: Double, usable: Double, totalRows: Double, listingsCreated: Double, dryRun: Bool) {
+    public init(problems: [CreateInventoryCsvImportResponseProblems], problemCount: Double, maxRows: Double, created: Double, updated: Double, usable: Double, totalRows: Double, listingsCreated: Double, skippedOverLimit: Double, capacity: CreateInventoryCsvImportResponseCapacity, dryRun: Bool) {
         self.problems = problems
         self.problemCount = problemCount
         self.maxRows = maxRows
@@ -33,6 +38,8 @@ public struct CreateInventoryCsvImportResponse: Codable, JSONEncodable, Hashable
         self.usable = usable
         self.totalRows = totalRows
         self.listingsCreated = listingsCreated
+        self.skippedOverLimit = skippedOverLimit
+        self.capacity = capacity
         self.dryRun = dryRun
     }
 
@@ -45,6 +52,8 @@ public struct CreateInventoryCsvImportResponse: Codable, JSONEncodable, Hashable
         case usable
         case totalRows
         case listingsCreated
+        case skippedOverLimit
+        case capacity
         case dryRun
     }
 
@@ -60,6 +69,8 @@ public struct CreateInventoryCsvImportResponse: Codable, JSONEncodable, Hashable
         try container.encode(usable, forKey: .usable)
         try container.encode(totalRows, forKey: .totalRows)
         try container.encode(listingsCreated, forKey: .listingsCreated)
+        try container.encode(skippedOverLimit, forKey: .skippedOverLimit)
+        try container.encode(capacity, forKey: .capacity)
         try container.encode(dryRun, forKey: .dryRun)
     }
 }

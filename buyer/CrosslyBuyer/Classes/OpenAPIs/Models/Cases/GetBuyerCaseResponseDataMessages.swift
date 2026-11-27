@@ -13,29 +13,29 @@ import AnyCodable
 public struct GetBuyerCaseResponseDataMessages: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var createdAt: String
-    /** message | offer | decision | state_change. */
-    public var kind: String
-    public var body: String
     /** buyer | seller | ops | system. */
     public var authorRole: String
+    public var body: String
+    /** message | offer | decision | state_change. */
+    public var kind: String
+    public var createdAt: String
     public var attachmentUrls: [String]?
 
-    public init(id: String, createdAt: String, kind: String, body: String, authorRole: String, attachmentUrls: [String]? = nil) {
+    public init(id: String, authorRole: String, body: String, kind: String, createdAt: String, attachmentUrls: [String]? = nil) {
         self.id = id
-        self.createdAt = createdAt
-        self.kind = kind
-        self.body = body
         self.authorRole = authorRole
+        self.body = body
+        self.kind = kind
+        self.createdAt = createdAt
         self.attachmentUrls = attachmentUrls
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case createdAt
-        case kind
-        case body
         case authorRole
+        case body
+        case kind
+        case createdAt
         case attachmentUrls
     }
 
@@ -44,10 +44,10 @@ public struct GetBuyerCaseResponseDataMessages: Codable, JSONEncodable, Hashable
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(createdAt, forKey: .createdAt)
-        try container.encode(kind, forKey: .kind)
-        try container.encode(body, forKey: .body)
         try container.encode(authorRole, forKey: .authorRole)
+        try container.encode(body, forKey: .body)
+        try container.encode(kind, forKey: .kind)
+        try container.encode(createdAt, forKey: .createdAt)
         try container.encodeIfPresent(attachmentUrls, forKey: .attachmentUrls)
     }
 }

@@ -18,6 +18,7 @@ public struct ListGameResultMineItem: Codable, JSONEncodable, Hashable {
         case hunt = "hunt"
         case speedTrade = "speed_trade"
         case breakHost = "break_host"
+        case packBreak = "pack_break"
     }
     public var id: String
     public var game: Game

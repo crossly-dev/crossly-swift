@@ -12,37 +12,37 @@ import AnyCodable
 
 public struct CreateBuyerSellerClubJoinResponseDataMember: Codable, JSONEncodable, Hashable {
 
-    public var tier: String?
-    public var joinedAt: String
-    public var discountBps: Double
     public var spendCents: Double
+    public var tier: String?
+    public var discountBps: Double
     public var next: CreateBuyerSellerClubJoinResponseDataMemberNext?
+    public var joinedAt: String
 
-    public init(tier: String? = nil, joinedAt: String, discountBps: Double, spendCents: Double, next: CreateBuyerSellerClubJoinResponseDataMemberNext? = nil) {
-        self.tier = tier
-        self.joinedAt = joinedAt
-        self.discountBps = discountBps
+    public init(spendCents: Double, tier: String? = nil, discountBps: Double, next: CreateBuyerSellerClubJoinResponseDataMemberNext? = nil, joinedAt: String) {
         self.spendCents = spendCents
+        self.tier = tier
+        self.discountBps = discountBps
         self.next = next
+        self.joinedAt = joinedAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case tier
-        case joinedAt
-        case discountBps
         case spendCents
+        case tier
+        case discountBps
         case next
+        case joinedAt
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(tier, forKey: .tier)
-        try container.encode(joinedAt, forKey: .joinedAt)
-        try container.encode(discountBps, forKey: .discountBps)
         try container.encode(spendCents, forKey: .spendCents)
+        try container.encodeIfPresent(tier, forKey: .tier)
+        try container.encode(discountBps, forKey: .discountBps)
         try container.encodeIfPresent(next, forKey: .next)
+        try container.encode(joinedAt, forKey: .joinedAt)
     }
 }
 

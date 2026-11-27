@@ -37,19 +37,31 @@ Method | HTTP request | Description
 [**createWeb3SolanaOrderDelistTx**](Web3API.md#createweb3solanaorderdelisttx) | **POST** /v1/web3/solana/orders/{hash}/delist-tx | Build the unsigned transaction that takes your Solana listing down.
 [**createWeb3SolanaTensorBidAcceptTx**](Web3API.md#createweb3solanatensorbidaccepttx) | **POST** /v1/web3/solana/tensor-bids/accept-tx | Build the transaction that sells your NFT into a Tensor bid, never below &#x60;minLamports&#x60;.
 [**createWeb3SolanaTensorBidCancelTx**](Web3API.md#createweb3solanatensorbidcanceltx) | **POST** /v1/web3/solana/tensor-bids/cancel-tx | Build the transaction that cancels your Tensor bid.
+[**createWeb3SolanaTensorBidConfirm**](Web3API.md#createweb3solanatensorbidconfirm) | **POST** /v1/web3/solana/tensor-bids/confirm | After your wallet’s Tensor transaction confirms: &#x60;action&#x60; place, cancel or accept, with its &#x60;signature&#x60; and the &#x60;wallet&#x60; that signed. Checked on chain, then recorded in your Activity. Accept needs listings:write; place and cancel need buyer:offers:write.
 [**createWeb3SolanaTensorBidPlaceTx**](Web3API.md#createweb3solanatensorbidplacetx) | **POST** /v1/web3/solana/tensor-bids/place-tx | Build a Tensor collection bid (or trait bid with &#x60;trait&#x60;) for your Solana wallet to sign. Price in lamports.
+[**createWeb3StakingStake**](Web3API.md#createweb3stakingstake) | **POST** /v1/web3/staking/stake | Lock earned CBX (&#x60;baseUnits&#x60;, a string) into the best tier it reaches. 409 while a stake or unstake is in progress.
+[**createWeb3StakingUnstake**](Web3API.md#createweb3stakingunstake) | **POST** /v1/web3/staking/unstake | Start unstaking: the earn boost stops now, the tokens release when the tier’s cooldown ends. Returns &#x60;{ unlocksAt, cooldownDays }&#x60;.
+[**createWeb3StoreWallet**](Web3API.md#createweb3storewallet) | **POST** /v1/web3/store-wallets | Link one of your verified wallets to the store so it sells NFTs from it and is paid into it.
+[**createWeb3StoreWalletChallenge**](Web3API.md#createweb3storewalletchallenge) | **POST** /v1/web3/store-wallets/challenge | Start adding a selling wallet to the store: the message the wallet signs.
+[**createWeb3StoreWalletImport**](Web3API.md#createweb3storewalletimport) | **POST** /v1/web3/store-wallets/{walletId}/import | Add picked NFTs (&#x60;tokens: [{ chain, contract, tokenId }]&#x60;) from a store wallet to inventory.
+[**createWeb3StoreWalletSync**](Web3API.md#createweb3storewalletsync) | **POST** /v1/web3/store-wallets/{walletId}/sync | Sync a store wallet: refresh its NFTs in inventory; new ones are added when the store&#39;s link auto-imports.
+[**createWeb3StoreWalletVerify**](Web3API.md#createweb3storewalletverify) | **POST** /v1/web3/store-wallets/verify | Finish adding a selling wallet: verify its signature and link it to the store.
 [**createWeb3TokenRefresh**](Web3API.md#createweb3tokenrefresh) | **POST** /v1/web3/tokens/{chain}/{contract}/{tokenId}/refresh | Re-read a token&#39;s metadata from the chain&#39;s provider (name, traits, image — a new image is copied to Crossly&#39;s CDN). Once per token per 10 minutes.
 [**createWeb3Transaction**](Web3API.md#createweb3transaction) | **POST** /v1/web3/transactions | Apply a Seaport transaction&#39;s fills and cancels to the Crossly book (read from the receipt).
 [**createWeb3WalletChallenge**](Web3API.md#createweb3walletchallenge) | **POST** /v1/web3/wallets/challenge | Start linking a wallet: returns the message the wallet must sign.
+[**createWeb3WalletImport**](Web3API.md#createweb3walletimport) | **POST** /v1/web3/wallets/{id}/import | Add picked NFTs (&#x60;tokens&#x60;: chain, contract, tokenId; up to 200) from a linked wallet to inventory. Tokens the wallet does not hold are counted in &#x60;notInWallet&#x60;, never added.
 [**createWeb3WalletSync**](Web3API.md#createweb3walletsync) | **POST** /v1/web3/wallets/{id}/sync | Import a linked wallet&#39;s NFTs into inventory; archives ones that have left the wallet.
 [**createWeb3WalletVerify**](Web3API.md#createweb3walletverify) | **POST** /v1/web3/wallets/verify | Finish linking a wallet with its signature over the challenge message.
 [**deleteWeb3Alert**](Web3API.md#deleteweb3alert) | **DELETE** /v1/web3/alerts/{id} | Delete a price alert.
-[**deleteWeb3HolderPerk**](Web3API.md#deleteweb3holderperk) | **DELETE** /v1/web3/holder-perks/{id} | Remove a holder perk. Returns &#x60;{ ok }&#x60;.
+[**deleteWeb3HolderPerk**](Web3API.md#deleteweb3holderperk) | **DELETE** /v1/web3/holder-perks/{id} | DEPRECATED: use /api/v1/discounts/holders/:id. Remove a Collection holders deal. Returns &#x60;{ ok }&#x60;.
 [**deleteWeb3Launch**](Web3API.md#deleteweb3launch) | **DELETE** /v1/web3/launches/{id} | Delete a launch draft that never went live. Returns &#x60;{ ok }&#x60;.
 [**deleteWeb3LaunchFollowCreator**](Web3API.md#deleteweb3launchfollowcreator) | **DELETE** /v1/web3/launches/{id}/follow-creator | Stop following the creator of a launch. Returns &#x60;{ following }&#x60;.
+[**deleteWeb3LaunchPerk**](Web3API.md#deleteweb3launchperk) | **DELETE** /v1/web3/launches/{id}/perks | Remove every collection perk of a launch. Returns &#x60;{ ok }&#x60;.
 [**deleteWeb3MarketplaceKey**](Web3API.md#deleteweb3marketplacekey) | **DELETE** /v1/web3/marketplace-keys/{marketplace} | Remove your own key for a marketplace; Crossly&#39;s key is used again.
+[**deleteWeb3StoreWallet**](Web3API.md#deleteweb3storewallet) | **DELETE** /v1/web3/store-wallets/{walletId} | Stop the store selling from a wallet (the wallet and its other stores are unaffected).
 [**deleteWeb3Wallet**](Web3API.md#deleteweb3wallet) | **DELETE** /v1/web3/wallets/{id} | Unlink a wallet. Its NFTs stay in inventory but stop syncing.
 [**getWeb3Auction**](Web3API.md#getweb3auction) | **GET** /v1/web3/auctions/{chain}/{contract}/{tokenId} | A token&#39;s live (or latest) auction: reserve, end, top bid, bid count and the minimum next bid.
+[**getWeb3Balance**](Web3API.md#getweb3balance) | **GET** /v1/web3/balances | Every CBX you have, in one read, with the three balances kept apart.
 [**getWeb3Browse**](Web3API.md#getweb3browse) | **GET** /v1/web3/browse | The Web3 directory&#39;s categories and chains, with how many collections each holds.
 [**getWeb3Collection**](Web3API.md#getweb3collection) | **GET** /v1/web3/collections/{chain}/{contract} | A collection: metadata and Crossly stats (floor, listed, volume, best collection offer).
 [**getWeb3CollectionDepth**](Web3API.md#getweb3collectiondepth) | **GET** /v1/web3/collections/{chain}/{contract}/depth | A collection&#39;s Crossly order book by price level — asks cheapest first, bids dearest first, with running totals — and the floor of every trait value.
@@ -64,6 +76,7 @@ Method | HTTP request | Description
 [**getWeb3Inventory**](Web3API.md#getweb3inventory) | **GET** /v1/web3/inventory/{itemId} | The NFT behind an inventory item: its token, wallet, and open listings on every marketplace (null if it is not an NFT).
 [**getWeb3LaunchAllowlistRootTx**](Web3API.md#getweb3launchallowlistroottx) | **GET** /v1/web3/launches/{id}/allowlist/root-tx | The setAllowlistRoot transaction for the allowlist Crossly holds (EVM, live): &#x60;{ chain, from, to, data }&#x60;.
 [**getWeb3LaunchDeployTx**](Web3API.md#getweb3launchdeploytx) | **GET** /v1/web3/launches/{id}/deploy-tx | The contract-creation transaction for the draft: send it from the owner wallet, then confirm it. Returns &#x60;{ chain, from, data }&#x60;.
+[**getWeb3LaunchStat**](Web3API.md#getweb3launchstat) | **GET** /v1/web3/launches/{id}/stats | A launch’s phase timeline, mint progress, proceeds (gross, Crossly’s cut, yours; airdrops excluded), allowlist and art counts, and recent mints.
 [**getWeb3LaunchTool**](Web3API.md#getweb3launchtool) | **GET** /v1/web3/launches/{id}/tools | A launch’s creator tools: allowlist size and root (and whether the contract has it yet), uploaded art and reveal, supply minted.
 [**getWeb3OrderFulfillment**](Web3API.md#getweb3orderfulfillment) | **GET** /v1/web3/orders/{chain}/{hash}/fulfillment | The signed order a taker passes to Seaport, after re-checking it can still fill.
 [**getWeb3Phygital**](Web3API.md#getweb3phygital) | **GET** /v1/web3/phygitals/{chain}/{contract}/{tokenId} | A token&#39;s phygital: the physical item it can be redeemed for, and whether it has been.
@@ -73,7 +86,11 @@ Method | HTTP request | Description
 [**getWeb3Profile**](Web3API.md#getweb3profile) | **GET** /v1/web3/profiles/{address} | A wallet&#39;s public profile: NFTs held, open Crossly listings, and activity.
 [**getWeb3Resolve**](Web3API.md#getweb3resolve) | **GET** /v1/web3/resolve/{chain}/{slug} | A collection&#39;s chain and contract from its readable URL slug (e.g. eth / boredapeyachtclub).
 [**getWeb3SolanaCollectionTensorBid**](Web3API.md#getweb3solanacollectiontensorbid) | **GET** /v1/web3/solana/collections/{collection}/tensor-bids | A Solana collection’s Tensor bids (collection-wide and by trait), best first; price in lamports. Needs your Tensor key.
+[**getWeb3Staking**](Web3API.md#getweb3staking) | **GET** /v1/web3/staking | Your CBX stake: what is locked, its tier, the tier ladder and your past positions.
+[**getWeb3StoreWalletHolding**](Web3API.md#getweb3storewalletholding) | **GET** /v1/web3/store-wallets/{walletId}/holdings | What a store wallet holds (chain + contract + token id), each marked in-inventory or not.
+[**getWeb3StoreWalletNft**](Web3API.md#getweb3storewalletnft) | **GET** /v1/web3/store-wallets/nfts | The store&#39;s Crossly NFTs: plots (deeds and leases), streets its owner founded and vault receipt tokens in its wallets, with the wallets a plot purchase and a receipt export use.
 [**getWeb3Token**](Web3API.md#getweb3token) | **GET** /v1/web3/tokens/{chain}/{contract}/{tokenId} | One NFT: metadata, traits, owner, open listings and offers, activity.
+[**getWeb3WalletHolding**](Web3API.md#getweb3walletholding) | **GET** /v1/web3/wallets/{id}/holdings | What a linked wallet holds right now, each NFT marked &#x60;inInventory&#x60; or not. Reads the chain; writes nothing.
 [**listWeb3Activity**](Web3API.md#listweb3activity) | **GET** /v1/web3/activity | Listings, offers, sales and cancels in the Crossly book, newest first.
 [**listWeb3Alerts**](Web3API.md#listweb3alerts) | **GET** /v1/web3/alerts | Your NFT price alerts, with the cheapest open Crossly listing each one covers now.
 [**listWeb3Approvals**](Web3API.md#listweb3approvals) | **GET** /v1/web3/approvals | Your collections the OpenSea conduit is approved to move, per linked wallet.
@@ -85,23 +102,31 @@ Method | HTTP request | Description
 [**listWeb3Collections**](Web3API.md#listweb3collections) | **GET** /v1/web3/collections | Collections ranked by 30-day Crossly volume, with floor and listed count.
 [**listWeb3CreatorCollections**](Web3API.md#listweb3creatorcollections) | **GET** /v1/web3/creator/collections | Collections you are the creator of: your launches, and contracts you claimed by owning them.
 [**listWeb3Drops**](Web3API.md#listweb3drops) | **GET** /v1/web3/drops | Upcoming and live NFT drops (curated mints on the creator&#39;s own page), soonest first, with whether you asked to be reminded.
-[**listWeb3HolderPerks**](Web3API.md#listweb3holderperks) | **GET** /v1/web3/holder-perks | Your holder perks: percent off your Crossly shop for holders of an NFT collection, best first.
+[**listWeb3HolderPerks**](Web3API.md#listweb3holderperks) | **GET** /v1/web3/holder-perks | DEPRECATED: use /api/v1/discounts/holders. Your Collection holders deals in the old holder-perk shape, best first.
+[**listWeb3LaunchPerks**](Web3API.md#listweb3launchperks) | **GET** /v1/web3/launches/{id}/perks | The perks holders of this launch’s collection get (percent off your shop, early drop access, a World item, a loyalty tier, live early entry, an event ticket).
 [**listWeb3Launches**](Web3API.md#listweb3launches) | **GET** /v1/web3/launches | Your launchpad collections (drafts and live), newest first, with minted count and phase.
 [**listWeb3Listings**](Web3API.md#listweb3listings) | **GET** /v1/web3/listings | Open NFT listings in the Crossly book — the cheapest per token.
 [**listWeb3MarketplaceKeys**](Web3API.md#listweb3marketplacekeys) | **GET** /v1/web3/marketplace-keys | Your own marketplace API keys (last four characters only) and whether Crossly&#39;s key covers each marketplace.
 [**listWeb3Nfts**](Web3API.md#listweb3nfts) | **GET** /v1/web3/nfts | List the NFTs in your inventory, imported from your linked wallets.
-[**listWeb3Orders**](Web3API.md#listweb3orders) | **GET** /v1/web3/orders | Your orders in the Crossly book (listings and offers), any status.
+[**listWeb3Orders**](Web3API.md#listweb3orders) | **GET** /v1/web3/orders | Your orders in the Crossly book (listings and offers), any status. With X-Storefront-Id: that store&#39;s listings (offers always).
 [**listWeb3Purchases**](Web3API.md#listweb3purchases) | **GET** /v1/web3/purchases | NFTs your linked wallets bought — on Crossly or any marketplace the chain feed saw — newest first, with price and whether you still hold each.
 [**listWeb3Rankings**](Web3API.md#listweb3rankings) | **GET** /v1/web3/rankings | Collections by sales volume over 24h, 7d or 30d, in one coin: the ETH chains together, or Polygon / Solana on their own.
 [**listWeb3Reserved**](Web3API.md#listweb3reserved) | **GET** /v1/web3/reserved | Private listings reserved for one of your linked wallets — only you can see or buy them.
 [**listWeb3Sales**](Web3API.md#listweb3sales) | **GET** /v1/web3/sales | The latest NFT sales across the directory, from the chain (Seaport and Blur) and the Crossly book, newest first; page with &#x60;before&#x60;.
 [**listWeb3Search**](Web3API.md#listweb3search) | **GET** /v1/web3/search | Find collections by contract address (every chain) or by name.
 [**listWeb3SearchTokens**](Web3API.md#listweb3searchtokens) | **GET** /v1/web3/search/tokens | Find tokens by collection name and number: &#39;pudgy 42&#39;, &#39;Bored Ape #1234&#39;.
+[**listWeb3StoreWalletBalances**](Web3API.md#listweb3storewalletbalances) | **GET** /v1/web3/store-wallets/balances | The native-coin balance (SOL, ETH, POL, …) of each of the store&#39;s selling wallets, read on chain.
+[**listWeb3StoreWallets**](Web3API.md#listweb3storewallets) | **GET** /v1/web3/store-wallets | List the store&#39;s selling wallets (X-Storefront-Id; default store when omitted).
 [**listWeb3Wallets**](Web3API.md#listweb3wallets) | **GET** /v1/web3/wallets | List your verified, linked wallets (EVM and Solana).
 [**listWeb3Watchlist**](Web3API.md#listweb3watchlist) | **GET** /v1/web3/watchlist | Your favourited NFTs, with the cheapest open Crossly listing and the last sale of each.
-[**updateWeb3HolderPerk**](Web3API.md#updateweb3holderperk) | **PUT** /v1/web3/holder-perks | Set the percent off (100–5000 bps) holders of a collection get across your Crossly shop; one perk per collection.
+[**updateWeb3HolderPerk**](Web3API.md#updateweb3holderperk) | **PUT** /v1/web3/holder-perks | DEPRECATED: use /api/v1/discounts/holders. Set the percent off (100–5000 bps) holders of a collection get in your store (the key’s store, else the default); one per collection.
+[**updateWeb3Launch**](Web3API.md#updateweb3launch) | **PATCH** /v1/web3/launches/{id} | Edit a launch draft (or a failed deploy) before it deploys: any creation field except chain and owner. The schedule is re-checked; 409 once live.
 [**updateWeb3LaunchAllowlist**](Web3API.md#updateweb3launchallowlist) | **PUT** /v1/web3/launches/{id}/allowlist | Replace the early-phase allowlist (up to 10,000 wallets). EVM live launches get back &#x60;rootTx&#x60;, the setAllowlistRoot transaction for the owner wallet.
+[**updateWeb3LaunchPerk**](Web3API.md#updateweb3launchperk) | **PUT** /v1/web3/launches/{id}/perks | Replace a launch’s collection perks: &#x60;{ perks: [{ config: { type, ... }, active }] }&#x60;, one per type; a type left out is removed.
 [**updateWeb3MarketplaceKey**](Web3API.md#updateweb3marketplacekey) | **PUT** /v1/web3/marketplace-keys/{marketplace} | Save your own API key for a marketplace (checked against the marketplace first where it can be); stored encrypted.
+[**updateWeb3StoreWallet**](Web3API.md#updateweb3storewallet) | **PATCH** /v1/web3/store-wallets/{walletId} | Turn on or off whether syncing this store wallet adds new NFTs to the store’s inventory (X-Storefront-Id).
+[**updateWeb3StoreWalletDefault**](Web3API.md#updateweb3storewalletdefault) | **PUT** /v1/web3/store-wallets/{walletId}/default | Make a linked wallet the store&#39;s default selling wallet on its network (EVM or Solana).
+[**updateWeb3Wallet**](Web3API.md#updateweb3wallet) | **PATCH** /v1/web3/wallets/{id} | Change a linked wallet: &#x60;autoImport&#x60; (a sync adds new NFTs to inventory; off, it only refreshes the ones there) and &#x60;label&#x60;.
 
 
 # **createWeb3Alert**
@@ -1630,6 +1655,50 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **createWeb3SolanaTensorBidConfirm**
+```swift
+    open class func createWeb3SolanaTensorBidConfirm(completion: @escaping (_ data: CreateWeb3SolanaTensorBidConfirmResponse?, _ error: Error?) -> Void)
+```
+
+After your wallet’s Tensor transaction confirms: `action` place, cancel or accept, with its `signature` and the `wallet` that signed. Checked on chain, then recorded in your Activity. Accept needs listings:write; place and cancel need buyer:offers:write.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// After your wallet’s Tensor transaction confirms: `action` place, cancel or accept, with its `signature` and the `wallet` that signed. Checked on chain, then recorded in your Activity. Accept needs listings:write; place and cancel need buyer:offers:write.
+Web3API.createWeb3SolanaTensorBidConfirm() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateWeb3SolanaTensorBidConfirmResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **createWeb3SolanaTensorBidPlaceTx**
 ```swift
     open class func createWeb3SolanaTensorBidPlaceTx(completion: @escaping (_ data: CreateWeb3SolanaTensorBidPlaceTxResponse?, _ error: Error?) -> Void)
@@ -1662,6 +1731,322 @@ This endpoint does not need any parameter.
 ### Return type
 
 **CreateWeb3SolanaTensorBidPlaceTxResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createWeb3StakingStake**
+```swift
+    open class func createWeb3StakingStake(completion: @escaping (_ data: CreateWeb3StakingStakeResponse?, _ error: Error?) -> Void)
+```
+
+Lock earned CBX (`baseUnits`, a string) into the best tier it reaches. 409 while a stake or unstake is in progress.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Lock earned CBX (`baseUnits`, a string) into the best tier it reaches. 409 while a stake or unstake is in progress.
+Web3API.createWeb3StakingStake() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateWeb3StakingStakeResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createWeb3StakingUnstake**
+```swift
+    open class func createWeb3StakingUnstake(completion: @escaping (_ data: CreateWeb3StakingUnstakeResponse?, _ error: Error?) -> Void)
+```
+
+Start unstaking: the earn boost stops now, the tokens release when the tier’s cooldown ends. Returns `{ unlocksAt, cooldownDays }`.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Start unstaking: the earn boost stops now, the tokens release when the tier’s cooldown ends. Returns `{ unlocksAt, cooldownDays }`.
+Web3API.createWeb3StakingUnstake() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateWeb3StakingUnstakeResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createWeb3StoreWallet**
+```swift
+    open class func createWeb3StoreWallet(completion: @escaping (_ data: CreateWeb3StoreWalletResponse?, _ error: Error?) -> Void)
+```
+
+Link one of your verified wallets to the store so it sells NFTs from it and is paid into it.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Link one of your verified wallets to the store so it sells NFTs from it and is paid into it.
+Web3API.createWeb3StoreWallet() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateWeb3StoreWalletResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createWeb3StoreWalletChallenge**
+```swift
+    open class func createWeb3StoreWalletChallenge(completion: @escaping (_ data: CreateWeb3WalletChallengeResponse?, _ error: Error?) -> Void)
+```
+
+Start adding a selling wallet to the store: the message the wallet signs.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Start adding a selling wallet to the store: the message the wallet signs.
+Web3API.createWeb3StoreWalletChallenge() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateWeb3WalletChallengeResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createWeb3StoreWalletImport**
+```swift
+    open class func createWeb3StoreWalletImport(walletId: UUID, completion: @escaping (_ data: CreateWeb3WalletImportResponse?, _ error: Error?) -> Void)
+```
+
+Add picked NFTs (`tokens: [{ chain, contract, tokenId }]`) from a store wallet to inventory.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let walletId = 987 // UUID | 
+
+// Add picked NFTs (`tokens: [{ chain, contract, tokenId }]`) from a store wallet to inventory.
+Web3API.createWeb3StoreWalletImport(walletId: walletId) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **walletId** | **UUID** |  | 
+
+### Return type
+
+**CreateWeb3WalletImportResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createWeb3StoreWalletSync**
+```swift
+    open class func createWeb3StoreWalletSync(walletId: UUID, completion: @escaping (_ data: CreateWeb3StoreWalletSyncResponse?, _ error: Error?) -> Void)
+```
+
+Sync a store wallet: refresh its NFTs in inventory; new ones are added when the store's link auto-imports.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let walletId = 987 // UUID | 
+
+// Sync a store wallet: refresh its NFTs in inventory; new ones are added when the store's link auto-imports.
+Web3API.createWeb3StoreWalletSync(walletId: walletId) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **walletId** | **UUID** |  | 
+
+### Return type
+
+**CreateWeb3StoreWalletSyncResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createWeb3StoreWalletVerify**
+```swift
+    open class func createWeb3StoreWalletVerify(completion: @escaping (_ data: CreateWeb3StoreWalletResponse?, _ error: Error?) -> Void)
+```
+
+Finish adding a selling wallet: verify its signature and link it to the store.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Finish adding a selling wallet: verify its signature and link it to the store.
+Web3API.createWeb3StoreWalletVerify() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateWeb3StoreWalletResponse**
 
 ### Authorization
 
@@ -1802,6 +2187,54 @@ This endpoint does not need any parameter.
 ### Return type
 
 **CreateWeb3WalletChallengeResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createWeb3WalletImport**
+```swift
+    open class func createWeb3WalletImport(id: String, completion: @escaping (_ data: CreateWeb3WalletImportResponse?, _ error: Error?) -> Void)
+```
+
+Add picked NFTs (`tokens`: chain, contract, tokenId; up to 200) from a linked wallet to inventory. Tokens the wallet does not hold are counted in `notInWallet`, never added.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Add picked NFTs (`tokens`: chain, contract, tokenId; up to 200) from a linked wallet to inventory. Tokens the wallet does not hold are counted in `notInWallet`, never added.
+Web3API.createWeb3WalletImport(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateWeb3WalletImportResponse**
 
 ### Authorization
 
@@ -1959,7 +2392,7 @@ Name | Type | Description  | Notes
     open class func deleteWeb3HolderPerk(id: String, completion: @escaping (_ data: OkResponse?, _ error: Error?) -> Void)
 ```
 
-Remove a holder perk. Returns `{ ok }`.
+DEPRECATED: use /api/v1/discounts/holders/:id. Remove a Collection holders deal. Returns `{ ok }`.
 
 ### Example
 ```swift
@@ -1968,7 +2401,7 @@ import Crossly
 
 let id = "id_example" // String | 
 
-// Remove a holder perk. Returns `{ ok }`.
+// DEPRECATED: use /api/v1/discounts/holders/:id. Remove a Collection holders deal. Returns `{ ok }`.
 Web3API.deleteWeb3HolderPerk(id: id) { (response, error) in
     guard error == nil else {
         print(error)
@@ -2098,6 +2531,54 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **deleteWeb3LaunchPerk**
+```swift
+    open class func deleteWeb3LaunchPerk(id: UUID, completion: @escaping (_ data: OkResponse?, _ error: Error?) -> Void)
+```
+
+Remove every collection perk of a launch. Returns `{ ok }`.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = 987 // UUID | 
+
+// Remove every collection perk of a launch. Returns `{ ok }`.
+Web3API.deleteWeb3LaunchPerk(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **UUID** |  | 
+
+### Return type
+
+**OkResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **deleteWeb3MarketplaceKey**
 ```swift
     open class func deleteWeb3MarketplaceKey(marketplace: Marketplace_deleteWeb3MarketplaceKey, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
@@ -2130,6 +2611,54 @@ Web3API.deleteWeb3MarketplaceKey(marketplace: marketplace) { (response, error) i
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **marketplace** | **String** |  | 
+
+### Return type
+
+Void (empty response body)
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **deleteWeb3StoreWallet**
+```swift
+    open class func deleteWeb3StoreWallet(walletId: UUID, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+```
+
+Stop the store selling from a wallet (the wallet and its other stores are unaffected).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let walletId = 987 // UUID | 
+
+// Stop the store selling from a wallet (the wallet and its other stores are unaffected).
+Web3API.deleteWeb3StoreWallet(walletId: walletId) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **walletId** | **UUID** |  | 
 
 ### Return type
 
@@ -2234,6 +2763,52 @@ Name | Type | Description  | Notes
 ### Return type
 
 **GetWeb3AuctionResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getWeb3Balance**
+```swift
+    open class func getWeb3Balance(completion: @escaping (_ data: GetWeb3BalanceResponse?, _ error: Error?) -> Void)
+```
+
+Every CBX you have, in one read, with the three balances kept apart.
+
+`credit`: EARNED (withdrawable once matured; `withdrawableBaseUnits` is earned minus anything staked) and GRANTED (in-platform spend only, never withdrawable). `connected`: headroom on your connected-wallet delegation, a ceiling on what Crossly may pull, never a balance. `wallets`: each linked wallet with its own on-chain CBX (`status` read / not_solana / not_live / unavailable). `totals.allBaseUnits` is credit + wallets and never adds the delegation headroom. Amounts are base-unit strings (`decimals`).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Every CBX you have, in one read, with the three balances kept apart.
+Web3API.getWeb3Balance() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetWeb3BalanceResponse**
 
 ### Authorization
 
@@ -2916,6 +3491,54 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **getWeb3LaunchStat**
+```swift
+    open class func getWeb3LaunchStat(id: String, completion: @escaping (_ data: GetWeb3LaunchStatResponse?, _ error: Error?) -> Void)
+```
+
+A launch’s phase timeline, mint progress, proceeds (gross, Crossly’s cut, yours; airdrops excluded), allowlist and art counts, and recent mints.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// A launch’s phase timeline, mint progress, proceeds (gross, Crossly’s cut, yours; airdrops excluded), allowlist and art counts, and recent mints.
+Web3API.getWeb3LaunchStat(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetWeb3LaunchStatResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **getWeb3LaunchTool**
 ```swift
     open class func getWeb3LaunchTool(id: String, completion: @escaping (_ data: GetWeb3LaunchToolResponse?, _ error: Error?) -> Void)
@@ -3344,6 +3967,144 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **getWeb3Staking**
+```swift
+    open class func getWeb3Staking(completion: @escaping (_ data: GetWeb3StakingResponse?, _ error: Error?) -> Void)
+```
+
+Your CBX stake: what is locked, its tier, the tier ladder and your past positions.
+
+A stake locks EARNED CBX; it moves nothing and pays no yield. Each tier buys a withdrawal-fee discount and an earn-rate boost on future purchases, and has a cooldown before an unstake releases.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your CBX stake: what is locked, its tier, the tier ladder and your past positions.
+Web3API.getWeb3Staking() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetWeb3StakingResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getWeb3StoreWalletHolding**
+```swift
+    open class func getWeb3StoreWalletHolding(walletId: UUID, completion: @escaping (_ data: GetWeb3WalletHoldingResponse?, _ error: Error?) -> Void)
+```
+
+What a store wallet holds (chain + contract + token id), each marked in-inventory or not.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let walletId = 987 // UUID | 
+
+// What a store wallet holds (chain + contract + token id), each marked in-inventory or not.
+Web3API.getWeb3StoreWalletHolding(walletId: walletId) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **walletId** | **UUID** |  | 
+
+### Return type
+
+**GetWeb3WalletHoldingResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getWeb3StoreWalletNft**
+```swift
+    open class func getWeb3StoreWalletNft(completion: @escaping (_ data: GetWeb3StoreWalletNftResponse?, _ error: Error?) -> Void)
+```
+
+The store's Crossly NFTs: plots (deeds and leases), streets its owner founded and vault receipt tokens in its wallets, with the wallets a plot purchase and a receipt export use.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// The store's Crossly NFTs: plots (deeds and leases), streets its owner founded and vault receipt tokens in its wallets, with the wallets a plot purchase and a receipt export use.
+Web3API.getWeb3StoreWalletNft() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetWeb3StoreWalletNftResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **getWeb3Token**
 ```swift
     open class func getWeb3Token(chain: String, contract: String, tokenId: String, completion: @escaping (_ data: GetWeb3TokenResponse?, _ error: Error?) -> Void)
@@ -3384,6 +4145,54 @@ Name | Type | Description  | Notes
 ### Return type
 
 **GetWeb3TokenResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getWeb3WalletHolding**
+```swift
+    open class func getWeb3WalletHolding(id: String, completion: @escaping (_ data: GetWeb3WalletHoldingResponse?, _ error: Error?) -> Void)
+```
+
+What a linked wallet holds right now, each NFT marked `inInventory` or not. Reads the chain; writes nothing.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// What a linked wallet holds right now, each NFT marked `inInventory` or not. Reads the chain; writes nothing.
+Web3API.getWeb3WalletHolding(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetWeb3WalletHoldingResponse**
 
 ### Authorization
 
@@ -3891,7 +4700,7 @@ This endpoint does not need any parameter.
     open class func listWeb3HolderPerks(completion: @escaping (_ data: ListWeb3HolderPerksResponse?, _ error: Error?) -> Void)
 ```
 
-Your holder perks: percent off your Crossly shop for holders of an NFT collection, best first.
+DEPRECATED: use /api/v1/discounts/holders. Your Collection holders deals in the old holder-perk shape, best first.
 
 ### Example
 ```swift
@@ -3899,7 +4708,7 @@ Your holder perks: percent off your Crossly shop for holders of an NFT collectio
 import Crossly
 
 
-// Your holder perks: percent off your Crossly shop for holders of an NFT collection, best first.
+// DEPRECATED: use /api/v1/discounts/holders. Your Collection holders deals in the old holder-perk shape, best first.
 Web3API.listWeb3HolderPerks() { (response, error) in
     guard error == nil else {
         print(error)
@@ -3918,6 +4727,54 @@ This endpoint does not need any parameter.
 ### Return type
 
 **ListWeb3HolderPerksResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listWeb3LaunchPerks**
+```swift
+    open class func listWeb3LaunchPerks(id: UUID, completion: @escaping (_ data: ListWeb3LaunchPerksResponse?, _ error: Error?) -> Void)
+```
+
+The perks holders of this launch’s collection get (percent off your shop, early drop access, a World item, a loyalty tier, live early entry, an event ticket).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = 987 // UUID | 
+
+// The perks holders of this launch’s collection get (percent off your shop, early drop access, a World item, a loyalty tier, live early entry, an event ticket).
+Web3API.listWeb3LaunchPerks(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **UUID** |  | 
+
+### Return type
+
+**ListWeb3LaunchPerksResponse**
 
 ### Authorization
 
@@ -4121,7 +4978,7 @@ Name | Type | Description  | Notes
     open class func listWeb3Orders(completion: @escaping (_ data: ListWeb3OrdersResponse?, _ error: Error?) -> Void)
 ```
 
-Your orders in the Crossly book (listings and offers), any status.
+Your orders in the Crossly book (listings and offers), any status. With X-Storefront-Id: that store's listings (offers always).
 
 ### Example
 ```swift
@@ -4129,7 +4986,7 @@ Your orders in the Crossly book (listings and offers), any status.
 import Crossly
 
 
-// Your orders in the Crossly book (listings and offers), any status.
+// Your orders in the Crossly book (listings and offers), any status. With X-Storefront-Id: that store's listings (offers always).
 Web3API.listWeb3Orders() { (response, error) in
     guard error == nil else {
         print(error)
@@ -4424,6 +5281,94 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **listWeb3StoreWalletBalances**
+```swift
+    open class func listWeb3StoreWalletBalances(completion: @escaping (_ data: ListWeb3StoreWalletBalancesResponse?, _ error: Error?) -> Void)
+```
+
+The native-coin balance (SOL, ETH, POL, …) of each of the store's selling wallets, read on chain.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// The native-coin balance (SOL, ETH, POL, …) of each of the store's selling wallets, read on chain.
+Web3API.listWeb3StoreWalletBalances() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListWeb3StoreWalletBalancesResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listWeb3StoreWallets**
+```swift
+    open class func listWeb3StoreWallets(completion: @escaping (_ data: ListWeb3StoreWalletsResponse?, _ error: Error?) -> Void)
+```
+
+List the store's selling wallets (X-Storefront-Id; default store when omitted).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// List the store's selling wallets (X-Storefront-Id; default store when omitted).
+Web3API.listWeb3StoreWallets() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListWeb3StoreWalletsResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **listWeb3Wallets**
 ```swift
     open class func listWeb3Wallets(completion: @escaping (_ data: ListWeb3WalletsResponse?, _ error: Error?) -> Void)
@@ -4514,10 +5459,10 @@ This endpoint does not need any parameter.
 
 # **updateWeb3HolderPerk**
 ```swift
-    open class func updateWeb3HolderPerk(completion: @escaping (_ data: ListWeb3HolderPerksItem?, _ error: Error?) -> Void)
+    open class func updateWeb3HolderPerk(completion: @escaping (_ data: UpdateWeb3HolderPerkResponse?, _ error: Error?) -> Void)
 ```
 
-Set the percent off (100–5000 bps) holders of a collection get across your Crossly shop; one perk per collection.
+DEPRECATED: use /api/v1/discounts/holders. Set the percent off (100–5000 bps) holders of a collection get in your store (the key’s store, else the default); one per collection.
 
 ### Example
 ```swift
@@ -4525,7 +5470,7 @@ Set the percent off (100–5000 bps) holders of a collection get across your Cro
 import Crossly
 
 
-// Set the percent off (100–5000 bps) holders of a collection get across your Crossly shop; one perk per collection.
+// DEPRECATED: use /api/v1/discounts/holders. Set the percent off (100–5000 bps) holders of a collection get in your store (the key’s store, else the default); one per collection.
 Web3API.updateWeb3HolderPerk() { (response, error) in
     guard error == nil else {
         print(error)
@@ -4543,7 +5488,55 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-**ListWeb3HolderPerksItem**
+**UpdateWeb3HolderPerkResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **updateWeb3Launch**
+```swift
+    open class func updateWeb3Launch(id: String, completion: @escaping (_ data: UpdateWeb3LaunchResponse?, _ error: Error?) -> Void)
+```
+
+Edit a launch draft (or a failed deploy) before it deploys: any creation field except chain and owner. The schedule is re-checked; 409 once live.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Edit a launch draft (or a failed deploy) before it deploys: any creation field except chain and owner. The schedule is re-checked; 409 once live.
+Web3API.updateWeb3Launch(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**UpdateWeb3LaunchResponse**
 
 ### Authorization
 
@@ -4604,6 +5597,54 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **updateWeb3LaunchPerk**
+```swift
+    open class func updateWeb3LaunchPerk(id: UUID, completion: @escaping (_ data: ListWeb3LaunchPerksResponse?, _ error: Error?) -> Void)
+```
+
+Replace a launch’s collection perks: `{ perks: [{ config: { type, ... }, active }] }`, one per type; a type left out is removed.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = 987 // UUID | 
+
+// Replace a launch’s collection perks: `{ perks: [{ config: { type, ... }, active }] }`, one per type; a type left out is removed.
+Web3API.updateWeb3LaunchPerk(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **UUID** |  | 
+
+### Return type
+
+**ListWeb3LaunchPerksResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **updateWeb3MarketplaceKey**
 ```swift
     open class func updateWeb3MarketplaceKey(marketplace: Marketplace_updateWeb3MarketplaceKey, completion: @escaping (_ data: ListWeb3MarketplaceKeysItem?, _ error: Error?) -> Void)
@@ -4640,6 +5681,150 @@ Name | Type | Description  | Notes
 ### Return type
 
 **ListWeb3MarketplaceKeysItem**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **updateWeb3StoreWallet**
+```swift
+    open class func updateWeb3StoreWallet(walletId: UUID, completion: @escaping (_ data: UpdateWeb3StoreWalletResponse?, _ error: Error?) -> Void)
+```
+
+Turn on or off whether syncing this store wallet adds new NFTs to the store’s inventory (X-Storefront-Id).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let walletId = 987 // UUID | 
+
+// Turn on or off whether syncing this store wallet adds new NFTs to the store’s inventory (X-Storefront-Id).
+Web3API.updateWeb3StoreWallet(walletId: walletId) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **walletId** | **UUID** |  | 
+
+### Return type
+
+**UpdateWeb3StoreWalletResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **updateWeb3StoreWalletDefault**
+```swift
+    open class func updateWeb3StoreWalletDefault(walletId: UUID, completion: @escaping (_ data: ListWeb3StoreWalletsResponse?, _ error: Error?) -> Void)
+```
+
+Make a linked wallet the store's default selling wallet on its network (EVM or Solana).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let walletId = 987 // UUID | 
+
+// Make a linked wallet the store's default selling wallet on its network (EVM or Solana).
+Web3API.updateWeb3StoreWalletDefault(walletId: walletId) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **walletId** | **UUID** |  | 
+
+### Return type
+
+**ListWeb3StoreWalletsResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **updateWeb3Wallet**
+```swift
+    open class func updateWeb3Wallet(id: String, completion: @escaping (_ data: UpdateWeb3WalletResponse?, _ error: Error?) -> Void)
+```
+
+Change a linked wallet: `autoImport` (a sync adds new NFTs to inventory; off, it only refreshes the ones there) and `label`.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Change a linked wallet: `autoImport` (a sync adds new NFTs to inventory; off, it only refreshes the ones there) and `label`.
+Web3API.updateWeb3Wallet(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**UpdateWeb3WalletResponse**
 
 ### Authorization
 

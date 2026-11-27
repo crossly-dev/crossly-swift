@@ -18,6 +18,9 @@ public struct ListMeTemplatesItem: Codable, JSONEncodable, Hashable {
     public var createdAt: Date
     public var updatedAt: Date
     public var userId: String
+    public var description: String?
+    public var notes: String?
+    public var isDefault: Bool
     public var condition: String?
     public var size: String?
     public var material: String?
@@ -29,25 +32,25 @@ public struct ListMeTemplatesItem: Codable, JSONEncodable, Hashable {
     public var sizeSystem: String?
     public var color: String?
     public var tags: [String]?
-    public var notes: String?
     public var weightOz: Double?
-    public var description: String?
-    public var isDefault: Bool
     public var title: String?
-    public var scope: String
-    public var shareToken: String?
     public var sortOrder: Double
+    public var scope: String
     public var descriptionVariants: [String]?
     public var titleVariants: [String]?
     public var defaultForCategory: String?
+    public var shareToken: String?
 
-    public init(id: String, brand: String? = nil, name: String, createdAt: Date, updatedAt: Date, userId: String, condition: String? = nil, size: String? = nil, material: String? = nil, style: String? = nil, pattern: String? = nil, department: String? = nil, gender: String? = nil, itemType: String? = nil, sizeSystem: String? = nil, color: String? = nil, tags: [String]? = nil, notes: String? = nil, weightOz: Double? = nil, description: String? = nil, isDefault: Bool, title: String? = nil, scope: String, shareToken: String? = nil, sortOrder: Double, descriptionVariants: [String]? = nil, titleVariants: [String]? = nil, defaultForCategory: String? = nil) {
+    public init(id: String, brand: String? = nil, name: String, createdAt: Date, updatedAt: Date, userId: String, description: String? = nil, notes: String? = nil, isDefault: Bool, condition: String? = nil, size: String? = nil, material: String? = nil, style: String? = nil, pattern: String? = nil, department: String? = nil, gender: String? = nil, itemType: String? = nil, sizeSystem: String? = nil, color: String? = nil, tags: [String]? = nil, weightOz: Double? = nil, title: String? = nil, sortOrder: Double, scope: String, descriptionVariants: [String]? = nil, titleVariants: [String]? = nil, defaultForCategory: String? = nil, shareToken: String? = nil) {
         self.id = id
         self.brand = brand
         self.name = name
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.userId = userId
+        self.description = description
+        self.notes = notes
+        self.isDefault = isDefault
         self.condition = condition
         self.size = size
         self.material = material
@@ -59,17 +62,14 @@ public struct ListMeTemplatesItem: Codable, JSONEncodable, Hashable {
         self.sizeSystem = sizeSystem
         self.color = color
         self.tags = tags
-        self.notes = notes
         self.weightOz = weightOz
-        self.description = description
-        self.isDefault = isDefault
         self.title = title
-        self.scope = scope
-        self.shareToken = shareToken
         self.sortOrder = sortOrder
+        self.scope = scope
         self.descriptionVariants = descriptionVariants
         self.titleVariants = titleVariants
         self.defaultForCategory = defaultForCategory
+        self.shareToken = shareToken
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -79,6 +79,9 @@ public struct ListMeTemplatesItem: Codable, JSONEncodable, Hashable {
         case createdAt
         case updatedAt
         case userId
+        case description
+        case notes
+        case isDefault
         case condition
         case size
         case material
@@ -90,17 +93,14 @@ public struct ListMeTemplatesItem: Codable, JSONEncodable, Hashable {
         case sizeSystem
         case color
         case tags
-        case notes
         case weightOz
-        case description
-        case isDefault
         case title
-        case scope
-        case shareToken
         case sortOrder
+        case scope
         case descriptionVariants
         case titleVariants
         case defaultForCategory
+        case shareToken
     }
 
     // Encodable protocol methods
@@ -113,6 +113,9 @@ public struct ListMeTemplatesItem: Codable, JSONEncodable, Hashable {
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(updatedAt, forKey: .updatedAt)
         try container.encode(userId, forKey: .userId)
+        try container.encodeIfPresent(description, forKey: .description)
+        try container.encodeIfPresent(notes, forKey: .notes)
+        try container.encode(isDefault, forKey: .isDefault)
         try container.encodeIfPresent(condition, forKey: .condition)
         try container.encodeIfPresent(size, forKey: .size)
         try container.encodeIfPresent(material, forKey: .material)
@@ -124,17 +127,14 @@ public struct ListMeTemplatesItem: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(sizeSystem, forKey: .sizeSystem)
         try container.encodeIfPresent(color, forKey: .color)
         try container.encodeIfPresent(tags, forKey: .tags)
-        try container.encodeIfPresent(notes, forKey: .notes)
         try container.encodeIfPresent(weightOz, forKey: .weightOz)
-        try container.encodeIfPresent(description, forKey: .description)
-        try container.encode(isDefault, forKey: .isDefault)
         try container.encodeIfPresent(title, forKey: .title)
-        try container.encode(scope, forKey: .scope)
-        try container.encodeIfPresent(shareToken, forKey: .shareToken)
         try container.encode(sortOrder, forKey: .sortOrder)
+        try container.encode(scope, forKey: .scope)
         try container.encodeIfPresent(descriptionVariants, forKey: .descriptionVariants)
         try container.encodeIfPresent(titleVariants, forKey: .titleVariants)
         try container.encodeIfPresent(defaultForCategory, forKey: .defaultForCategory)
+        try container.encodeIfPresent(shareToken, forKey: .shareToken)
     }
 }
 

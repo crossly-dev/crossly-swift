@@ -13,13 +13,16 @@ import AnyCodable
 public struct GetVaultMarketKeyStatResponse: Codable, JSONEncodable, Hashable {
 
     public var bookKey: String
+    public var gemRate: GetVaultMarketKeyStatResponseGemRate
 
-    public init(bookKey: String) {
+    public init(bookKey: String, gemRate: GetVaultMarketKeyStatResponseGemRate) {
         self.bookKey = bookKey
+        self.gemRate = gemRate
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case bookKey
+        case gemRate
     }
 
     // Encodable protocol methods
@@ -27,6 +30,7 @@ public struct GetVaultMarketKeyStatResponse: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(bookKey, forKey: .bookKey)
+        try container.encode(gemRate, forKey: .gemRate)
     }
 }
 

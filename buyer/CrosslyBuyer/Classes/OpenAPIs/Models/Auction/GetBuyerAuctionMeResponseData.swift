@@ -13,25 +13,25 @@ import AnyCodable
 public struct GetBuyerAuctionMeResponseData: Codable, JSONEncodable, Hashable {
 
     public var bidding: Bool
-    public var won: Bool?
     public var myMaxCents: Double?
     public var leading: Bool?
+    public var won: Bool?
     /** Won, and the charge at close did not go through — call pay. */
     public var needsPayment: Bool?
 
-    public init(bidding: Bool, won: Bool? = nil, myMaxCents: Double? = nil, leading: Bool? = nil, needsPayment: Bool? = nil) {
+    public init(bidding: Bool, myMaxCents: Double? = nil, leading: Bool? = nil, won: Bool? = nil, needsPayment: Bool? = nil) {
         self.bidding = bidding
-        self.won = won
         self.myMaxCents = myMaxCents
         self.leading = leading
+        self.won = won
         self.needsPayment = needsPayment
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case bidding
-        case won
         case myMaxCents
         case leading
+        case won
         case needsPayment
     }
 
@@ -40,9 +40,9 @@ public struct GetBuyerAuctionMeResponseData: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(bidding, forKey: .bidding)
-        try container.encodeIfPresent(won, forKey: .won)
         try container.encodeIfPresent(myMaxCents, forKey: .myMaxCents)
         try container.encodeIfPresent(leading, forKey: .leading)
+        try container.encodeIfPresent(won, forKey: .won)
         try container.encodeIfPresent(needsPayment, forKey: .needsPayment)
     }
 }

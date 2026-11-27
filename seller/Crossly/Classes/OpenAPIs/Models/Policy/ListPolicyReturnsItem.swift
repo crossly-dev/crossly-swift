@@ -16,42 +16,42 @@ public struct ListPolicyReturnsItem: Codable, JSONEncodable, Hashable {
     public var id: String
     public var createdAt: Date
     public var status: String
-    public var reason: String
-    public var receivedAt: Date?
     public var carrier: String?
     public var shippedAt: Date?
     public var refundedAt: Date?
-    public var fit: String?
-    public var sellerUserId: String
     public var buyerUserId: String
-    public var purchaseId: String
+    public var reason: String
+    public var receivedAt: Date?
     public var labelUrl: String?
+    public var sellerUserId: String
     public var refundStripeId: String?
+    public var purchaseId: String
     public var note: String?
     public var feeCents: Double
     public var trackingCode: String?
+    public var fit: String?
     public var refundCents: Double
     public var prepaidLabel: Bool
 
-    public init(orderId: String? = nil, id: String, createdAt: Date, status: String, reason: String, receivedAt: Date? = nil, carrier: String? = nil, shippedAt: Date? = nil, refundedAt: Date? = nil, fit: String? = nil, sellerUserId: String, buyerUserId: String, purchaseId: String, labelUrl: String? = nil, refundStripeId: String? = nil, note: String? = nil, feeCents: Double, trackingCode: String? = nil, refundCents: Double, prepaidLabel: Bool) {
+    public init(orderId: String? = nil, id: String, createdAt: Date, status: String, carrier: String? = nil, shippedAt: Date? = nil, refundedAt: Date? = nil, buyerUserId: String, reason: String, receivedAt: Date? = nil, labelUrl: String? = nil, sellerUserId: String, refundStripeId: String? = nil, purchaseId: String, note: String? = nil, feeCents: Double, trackingCode: String? = nil, fit: String? = nil, refundCents: Double, prepaidLabel: Bool) {
         self.orderId = orderId
         self.id = id
         self.createdAt = createdAt
         self.status = status
-        self.reason = reason
-        self.receivedAt = receivedAt
         self.carrier = carrier
         self.shippedAt = shippedAt
         self.refundedAt = refundedAt
-        self.fit = fit
-        self.sellerUserId = sellerUserId
         self.buyerUserId = buyerUserId
-        self.purchaseId = purchaseId
+        self.reason = reason
+        self.receivedAt = receivedAt
         self.labelUrl = labelUrl
+        self.sellerUserId = sellerUserId
         self.refundStripeId = refundStripeId
+        self.purchaseId = purchaseId
         self.note = note
         self.feeCents = feeCents
         self.trackingCode = trackingCode
+        self.fit = fit
         self.refundCents = refundCents
         self.prepaidLabel = prepaidLabel
     }
@@ -61,20 +61,20 @@ public struct ListPolicyReturnsItem: Codable, JSONEncodable, Hashable {
         case id
         case createdAt
         case status
-        case reason
-        case receivedAt
         case carrier
         case shippedAt
         case refundedAt
-        case fit
-        case sellerUserId
         case buyerUserId
-        case purchaseId
+        case reason
+        case receivedAt
         case labelUrl
+        case sellerUserId
         case refundStripeId
+        case purchaseId
         case note
         case feeCents
         case trackingCode
+        case fit
         case refundCents
         case prepaidLabel
     }
@@ -87,20 +87,20 @@ public struct ListPolicyReturnsItem: Codable, JSONEncodable, Hashable {
         try container.encode(id, forKey: .id)
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(status, forKey: .status)
-        try container.encode(reason, forKey: .reason)
-        try container.encodeIfPresent(receivedAt, forKey: .receivedAt)
         try container.encodeIfPresent(carrier, forKey: .carrier)
         try container.encodeIfPresent(shippedAt, forKey: .shippedAt)
         try container.encodeIfPresent(refundedAt, forKey: .refundedAt)
-        try container.encodeIfPresent(fit, forKey: .fit)
-        try container.encode(sellerUserId, forKey: .sellerUserId)
         try container.encode(buyerUserId, forKey: .buyerUserId)
-        try container.encode(purchaseId, forKey: .purchaseId)
+        try container.encode(reason, forKey: .reason)
+        try container.encodeIfPresent(receivedAt, forKey: .receivedAt)
         try container.encodeIfPresent(labelUrl, forKey: .labelUrl)
+        try container.encode(sellerUserId, forKey: .sellerUserId)
         try container.encodeIfPresent(refundStripeId, forKey: .refundStripeId)
+        try container.encode(purchaseId, forKey: .purchaseId)
         try container.encodeIfPresent(note, forKey: .note)
         try container.encode(feeCents, forKey: .feeCents)
         try container.encodeIfPresent(trackingCode, forKey: .trackingCode)
+        try container.encodeIfPresent(fit, forKey: .fit)
         try container.encode(refundCents, forKey: .refundCents)
         try container.encode(prepaidLabel, forKey: .prepaidLabel)
     }

@@ -18,28 +18,28 @@ public struct CreateWorldSpaceResponseData: Codable, JSONEncodable, Hashable {
     public var updatedAt: Date
     public var status: String
     public var slug: String
+    public var venue: String
     public var hostUserId: String
+    public var about: String?
     public var gateChain: String?
     public var gateContract: String?
     public var gateName: String?
-    public var venue: String
     public var membership: String
-    public var about: String?
 
-    public init(id: String, name: String, createdAt: Date, updatedAt: Date, status: String, slug: String, hostUserId: String, gateChain: String? = nil, gateContract: String? = nil, gateName: String? = nil, venue: String, membership: String, about: String? = nil) {
+    public init(id: String, name: String, createdAt: Date, updatedAt: Date, status: String, slug: String, venue: String, hostUserId: String, about: String? = nil, gateChain: String? = nil, gateContract: String? = nil, gateName: String? = nil, membership: String) {
         self.id = id
         self.name = name
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.status = status
         self.slug = slug
+        self.venue = venue
         self.hostUserId = hostUserId
+        self.about = about
         self.gateChain = gateChain
         self.gateContract = gateContract
         self.gateName = gateName
-        self.venue = venue
         self.membership = membership
-        self.about = about
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -49,13 +49,13 @@ public struct CreateWorldSpaceResponseData: Codable, JSONEncodable, Hashable {
         case updatedAt
         case status
         case slug
+        case venue
         case hostUserId
+        case about
         case gateChain
         case gateContract
         case gateName
-        case venue
         case membership
-        case about
     }
 
     // Encodable protocol methods
@@ -68,13 +68,13 @@ public struct CreateWorldSpaceResponseData: Codable, JSONEncodable, Hashable {
         try container.encode(updatedAt, forKey: .updatedAt)
         try container.encode(status, forKey: .status)
         try container.encode(slug, forKey: .slug)
+        try container.encode(venue, forKey: .venue)
         try container.encode(hostUserId, forKey: .hostUserId)
+        try container.encodeIfPresent(about, forKey: .about)
         try container.encodeIfPresent(gateChain, forKey: .gateChain)
         try container.encodeIfPresent(gateContract, forKey: .gateContract)
         try container.encodeIfPresent(gateName, forKey: .gateName)
-        try container.encode(venue, forKey: .venue)
         try container.encode(membership, forKey: .membership)
-        try container.encodeIfPresent(about, forKey: .about)
     }
 }
 

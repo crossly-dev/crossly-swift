@@ -13,8 +13,8 @@ import AnyCodable
 public struct ListVaultMarketPriceWidgetsItem: Codable, JSONEncodable, Hashable {
 
     public enum Kind: String, Codable, CaseIterable {
-        case mark = "mark"
         case index = "index"
+        case mark = "mark"
     }
     public enum ModelRange: String, Codable, CaseIterable {
         case _1y = "1y"

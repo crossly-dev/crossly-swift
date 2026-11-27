@@ -15,16 +15,16 @@ public struct UpdateBuyerWishlistResponseData: Codable, JSONEncodable, Hashable 
     public var shareUrl: String?
     public var id: String
     public var name: String
-    public var createdAt: String
     public var isPublic: Bool
+    public var createdAt: String
     public var shareToken: String?
 
-    public init(shareUrl: String? = nil, id: String, name: String, createdAt: String, isPublic: Bool, shareToken: String? = nil) {
+    public init(shareUrl: String? = nil, id: String, name: String, isPublic: Bool, createdAt: String, shareToken: String? = nil) {
         self.shareUrl = shareUrl
         self.id = id
         self.name = name
-        self.createdAt = createdAt
         self.isPublic = isPublic
+        self.createdAt = createdAt
         self.shareToken = shareToken
     }
 
@@ -32,8 +32,8 @@ public struct UpdateBuyerWishlistResponseData: Codable, JSONEncodable, Hashable 
         case shareUrl
         case id
         case name
-        case createdAt
         case isPublic
+        case createdAt
         case shareToken
     }
 
@@ -44,8 +44,8 @@ public struct UpdateBuyerWishlistResponseData: Codable, JSONEncodable, Hashable 
         try container.encodeIfPresent(shareUrl, forKey: .shareUrl)
         try container.encode(id, forKey: .id)
         try container.encode(name, forKey: .name)
-        try container.encode(createdAt, forKey: .createdAt)
         try container.encode(isPublic, forKey: .isPublic)
+        try container.encode(createdAt, forKey: .createdAt)
         try container.encodeIfPresent(shareToken, forKey: .shareToken)
     }
 }

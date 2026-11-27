@@ -13,12 +13,12 @@ import AnyCodable
 public struct GetWeb3TokenResponse: Codable, JSONEncodable, Hashable {
 
     public enum Chain: String, Codable, CaseIterable {
-        case solana = "solana"
         case ethereum = "ethereum"
         case base = "base"
         case polygon = "polygon"
         case arbitrum = "arbitrum"
         case optimism = "optimism"
+        case solana = "solana"
     }
     public enum Standard: String, Codable, CaseIterable {
         case erc721 = "erc721"

@@ -14,8 +14,8 @@ public struct UpdateWorldConventionStatusResponseData: Codable, JSONEncodable, H
 
     public enum Status: String, Codable, CaseIterable {
         case live = "live"
-        case _open = "open"
         case cancelled = "cancelled"
+        case _open = "open"
         case ended = "ended"
     }
     public var status: Status

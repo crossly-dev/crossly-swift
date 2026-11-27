@@ -14,12 +14,12 @@ import AnyCodable
 public struct GetSpatialSceneWarehouseResponseDataShell: Codable, JSONEncodable, Hashable {
 
     public enum Theme: String, Codable, CaseIterable {
-        case storybook = "storybook"
         case studio = "studio"
         case noir = "noir"
         case daylight = "daylight"
         case vitrine = "vitrine"
         case street = "street"
+        case storybook = "storybook"
     }
     public var theme: Theme
     public var wall: GetSpatialSceneWarehouseResponseDataShellWall

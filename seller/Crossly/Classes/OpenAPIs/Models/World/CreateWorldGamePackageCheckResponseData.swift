@@ -13,12 +13,12 @@ import AnyCodable
 public struct CreateWorldGamePackageCheckResponseData: Codable, JSONEncodable, Hashable {
 
     public var ok: Bool
-    public var issues: [CreateWorldGamePackageCheckResponseDataIssues]
+    public var issues: [PathMessage]
     public var fits: CreateWorldGamePackageCheckResponseDataFits
     public var totalBytes: Double
     public var manifest: CreateWorldGamePackageCheckResponseDataManifest?
 
-    public init(ok: Bool, issues: [CreateWorldGamePackageCheckResponseDataIssues], fits: CreateWorldGamePackageCheckResponseDataFits, totalBytes: Double, manifest: CreateWorldGamePackageCheckResponseDataManifest? = nil) {
+    public init(ok: Bool, issues: [PathMessage], fits: CreateWorldGamePackageCheckResponseDataFits, totalBytes: Double, manifest: CreateWorldGamePackageCheckResponseDataManifest? = nil) {
         self.ok = ok
         self.issues = issues
         self.fits = fits

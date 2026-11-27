@@ -14,8 +14,8 @@ public struct ListWorldOutfitsItemItems: Codable, JSONEncodable, Hashable {
 
     public enum Door: String, Codable, CaseIterable {
         case receipt = "receipt"
-        case cosmetic = "cosmetic"
         case stock = "stock"
+        case cosmetic = "cosmetic"
     }
     /** avatar_head | avatar_body | avatar_legs | avatar_feet | avatar_back */
     public var slot: String

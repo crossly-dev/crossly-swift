@@ -13,13 +13,13 @@ import AnyCodable
 public struct GetWorldHomePlaceableResponseDataItemsRef: Codable, JSONEncodable, Hashable {
 
     public enum Kind: String, Codable, CaseIterable {
-        case token = "token"
-        case portal = "portal"
-        case portfolio = "portfolio"
         case inventory = "inventory"
+        case vault = "vault"
+        case portal = "portal"
+        case token = "token"
         case purchase = "purchase"
         case nft = "nft"
-        case vault = "vault"
+        case portfolio = "portfolio"
     }
     public var kind: Kind
     public var id: String

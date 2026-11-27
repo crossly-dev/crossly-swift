@@ -58,4 +58,94 @@ open class BillingAPI {
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
+
+    /**
+     Your listing allowances through OAuth apps (used of limit, per app, with its platform scope).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBillingAppAllowances(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListBillingAppAllowancesResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBillingAppAllowancesWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your listing allowances through OAuth apps (used of limit, per app, with its platform scope).
+     - GET /v1/billing/app-allowances
+     - Staff can let an OAuth app list above a seller's plan, counted apart from the plan's itemsPerMonth and only on the allowance's platforms. `label` is the sentence to show (12 of 10,000 managed by Infinity; ... this month via Infinity (resets Dec 1); or counts toward your plan for limitMode shared).
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListBillingAppAllowancesResponse> 
+     */
+    open class func listBillingAppAllowancesWithRequestBuilder() -> RequestBuilder<ListBillingAppAllowancesResponse> {
+        let localVariablePath = "/v1/billing/app-allowances"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListBillingAppAllowancesResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     List the plans with their prices, limits and features.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBillingPlans(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListBillingPlansResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBillingPlansWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     List the plans with their prices, limits and features.
+     - GET /v1/billing/plans
+     - Prices are the Stripe Prices checkout charges (whole USD). A null limit means no cap.
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListBillingPlansResponse> 
+     */
+    open class func listBillingPlansWithRequestBuilder() -> RequestBuilder<ListBillingPlansResponse> {
+        let localVariablePath = "/v1/billing/plans"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListBillingPlansResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
 }

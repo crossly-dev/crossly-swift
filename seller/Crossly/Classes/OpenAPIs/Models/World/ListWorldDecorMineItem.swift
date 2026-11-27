@@ -13,11 +13,11 @@ import AnyCodable
 public struct ListWorldDecorMineItem: Codable, JSONEncodable, Hashable {
 
     public enum Surface: String, Codable, CaseIterable {
-        case shop = "shop"
         case home = "home"
         case street = "street"
-        case stall = "stall"
+        case shop = "shop"
         case avatar = "avatar"
+        case stall = "stall"
     }
     public enum MintState: String, Codable, CaseIterable {
         case held = "held"

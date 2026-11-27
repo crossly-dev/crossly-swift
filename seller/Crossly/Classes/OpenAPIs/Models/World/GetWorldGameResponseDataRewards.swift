@@ -14,9 +14,9 @@ public struct GetWorldGameResponseDataRewards: Codable, JSONEncodable, Hashable 
 
     public enum Grant: String, Codable, CaseIterable {
         case item = "item"
+        case cosm = "cosm"
         case decor = "decor"
         case cbx = "cbx"
-        case cosm = "cosm"
         case pin = "pin"
         case emote = "emote"
     }

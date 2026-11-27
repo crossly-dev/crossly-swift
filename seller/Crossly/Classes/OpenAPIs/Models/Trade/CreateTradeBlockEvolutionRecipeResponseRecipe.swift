@@ -17,38 +17,38 @@ public struct CreateTradeBlockEvolutionRecipeResponseRecipe: Codable, JSONEncoda
     public var active: Bool
     public var createdAt: Date
     public var updatedAt: Date
-    public var note: String?
+    public var version: Double
     public var reviewedAt: Date?
+    public var note: String?
     public var merchantId: String
     public var creatorSubjectId: String
+    public var outputCosmeticId: String
     public var inputAVariantId: String
     public var inputACondition: String?
     public var inputAGradeKey: String?
     public var inputBVariantId: String?
     public var inputBCondition: String?
     public var inputBGradeKey: String?
-    public var outputCosmeticId: String
-    public var version: Double
     public var frozenAt: Date?
 
-    public init(id: String, name: String, active: Bool, createdAt: Date, updatedAt: Date, note: String? = nil, reviewedAt: Date? = nil, merchantId: String, creatorSubjectId: String, inputAVariantId: String, inputACondition: String? = nil, inputAGradeKey: String? = nil, inputBVariantId: String? = nil, inputBCondition: String? = nil, inputBGradeKey: String? = nil, outputCosmeticId: String, version: Double, frozenAt: Date? = nil) {
+    public init(id: String, name: String, active: Bool, createdAt: Date, updatedAt: Date, version: Double, reviewedAt: Date? = nil, note: String? = nil, merchantId: String, creatorSubjectId: String, outputCosmeticId: String, inputAVariantId: String, inputACondition: String? = nil, inputAGradeKey: String? = nil, inputBVariantId: String? = nil, inputBCondition: String? = nil, inputBGradeKey: String? = nil, frozenAt: Date? = nil) {
         self.id = id
         self.name = name
         self.active = active
         self.createdAt = createdAt
         self.updatedAt = updatedAt
-        self.note = note
+        self.version = version
         self.reviewedAt = reviewedAt
+        self.note = note
         self.merchantId = merchantId
         self.creatorSubjectId = creatorSubjectId
+        self.outputCosmeticId = outputCosmeticId
         self.inputAVariantId = inputAVariantId
         self.inputACondition = inputACondition
         self.inputAGradeKey = inputAGradeKey
         self.inputBVariantId = inputBVariantId
         self.inputBCondition = inputBCondition
         self.inputBGradeKey = inputBGradeKey
-        self.outputCosmeticId = outputCosmeticId
-        self.version = version
         self.frozenAt = frozenAt
     }
 
@@ -58,18 +58,18 @@ public struct CreateTradeBlockEvolutionRecipeResponseRecipe: Codable, JSONEncoda
         case active
         case createdAt
         case updatedAt
-        case note
+        case version
         case reviewedAt
+        case note
         case merchantId
         case creatorSubjectId
+        case outputCosmeticId
         case inputAVariantId
         case inputACondition
         case inputAGradeKey
         case inputBVariantId
         case inputBCondition
         case inputBGradeKey
-        case outputCosmeticId
-        case version
         case frozenAt
     }
 
@@ -82,18 +82,18 @@ public struct CreateTradeBlockEvolutionRecipeResponseRecipe: Codable, JSONEncoda
         try container.encode(active, forKey: .active)
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(updatedAt, forKey: .updatedAt)
-        try container.encodeIfPresent(note, forKey: .note)
+        try container.encode(version, forKey: .version)
         try container.encodeIfPresent(reviewedAt, forKey: .reviewedAt)
+        try container.encodeIfPresent(note, forKey: .note)
         try container.encode(merchantId, forKey: .merchantId)
         try container.encode(creatorSubjectId, forKey: .creatorSubjectId)
+        try container.encode(outputCosmeticId, forKey: .outputCosmeticId)
         try container.encode(inputAVariantId, forKey: .inputAVariantId)
         try container.encodeIfPresent(inputACondition, forKey: .inputACondition)
         try container.encodeIfPresent(inputAGradeKey, forKey: .inputAGradeKey)
         try container.encodeIfPresent(inputBVariantId, forKey: .inputBVariantId)
         try container.encodeIfPresent(inputBCondition, forKey: .inputBCondition)
         try container.encodeIfPresent(inputBGradeKey, forKey: .inputBGradeKey)
-        try container.encode(outputCosmeticId, forKey: .outputCosmeticId)
-        try container.encode(version, forKey: .version)
         try container.encodeIfPresent(frozenAt, forKey: .frozenAt)
     }
 }

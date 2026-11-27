@@ -12,19 +12,19 @@ import AnyCodable
 
 public struct GetBuyerOrderPriceProtectionResponseData: Codable, JSONEncodable, Hashable {
 
-    public var active: Bool
     public var until: String
+    public var active: Bool
     public var creditedCents: Double
 
-    public init(active: Bool, until: String, creditedCents: Double) {
-        self.active = active
+    public init(until: String, active: Bool, creditedCents: Double) {
         self.until = until
+        self.active = active
         self.creditedCents = creditedCents
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case active
         case until
+        case active
         case creditedCents
     }
 
@@ -32,8 +32,8 @@ public struct GetBuyerOrderPriceProtectionResponseData: Codable, JSONEncodable, 
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(active, forKey: .active)
         try container.encode(until, forKey: .until)
+        try container.encode(active, forKey: .active)
         try container.encode(creditedCents, forKey: .creditedCents)
     }
 }

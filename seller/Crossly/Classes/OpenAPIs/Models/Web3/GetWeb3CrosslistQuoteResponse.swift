@@ -13,12 +13,12 @@ import AnyCodable
 public struct GetWeb3CrosslistQuoteResponse: Codable, JSONEncodable, Hashable {
 
     public enum Chain: String, Codable, CaseIterable {
-        case solana = "solana"
         case ethereum = "ethereum"
         case base = "base"
         case polygon = "polygon"
         case arbitrum = "arbitrum"
         case optimism = "optimism"
+        case solana = "solana"
     }
     public var chain: Chain
     public var crossly: GetWeb3CrosslistQuoteResponseCrossly

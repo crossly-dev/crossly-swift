@@ -19,16 +19,16 @@ public struct GetMarketProductResponseDataProduct: Codable, JSONEncodable, Hasha
     public var createdAt: Date
     public var status: String
     public var retailCents: Double?
-    public var categorySlug: String
-    public var externalId: String?
     public var imageUrl: String?
+    public var categorySlug: String
+    public var approvedByUserId: String?
+    public var approvedAt: Date?
+    public var externalId: String?
     public var model: String?
     public var colorway: String?
     public var styleCode: String?
     public var releaseDate: String?
     public var submittedByUserId: String?
-    public var approvedByUserId: String?
-    public var approvedAt: Date?
     public var rejectionReason: String?
     public var proposedVariants: [GetMarketProductResponseDataProductProposedVariants]
     public var verification: [String: AnyCodable]
@@ -53,7 +53,7 @@ public struct GetMarketProductResponseDataProduct: Codable, JSONEncodable, Hasha
     public var finenessPpm: Double?
     public var metalForm: String?
 
-    public init(images: GetMarketProductResponseDataProductImages, id: String, brand: String? = nil, name: String, createdAt: Date, status: String, retailCents: Double? = nil, categorySlug: String, externalId: String? = nil, imageUrl: String? = nil, model: String? = nil, colorway: String? = nil, styleCode: String? = nil, releaseDate: String? = nil, submittedByUserId: String? = nil, approvedByUserId: String? = nil, approvedAt: Date? = nil, rejectionReason: String? = nil, proposedVariants: [GetMarketProductResponseDataProductProposedVariants], verification: [String: AnyCodable], aiVerdict: [String: AnyCodable]? = nil, submissionSource: String? = nil, duplicateOfSkuId: String? = nil, preferredProviderSlug: String? = nil, allowPreBid: Bool, preBidOpensAt: Date? = nil, featured: Bool, externalSource: String? = nil, externalSyncedAt: Date? = nil, gradedGradeKeys: [String], lowestAskCents: Double? = nil, highestBidCents: Double? = nil, lastSaleCents: Double? = nil, tradesCount: Double, popularity: Double, colorFamily: [String], metal: String? = nil, grossWeightMg: Double? = nil, finenessPpm: Double? = nil, metalForm: String? = nil) {
+    public init(images: GetMarketProductResponseDataProductImages, id: String, brand: String? = nil, name: String, createdAt: Date, status: String, retailCents: Double? = nil, imageUrl: String? = nil, categorySlug: String, approvedByUserId: String? = nil, approvedAt: Date? = nil, externalId: String? = nil, model: String? = nil, colorway: String? = nil, styleCode: String? = nil, releaseDate: String? = nil, submittedByUserId: String? = nil, rejectionReason: String? = nil, proposedVariants: [GetMarketProductResponseDataProductProposedVariants], verification: [String: AnyCodable], aiVerdict: [String: AnyCodable]? = nil, submissionSource: String? = nil, duplicateOfSkuId: String? = nil, preferredProviderSlug: String? = nil, allowPreBid: Bool, preBidOpensAt: Date? = nil, featured: Bool, externalSource: String? = nil, externalSyncedAt: Date? = nil, gradedGradeKeys: [String], lowestAskCents: Double? = nil, highestBidCents: Double? = nil, lastSaleCents: Double? = nil, tradesCount: Double, popularity: Double, colorFamily: [String], metal: String? = nil, grossWeightMg: Double? = nil, finenessPpm: Double? = nil, metalForm: String? = nil) {
         self.images = images
         self.id = id
         self.brand = brand
@@ -61,16 +61,16 @@ public struct GetMarketProductResponseDataProduct: Codable, JSONEncodable, Hasha
         self.createdAt = createdAt
         self.status = status
         self.retailCents = retailCents
-        self.categorySlug = categorySlug
-        self.externalId = externalId
         self.imageUrl = imageUrl
+        self.categorySlug = categorySlug
+        self.approvedByUserId = approvedByUserId
+        self.approvedAt = approvedAt
+        self.externalId = externalId
         self.model = model
         self.colorway = colorway
         self.styleCode = styleCode
         self.releaseDate = releaseDate
         self.submittedByUserId = submittedByUserId
-        self.approvedByUserId = approvedByUserId
-        self.approvedAt = approvedAt
         self.rejectionReason = rejectionReason
         self.proposedVariants = proposedVariants
         self.verification = verification
@@ -104,16 +104,16 @@ public struct GetMarketProductResponseDataProduct: Codable, JSONEncodable, Hasha
         case createdAt
         case status
         case retailCents
-        case categorySlug
-        case externalId
         case imageUrl
+        case categorySlug
+        case approvedByUserId
+        case approvedAt
+        case externalId
         case model
         case colorway
         case styleCode
         case releaseDate
         case submittedByUserId
-        case approvedByUserId
-        case approvedAt
         case rejectionReason
         case proposedVariants
         case verification
@@ -150,16 +150,16 @@ public struct GetMarketProductResponseDataProduct: Codable, JSONEncodable, Hasha
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(status, forKey: .status)
         try container.encodeIfPresent(retailCents, forKey: .retailCents)
-        try container.encode(categorySlug, forKey: .categorySlug)
-        try container.encodeIfPresent(externalId, forKey: .externalId)
         try container.encodeIfPresent(imageUrl, forKey: .imageUrl)
+        try container.encode(categorySlug, forKey: .categorySlug)
+        try container.encodeIfPresent(approvedByUserId, forKey: .approvedByUserId)
+        try container.encodeIfPresent(approvedAt, forKey: .approvedAt)
+        try container.encodeIfPresent(externalId, forKey: .externalId)
         try container.encodeIfPresent(model, forKey: .model)
         try container.encodeIfPresent(colorway, forKey: .colorway)
         try container.encodeIfPresent(styleCode, forKey: .styleCode)
         try container.encodeIfPresent(releaseDate, forKey: .releaseDate)
         try container.encodeIfPresent(submittedByUserId, forKey: .submittedByUserId)
-        try container.encodeIfPresent(approvedByUserId, forKey: .approvedByUserId)
-        try container.encodeIfPresent(approvedAt, forKey: .approvedAt)
         try container.encodeIfPresent(rejectionReason, forKey: .rejectionReason)
         try container.encode(proposedVariants, forKey: .proposedVariants)
         try container.encode(verification, forKey: .verification)

@@ -13,10 +13,12 @@ import AnyCodable
 public struct ListVaultMarketAlertLogItem: Codable, JSONEncodable, Hashable {
 
     public enum Kind: String, Codable, CaseIterable {
-        case price = "price"
-        case auction = "auction"
-        case fill = "fill"
         case account = "account"
+        case price = "price"
+        case fill = "fill"
+        case auction = "auction"
+        case prediction = "prediction"
+        case optionExpiry = "option_expiry"
         case marginCall = "margin_call"
         case adl = "adl"
         case p2pLoan = "p2p_loan"
@@ -24,6 +26,10 @@ public struct ListVaultMarketAlertLogItem: Codable, JSONEncodable, Hashable {
         case receiptToken = "receipt_token"
         case setGoal = "set_goal"
         case follow = "follow"
+        case shareOffering = "share_offering"
+        case shareVote = "share_vote"
+        case optionSettlement = "option_settlement"
+        case predictionOdds = "prediction_odds"
     }
     public var id: String
     public var kind: Kind

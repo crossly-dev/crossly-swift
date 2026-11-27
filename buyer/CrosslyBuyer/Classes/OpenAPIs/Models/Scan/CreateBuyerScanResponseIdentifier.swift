@@ -13,32 +13,32 @@ import AnyCodable
 public struct CreateBuyerScanResponseIdentifier: Codable, JSONEncodable, Hashable {
 
     public enum Ns: String, Codable, CaseIterable {
-        case styleCode = "style_code"
         case gtin = "gtin"
+        case styleCode = "style_code"
         case legoSet = "lego_set"
         case tcgplayer = "tcgplayer"
         case discogs = "discogs"
         case asin = "asin"
     }
-    public var value: String
     public var ns: Ns
+    public var value: String
 
-    public init(value: String, ns: Ns) {
-        self.value = value
+    public init(ns: Ns, value: String) {
         self.ns = ns
+        self.value = value
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case value
         case ns
+        case value
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(value, forKey: .value)
         try container.encode(ns, forKey: .ns)
+        try container.encode(value, forKey: .value)
     }
 }
 

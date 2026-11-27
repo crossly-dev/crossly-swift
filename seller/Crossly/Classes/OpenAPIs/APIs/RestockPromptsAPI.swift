@@ -111,6 +111,51 @@ open class RestockPromptsAPI {
     }
 
     /**
+     Whether restocked items are republished automatically.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getRestockPromptSetting(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetRestockPromptSettingResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getRestockPromptSettingWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Whether restocked items are republished automatically.
+     - GET /v1/restock-prompts/settings
+     - autoRepublish (default true): when an item that sold out comes back in stock, Crossly republishes it to the marketplaces it came off without asking. False: a restock prompt is raised instead. A listing the seller ended by hand is never republished automatically.
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetRestockPromptSettingResponse> 
+     */
+    open class func getRestockPromptSettingWithRequestBuilder() -> RequestBuilder<GetRestockPromptSettingResponse> {
+        let localVariablePath = "/v1/restock-prompts/settings"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetRestockPromptSettingResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      List pending restock prompts.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -152,5 +197,51 @@ open class RestockPromptsAPI {
         let localVariableRequestBuilder: RequestBuilder<ListRestockPromptsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Turn automatic republish of restocked items on or off.
+     
+     - parameter getRestockPromptSettingResponse: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateRestockPromptSetting(getRestockPromptSettingResponse: GetRestockPromptSettingResponse, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetRestockPromptSettingResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateRestockPromptSettingWithRequestBuilder(getRestockPromptSettingResponse: getRestockPromptSettingResponse).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Turn automatic republish of restocked items on or off.
+     - PUT /v1/restock-prompts/settings
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter getRestockPromptSettingResponse: (body)  
+     - returns: RequestBuilder<GetRestockPromptSettingResponse> 
+     */
+    open class func updateRestockPromptSettingWithRequestBuilder(getRestockPromptSettingResponse: GetRestockPromptSettingResponse) -> RequestBuilder<GetRestockPromptSettingResponse> {
+        let localVariablePath = "/v1/restock-prompts/settings"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: getRestockPromptSettingResponse)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetRestockPromptSettingResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
 }

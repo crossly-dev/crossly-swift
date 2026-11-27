@@ -20,9 +20,12 @@ public struct GetVaultMarketTaxResponse: Codable, JSONEncodable, Hashable {
     public var giftsOut: [GetVaultMarketTaxResponseGiftsOut]
     public var income: GetVaultMarketTaxResponseIncome
     public var positions: [GetVaultMarketTaxResponsePositions]
+    public var options: GetVaultMarketTaxResponseOptions?
     public var notes: [String]
+    public var shares: GetVaultMarketTaxResponseShares?
+    public var predictions: GetVaultMarketTaxResponsePredictions?
 
-    public init(files: GetVaultMarketTaxResponseFiles, year: Double, totals: GetVaultMarketTaxResponseTotals, sales: [GetVaultMarketTaxResponseSales], purchases: [GetVaultMarketTaxResponsePurchases], giftsOut: [GetVaultMarketTaxResponseGiftsOut], income: GetVaultMarketTaxResponseIncome, positions: [GetVaultMarketTaxResponsePositions], notes: [String]) {
+    public init(files: GetVaultMarketTaxResponseFiles, year: Double, totals: GetVaultMarketTaxResponseTotals, sales: [GetVaultMarketTaxResponseSales], purchases: [GetVaultMarketTaxResponsePurchases], giftsOut: [GetVaultMarketTaxResponseGiftsOut], income: GetVaultMarketTaxResponseIncome, positions: [GetVaultMarketTaxResponsePositions], options: GetVaultMarketTaxResponseOptions? = nil, notes: [String], shares: GetVaultMarketTaxResponseShares? = nil, predictions: GetVaultMarketTaxResponsePredictions? = nil) {
         self.files = files
         self.year = year
         self.totals = totals
@@ -31,7 +34,10 @@ public struct GetVaultMarketTaxResponse: Codable, JSONEncodable, Hashable {
         self.giftsOut = giftsOut
         self.income = income
         self.positions = positions
+        self.options = options
         self.notes = notes
+        self.shares = shares
+        self.predictions = predictions
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -43,7 +49,10 @@ public struct GetVaultMarketTaxResponse: Codable, JSONEncodable, Hashable {
         case giftsOut
         case income
         case positions
+        case options
         case notes
+        case shares
+        case predictions
     }
 
     // Encodable protocol methods
@@ -58,7 +67,10 @@ public struct GetVaultMarketTaxResponse: Codable, JSONEncodable, Hashable {
         try container.encode(giftsOut, forKey: .giftsOut)
         try container.encode(income, forKey: .income)
         try container.encode(positions, forKey: .positions)
+        try container.encodeIfPresent(options, forKey: .options)
         try container.encode(notes, forKey: .notes)
+        try container.encodeIfPresent(shares, forKey: .shares)
+        try container.encodeIfPresent(predictions, forKey: .predictions)
     }
 }
 

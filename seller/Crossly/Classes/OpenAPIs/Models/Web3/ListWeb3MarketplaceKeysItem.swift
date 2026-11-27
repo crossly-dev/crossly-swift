@@ -13,10 +13,10 @@ import AnyCodable
 public struct ListWeb3MarketplaceKeysItem: Codable, JSONEncodable, Hashable {
 
     public enum Marketplace: String, Codable, CaseIterable {
-        case opensea = "opensea"
-        case tensor = "tensor"
-        case magicEden = "magic_eden"
         case rarible = "rarible"
+        case magicEden = "magic_eden"
+        case tensor = "tensor"
+        case opensea = "opensea"
     }
     public var marketplace: Marketplace
     /** Crossly has its own key for this marketplace (so it works without yours). */

@@ -64,7 +64,7 @@ open class BreaksAPI {
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func createBreakCancel(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateBreakCancelResponse?, _ error: Error?) -> Void)) -> RequestTask {
+    open class func createBreakCancel(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: UpdateGroupBuyResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return createBreakCancelWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
@@ -82,9 +82,9 @@ open class BreaksAPI {
        - type: http
        - name: PersonalAccessToken
      - parameter id: (path)  
-     - returns: RequestBuilder<CreateBreakCancelResponse> 
+     - returns: RequestBuilder<UpdateGroupBuyResponse> 
      */
-    open class func createBreakCancelWithRequestBuilder(id: String) -> RequestBuilder<CreateBreakCancelResponse> {
+    open class func createBreakCancelWithRequestBuilder(id: String) -> RequestBuilder<UpdateGroupBuyResponse> {
         var localVariablePath = "/v1/breaks/{id}/cancel"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -100,7 +100,7 @@ open class BreaksAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<CreateBreakCancelResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UpdateGroupBuyResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -162,7 +162,7 @@ open class BreaksAPI {
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func createBreakOpened(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateBreakCancelResponse?, _ error: Error?) -> Void)) -> RequestTask {
+    open class func createBreakOpened(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: UpdateGroupBuyResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return createBreakOpenedWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
@@ -180,9 +180,9 @@ open class BreaksAPI {
        - type: http
        - name: PersonalAccessToken
      - parameter id: (path)  
-     - returns: RequestBuilder<CreateBreakCancelResponse> 
+     - returns: RequestBuilder<UpdateGroupBuyResponse> 
      */
-    open class func createBreakOpenedWithRequestBuilder(id: String) -> RequestBuilder<CreateBreakCancelResponse> {
+    open class func createBreakOpenedWithRequestBuilder(id: String) -> RequestBuilder<UpdateGroupBuyResponse> {
         var localVariablePath = "/v1/breaks/{id}/opened"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -198,7 +198,7 @@ open class BreaksAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<CreateBreakCancelResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UpdateGroupBuyResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -212,7 +212,7 @@ open class BreaksAPI {
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func createBreakSpotHit(id: String, spotId: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateBreakCancelResponse?, _ error: Error?) -> Void)) -> RequestTask {
+    open class func createBreakSpotHit(id: String, spotId: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: UpdateGroupBuyResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return createBreakSpotHitWithRequestBuilder(id: id, spotId: spotId).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
@@ -231,9 +231,9 @@ open class BreaksAPI {
        - name: PersonalAccessToken
      - parameter id: (path)  
      - parameter spotId: (path)  
-     - returns: RequestBuilder<CreateBreakCancelResponse> 
+     - returns: RequestBuilder<UpdateGroupBuyResponse> 
      */
-    open class func createBreakSpotHitWithRequestBuilder(id: String, spotId: String) -> RequestBuilder<CreateBreakCancelResponse> {
+    open class func createBreakSpotHitWithRequestBuilder(id: String, spotId: String) -> RequestBuilder<UpdateGroupBuyResponse> {
         var localVariablePath = "/v1/breaks/{id}/spots/{spotId}/hits"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -252,7 +252,7 @@ open class BreaksAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<CreateBreakCancelResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UpdateGroupBuyResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }

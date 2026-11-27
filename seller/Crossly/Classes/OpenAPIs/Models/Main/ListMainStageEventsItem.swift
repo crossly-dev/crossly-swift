@@ -13,8 +13,8 @@ import AnyCodable
 public struct ListMainStageEventsItem: Codable, JSONEncodable, Hashable {
 
     public enum Kind: String, Codable, CaseIterable {
-        case creatorMeetup = "creator_meetup"
         case brandLaunch = "brand_launch"
+        case creatorMeetup = "creator_meetup"
         case festival = "festival"
         case talk = "talk"
         case liveSale = "live_sale"

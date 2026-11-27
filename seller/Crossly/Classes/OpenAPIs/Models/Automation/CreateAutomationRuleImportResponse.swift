@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct CreateAutomationRuleImportResponse: Codable, JSONEncodable, Hashable {
 
-    public var created: [CreateAutomationRuleImportResponseCreated]
+    public var created: [IdName]
     public var errors: [CreateAutomationRuleImportResponseErrors]
 
-    public init(created: [CreateAutomationRuleImportResponseCreated], errors: [CreateAutomationRuleImportResponseErrors]) {
+    public init(created: [IdName], errors: [CreateAutomationRuleImportResponseErrors]) {
         self.created = created
         self.errors = errors
     }

@@ -17,6 +17,7 @@ public struct ListVaultMarketFollowCopyWatchAlertsItem: Codable, JSONEncodable, 
         case sell = "sell"
     }
     public var id: String
+    public var by: ListVaultMarketFollowCopyWatchAlertsItemBy
     public var side: Side
     public var quantity: Double
     public var limitCents: Double?
@@ -30,8 +31,9 @@ public struct ListVaultMarketFollowCopyWatchAlertsItem: Codable, JSONEncodable, 
     public var stillResting: Bool
     public var marketHref: String
 
-    public init(id: String, side: Side, quantity: Double, limitCents: Double? = nil, bookKey: String, name: String? = nil, label: String? = nil, imageUrl: String? = nil, placedAt: String, at: String, read: Bool, stillResting: Bool, marketHref: String) {
+    public init(id: String, by: ListVaultMarketFollowCopyWatchAlertsItemBy, side: Side, quantity: Double, limitCents: Double? = nil, bookKey: String, name: String? = nil, label: String? = nil, imageUrl: String? = nil, placedAt: String, at: String, read: Bool, stillResting: Bool, marketHref: String) {
         self.id = id
+        self.by = by
         self.side = side
         self.quantity = quantity
         self.limitCents = limitCents
@@ -48,6 +50,7 @@ public struct ListVaultMarketFollowCopyWatchAlertsItem: Codable, JSONEncodable, 
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
+        case by
         case side
         case quantity
         case limitCents
@@ -67,6 +70,7 @@ public struct ListVaultMarketFollowCopyWatchAlertsItem: Codable, JSONEncodable, 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
+        try container.encode(by, forKey: .by)
         try container.encode(side, forKey: .side)
         try container.encode(quantity, forKey: .quantity)
         try container.encodeIfPresent(limitCents, forKey: .limitCents)

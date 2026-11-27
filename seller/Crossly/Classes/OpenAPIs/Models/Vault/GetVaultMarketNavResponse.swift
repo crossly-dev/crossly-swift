@@ -17,14 +17,16 @@ public struct GetVaultMarketNavResponse: Codable, JSONEncodable, Hashable {
     public var currency: String
     public var totals: GetVaultMarketNavResponseTotals
     public var holdings: [GetVaultMarketNavResponseHoldings]
+    public var options: GetVaultMarketNavResponseOptions?
     public var policy: [String]
 
-    public init(account: CreateVaultMarketPortfolioMarginEnrollResponseOneOfAccount, asOf: String, currency: String, totals: GetVaultMarketNavResponseTotals, holdings: [GetVaultMarketNavResponseHoldings], policy: [String]) {
+    public init(account: CreateVaultMarketPortfolioMarginEnrollResponseOneOfAccount, asOf: String, currency: String, totals: GetVaultMarketNavResponseTotals, holdings: [GetVaultMarketNavResponseHoldings], options: GetVaultMarketNavResponseOptions? = nil, policy: [String]) {
         self.account = account
         self.asOf = asOf
         self.currency = currency
         self.totals = totals
         self.holdings = holdings
+        self.options = options
         self.policy = policy
     }
 
@@ -34,6 +36,7 @@ public struct GetVaultMarketNavResponse: Codable, JSONEncodable, Hashable {
         case currency
         case totals
         case holdings
+        case options
         case policy
     }
 
@@ -46,6 +49,7 @@ public struct GetVaultMarketNavResponse: Codable, JSONEncodable, Hashable {
         try container.encode(currency, forKey: .currency)
         try container.encode(totals, forKey: .totals)
         try container.encode(holdings, forKey: .holdings)
+        try container.encodeIfPresent(options, forKey: .options)
         try container.encode(policy, forKey: .policy)
     }
 }

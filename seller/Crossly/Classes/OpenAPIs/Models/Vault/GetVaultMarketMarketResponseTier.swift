@@ -13,15 +13,15 @@ import AnyCodable
 public struct GetVaultMarketMarketResponseTier: Codable, JSONEncodable, Hashable {
 
     public enum Tier: String, Codable, CaseIterable {
-        case standard = "standard"
         case closed = "closed"
+        case standard = "standard"
         case deep = "deep"
         case thin = "thin"
     }
     public enum LiquidityTier: String, Codable, CaseIterable {
+        case c = "C"
         case a = "A"
         case b = "B"
-        case c = "C"
         case d = "D"
     }
     public var tier: Tier

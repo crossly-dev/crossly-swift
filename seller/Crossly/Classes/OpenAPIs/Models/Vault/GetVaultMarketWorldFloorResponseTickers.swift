@@ -14,9 +14,9 @@ public struct GetVaultMarketWorldFloorResponseTickers: Codable, JSONEncodable, H
 
     public enum MarkQuality: String, Codable, CaseIterable {
         case _none = "none"
+        case c = "C"
         case a = "A"
         case b = "B"
-        case c = "C"
     }
     public var bookKey: String
     public var name: String

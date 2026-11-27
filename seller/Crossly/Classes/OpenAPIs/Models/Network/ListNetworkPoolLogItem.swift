@@ -14,36 +14,36 @@ public struct ListNetworkPoolLogItem: Codable, JSONEncodable, Hashable {
 
     public var id: String
     public var platform: String
-    public var ruleId: String?
     public var actionType: String
     public var targetUserId: String
-    public var performedAt: Date
+    public var ruleId: String?
     public var engagerUserId: String
     public var targetListingId: String?
     public var targetPlatformListingId: String?
+    public var performedAt: Date
 
-    public init(id: String, platform: String, ruleId: String? = nil, actionType: String, targetUserId: String, performedAt: Date, engagerUserId: String, targetListingId: String? = nil, targetPlatformListingId: String? = nil) {
+    public init(id: String, platform: String, actionType: String, targetUserId: String, ruleId: String? = nil, engagerUserId: String, targetListingId: String? = nil, targetPlatformListingId: String? = nil, performedAt: Date) {
         self.id = id
         self.platform = platform
-        self.ruleId = ruleId
         self.actionType = actionType
         self.targetUserId = targetUserId
-        self.performedAt = performedAt
+        self.ruleId = ruleId
         self.engagerUserId = engagerUserId
         self.targetListingId = targetListingId
         self.targetPlatformListingId = targetPlatformListingId
+        self.performedAt = performedAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
         case platform
-        case ruleId
         case actionType
         case targetUserId
-        case performedAt
+        case ruleId
         case engagerUserId
         case targetListingId
         case targetPlatformListingId
+        case performedAt
     }
 
     // Encodable protocol methods
@@ -52,13 +52,13 @@ public struct ListNetworkPoolLogItem: Codable, JSONEncodable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
         try container.encode(platform, forKey: .platform)
-        try container.encodeIfPresent(ruleId, forKey: .ruleId)
         try container.encode(actionType, forKey: .actionType)
         try container.encode(targetUserId, forKey: .targetUserId)
-        try container.encode(performedAt, forKey: .performedAt)
+        try container.encodeIfPresent(ruleId, forKey: .ruleId)
         try container.encode(engagerUserId, forKey: .engagerUserId)
         try container.encodeIfPresent(targetListingId, forKey: .targetListingId)
         try container.encodeIfPresent(targetPlatformListingId, forKey: .targetPlatformListingId)
+        try container.encode(performedAt, forKey: .performedAt)
     }
 }
 

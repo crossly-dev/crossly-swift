@@ -13,14 +13,14 @@ import AnyCodable
 public struct CreateVaultMarketPriceWidgetPreviewResponseView: Codable, JSONEncodable, Hashable {
 
     public enum Kind: String, Codable, CaseIterable {
-        case mark = "mark"
         case index = "index"
+        case mark = "mark"
     }
     public enum Quality: String, Codable, CaseIterable {
         case _none = "none"
+        case c = "C"
         case a = "A"
         case b = "B"
-        case c = "C"
     }
     public enum ModelRange: String, Codable, CaseIterable {
         case _1y = "1y"

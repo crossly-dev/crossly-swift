@@ -14,16 +14,18 @@ public struct ListVaultMarketFeedItem: Codable, JSONEncodable, Hashable {
 
     public var id: String
     public var at: String
+    public var by: ListVaultMarketFeedItemBy
     public var bookKey: String
     public var name: String?
     public var label: String?
     public var imageUrl: String?
-    public var mark: ListVaultMarketFeedItemMark
+    public var mark: ListVaultMarketOpeningItemMark
     public var buyHref: String
 
-    public init(id: String, at: String, bookKey: String, name: String? = nil, label: String? = nil, imageUrl: String? = nil, mark: ListVaultMarketFeedItemMark, buyHref: String) {
+    public init(id: String, at: String, by: ListVaultMarketFeedItemBy, bookKey: String, name: String? = nil, label: String? = nil, imageUrl: String? = nil, mark: ListVaultMarketOpeningItemMark, buyHref: String) {
         self.id = id
         self.at = at
+        self.by = by
         self.bookKey = bookKey
         self.name = name
         self.label = label
@@ -35,6 +37,7 @@ public struct ListVaultMarketFeedItem: Codable, JSONEncodable, Hashable {
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
         case at
+        case by
         case bookKey
         case name
         case label
@@ -49,6 +52,7 @@ public struct ListVaultMarketFeedItem: Codable, JSONEncodable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
         try container.encode(at, forKey: .at)
+        try container.encode(by, forKey: .by)
         try container.encode(bookKey, forKey: .bookKey)
         try container.encodeIfPresent(name, forKey: .name)
         try container.encodeIfPresent(label, forKey: .label)

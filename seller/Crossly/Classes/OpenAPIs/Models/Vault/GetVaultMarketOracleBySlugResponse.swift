@@ -14,8 +14,8 @@ public struct GetVaultMarketOracleBySlugResponse: Codable, JSONEncodable, Hashab
 
     public enum Status: String, Codable, CaseIterable {
         case skipped = "skipped"
-        case failed = "failed"
         case published = "published"
+        case failed = "failed"
     }
     public var message: String?
     public var signature: String?

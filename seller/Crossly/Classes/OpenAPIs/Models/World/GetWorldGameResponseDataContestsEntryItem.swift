@@ -12,6 +12,6 @@ import AnyCodable
 
 public enum GetWorldGameResponseDataContestsEntryItem: String, Codable, CaseIterable {
     case free = "free"
-    case sponsored = "sponsored"
     case paid = "paid"
+    case sponsored = "sponsored"
 }

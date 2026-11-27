@@ -12,57 +12,57 @@ import AnyCodable
 
 public struct CreateSpatialSceneNodeResponseData: Codable, JSONEncodable, Hashable {
 
+    public var transform: CreateSpatialSceneNodeResponseDataTransform
     public var id: String
     public var createdAt: Date
     public var updatedAt: Date
-    public var transform: CreateSpatialSceneNodeResponseDataTransform
     public var label: String?
     public var sort: Double
-    public var segment: String?
     public var sceneId: String
     public var parentId: String?
     public var unitKey: String
+    public var segment: String?
 
-    public init(id: String, createdAt: Date, updatedAt: Date, transform: CreateSpatialSceneNodeResponseDataTransform, label: String? = nil, sort: Double, segment: String? = nil, sceneId: String, parentId: String? = nil, unitKey: String) {
+    public init(transform: CreateSpatialSceneNodeResponseDataTransform, id: String, createdAt: Date, updatedAt: Date, label: String? = nil, sort: Double, sceneId: String, parentId: String? = nil, unitKey: String, segment: String? = nil) {
+        self.transform = transform
         self.id = id
         self.createdAt = createdAt
         self.updatedAt = updatedAt
-        self.transform = transform
         self.label = label
         self.sort = sort
-        self.segment = segment
         self.sceneId = sceneId
         self.parentId = parentId
         self.unitKey = unitKey
+        self.segment = segment
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case transform
         case id
         case createdAt
         case updatedAt
-        case transform
         case label
         case sort
-        case segment
         case sceneId
         case parentId
         case unitKey
+        case segment
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(transform, forKey: .transform)
         try container.encode(id, forKey: .id)
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(updatedAt, forKey: .updatedAt)
-        try container.encode(transform, forKey: .transform)
         try container.encodeIfPresent(label, forKey: .label)
         try container.encode(sort, forKey: .sort)
-        try container.encodeIfPresent(segment, forKey: .segment)
         try container.encode(sceneId, forKey: .sceneId)
         try container.encodeIfPresent(parentId, forKey: .parentId)
         try container.encode(unitKey, forKey: .unitKey)
+        try container.encodeIfPresent(segment, forKey: .segment)
     }
 }
 

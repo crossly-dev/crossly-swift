@@ -44,8 +44,9 @@ public struct GetVaultMarketVaultSuggestionItemResponseSuggestion: Codable, JSON
     public var reasons: [String]
     /** Where the market lives on the web (the buyer-side market page). */
     public var marketPath: String
+    public var fractionalize: GetVaultMarketVaultSuggestionItemResponseSuggestionFractionalize?
 
-    public init(inventoryItemId: String, title: String? = nil, imageUrl: String? = nil, unitsToSend: Double, bookKey: String, variantId: String, condition: String, gradeKey: String? = nil, market: GetVaultMarketVaultSuggestionItemResponseSuggestionMarket, instantExit: GetVaultMarketVaultSuggestionItemResponseSuggestionInstantExit, listPriceCents: Double? = nil, exitVsListBps: Double? = nil, exitBasis: ExitBasis? = nil, daysListed: Double? = nil, vaultFee: GetVaultMarketVaultSuggestionItemResponseSuggestionVaultFee, score: Double, strength: Strength, parts: GetVaultMarketVaultSuggestionItemResponseSuggestionParts, reasons: [String], marketPath: String) {
+    public init(inventoryItemId: String, title: String? = nil, imageUrl: String? = nil, unitsToSend: Double, bookKey: String, variantId: String, condition: String, gradeKey: String? = nil, market: GetVaultMarketVaultSuggestionItemResponseSuggestionMarket, instantExit: GetVaultMarketVaultSuggestionItemResponseSuggestionInstantExit, listPriceCents: Double? = nil, exitVsListBps: Double? = nil, exitBasis: ExitBasis? = nil, daysListed: Double? = nil, vaultFee: GetVaultMarketVaultSuggestionItemResponseSuggestionVaultFee, score: Double, strength: Strength, parts: GetVaultMarketVaultSuggestionItemResponseSuggestionParts, reasons: [String], marketPath: String, fractionalize: GetVaultMarketVaultSuggestionItemResponseSuggestionFractionalize? = nil) {
         self.inventoryItemId = inventoryItemId
         self.title = title
         self.imageUrl = imageUrl
@@ -66,6 +67,7 @@ public struct GetVaultMarketVaultSuggestionItemResponseSuggestion: Codable, JSON
         self.parts = parts
         self.reasons = reasons
         self.marketPath = marketPath
+        self.fractionalize = fractionalize
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -89,6 +91,7 @@ public struct GetVaultMarketVaultSuggestionItemResponseSuggestion: Codable, JSON
         case parts
         case reasons
         case marketPath
+        case fractionalize
     }
 
     // Encodable protocol methods
@@ -115,6 +118,7 @@ public struct GetVaultMarketVaultSuggestionItemResponseSuggestion: Codable, JSON
         try container.encode(parts, forKey: .parts)
         try container.encode(reasons, forKey: .reasons)
         try container.encode(marketPath, forKey: .marketPath)
+        try container.encodeIfPresent(fractionalize, forKey: .fractionalize)
     }
 }
 

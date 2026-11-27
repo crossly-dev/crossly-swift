@@ -17,8 +17,8 @@ public struct GetVaultMarketPositionResponseLegs: Codable, JSONEncodable, Hashab
         case bid = "bid"
     }
     public enum Status: String, Codable, CaseIterable {
-        case filled = "filled"
         case cancelled = "cancelled"
+        case filled = "filled"
         case working = "working"
         case busted = "busted"
     }

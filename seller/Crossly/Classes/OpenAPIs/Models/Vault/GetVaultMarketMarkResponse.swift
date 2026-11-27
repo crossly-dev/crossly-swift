@@ -14,9 +14,9 @@ public struct GetVaultMarketMarkResponse: Codable, JSONEncodable, Hashable {
 
     public enum Quality: String, Codable, CaseIterable {
         case _none = "none"
+        case c = "C"
         case a = "A"
         case b = "B"
-        case c = "C"
     }
     public var bookKey: String
     public var cents: Double?

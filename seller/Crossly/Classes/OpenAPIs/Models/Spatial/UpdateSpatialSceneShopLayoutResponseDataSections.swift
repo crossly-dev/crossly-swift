@@ -23,14 +23,20 @@ public struct UpdateSpatialSceneShopLayoutResponseDataSections: Codable, JSONEnc
     public var sign: String?
     /** Shown to visitors? A hidden section keeps its stock off the floor. */
     public var hidden: Bool?
+    /** How many units (cases, bays, pages) it stands with, at least; absent = as many as its stock needs. Set from the showroom organizer so an empty display has slots to fill (shared showroom/). */
+    public var units: Double?
+    /** The holder model it stands as (showroom/fixtures.ts FIXTURE_HOLDERS); absent = its type's free holder. */
+    public var holder: String?
 
-    public init(id: String, profile: String, position: [Double]? = nil, rotationY: Double? = nil, sign: String? = nil, hidden: Bool? = nil) {
+    public init(id: String, profile: String, position: [Double]? = nil, rotationY: Double? = nil, sign: String? = nil, hidden: Bool? = nil, units: Double? = nil, holder: String? = nil) {
         self.id = id
         self.profile = profile
         self.position = position
         self.rotationY = rotationY
         self.sign = sign
         self.hidden = hidden
+        self.units = units
+        self.holder = holder
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -40,6 +46,8 @@ public struct UpdateSpatialSceneShopLayoutResponseDataSections: Codable, JSONEnc
         case rotationY
         case sign
         case hidden
+        case units
+        case holder
     }
 
     // Encodable protocol methods
@@ -52,6 +60,8 @@ public struct UpdateSpatialSceneShopLayoutResponseDataSections: Codable, JSONEnc
         try container.encodeIfPresent(rotationY, forKey: .rotationY)
         try container.encodeIfPresent(sign, forKey: .sign)
         try container.encodeIfPresent(hidden, forKey: .hidden)
+        try container.encodeIfPresent(units, forKey: .units)
+        try container.encodeIfPresent(holder, forKey: .holder)
     }
 }
 

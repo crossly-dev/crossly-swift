@@ -10,7 +10,8 @@ Method | HTTP request | Description
 [**createInventoryBulkArchive**](InventoryAPI.md#createinventorybulkarchive) | **POST** /v1/inventory/bulk-archive | Bulk archive inventory items (soft).
 [**createInventoryBulkDelete**](InventoryAPI.md#createinventorybulkdelete) | **POST** /v1/inventory/bulk-delete | Bulk delete inventory items (delinks listings).
 [**createInventoryBulkLabel**](InventoryAPI.md#createinventorybulklabel) | **POST** /v1/inventory/bulk-labels | Bulk add/remove labels on inventory items.
-[**createInventoryBulkQuantity**](InventoryAPI.md#createinventorybulkquantity) | **POST** /v1/inventory/bulk-quantity | Set / add / subtract stock across many items, syncing live listings.
+[**createInventoryBulkQuantity**](InventoryAPI.md#createinventorybulkquantity) | **POST** /v1/inventory/bulk-quantity | Set / add / subtract stock across many items, or set a stock per item; syncs live listings.
+[**createInventoryBulkRestore**](InventoryAPI.md#createinventorybulkrestore) | **POST** /v1/inventory/bulk-restore | Restore archived inventory items (status returns to active, or sold_out when no stock).
 [**createInventoryCatalogMatchRefresh**](InventoryAPI.md#createinventorycatalogmatchrefresh) | **POST** /v1/inventory/{id}/catalog-matches/refresh | Run catalog matching for one item now. An identifier (UPC, style code, catalogue number) that resolves to exactly one product links it; otherwise likely products are returned as suggestions to confirm.
 [**createInventoryCsvExport**](InventoryAPI.md#createinventorycsvexport) | **POST** /v1/inventory/csv/export | Export inventory as CSV. Round-trips back through csv/import.
 [**createInventoryCsvImport**](InventoryAPI.md#createinventorycsvimport) | **POST** /v1/inventory/csv/import | Import a CSV. Rows whose sku matches an existing item update it; others are added. Pass dryRun to preview.
@@ -34,18 +35,21 @@ Method | HTTP request | Description
 [**createSpatialStreetRequestFound**](InventoryAPI.md#createspatialstreetrequestfound) | **POST** /v1/spatial/streets/requests/{id}/found | Found an approved street, in CBX.
 [**deleteInventory**](InventoryAPI.md#deleteinventory) | **DELETE** /v1/inventory/{id} | Soft-archive an inventory item.
 [**deleteSpatialStreetPlot**](InventoryAPI.md#deletespatialstreetplot) | **DELETE** /v1/spatial/streets/{slug}/plot | Take your shop off a street.
+[**getAnalyticInventory**](InventoryAPI.md#getanalyticinventory) | **GET** /v1/analytics/inventory | Unsold stock: aging buckets with cost, listed value and market value, the 20 listings most in need of attention, shelf value over time, cohort sell-through at the chosen maturity, listed vs sold velocity and data health.
+[**getGameEventSummary**](InventoryAPI.md#getgameeventsummary) | **GET** /v1/games/events/{eventId}/summary | The results of one of your metaverse events (a Branding event of type scavenger_hunt or pack_break): for a hunt -- status, place, coins and clues, players, finishers, winners (place, masked name, when) and the rewards paid or failed per kind; for a pack break -- status, whether it is live on the stage, spots, spots sold and hits revealed. 404 for an event that is not a World event of yours.
+[**getGameHuntBuild**](InventoryAPI.md#getgamehuntbuild) | **GET** /v1/games/hunts/{id}/build | One of your scavenger hunts as the in-world builder sees it: place, rules (days, time limit, hints, winners, ordered), rewards, the build document (coins and clue signs with positions), what still blocks publishing, and buildLink -- the Worlds app link that opens the builder. Read-only: coins are placed in the World.
 [**getGameLeaderboard**](InventoryAPI.md#getgameleaderboard) | **GET** /v1/games/leaderboards | Game leaderboards: for each of Price Guess (wins, then points), scavenger hunts (finished) and speed trades (won), the top ten this week (Monday 00:00 UTC on) under week and of all time under all -- rank, name, named, value and, for Price Guess, score. A name appears only for somebody who chose to be seen by name in Crossly World; everyone else is \&quot;A player\&quot; in their place.
 [**getHome**](InventoryAPI.md#gethome) | **GET** /v1/homes/{slug} | A home by its address, as you may see it: open homes to anybody, friends-only homes to mutual follows, locked homes to their owner. 404 when you may not enter.
 [**getHomeMine**](InventoryAPI.md#gethomemine) | **GET** /v1/homes/mine | Your Crossly World home: its address, privacy (open / friends / locked), theme, the room, the layout (each piece with what it shows -- things you no longer own are left out at read time) and the guestbook. Made on first read.
 [**getInventory**](InventoryAPI.md#getinventory) | **GET** /v1/inventory/{id} | Get one inventory item with platform listings.
-[**getInventoryAging**](InventoryAPI.md#getinventoryaging) | **GET** /v1/inventory/aging | Unsold stock by age (0-7, 7-30, 30-90, 90+ days, unlisted), each bucket with a recommendation.
+[**getInventoryAging**](InventoryAPI.md#getinventoryaging) | **GET** /v1/inventory/aging | Unsold stock by days since first listed (unlisted, 0-7, 7-30, 30-90, 90+), each bucket with items, units, known cost (items without a cost counted separately) and listed value.
 [**getInventoryCatalogMatch**](InventoryAPI.md#getinventorycatalogmatch) | **GET** /v1/inventory/{id}/catalog-matches | One inventory item&#39;s catalog binding (if confirmed) and its pending match suggestions.
 [**getInventoryFacet**](InventoryAPI.md#getinventoryfacet) | **GET** /v1/inventory/facets | Distinct brands + categories across this user&#39;s inventory.
 [**getInventoryLabel**](InventoryAPI.md#getinventorylabel) | **GET** /v1/inventory/labels | List every distinct label across this user&#39;s inventory.
 [**getInventoryLabelStat**](InventoryAPI.md#getinventorylabelstat) | **GET** /v1/inventory/labels/stats | List distinct labels with usage counts + colors.
-[**getInventorySellThrough**](InventoryAPI.md#getinventorysellthrough) | **GET** /v1/inventory/sell-through | Cohort sell-through for a window (default: the 30 days ending 30 days ago) against the previous window of the same length.
+[**getInventorySellThrough**](InventoryAPI.md#getinventorysellthrough) | **GET** /v1/inventory/sell-through | Cohort sell-through: of the items first listed in the window (default 30-60 days ago), the share sold within 30 days of listing, with n, immature items left out, and the change vs the previous window in percentage points (pp).
 [**getInventorySkuExist**](InventoryAPI.md#getinventoryskuexist) | **GET** /v1/inventory/sku-exists | Check whether a SKU is already in use on this user&#39;s inventory.
-[**getInventoryValueHistory**](InventoryAPI.md#getinventoryvaluehistory) | **GET** /v1/inventory/value-history | Portfolio value of unsold stock over time, oldest first (one point per nightly snapshot).
+[**getInventoryValueHistory**](InventoryAPI.md#getinventoryvaluehistory) | **GET** /v1/inventory/value-history | Cost and listed value of unsold stock over time, oldest first (one point per nightly snapshot).
 [**getMainStage**](InventoryAPI.md#getmainstage) | **GET** /v1/main-stage | The Crossly World Main Stage right now: the live show (title, kind, host lineup), the stream on its big screen while a lineup host is on air, how many people are there (it holds 64 per copy and opens copies as it fills) and what is on next.
 [**getPetMine**](InventoryAPI.md#getpetmine) | **GET** /v1/pets/mine | Your Crossly World pets: every kind (cat, dog, slab bot) with whether you own it, when it was earned and the ways to earn it (a quest or a reputation level -- pets are never sold), plus the pet walking beside you and the one greeting visitors at your shop door.
 [**getReputation**](InventoryAPI.md#getreputation) | **GET** /v1/reputation/{profile} | Somebody&#39;s public reputation levels by their storefront handle: the level on each track and their nameplate badge. 404 for an unknown handle.
@@ -64,12 +68,14 @@ Method | HTTP request | Description
 [**getSpatialStreet**](InventoryAPI.md#getspatialstreet) | **GET** /v1/spatial/streets/{slug} | A street: every plot and the shop open on each.
 [**getSpatialStreetFounding**](InventoryAPI.md#getspatialstreetfounding) | **GET** /v1/spatial/streets/founding | What founding a street costs.
 [**getSpatialStreetPlotQuote**](InventoryAPI.md#getspatialstreetplotquote) | **GET** /v1/spatial/streets/{slug}/plots/{number}/quote | What a plot costs.
+[**getWorldPulse**](InventoryAPI.md#getworldpulse) | **GET** /v1/world/pulse | Crossly World&#39;s pulse, aggregated with no people in it: the public world shops that made a sale today (slugs only -- never counts, amounts or buyers), the times the world&#39;s shops passed each sales milestone today (each fires a fireworks show), and what Crossly Cares took in this month against the Commons fountain&#39;s mark.
 [**getWorldRoomFunnel**](InventoryAPI.md#getworldroomfunnel) | **GET** /v1/world/rooms/{sceneId}/funnel | Your room&#39;s funnel over the last &#x60;days&#x60; (1-35, default 30): visitors (people, once a day), looks, items opened, checkouts started from the room, paid sales and revenueCents. Sales count only lines the room itself put in a cart.
 [**getWorldShelf**](InventoryAPI.md#getworldshelf) | **GET** /v1/world/shelf/{listingSlug} | Where a Crossly listing sits on a shelf in a public room right now (roomSlug, roomName, itemId), or data:null when it is in no room.
 [**getWorldSkusCheapest**](InventoryAPI.md#getworldskuscheapest) | **GET** /v1/world/skus/{skuId}/cheapest | The cheapest copy of a catalogue piece for sale on Crossly now, matched by the catalogue id (listingSlug, priceCents, and the room and item when it stands on a shelf), or data:null.
 [**listCatalogMatches**](InventoryAPI.md#listcatalogmatches) | **GET** /v1/catalog-matches | Pending catalog-match suggestions: inventory items that look like a catalog product, awaiting your confirm.
 [**listFestivals**](InventoryAPI.md#listfestivals) | **GET** /v1/festivals | Live and upcoming Crossly World festivals, soonest first: a weekend when every street wears one decor and the festival quest line (limited pins) counts. meta.live is the festival on now, if any.
 [**listGameBreakUpcoming**](InventoryAPI.md#listgamebreakupcoming) | **GET** /v1/games/breaks/upcoming | Pack breaks staged on shop stages in Crossly World, live first then soonest: the break, its shop, start time, spots (taken or not, buyer masked), hits revealed so far, and buyUrl -- the break&#39;s page on crossly.net, the only place a spot is bought (null once every spot has sold).
+[**listGameHuntMine**](InventoryAPI.md#listgamehuntmine) | **GET** /v1/games/hunts/mine | Your scavenger hunts (spec WD6: made from Branding events, built in Crossly World), newest first: title, place slug, the event it belongs to (eventId), your discount code if it rewards one, whether it is a draft (not yet built and published), live or ended, its coins, and how many people finished.
 [**listGameHunts**](InventoryAPI.md#listgamehunts) | **GET** /v1/games/hunts | Scavenger hunts running now in Crossly World shops and pop-up stalls, ending soonest first: title, shop (name and slug -- for a hunt at a stall, the street slug, with stall.bookingId set), how many tokens, what finishing unlocks (\&quot;10% off\&quot; -- never the code), when it ends and how many people have finished. Optional place filters to one shop or street slug.
 [**listGameResultMine**](InventoryAPI.md#listgameresultmine) | **GET** /v1/games/results/mine | Your market-game results, newest first: game (price_guess, price_guess_solo, hunt, speed_trade, break_host), the round/hunt/trade/break id, score, whether you won, Bucks prize in cents (0 while prizes are pins only) and detail. meta.unlocks lists the hunt coupons you earned (with their codes); meta.hits the break hits pulled for spots you bought, with the order each ships with.
 [**listHomeMineBuilders**](InventoryAPI.md#listhomeminebuilders) | **GET** /v1/homes/mine/builders | Your co-builders: friends you let rearrange your home in the world (move, turn, take out your things, add free furniture; never your bought pieces). Each: userId, name, friends (false once the friendship ended: listed but powerless).
@@ -381,7 +387,9 @@ This endpoint does not need any parameter.
     open class func createInventoryBulkQuantity(completion: @escaping (_ data: CreateInventoryBulkQuantityResponse?, _ error: Error?) -> Void)
 ```
 
-Set / add / subtract stock across many items, syncing live listings.
+Set / add / subtract stock across many items, or set a stock per item; syncs live listings.
+
+Two bodies. {ids, mode: \"set\"|\"increase\"|\"decrease\", value, syncMarketplaces?} applies one value to every id. {mode: \"set\", items: [{id, quantity}], syncMarketplaces?} sets each item to its own quantity (1-5000 items, each id once; a repeated id, more than 5000 items, or a body mixing items with ids/value is a 400 naming both shapes). The value is the AVAILABLE stock (reserved units of open orders are kept). Stock changes at once; live listings are pushed in the background against the returned bulkJobId (anything dropping to 0 is delisted). Response: {affected, skipped, bulkJobId?}: skipped = ids that did not move (already at that number, or not yours). Send an Idempotency-Key to retry safely.
 
 ### Example
 ```swift
@@ -389,7 +397,7 @@ Set / add / subtract stock across many items, syncing live listings.
 import Crossly
 
 
-// Set / add / subtract stock across many items, syncing live listings.
+// Set / add / subtract stock across many items, or set a stock per item; syncs live listings.
 InventoryAPI.createInventoryBulkQuantity() { (response, error) in
     guard error == nil else {
         print(error)
@@ -408,6 +416,50 @@ This endpoint does not need any parameter.
 ### Return type
 
 **CreateInventoryBulkQuantityResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createInventoryBulkRestore**
+```swift
+    open class func createInventoryBulkRestore(completion: @escaping (_ data: CreateInventoryBulkRestoreResponse?, _ error: Error?) -> Void)
+```
+
+Restore archived inventory items (status returns to active, or sold_out when no stock).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Restore archived inventory items (status returns to active, or sold_out when no stock).
+InventoryAPI.createInventoryBulkRestore() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateInventoryBulkRestoreResponse**
 
 ### Authorization
 
@@ -558,7 +610,7 @@ This endpoint does not need any parameter.
 
 # **createInventoryLabelRename**
 ```swift
-    open class func createInventoryLabelRename(completion: @escaping (_ data: CreateInventoryLabelRenameResponse?, _ error: Error?) -> Void)
+    open class func createInventoryLabelRename(completion: @escaping (_ data: UpdatedResponse?, _ error: Error?) -> Void)
 ```
 
 Rename a label across every inventory item.
@@ -587,7 +639,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-**CreateInventoryLabelRenameResponse**
+**UpdatedResponse**
 
 ### Authorization
 
@@ -892,7 +944,7 @@ Name | Type | Description  | Notes
 
 # **createSpatialPropertyLeaseAccept**
 ```swift
-    open class func createSpatialPropertyLeaseAccept(id: String, completion: @escaping (_ data: CreateSpatialPropertyLeaseAcceptResponse?, _ error: Error?) -> Void)
+    open class func createSpatialPropertyLeaseAccept(id: String, completion: @escaping (_ data: CreateWorldMarketPlotRentResponse?, _ error: Error?) -> Void)
 ```
 
 Take a plot on lease.
@@ -927,7 +979,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**CreateSpatialPropertyLeaseAcceptResponse**
+**CreateWorldMarketPlotRentResponse**
 
 ### Authorization
 
@@ -947,7 +999,7 @@ Name | Type | Description  | Notes
 
 End a lease (owner or tenant).
 
-The tenant's shop gets a free Main Street address again.
+The tenant's showroom leaves the plot.
 
 ### Example
 ```swift
@@ -1536,6 +1588,172 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **getAnalyticInventory**
+```swift
+    open class func getAnalyticInventory(range: ModelRange_getAnalyticInventory? = nil, from: String? = nil, to: String? = nil, compare: Compare_getAnalyticInventory? = nil, cmpFrom: String? = nil, cmpTo: String? = nil, labels: String? = nil, platforms: String? = nil, category: String? = nil, brand: String? = nil, tz: String? = nil, maturity: Maturity_getAnalyticInventory? = nil, completion: @escaping (_ data: GetAnalyticInventoryResponse?, _ error: Error?) -> Void)
+```
+
+Unsold stock: aging buckets with cost, listed value and market value, the 20 listings most in need of attention, shelf value over time, cohort sell-through at the chosen maturity, listed vs sold velocity and data health.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let range = "range_example" // String | Reporting window. Default 30d. custom needs from and to. (optional)
+let from = "from_example" // String | YYYY-MM-DD, inclusive, in tz. Only with range=custom. (optional)
+let to = "to_example" // String | YYYY-MM-DD, inclusive, in tz. Only with range=custom. (optional)
+let compare = "compare_example" // String | Comparison window for deltas: prev (same length just before), yoy, none, custom (cmpFrom/cmpTo). (optional)
+let cmpFrom = "cmpFrom_example" // String | YYYY-MM-DD. Only with compare=custom. (optional)
+let cmpTo = "cmpTo_example" // String | YYYY-MM-DD. Only with compare=custom. (optional)
+let labels = "labels_example" // String | Comma-separated inventory labels (any of them). (optional)
+let platforms = "platforms_example" // String | Comma-separated platform ids. (optional)
+let category = "category_example" // String | Canonical main-category key. (optional)
+let brand = "brand_example" // String | Brand name. (optional)
+let tz = "tz_example" // String | IANA time zone for day boundaries. Default UTC. An invalid name is a 400. (optional)
+let maturity = 987 // Int | Days an item has to sell within to count as sold in the cohort. Default 30. (optional)
+
+// Unsold stock: aging buckets with cost, listed value and market value, the 20 listings most in need of attention, shelf value over time, cohort sell-through at the chosen maturity, listed vs sold velocity and data health.
+InventoryAPI.getAnalyticInventory(range: range, from: from, to: to, compare: compare, cmpFrom: cmpFrom, cmpTo: cmpTo, labels: labels, platforms: platforms, category: category, brand: brand, tz: tz, maturity: maturity) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **range** | **String** | Reporting window. Default 30d. custom needs from and to. | [optional] 
+ **from** | **String** | YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. | [optional] 
+ **to** | **String** | YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. | [optional] 
+ **compare** | **String** | Comparison window for deltas: prev (same length just before), yoy, none, custom (cmpFrom/cmpTo). | [optional] 
+ **cmpFrom** | **String** | YYYY-MM-DD. Only with compare&#x3D;custom. | [optional] 
+ **cmpTo** | **String** | YYYY-MM-DD. Only with compare&#x3D;custom. | [optional] 
+ **labels** | **String** | Comma-separated inventory labels (any of them). | [optional] 
+ **platforms** | **String** | Comma-separated platform ids. | [optional] 
+ **category** | **String** | Canonical main-category key. | [optional] 
+ **brand** | **String** | Brand name. | [optional] 
+ **tz** | **String** | IANA time zone for day boundaries. Default UTC. An invalid name is a 400. | [optional] 
+ **maturity** | **Int** | Days an item has to sell within to count as sold in the cohort. Default 30. | [optional] 
+
+### Return type
+
+**GetAnalyticInventoryResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getGameEventSummary**
+```swift
+    open class func getGameEventSummary(eventId: UUID, completion: @escaping (_ data: GetGameEventSummaryResponse?, _ error: Error?) -> Void)
+```
+
+The results of one of your metaverse events (a Branding event of type scavenger_hunt or pack_break): for a hunt -- status, place, coins and clues, players, finishers, winners (place, masked name, when) and the rewards paid or failed per kind; for a pack break -- status, whether it is live on the stage, spots, spots sold and hits revealed. 404 for an event that is not a World event of yours.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let eventId = 987 // UUID | 
+
+// The results of one of your metaverse events (a Branding event of type scavenger_hunt or pack_break): for a hunt -- status, place, coins and clues, players, finishers, winners (place, masked name, when) and the rewards paid or failed per kind; for a pack break -- status, whether it is live on the stage, spots, spots sold and hits revealed. 404 for an event that is not a World event of yours.
+InventoryAPI.getGameEventSummary(eventId: eventId) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **eventId** | **UUID** |  | 
+
+### Return type
+
+**GetGameEventSummaryResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getGameHuntBuild**
+```swift
+    open class func getGameHuntBuild(id: UUID, completion: @escaping (_ data: GetGameHuntBuildResponse?, _ error: Error?) -> Void)
+```
+
+One of your scavenger hunts as the in-world builder sees it: place, rules (days, time limit, hints, winners, ordered), rewards, the build document (coins and clue signs with positions), what still blocks publishing, and buildLink -- the Worlds app link that opens the builder. Read-only: coins are placed in the World.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = 987 // UUID | 
+
+// One of your scavenger hunts as the in-world builder sees it: place, rules (days, time limit, hints, winners, ordered), rewards, the build document (coins and clue signs with positions), what still blocks publishing, and buildLink -- the Worlds app link that opens the builder. Read-only: coins are placed in the World.
+InventoryAPI.getGameHuntBuild(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **UUID** |  | 
+
+### Return type
+
+**GetGameHuntBuildResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **getGameLeaderboard**
 ```swift
     open class func getGameLeaderboard(completion: @escaping (_ data: GetGameLeaderboardResponse?, _ error: Error?) -> Void)
@@ -1725,7 +1943,7 @@ Name | Type | Description  | Notes
     open class func getInventoryAging(completion: @escaping (_ data: GetInventoryAgingResponse?, _ error: Error?) -> Void)
 ```
 
-Unsold stock by age (0-7, 7-30, 30-90, 90+ days, unlisted), each bucket with a recommendation.
+Unsold stock by days since first listed (unlisted, 0-7, 7-30, 30-90, 90+), each bucket with items, units, known cost (items without a cost counted separately) and listed value.
 
 ### Example
 ```swift
@@ -1733,7 +1951,7 @@ Unsold stock by age (0-7, 7-30, 30-90, 90+ days, unlisted), each bucket with a r
 import Crossly
 
 
-// Unsold stock by age (0-7, 7-30, 30-90, 90+ days, unlisted), each bucket with a recommendation.
+// Unsold stock by days since first listed (unlisted, 0-7, 7-30, 30-90, 90+), each bucket with items, units, known cost (items without a cost counted separately) and listed value.
 InventoryAPI.getInventoryAging() { (response, error) in
     guard error == nil else {
         print(error)
@@ -1949,7 +2167,7 @@ This endpoint does not need any parameter.
     open class func getInventorySellThrough(completion: @escaping (_ data: GetInventorySellThroughResponse?, _ error: Error?) -> Void)
 ```
 
-Cohort sell-through for a window (default: the 30 days ending 30 days ago) against the previous window of the same length.
+Cohort sell-through: of the items first listed in the window (default 30-60 days ago), the share sold within 30 days of listing, with n, immature items left out, and the change vs the previous window in percentage points (pp).
 
 ### Example
 ```swift
@@ -1957,7 +2175,7 @@ Cohort sell-through for a window (default: the 30 days ending 30 days ago) again
 import Crossly
 
 
-// Cohort sell-through for a window (default: the 30 days ending 30 days ago) against the previous window of the same length.
+// Cohort sell-through: of the items first listed in the window (default 30-60 days ago), the share sold within 30 days of listing, with n, immature items left out, and the change vs the previous window in percentage points (pp).
 InventoryAPI.getInventorySellThrough() { (response, error) in
     guard error == nil else {
         print(error)
@@ -2041,7 +2259,7 @@ Name | Type | Description  | Notes
     open class func getInventoryValueHistory(completion: @escaping (_ data: GetInventoryValueHistoryResponse?, _ error: Error?) -> Void)
 ```
 
-Portfolio value of unsold stock over time, oldest first (one point per nightly snapshot).
+Cost and listed value of unsold stock over time, oldest first (one point per nightly snapshot).
 
 ### Example
 ```swift
@@ -2049,7 +2267,7 @@ Portfolio value of unsold stock over time, oldest first (one point per nightly s
 import Crossly
 
 
-// Portfolio value of unsold stock over time, oldest first (one point per nightly snapshot).
+// Cost and listed value of unsold stock over time, oldest first (one point per nightly snapshot).
 InventoryAPI.getInventoryValueHistory() { (response, error) in
     guard error == nil else {
         print(error)
@@ -2940,6 +3158,50 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **getWorldPulse**
+```swift
+    open class func getWorldPulse(completion: @escaping (_ data: GetWorldPulseResponse?, _ error: Error?) -> Void)
+```
+
+Crossly World's pulse, aggregated with no people in it: the public world shops that made a sale today (slugs only -- never counts, amounts or buyers), the times the world's shops passed each sales milestone today (each fires a fireworks show), and what Crossly Cares took in this month against the Commons fountain's mark.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Crossly World's pulse, aggregated with no people in it: the public world shops that made a sale today (slugs only -- never counts, amounts or buyers), the times the world's shops passed each sales milestone today (each fires a fireworks show), and what Crossly Cares took in this month against the Commons fountain's mark.
+InventoryAPI.getWorldPulse() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetWorldPulseResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **getWorldRoomFunnel**
 ```swift
     open class func getWorldRoomFunnel(sceneId: UUID, days: Int? = nil, completion: @escaping (_ data: GetWorldRoomFunnelResponse?, _ error: Error?) -> Void)
@@ -3224,6 +3486,50 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **listGameHuntMine**
+```swift
+    open class func listGameHuntMine(completion: @escaping (_ data: ListGameHuntMineResponse?, _ error: Error?) -> Void)
+```
+
+Your scavenger hunts (spec WD6: made from Branding events, built in Crossly World), newest first: title, place slug, the event it belongs to (eventId), your discount code if it rewards one, whether it is a draft (not yet built and published), live or ended, its coins, and how many people finished.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your scavenger hunts (spec WD6: made from Branding events, built in Crossly World), newest first: title, place slug, the event it belongs to (eventId), your discount code if it rewards one, whether it is a draft (not yet built and published), live or ended, its coins, and how many people finished.
+InventoryAPI.listGameHuntMine() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListGameHuntMineResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **listGameHunts**
 ```swift
     open class func listGameHunts(place: String? = nil, completion: @escaping (_ data: ListGameHuntsResponse?, _ error: Error?) -> Void)
@@ -3406,7 +3712,7 @@ This endpoint does not need any parameter.
 
 # **listInventory**
 ```swift
-    open class func listInventory(page: Int? = nil, limit: Int? = nil, search: String? = nil, status: String? = nil, kind: Kind_listInventory? = nil, platforms: String? = nil, platformMode: PlatformMode_listInventory? = nil, completion: @escaping (_ data: ListInventoryResponse?, _ error: Error?) -> Void)
+    open class func listInventory(page: Int? = nil, limit: Int? = nil, search: String? = nil, status: String? = nil, kind: Kind_listInventory? = nil, platforms: String? = nil, platformMode: PlatformMode_listInventory? = nil, sku: String? = nil, updatedSince: Date? = nil, completion: @escaping (_ data: ListInventoryResponse?, _ error: Error?) -> Void)
 ```
 
 List inventory items.
@@ -3423,9 +3729,11 @@ let status = "status_example" // String |  (optional)
 let kind = "kind_example" // String | Physical goods or Web3 assets (NFTs). Omit for both. (optional)
 let platforms = "platforms_example" // String | Comma-separated marketplaces, e.g. \"ebay,vinted\". Items live (an active listing) on any of them. (optional)
 let platformMode = "platformMode_example" // String | \"not_listed\" inverts `platforms`: items live on none of them. Default \"listed\". (optional)
+let sku = "sku_example" // String | Exact SKU match: look up the row a supplier product maps to. (optional)
+let updatedSince = Date() // Date | Only rows created or changed at or after this time (ISO 8601), oldest change first. Poll with the updatedAt of the last row you saw. (optional)
 
 // List inventory items.
-InventoryAPI.listInventory(page: page, limit: limit, search: search, status: status, kind: kind, platforms: platforms, platformMode: platformMode) { (response, error) in
+InventoryAPI.listInventory(page: page, limit: limit, search: search, status: status, kind: kind, platforms: platforms, platformMode: platformMode, sku: sku, updatedSince: updatedSince) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -3448,6 +3756,8 @@ Name | Type | Description  | Notes
  **kind** | **String** | Physical goods or Web3 assets (NFTs). Omit for both. | [optional] 
  **platforms** | **String** | Comma-separated marketplaces, e.g. \&quot;ebay,vinted\&quot;. Items live (an active listing) on any of them. | [optional] 
  **platformMode** | **String** | \&quot;not_listed\&quot; inverts &#x60;platforms&#x60;: items live on none of them. Default \&quot;listed\&quot;. | [optional] 
+ **sku** | **String** | Exact SKU match: look up the row a supplier product maps to. | [optional] 
+ **updatedSince** | **Date** | Only rows created or changed at or after this time (ISO 8601), oldest change first. Poll with the updatedAt of the last row you saw. | [optional] 
 
 ### Return type
 

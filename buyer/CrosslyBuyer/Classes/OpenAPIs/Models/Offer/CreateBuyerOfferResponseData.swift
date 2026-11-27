@@ -12,25 +12,25 @@ import AnyCodable
 
 public struct CreateBuyerOfferResponseData: Codable, JSONEncodable, Hashable {
 
-    public var offer: CreateBuyerOfferResponseDataOffer
     public var ok: Bool
+    public var offer: CreateBuyerOfferResponseDataOffer
 
-    public init(offer: CreateBuyerOfferResponseDataOffer, ok: Bool) {
-        self.offer = offer
+    public init(ok: Bool, offer: CreateBuyerOfferResponseDataOffer) {
         self.ok = ok
+        self.offer = offer
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case offer
         case ok
+        case offer
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(offer, forKey: .offer)
         try container.encode(ok, forKey: .ok)
+        try container.encode(offer, forKey: .offer)
     }
 }
 

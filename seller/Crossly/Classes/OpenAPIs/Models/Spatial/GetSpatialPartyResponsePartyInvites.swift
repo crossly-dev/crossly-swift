@@ -15,9 +15,9 @@ public struct GetSpatialPartyResponsePartyInvites: Codable, JSONEncodable, Hasha
     public enum Status: String, Codable, CaseIterable {
         case pending = "pending"
         case cancelled = "cancelled"
-        case expired = "expired"
         case accepted = "accepted"
         case declined = "declined"
+        case expired = "expired"
     }
     public var id: String
     public var partyId: String

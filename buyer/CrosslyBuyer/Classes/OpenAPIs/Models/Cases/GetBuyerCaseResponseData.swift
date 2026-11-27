@@ -12,21 +12,21 @@ import AnyCodable
 
 public struct GetBuyerCaseResponseData: Codable, JSONEncodable, Hashable {
 
-    public var messages: [GetBuyerCaseResponseDataMessages]
     public var _case: GetBuyerCaseResponseDataCase
+    public var messages: [GetBuyerCaseResponseDataMessages]
     public var purchase: GetBuyerCaseResponseDataPurchase?
     public var returnShipment: GetBuyerCaseResponseDataReturnShipment?
 
-    public init(messages: [GetBuyerCaseResponseDataMessages], _case: GetBuyerCaseResponseDataCase, purchase: GetBuyerCaseResponseDataPurchase? = nil, returnShipment: GetBuyerCaseResponseDataReturnShipment? = nil) {
-        self.messages = messages
+    public init(_case: GetBuyerCaseResponseDataCase, messages: [GetBuyerCaseResponseDataMessages], purchase: GetBuyerCaseResponseDataPurchase? = nil, returnShipment: GetBuyerCaseResponseDataReturnShipment? = nil) {
         self._case = _case
+        self.messages = messages
         self.purchase = purchase
         self.returnShipment = returnShipment
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case messages
         case _case = "case"
+        case messages
         case purchase
         case returnShipment
     }
@@ -35,8 +35,8 @@ public struct GetBuyerCaseResponseData: Codable, JSONEncodable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(messages, forKey: .messages)
         try container.encode(_case, forKey: ._case)
+        try container.encode(messages, forKey: .messages)
         try container.encodeIfPresent(purchase, forKey: .purchase)
         try container.encodeIfPresent(returnShipment, forKey: .returnShipment)
     }

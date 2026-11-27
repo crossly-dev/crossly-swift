@@ -22,8 +22,9 @@ public struct GetVaultMarketHealthResponse: Codable, JSONEncodable, Hashable {
     public var notes: [String]
     /** The items a what-if can be run on, largest first. */
     public var items: [GetVaultMarketHealthResponseItems]
+    public var hedges: GetVaultMarketHealthResponseHedges
 
-    public init(asOf: String, disclosure: String, totals: GetVaultMarketHealthResponseTotals, concentration: GetVaultMarketHealthResponseConcentration, liquidity: GetVaultMarketHealthResponseLiquidity, stress: GetVaultMarketHealthResponseStress, marks: GetVaultMarketHealthResponseMarks, notes: [String], items: [GetVaultMarketHealthResponseItems]) {
+    public init(asOf: String, disclosure: String, totals: GetVaultMarketHealthResponseTotals, concentration: GetVaultMarketHealthResponseConcentration, liquidity: GetVaultMarketHealthResponseLiquidity, stress: GetVaultMarketHealthResponseStress, marks: GetVaultMarketHealthResponseMarks, notes: [String], items: [GetVaultMarketHealthResponseItems], hedges: GetVaultMarketHealthResponseHedges) {
         self.asOf = asOf
         self.disclosure = disclosure
         self.totals = totals
@@ -33,6 +34,7 @@ public struct GetVaultMarketHealthResponse: Codable, JSONEncodable, Hashable {
         self.marks = marks
         self.notes = notes
         self.items = items
+        self.hedges = hedges
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -45,6 +47,7 @@ public struct GetVaultMarketHealthResponse: Codable, JSONEncodable, Hashable {
         case marks
         case notes
         case items
+        case hedges
     }
 
     // Encodable protocol methods
@@ -60,6 +63,7 @@ public struct GetVaultMarketHealthResponse: Codable, JSONEncodable, Hashable {
         try container.encode(marks, forKey: .marks)
         try container.encode(notes, forKey: .notes)
         try container.encode(items, forKey: .items)
+        try container.encode(hedges, forKey: .hedges)
     }
 }
 

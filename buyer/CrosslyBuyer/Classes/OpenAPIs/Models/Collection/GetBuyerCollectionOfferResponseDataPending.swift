@@ -13,19 +13,19 @@ import AnyCodable
 public struct GetBuyerCollectionOfferResponseDataPending: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var status: String
     public var cents: Double
+    public var status: String
 
-    public init(id: String, status: String, cents: Double) {
+    public init(id: String, cents: Double, status: String) {
         self.id = id
-        self.status = status
         self.cents = cents
+        self.status = status
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case status
         case cents
+        case status
     }
 
     // Encodable protocol methods
@@ -33,8 +33,8 @@ public struct GetBuyerCollectionOfferResponseDataPending: Codable, JSONEncodable
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(status, forKey: .status)
         try container.encode(cents, forKey: .cents)
+        try container.encode(status, forKey: .status)
     }
 }
 

@@ -13,17 +13,17 @@ import AnyCodable
 public struct GetVaultMarketUnitStoryResponseEvents: Codable, JSONEncodable, Hashable {
 
     public enum Kind: String, Codable, CaseIterable {
-        case transfer = "transfer"
-        case evidence = "evidence"
         case sale = "sale"
-        case graded = "graded"
-        case pledged = "pledged"
-        case released = "released"
-        case received = "received"
         case receipt = "receipt"
+        case received = "received"
+        case released = "released"
+        case evidence = "evidence"
+        case graded = "graded"
+        case transfer = "transfer"
+        case pledged = "pledged"
         case lent = "lent"
-        case recalled = "recalled"
         case foreclosed = "foreclosed"
+        case recalled = "recalled"
         case sentIn = "sent_in"
         case vaultedFromGrading = "vaulted_from_grading"
         case boughtIn = "bought_in"
@@ -37,14 +37,14 @@ public struct GetVaultMarketUnitStoryResponseEvents: Codable, JSONEncodable, Has
         case shippedOut = "shipped_out"
     }
     public enum Group: String, Codable, CaseIterable {
-        case token = "token"
         case grade = "grade"
-        case loan = "loan"
-        case hall = "hall"
+        case token = "token"
         case receipt = "receipt"
-        case intake = "intake"
         case owner = "owner"
+        case hall = "hall"
+        case intake = "intake"
         case custody = "custody"
+        case loan = "loan"
     }
     /** Stable across reads: `<kind>:<source row id>`. */
     public var id: String

@@ -22,12 +22,20 @@ public struct GetBuyerCatalogListingShippingResponse: Codable, JSONEncodable, Ha
     public var destinationCountry: String?
     public var shipsToCountry: Bool
     public var noShipReason: String?
+    /** Why it doesn't ship here, as the buyer should read it; null when it does. */
+    public var noShipMessage: String?
+    /** The seller's ship-to rule that decided a refusal; null when none did. */
+    public var rule: [String: AnyCodable]?
+    /** True when a fuller address (ZIP / postcode) could change the answer. */
+    public var partial: Bool
     public var services: [GetBuyerCatalogListingShippingResponseServices]
     public var defaultServiceId: String?
+    /** Buyer pays: calculated: no live label rate for this destination yet (give a ZIP); `cents` is null. */
+    public var calculatedAtCheckout: Bool?
     public var international: GetBuyerCatalogListingShippingResponseInternational
     public var importChargesNote: Bool
 
-    public init(cents: Double? = nil, kind: String? = nil, quantity: Double, carrier: String? = nil, service: String? = nil, cached: Bool, freeShippingThresholdCents: Double? = nil, destinationCountry: String? = nil, shipsToCountry: Bool, noShipReason: String? = nil, services: [GetBuyerCatalogListingShippingResponseServices], defaultServiceId: String? = nil, international: GetBuyerCatalogListingShippingResponseInternational, importChargesNote: Bool) {
+    public init(cents: Double? = nil, kind: String? = nil, quantity: Double, carrier: String? = nil, service: String? = nil, cached: Bool, freeShippingThresholdCents: Double? = nil, destinationCountry: String? = nil, shipsToCountry: Bool, noShipReason: String? = nil, noShipMessage: String? = nil, rule: [String: AnyCodable]? = nil, partial: Bool, services: [GetBuyerCatalogListingShippingResponseServices], defaultServiceId: String? = nil, calculatedAtCheckout: Bool? = nil, international: GetBuyerCatalogListingShippingResponseInternational, importChargesNote: Bool) {
         self.cents = cents
         self.kind = kind
         self.quantity = quantity
@@ -38,8 +46,12 @@ public struct GetBuyerCatalogListingShippingResponse: Codable, JSONEncodable, Ha
         self.destinationCountry = destinationCountry
         self.shipsToCountry = shipsToCountry
         self.noShipReason = noShipReason
+        self.noShipMessage = noShipMessage
+        self.rule = rule
+        self.partial = partial
         self.services = services
         self.defaultServiceId = defaultServiceId
+        self.calculatedAtCheckout = calculatedAtCheckout
         self.international = international
         self.importChargesNote = importChargesNote
     }
@@ -55,8 +67,12 @@ public struct GetBuyerCatalogListingShippingResponse: Codable, JSONEncodable, Ha
         case destinationCountry
         case shipsToCountry
         case noShipReason
+        case noShipMessage
+        case rule
+        case partial
         case services
         case defaultServiceId
+        case calculatedAtCheckout
         case international
         case importChargesNote
     }
@@ -75,8 +91,12 @@ public struct GetBuyerCatalogListingShippingResponse: Codable, JSONEncodable, Ha
         try container.encodeIfPresent(destinationCountry, forKey: .destinationCountry)
         try container.encode(shipsToCountry, forKey: .shipsToCountry)
         try container.encodeIfPresent(noShipReason, forKey: .noShipReason)
+        try container.encodeIfPresent(noShipMessage, forKey: .noShipMessage)
+        try container.encodeIfPresent(rule, forKey: .rule)
+        try container.encode(partial, forKey: .partial)
         try container.encode(services, forKey: .services)
         try container.encodeIfPresent(defaultServiceId, forKey: .defaultServiceId)
+        try container.encodeIfPresent(calculatedAtCheckout, forKey: .calculatedAtCheckout)
         try container.encode(international, forKey: .international)
         try container.encode(importChargesNote, forKey: .importChargesNote)
     }

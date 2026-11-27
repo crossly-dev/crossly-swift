@@ -13,8 +13,8 @@ import AnyCodable
 public struct GetGradingWorthResponseWorthGraders: Codable, JSONEncodable, Hashable {
 
     public enum Via: String, Codable, CaseIterable {
-        case run = "run"
         case single = "single"
+        case run = "run"
     }
     public var rawCents: Double?
     public var costCents: Double

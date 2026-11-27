@@ -14,8 +14,8 @@ public struct GetStallQuoteResponseQuoteOwner: Codable, JSONEncodable, Hashable 
 
     public enum Kind: String, Codable, CaseIterable {
         case platform = "platform"
-        case street = "street"
         case plot = "plot"
+        case street = "street"
     }
     public var kind: Kind
     public var isCrossly: Bool

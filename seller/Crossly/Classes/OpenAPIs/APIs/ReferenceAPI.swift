@@ -233,6 +233,61 @@ open class ReferenceAPI {
     }
 
     /**
+     Look up a postal code: canonical shape, state and US metro areas.
+     
+     - parameter country: (path)  
+     - parameter code: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getReferencePostal(country: String, code: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetReferencePostalResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getReferencePostalWithRequestBuilder(country: country, code: code).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Look up a postal code: canonical shape, state and US metro areas.
+     - GET /v1/reference/postal/{country}/{code}
+     - Every country gets its canonical shape and `valid`. A US ZIP (territories normalize to country US with `territory`) also gets state, county FIPS and CBSA/CSA. `metroStatus` is known (the ZIP is mapped), unmapped (a ZIP with no metro mapping: it matches no metro rule) or no_zip.
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter country: (path)  
+     - parameter code: (path)  
+     - returns: RequestBuilder<GetReferencePostalResponse> 
+     */
+    open class func getReferencePostalWithRequestBuilder(country: String, code: String) -> RequestBuilder<GetReferencePostalResponse> {
+        var localVariablePath = "/v1/reference/postal/{country}/{code}"
+        let countryPreEscape = "\(APIHelper.mapValueToPathItem(country))"
+        let countryPostEscape = countryPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{country}", with: countryPostEscape, options: .literal, range: nil)
+        let codePreEscape = "\(APIHelper.mapValueToPathItem(code))"
+        let codePostEscape = codePreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{code}", with: codePostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetReferencePostalResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Search the Poshmark + Vestiaire size-system union (US/UK/EU/AU/FR/KR).
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -405,6 +460,59 @@ open class ReferenceAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<ListReferenceCountriesResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Search US metro areas (CSA / CBSA) for location rules.
+     
+     - parameter q: (query)  
+     - parameter limit: (query)  (optional, default to 20)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listReferenceMetros(q: String, limit: Int? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListReferenceMetrosResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listReferenceMetrosWithRequestBuilder(q: q, limit: limit).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Search US metro areas (CSA / CBSA) for location rules.
+     - GET /v1/reference/metros
+     - Combined Statistical Areas first, then Core-Based Statistical Areas, matched on title (or an exact code); at most 20. `q` needs 2+ characters. `meta.datasetAvailable` is false when the census dataset is not loaded, in which case no metro rule can match.
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter q: (query)  
+     - parameter limit: (query)  (optional, default to 20)
+     - returns: RequestBuilder<ListReferenceMetrosResponse> 
+     */
+    open class func listReferenceMetrosWithRequestBuilder(q: String, limit: Int? = nil) -> RequestBuilder<ListReferenceMetrosResponse> {
+        let localVariablePath = "/v1/reference/metros"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "q": q.encodeToJSON(),
+            "limit": limit?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListReferenceMetrosResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }

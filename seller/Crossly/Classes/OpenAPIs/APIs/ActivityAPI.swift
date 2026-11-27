@@ -13,7 +13,722 @@ import AnyCodable
 open class ActivityAPI {
 
     /**
-     Get one action-log event by id (ownership-checked).
+     Queue an export of the Activity Log: every event (csv, ndjson, pdf) or a summary report (pdf, ndjson). Poll GET /api/v1/action-log/exports/{exportId}, then download it. Exports never contain IP addresses.
+     
+     - parameter createActionLogExportRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createActionLogExport(createActionLogExportRequest: CreateActionLogExportRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetActionLogExportResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createActionLogExportWithRequestBuilder(createActionLogExportRequest: createActionLogExportRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Queue an export of the Activity Log: every event (csv, ndjson, pdf) or a summary report (pdf, ndjson). Poll GET /api/v1/action-log/exports/{exportId}, then download it. Exports never contain IP addresses.
+     - POST /v1/action-log/exports
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter createActionLogExportRequest: (body)  
+     - returns: RequestBuilder<GetActionLogExportResponse> 
+     */
+    open class func createActionLogExportWithRequestBuilder(createActionLogExportRequest: CreateActionLogExportRequest) -> RequestBuilder<GetActionLogExportResponse> {
+        let localVariablePath = "/v1/action-log/exports"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createActionLogExportRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetActionLogExportResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Turn a question in words (\"failed delists on Mercari last week\") into an Activity Log search: pass the returned `q` to GET /api/v1/action-log (or the histogram and csv/ndjson exports). Nothing is run. A 404 with details.code `not_enabled` means natural-language search is off for this account.
+     
+     - parameter createActionLogSearchTranslateRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createActionLogSearchTranslate(createActionLogSearchTranslateRequest: CreateActionLogSearchTranslateRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateActionLogSearchTranslateResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createActionLogSearchTranslateWithRequestBuilder(createActionLogSearchTranslateRequest: createActionLogSearchTranslateRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Turn a question in words (\"failed delists on Mercari last week\") into an Activity Log search: pass the returned `q` to GET /api/v1/action-log (or the histogram and csv/ndjson exports). Nothing is run. A 404 with details.code `not_enabled` means natural-language search is off for this account.
+     - POST /v1/action-log/search/translate
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter createActionLogSearchTranslateRequest: (body)  
+     - returns: RequestBuilder<CreateActionLogSearchTranslateResponse> 
+     */
+    open class func createActionLogSearchTranslateWithRequestBuilder(createActionLogSearchTranslateRequest: CreateActionLogSearchTranslateRequest) -> RequestBuilder<CreateActionLogSearchTranslateResponse> {
+        let localVariablePath = "/v1/action-log/search/translate"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createActionLogSearchTranslateRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateActionLogSearchTranslateResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Answer an open ask (canConfirm true): optionally which item it is (itemId, one of the match candidates) and which actions to run instead of the ask's preselected ones. Returns the event. 409 ask_not_open when the event is not waiting.
+     
+     - parameter id: (path)  
+     - parameter createDetectedEventEventConfirmRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createDetectedEventEventConfirm(id: UUID, createDetectedEventEventConfirmRequest: CreateDetectedEventEventConfirmRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateDetectedEventEventUndoResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createDetectedEventEventConfirmWithRequestBuilder(id: id, createDetectedEventEventConfirmRequest: createDetectedEventEventConfirmRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Answer an open ask (canConfirm true): optionally which item it is (itemId, one of the match candidates) and which actions to run instead of the ask's preselected ones. Returns the event. 409 ask_not_open when the event is not waiting.
+     - POST /v1/detected-events/events/{id}/confirm
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - parameter createDetectedEventEventConfirmRequest: (body)  
+     - returns: RequestBuilder<CreateDetectedEventEventUndoResponse> 
+     */
+    open class func createDetectedEventEventConfirmWithRequestBuilder(id: UUID, createDetectedEventEventConfirmRequest: CreateDetectedEventEventConfirmRequest) -> RequestBuilder<CreateDetectedEventEventUndoResponse> {
+        var localVariablePath = "/v1/detected-events/events/{id}/confirm"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createDetectedEventEventConfirmRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateDetectedEventEventUndoResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Undo what Crossly did for an event (canUndo true): every executed action's stored inverse runs, newest first (restore stock, relist, unlink…). Returns the event. 409 nothing_to_undo when nothing is reversible.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createDetectedEventEventUndo(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateDetectedEventEventUndoResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createDetectedEventEventUndoWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Undo what Crossly did for an event (canUndo true): every executed action's stored inverse runs, newest first (restore stock, relist, unlink…). Returns the event. 409 nothing_to_undo when nothing is reversible.
+     - POST /v1/detected-events/events/{id}/undo
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateDetectedEventEventUndoResponse> 
+     */
+    open class func createDetectedEventEventUndoWithRequestBuilder(id: UUID) -> RequestBuilder<CreateDetectedEventEventUndoResponse> {
+        var localVariablePath = "/v1/detected-events/events/{id}/undo"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateDetectedEventEventUndoResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Create a detection rule: which detected events it applies to (filter + optional condition over any event axis) and what Crossly does then (and else). Without order it is placed most-specific-first, above the default set. Returns the stored rule with its id.
+     
+     - parameter createDetectedEventRuleRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createDetectedEventRule(createDetectedEventRuleRequest: CreateDetectedEventRuleRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateDetectedEventRuleResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createDetectedEventRuleWithRequestBuilder(createDetectedEventRuleRequest: createDetectedEventRuleRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Create a detection rule: which detected events it applies to (filter + optional condition over any event axis) and what Crossly does then (and else). Without order it is placed most-specific-first, above the default set. Returns the stored rule with its id.
+     - POST /v1/detected-events/rules
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter createDetectedEventRuleRequest: (body)  
+     - returns: RequestBuilder<CreateDetectedEventRuleResponse> 
+     */
+    open class func createDetectedEventRuleWithRequestBuilder(createDetectedEventRuleRequest: CreateDetectedEventRuleRequest) -> RequestBuilder<CreateDetectedEventRuleResponse> {
+        let localVariablePath = "/v1/detected-events/rules"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createDetectedEventRuleRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateDetectedEventRuleResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Save one rule and the whole evaluation order in one transaction: rule.id is an existing id (replace) or any new client id (create); ids is every rule id top-down, naming the rule by that id. Returns the stored rule and the list.
+     
+     - parameter createDetectedEventRulePlaceRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createDetectedEventRulePlace(createDetectedEventRulePlaceRequest: CreateDetectedEventRulePlaceRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateDetectedEventRulePlaceResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createDetectedEventRulePlaceWithRequestBuilder(createDetectedEventRulePlaceRequest: createDetectedEventRulePlaceRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Save one rule and the whole evaluation order in one transaction: rule.id is an existing id (replace) or any new client id (create); ids is every rule id top-down, naming the rule by that id. Returns the stored rule and the list.
+     - POST /v1/detected-events/rules/place
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter createDetectedEventRulePlaceRequest: (body)  
+     - returns: RequestBuilder<CreateDetectedEventRulePlaceResponse> 
+     */
+    open class func createDetectedEventRulePlaceWithRequestBuilder(createDetectedEventRulePlaceRequest: CreateDetectedEventRulePlaceRequest) -> RequestBuilder<CreateDetectedEventRulePlaceResponse> {
+        let localVariablePath = "/v1/detected-events/rules/place"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createDetectedEventRulePlaceRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateDetectedEventRulePlaceResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Set the evaluation order: ids top-down, defaults included (ids from the rules list). Rules are re-numbered 10, 20, 30…; a default moved above one of your rules is stored as your edit. Returns the list.
+     
+     - parameter createDetectedEventRuleReorderRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createDetectedEventRuleReorder(createDetectedEventRuleReorderRequest: CreateDetectedEventRuleReorderRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateDetectedEventRuleReorderResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createDetectedEventRuleReorderWithRequestBuilder(createDetectedEventRuleReorderRequest: createDetectedEventRuleReorderRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Set the evaluation order: ids top-down, defaults included (ids from the rules list). Rules are re-numbered 10, 20, 30…; a default moved above one of your rules is stored as your edit. Returns the list.
+     - POST /v1/detected-events/rules/reorder
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter createDetectedEventRuleReorderRequest: (body)  
+     - returns: RequestBuilder<CreateDetectedEventRuleReorderResponse> 
+     */
+    open class func createDetectedEventRuleReorderWithRequestBuilder(createDetectedEventRuleReorderRequest: CreateDetectedEventRuleReorderRequest) -> RequestBuilder<CreateDetectedEventRuleReorderResponse> {
+        let localVariablePath = "/v1/detected-events/rules/reorder"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createDetectedEventRuleReorderRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateDetectedEventRuleReorderResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Drop your edits of the shipped default rules (keys, or all when omitted). Returns the list.
+     
+     - parameter createDetectedEventRuleResetDefaultRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createDetectedEventRuleResetDefault(createDetectedEventRuleResetDefaultRequest: CreateDetectedEventRuleResetDefaultRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateDetectedEventRuleReorderResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createDetectedEventRuleResetDefaultWithRequestBuilder(createDetectedEventRuleResetDefaultRequest: createDetectedEventRuleResetDefaultRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Drop your edits of the shipped default rules (keys, or all when omitted). Returns the list.
+     - POST /v1/detected-events/rules/reset-defaults
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter createDetectedEventRuleResetDefaultRequest: (body)  
+     - returns: RequestBuilder<CreateDetectedEventRuleReorderResponse> 
+     */
+    open class func createDetectedEventRuleResetDefaultWithRequestBuilder(createDetectedEventRuleResetDefaultRequest: CreateDetectedEventRuleResetDefaultRequest) -> RequestBuilder<CreateDetectedEventRuleReorderResponse> {
+        let localVariablePath = "/v1/detected-events/rules/reset-defaults"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createDetectedEventRuleResetDefaultRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateDetectedEventRuleReorderResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Run one event through the rules without acting: the winning rule, rules it shadowed, the trace, the guards that held actions back and the plan per target with how it would run (direct / relay / ask / skip). event needs only kind; every axis left out takes its default. rules = an unsaved draft list.
+     
+     - parameter createDetectedEventSimulateRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createDetectedEventSimulate(createDetectedEventSimulateRequest: CreateDetectedEventSimulateRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateDetectedEventSimulateResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createDetectedEventSimulateWithRequestBuilder(createDetectedEventSimulateRequest: createDetectedEventSimulateRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Run one event through the rules without acting: the winning rule, rules it shadowed, the trace, the guards that held actions back and the plan per target with how it would run (direct / relay / ask / skip). event needs only kind; every axis left out takes its default. rules = an unsaved draft list.
+     - POST /v1/detected-events/simulate
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter createDetectedEventSimulateRequest: (body)  
+     - returns: RequestBuilder<CreateDetectedEventSimulateResponse> 
+     */
+    open class func createDetectedEventSimulateWithRequestBuilder(createDetectedEventSimulateRequest: CreateDetectedEventSimulateRequest) -> RequestBuilder<CreateDetectedEventSimulateResponse> {
+        let localVariablePath = "/v1/detected-events/simulate"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createDetectedEventSimulateRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateDetectedEventSimulateResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     What a rule edit would change: your detected events of the last days (default 30, at most 500) re-resolved against the draft rules and against the stored ones. Per event: winning rule and actions before and after, and whether it changed. Nothing runs.
+     
+     - parameter createDetectedEventSimulateImpactRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createDetectedEventSimulateImpact(createDetectedEventSimulateImpactRequest: CreateDetectedEventSimulateImpactRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateDetectedEventSimulateImpactResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createDetectedEventSimulateImpactWithRequestBuilder(createDetectedEventSimulateImpactRequest: createDetectedEventSimulateImpactRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     What a rule edit would change: your detected events of the last days (default 30, at most 500) re-resolved against the draft rules and against the stored ones. Per event: winning rule and actions before and after, and whether it changed. Nothing runs.
+     - POST /v1/detected-events/simulate/impact
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter createDetectedEventSimulateImpactRequest: (body)  
+     - returns: RequestBuilder<CreateDetectedEventSimulateImpactResponse> 
+     */
+    open class func createDetectedEventSimulateImpactWithRequestBuilder(createDetectedEventSimulateImpactRequest: CreateDetectedEventSimulateImpactRequest) -> RequestBuilder<CreateDetectedEventSimulateImpactResponse> {
+        let localVariablePath = "/v1/detected-events/simulate/impact"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createDetectedEventSimulateImpactRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateDetectedEventSimulateImpactResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Confirm an email-detected event: re-run it as certain (a possible sale records the sale and delists the item elsewhere). When several listings could be meant, pass platformListingDbId to choose one.
+     
+     - parameter id: (path)  
+     - parameter createEmailEventConfirmRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createEmailEventConfirm(id: UUID, createEmailEventConfirmRequest: CreateEmailEventConfirmRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateEmailEventConfirmResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createEmailEventConfirmWithRequestBuilder(id: id, createEmailEventConfirmRequest: createEmailEventConfirmRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Confirm an email-detected event: re-run it as certain (a possible sale records the sale and delists the item elsewhere). When several listings could be meant, pass platformListingDbId to choose one.
+     - POST /v1/email-events/{id}/confirm
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - parameter createEmailEventConfirmRequest: (body)  
+     - returns: RequestBuilder<CreateEmailEventConfirmResponse> 
+     */
+    open class func createEmailEventConfirmWithRequestBuilder(id: UUID, createEmailEventConfirmRequest: CreateEmailEventConfirmRequest) -> RequestBuilder<CreateEmailEventConfirmResponse> {
+        var localVariablePath = "/v1/email-events/{id}/confirm"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createEmailEventConfirmRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateEmailEventConfirmResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Dismiss an email-detected event (\"not a sale\"): closes the card without acting.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createEmailEventDismiss(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: IdStatusResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createEmailEventDismissWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Dismiss an email-detected event (\"not a sale\"): closes the card without acting.
+     - POST /v1/email-events/{id}/dismiss
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<IdStatusResponse> 
+     */
+    open class func createEmailEventDismissWithRequestBuilder(id: UUID) -> RequestBuilder<IdStatusResponse> {
+        var localVariablePath = "/v1/email-events/{id}/dismiss"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<IdStatusResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Confirm a review decision from a webhook, order poller or app relay (canConfirm true): the event runs again with the seller confirmed, so a review rule runs the strongest allowed non-review action for that cell. Returns the new decision. 409 when the decision was already confirmed or is not confirmable (email review decisions are confirmed on their review card).
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createEventPolicyDecisionConfirm(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateEventPolicyDecisionConfirmResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createEventPolicyDecisionConfirmWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Confirm a review decision from a webhook, order poller or app relay (canConfirm true): the event runs again with the seller confirmed, so a review rule runs the strongest allowed non-review action for that cell. Returns the new decision. 409 when the decision was already confirmed or is not confirmable (email review decisions are confirmed on their review card).
+     - POST /v1/event-policies/decisions/{id}/confirm
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateEventPolicyDecisionConfirmResponse> 
+     */
+    open class func createEventPolicyDecisionConfirmWithRequestBuilder(id: UUID) -> RequestBuilder<CreateEventPolicyDecisionConfirmResponse> {
+        var localVariablePath = "/v1/event-policies/decisions/{id}/confirm"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateEventPolicyDecisionConfirmResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Delete a detection rule. Deleting your edit of a default (its id, or default:<key>) brings the shipped default back; deleting a translated event-policy rule deletes that policy rule too.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func deleteDetectedEventRule(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: DeleteStoryResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return deleteDetectedEventRuleWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Delete a detection rule. Deleting your edit of a default (its id, or default:<key>) brings the shipped default back; deleting a translated event-policy rule deletes that policy rule too.
+     - DELETE /v1/detected-events/rules/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<DeleteStoryResponse> 
+     */
+    open class func deleteDetectedEventRuleWithRequestBuilder(id: String) -> RequestBuilder<DeleteStoryResponse> {
+        var localVariablePath = "/v1/detected-events/rules/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<DeleteStoryResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Delete a rule: its cell falls back to the next scope (platform → global → the built-in default).
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func deleteEventPolicyRule(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: DeleteStoryResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return deleteEventPolicyRuleWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Delete a rule: its cell falls back to the next scope (platform → global → the built-in default).
+     - DELETE /v1/event-policies/rules/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<DeleteStoryResponse> 
+     */
+    open class func deleteEventPolicyRuleWithRequestBuilder(id: UUID) -> RequestBuilder<DeleteStoryResponse> {
+        var localVariablePath = "/v1/event-policies/rules/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<DeleteStoryResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     One Activity Log event by id, with `view` including its steps and, for bulk jobs, its children.
      
      - parameter id: (path)  
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -32,7 +747,7 @@ open class ActivityAPI {
     }
 
     /**
-     Get one action-log event by id (ownership-checked).
+     One Activity Log event by id, with `view` including its steps and, for bulk jobs, its children.
      - GET /v1/action-log/{id}
      - BASIC:
        - type: http
@@ -62,7 +777,105 @@ open class ActivityAPI {
     }
 
     /**
-     Distinct platforms / actions / categories present in the caller's action log (last 90 days) — powers filter dropdowns before you query.
+     The state of one Activity Log export.
+     
+     - parameter exportId: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getActionLogExport(exportId: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetActionLogExportResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getActionLogExportWithRequestBuilder(exportId: exportId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The state of one Activity Log export.
+     - GET /v1/action-log/exports/{exportId}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter exportId: (path)  
+     - returns: RequestBuilder<GetActionLogExportResponse> 
+     */
+    open class func getActionLogExportWithRequestBuilder(exportId: String) -> RequestBuilder<GetActionLogExportResponse> {
+        var localVariablePath = "/v1/action-log/exports/{exportId}"
+        let exportIdPreEscape = "\(APIHelper.mapValueToPathItem(exportId))"
+        let exportIdPostEscape = exportIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{exportId}", with: exportIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetActionLogExportResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Download a finished Activity Log export (for 24 hours after it completes).
+     
+     - parameter exportId: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getActionLogExportDownload(exportId: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetActionLogExportDownloadResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getActionLogExportDownloadWithRequestBuilder(exportId: exportId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Download a finished Activity Log export (for 24 hours after it completes).
+     - GET /v1/action-log/exports/{exportId}/download
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter exportId: (path)  
+     - returns: RequestBuilder<GetActionLogExportDownloadResponse> 
+     */
+    open class func getActionLogExportDownloadWithRequestBuilder(exportId: String) -> RequestBuilder<GetActionLogExportDownloadResponse> {
+        var localVariablePath = "/v1/action-log/exports/{exportId}/download"
+        let exportIdPreEscape = "\(APIHelper.mapValueToPathItem(exportId))"
+        let exportIdPostEscape = exportIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{exportId}", with: exportIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetActionLogExportDownloadResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Filter options of the caller's Activity Log (last 90 days): areas with their actions and counts, the team members who acted, platforms and outcomes.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
@@ -80,7 +893,7 @@ open class ActivityAPI {
     }
 
     /**
-     Distinct platforms / actions / categories present in the caller's action log (last 90 days) — powers filter dropdowns before you query.
+     Filter options of the caller's Activity Log (last 90 days): areas with their actions and counts, the team members who acted, platforms and outcomes.
      - GET /v1/action-log/facets
      - BASIC:
        - type: http
@@ -106,25 +919,15 @@ open class ActivityAPI {
     }
 
     /**
-     List action-log events — the semantic \"what happened\" record of every user + platform action. Filter by platform / action / category / status / source / target, and a since/until created_at window.
+     One detected event with every report of it (first + corroborations, with correlation and contradiction), the guards that held actions back, the plan and each executed action's outcome and reversibility.
      
-     - parameter platform: (query)  (optional)
-     - parameter action: (query)  (optional)
-     - parameter category: (query)  (optional)
-     - parameter status: (query)  (optional)
-     - parameter source: (query)  (optional)
-     - parameter targetType: (query)  (optional)
-     - parameter targetId: (query)  (optional)
-     - parameter since: (query) ISO lower bound (inclusive) on created_at. (optional)
-     - parameter until: (query) ISO upper bound (exclusive) on created_at. (optional)
-     - parameter limit: (query)  (optional, default to 50)
-     - parameter offset: (query)  (optional, default to 0)
+     - parameter id: (path)  
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func listActionLog(platform: String? = nil, action: String? = nil, category: String? = nil, status: String? = nil, source: String? = nil, targetType: String? = nil, targetId: String? = nil, since: String? = nil, until: String? = nil, limit: Int? = nil, offset: Int? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListActionLogResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return listActionLogWithRequestBuilder(platform: platform, action: action, category: category, status: status, source: source, targetType: targetType, targetId: targetId, since: since, until: until, limit: limit, offset: offset).execute(apiResponseQueue) { result in
+    open class func getDetectedEventEvent(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetDetectedEventEventResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getDetectedEventEventWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -135,25 +938,174 @@ open class ActivityAPI {
     }
 
     /**
-     List action-log events — the semantic \"what happened\" record of every user + platform action. Filter by platform / action / category / status / source / target, and a since/until created_at window.
-     - GET /v1/action-log
+     One detected event with every report of it (first + corroborations, with correlation and contradiction), the guards that held actions back, the plan and each executed action's outcome and reversibility.
+     - GET /v1/detected-events/events/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetDetectedEventEventResponse> 
+     */
+    open class func getDetectedEventEventWithRequestBuilder(id: UUID) -> RequestBuilder<GetDetectedEventEventResponse> {
+        var localVariablePath = "/v1/detected-events/events/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetDetectedEventEventResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     What Crossly does with each detected marketplace event (sale, listing ended, offer, cancellation, label, shipped, delivered, refund, return, payout, message), per who owns the item (crossly, imported, app_managed, other_tool, untracked). Each matrix cell lists the allowed actions and the effective one, with the scope it comes from (app > platform > global > default). Pass platform (or appId) to see the matrix as that platform's (or app's) items see it. Also returns the rules, platforms and connected apps.
+     
+     - parameter platform: (query)  (optional)
+     - parameter appId: (query)  (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getEventPolicy(platform: String? = nil, appId: UUID? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetEventPolicyResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getEventPolicyWithRequestBuilder(platform: platform, appId: appId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     What Crossly does with each detected marketplace event (sale, listing ended, offer, cancellation, label, shipped, delivered, refund, return, payout, message), per who owns the item (crossly, imported, app_managed, other_tool, untracked). Each matrix cell lists the allowed actions and the effective one, with the scope it comes from (app > platform > global > default). Pass platform (or appId) to see the matrix as that platform's (or app's) items see it. Also returns the rules, platforms and connected apps.
+     - GET /v1/event-policies
      - BASIC:
        - type: http
        - name: PersonalAccessToken
      - parameter platform: (query)  (optional)
-     - parameter action: (query)  (optional)
+     - parameter appId: (query)  (optional)
+     - returns: RequestBuilder<GetEventPolicyResponse> 
+     */
+    open class func getEventPolicyWithRequestBuilder(platform: String? = nil, appId: UUID? = nil) -> RequestBuilder<GetEventPolicyResponse> {
+        let localVariablePath = "/v1/event-policies"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "platform": platform?.encodeToJSON(),
+            "appId": appId?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetEventPolicyResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     * enum for parameter area
+     */
+    public enum Area_listActionLog: String, CaseIterable {
+        case listings = "listings"
+        case inventory = "inventory"
+        case orders = "orders"
+        case shipping = "shipping"
+        case messages = "messages"
+        case automations = "automations"
+        case connections = "connections"
+        case settings = "settings"
+        case billing = "billing"
+        case account = "account"
+        case emails = "emails"
+    }
+
+    /**
+     * enum for parameter status
+     */
+    public enum Status_listActionLog: String, CaseIterable {
+        case pending = "pending"
+        case success = "success"
+        case failure = "failure"
+        case partial = "partial"
+        case skipped = "skipped"
+    }
+
+    /**
+     List Activity Log events, newest first. Each event carries `view` (title, sentence, fields, failure advice, who did it) and typed `detail`. Page with `cursor`; `pagination.total` counts matches.
+     
+     - parameter platform: (query) Platform id (&#x60;ebay&#x60;, &#x60;poshmark&#x60;, ...). (optional)
+     - parameter action: (query) A canonical action key (&#x60;listing.delist&#x60;, see the public action catalog) or a legacy action word. (optional)
      - parameter category: (query)  (optional)
+     - parameter area: (query) A seller area: every action of that area (the grouped filter of the dashboard). (optional)
      - parameter status: (query)  (optional)
      - parameter source: (query)  (optional)
-     - parameter targetType: (query)  (optional)
+     - parameter targetType: (query) With targetId: events about that object (any of their targets). (optional)
      - parameter targetId: (query)  (optional)
-     - parameter since: (query) ISO lower bound (inclusive) on created_at. (optional)
-     - parameter until: (query) ISO upper bound (exclusive) on created_at. (optional)
+     - parameter actorUserId: (query) Only what one team member did. (optional)
+     - parameter q: (query) A search in the activity query language (&#x60;action:listing.* -outcome:failure \&quot;free text\&quot;&#x60;), ANDed with the other filters. POST /api/v1/action-log/search/translate turns a question in words into one. (optional)
+     - parameter since: (query) Inclusive lower bound on when the action happened. (optional)
+     - parameter until: (query) Exclusive upper bound. (optional)
+     - parameter at: (query) Jump to a time: the page starts at the newest event at or before it. (optional)
+     - parameter cursor: (query) &#x60;pagination.nextCursor&#x60; of the previous page. (optional)
      - parameter limit: (query)  (optional, default to 50)
-     - parameter offset: (query)  (optional, default to 0)
+     - parameter offset: (query) Deprecated: use cursor. offset + limit may reach at most 1000 events. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listActionLog(platform: String? = nil, action: String? = nil, category: String? = nil, area: Area_listActionLog? = nil, status: Status_listActionLog? = nil, source: String? = nil, targetType: String? = nil, targetId: String? = nil, actorUserId: String? = nil, q: String? = nil, since: Date? = nil, until: Date? = nil, at: Date? = nil, cursor: String? = nil, limit: Int? = nil, offset: Int? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListActionLogResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listActionLogWithRequestBuilder(platform: platform, action: action, category: category, area: area, status: status, source: source, targetType: targetType, targetId: targetId, actorUserId: actorUserId, q: q, since: since, until: until, at: at, cursor: cursor, limit: limit, offset: offset).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     List Activity Log events, newest first. Each event carries `view` (title, sentence, fields, failure advice, who did it) and typed `detail`. Page with `cursor`; `pagination.total` counts matches.
+     - GET /v1/action-log
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter platform: (query) Platform id (&#x60;ebay&#x60;, &#x60;poshmark&#x60;, ...). (optional)
+     - parameter action: (query) A canonical action key (&#x60;listing.delist&#x60;, see the public action catalog) or a legacy action word. (optional)
+     - parameter category: (query)  (optional)
+     - parameter area: (query) A seller area: every action of that area (the grouped filter of the dashboard). (optional)
+     - parameter status: (query)  (optional)
+     - parameter source: (query)  (optional)
+     - parameter targetType: (query) With targetId: events about that object (any of their targets). (optional)
+     - parameter targetId: (query)  (optional)
+     - parameter actorUserId: (query) Only what one team member did. (optional)
+     - parameter q: (query) A search in the activity query language (&#x60;action:listing.* -outcome:failure \&quot;free text\&quot;&#x60;), ANDed with the other filters. POST /api/v1/action-log/search/translate turns a question in words into one. (optional)
+     - parameter since: (query) Inclusive lower bound on when the action happened. (optional)
+     - parameter until: (query) Exclusive upper bound. (optional)
+     - parameter at: (query) Jump to a time: the page starts at the newest event at or before it. (optional)
+     - parameter cursor: (query) &#x60;pagination.nextCursor&#x60; of the previous page. (optional)
+     - parameter limit: (query)  (optional, default to 50)
+     - parameter offset: (query) Deprecated: use cursor. offset + limit may reach at most 1000 events. (optional)
      - returns: RequestBuilder<ListActionLogResponse> 
      */
-    open class func listActionLogWithRequestBuilder(platform: String? = nil, action: String? = nil, category: String? = nil, status: String? = nil, source: String? = nil, targetType: String? = nil, targetId: String? = nil, since: String? = nil, until: String? = nil, limit: Int? = nil, offset: Int? = nil) -> RequestBuilder<ListActionLogResponse> {
+    open class func listActionLogWithRequestBuilder(platform: String? = nil, action: String? = nil, category: String? = nil, area: Area_listActionLog? = nil, status: Status_listActionLog? = nil, source: String? = nil, targetType: String? = nil, targetId: String? = nil, actorUserId: String? = nil, q: String? = nil, since: Date? = nil, until: Date? = nil, at: Date? = nil, cursor: String? = nil, limit: Int? = nil, offset: Int? = nil) -> RequestBuilder<ListActionLogResponse> {
         let localVariablePath = "/v1/action-log"
         let localVariableURLString = CrosslyAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -163,12 +1115,17 @@ open class ActivityAPI {
             "platform": platform?.encodeToJSON(),
             "action": action?.encodeToJSON(),
             "category": category?.encodeToJSON(),
+            "area": area?.encodeToJSON(),
             "status": status?.encodeToJSON(),
             "source": source?.encodeToJSON(),
             "targetType": targetType?.encodeToJSON(),
             "targetId": targetId?.encodeToJSON(),
+            "actorUserId": actorUserId?.encodeToJSON(),
+            "q": q?.encodeToJSON(),
             "since": since?.encodeToJSON(),
             "until": until?.encodeToJSON(),
+            "at": at?.encodeToJSON(),
+            "cursor": cursor?.encodeToJSON(),
             "limit": limit?.encodeToJSON(),
             "offset": offset?.encodeToJSON(),
         ])
@@ -185,7 +1142,7 @@ open class ActivityAPI {
     }
 
     /**
-     The outbound platform HTTP calls under an event (oldest first) — url, method, status, latency, redacted request/response bodies, proxy + recipe/hash. Answers \"what was sent / what went wrong\".
+     The outbound platform HTTP calls under an event (oldest first) — platform, operation, method, host, status, latency, error class/message, proxy + recipe id. Answers \"what was sent / what went wrong\". The URL path, request/response bodies and persisted-query hash are never returned.
      
      - parameter id: (path)  
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -204,7 +1161,7 @@ open class ActivityAPI {
     }
 
     /**
-     The outbound platform HTTP calls under an event (oldest first) — url, method, status, latency, redacted request/response bodies, proxy + recipe/hash. Answers \"what was sent / what went wrong\".
+     The outbound platform HTTP calls under an event (oldest first) — platform, operation, method, host, status, latency, error class/message, proxy + recipe id. Answers \"what was sent / what went wrong\". The URL path, request/response bodies and persisted-query hash are never returned.
      - GET /v1/action-log/{id}/calls
      - BASIC:
        - type: http
@@ -231,5 +1188,481 @@ open class ActivityAPI {
         let localVariableRequestBuilder: RequestBuilder<ListActionLogCallsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     * enum for parameter area
+     */
+    public enum Area_listActionLogHistogram: String, CaseIterable {
+        case listings = "listings"
+        case inventory = "inventory"
+        case orders = "orders"
+        case shipping = "shipping"
+        case messages = "messages"
+        case automations = "automations"
+        case connections = "connections"
+        case settings = "settings"
+        case billing = "billing"
+        case account = "account"
+        case emails = "emails"
+    }
+
+    /**
+     * enum for parameter status
+     */
+    public enum Status_listActionLogHistogram: String, CaseIterable {
+        case pending = "pending"
+        case success = "success"
+        case failure = "failure"
+        case partial = "partial"
+        case skipped = "skipped"
+    }
+
+    /**
+     Events per UTC day for the list filters (default: the last 30 days; at most 366).
+     
+     - parameter platform: (query) Platform id (&#x60;ebay&#x60;, &#x60;poshmark&#x60;, ...). (optional)
+     - parameter action: (query) A canonical action key (&#x60;listing.delist&#x60;, see the public action catalog) or a legacy action word. (optional)
+     - parameter category: (query)  (optional)
+     - parameter area: (query) A seller area: every action of that area (the grouped filter of the dashboard). (optional)
+     - parameter status: (query)  (optional)
+     - parameter source: (query)  (optional)
+     - parameter targetType: (query) With targetId: events about that object (any of their targets). (optional)
+     - parameter targetId: (query)  (optional)
+     - parameter actorUserId: (query) Only what one team member did. (optional)
+     - parameter q: (query) A search in the activity query language (&#x60;action:listing.* -outcome:failure \&quot;free text\&quot;&#x60;), ANDed with the other filters. POST /api/v1/action-log/search/translate turns a question in words into one. (optional)
+     - parameter since: (query) Inclusive lower bound on when the action happened. (optional)
+     - parameter until: (query) Exclusive upper bound. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listActionLogHistogram(platform: String? = nil, action: String? = nil, category: String? = nil, area: Area_listActionLogHistogram? = nil, status: Status_listActionLogHistogram? = nil, source: String? = nil, targetType: String? = nil, targetId: String? = nil, actorUserId: String? = nil, q: String? = nil, since: Date? = nil, until: Date? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListActionLogHistogramResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listActionLogHistogramWithRequestBuilder(platform: platform, action: action, category: category, area: area, status: status, source: source, targetType: targetType, targetId: targetId, actorUserId: actorUserId, q: q, since: since, until: until).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Events per UTC day for the list filters (default: the last 30 days; at most 366).
+     - GET /v1/action-log/histogram
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter platform: (query) Platform id (&#x60;ebay&#x60;, &#x60;poshmark&#x60;, ...). (optional)
+     - parameter action: (query) A canonical action key (&#x60;listing.delist&#x60;, see the public action catalog) or a legacy action word. (optional)
+     - parameter category: (query)  (optional)
+     - parameter area: (query) A seller area: every action of that area (the grouped filter of the dashboard). (optional)
+     - parameter status: (query)  (optional)
+     - parameter source: (query)  (optional)
+     - parameter targetType: (query) With targetId: events about that object (any of their targets). (optional)
+     - parameter targetId: (query)  (optional)
+     - parameter actorUserId: (query) Only what one team member did. (optional)
+     - parameter q: (query) A search in the activity query language (&#x60;action:listing.* -outcome:failure \&quot;free text\&quot;&#x60;), ANDed with the other filters. POST /api/v1/action-log/search/translate turns a question in words into one. (optional)
+     - parameter since: (query) Inclusive lower bound on when the action happened. (optional)
+     - parameter until: (query) Exclusive upper bound. (optional)
+     - returns: RequestBuilder<ListActionLogHistogramResponse> 
+     */
+    open class func listActionLogHistogramWithRequestBuilder(platform: String? = nil, action: String? = nil, category: String? = nil, area: Area_listActionLogHistogram? = nil, status: Status_listActionLogHistogram? = nil, source: String? = nil, targetType: String? = nil, targetId: String? = nil, actorUserId: String? = nil, q: String? = nil, since: Date? = nil, until: Date? = nil) -> RequestBuilder<ListActionLogHistogramResponse> {
+        let localVariablePath = "/v1/action-log/histogram"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "platform": platform?.encodeToJSON(),
+            "action": action?.encodeToJSON(),
+            "category": category?.encodeToJSON(),
+            "area": area?.encodeToJSON(),
+            "status": status?.encodeToJSON(),
+            "source": source?.encodeToJSON(),
+            "targetType": targetType?.encodeToJSON(),
+            "targetId": targetId?.encodeToJSON(),
+            "actorUserId": actorUserId?.encodeToJSON(),
+            "q": q?.encodeToJSON(),
+            "since": since?.encodeToJSON(),
+            "until": until?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListActionLogHistogramResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Every event Crossly detected (sales, order changes, listing changes, offers, messages, account notices), newest first: all its axes, the rule that decided it, its corroborating reports, the plan per target and how each action went, with canConfirm (an open ask) and canUndo. Cursor-paged; filter by kinds, platforms statuses and accounts (comma-separated) and since (ISO time).
+     
+     - parameter kinds: (query)  (optional)
+     - parameter platforms: (query)  (optional)
+     - parameter accounts: (query) Comma-separated platform account ids (scope.account). (optional)
+     - parameter statuses: (query) Comma-separated: acted, held, asked, confirmed, ignored, undone, failed, received, corrected (optional)
+     - parameter since: (query)  (optional)
+     - parameter cursor: (query)  (optional)
+     - parameter limit: (query)  (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listDetectedEventEvents(kinds: String? = nil, platforms: String? = nil, accounts: String? = nil, statuses: String? = nil, since: Date? = nil, cursor: String? = nil, limit: Int? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListDetectedEventEventsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listDetectedEventEventsWithRequestBuilder(kinds: kinds, platforms: platforms, accounts: accounts, statuses: statuses, since: since, cursor: cursor, limit: limit).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Every event Crossly detected (sales, order changes, listing changes, offers, messages, account notices), newest first: all its axes, the rule that decided it, its corroborating reports, the plan per target and how each action went, with canConfirm (an open ask) and canUndo. Cursor-paged; filter by kinds, platforms statuses and accounts (comma-separated) and since (ISO time).
+     - GET /v1/detected-events/events
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter kinds: (query)  (optional)
+     - parameter platforms: (query)  (optional)
+     - parameter accounts: (query) Comma-separated platform account ids (scope.account). (optional)
+     - parameter statuses: (query) Comma-separated: acted, held, asked, confirmed, ignored, undone, failed, received, corrected (optional)
+     - parameter since: (query)  (optional)
+     - parameter cursor: (query)  (optional)
+     - parameter limit: (query)  (optional)
+     - returns: RequestBuilder<ListDetectedEventEventsResponse> 
+     */
+    open class func listDetectedEventEventsWithRequestBuilder(kinds: String? = nil, platforms: String? = nil, accounts: String? = nil, statuses: String? = nil, since: Date? = nil, cursor: String? = nil, limit: Int? = nil) -> RequestBuilder<ListDetectedEventEventsResponse> {
+        let localVariablePath = "/v1/detected-events/events"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "kinds": kinds?.encodeToJSON(),
+            "platforms": platforms?.encodeToJSON(),
+            "accounts": accounts?.encodeToJSON(),
+            "statuses": statuses?.encodeToJSON(),
+            "since": since?.encodeToJSON(),
+            "cursor": cursor?.encodeToJSON(),
+            "limit": limit?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListDetectedEventEventsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The seller's detection rules, top-down in the order they are evaluated (first match wins unless a rule says continue): the seller's own rules, translations of their event-policy rules (source legacy), then the shipped default set (source default, ids default:<key>; a stored edit of a default replaces it). Each rule has a filter (event kinds, platforms, accounts, apps, tags, items), an optional condition over any event axis, the actions it runs (then / else) and its guard loosenings.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listDetectedEventRules(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListDetectedEventRulesResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listDetectedEventRulesWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The seller's detection rules, top-down in the order they are evaluated (first match wins unless a rule says continue): the seller's own rules, translations of their event-policy rules (source legacy), then the shipped default set (source default, ids default:<key>; a stored edit of a default replaces it). Each rule has a filter (event kinds, platforms, accounts, apps, tags, items), an optional condition over any event axis, the actions it runs (then / else) and its guard loosenings.
+     - GET /v1/detected-events/rules
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListDetectedEventRulesResponse> 
+     */
+    open class func listDetectedEventRulesWithRequestBuilder() -> RequestBuilder<ListDetectedEventRulesResponse> {
+        let localVariablePath = "/v1/detected-events/rules"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListDetectedEventRulesResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     * enum for parameter status
+     */
+    public enum Status_listEmailEvents: String, CaseIterable {
+        case needsReview = "needs_review"
+    }
+
+    /**
+     List email-detected events waiting for the seller (status=needs_review): a possible sale, ended listing, cancellation or other event an email reported that was not certain enough to act on automatically.
+     
+     - parameter status: (query)  (optional, default to .needsReview)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listEmailEvents(status: Status_listEmailEvents? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListEmailEventsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listEmailEventsWithRequestBuilder(status: status).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     List email-detected events waiting for the seller (status=needs_review): a possible sale, ended listing, cancellation or other event an email reported that was not certain enough to act on automatically.
+     - GET /v1/email-events
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter status: (query)  (optional, default to .needsReview)
+     - returns: RequestBuilder<ListEmailEventsResponse> 
+     */
+    open class func listEmailEventsWithRequestBuilder(status: Status_listEmailEvents? = nil) -> RequestBuilder<ListEmailEventsResponse> {
+        let localVariablePath = "/v1/email-events"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "status": status?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListEmailEventsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     * enum for parameter event
+     */
+    public enum Event_listEventPolicyDecisions: String, CaseIterable {
+        case sale = "sale"
+        case listingEnded = "listing_ended"
+        case offer = "offer"
+        case orderCancelled = "order_cancelled"
+        case labelReady = "label_ready"
+        case shipped = "shipped"
+        case delivered = "delivered"
+        case refunded = "refunded"
+        case returnOpened = "return_opened"
+        case payoutSent = "payout_sent"
+        case message = "message"
+    }
+
+    /**
+     * enum for parameter ownership
+     */
+    public enum Ownership_listEventPolicyDecisions: String, CaseIterable {
+        case crossly = "crossly"
+        case imported = "imported"
+        case appManaged = "app_managed"
+        case otherTool = "other_tool"
+        case untracked = "untracked"
+    }
+
+    /**
+     * enum for parameter outcome
+     */
+    public enum Outcome_listEventPolicyDecisions: String, CaseIterable {
+        case done = "done"
+        case skipped = "skipped"
+        case failed = "failed"
+        case review = "review"
+    }
+
+    /**
+     The decision log, newest first: for each detected event, what the rule or default asked for, what was done (after capability fallback and the email confidence ceiling), the rule that decided it, and the outcome (done / skipped / failed / review). Cursor-paged; filter by event, ownership, platform or outcome (outcome=review: still waiting for the seller). Kept 90 days.
+     
+     - parameter cursor: (query)  (optional)
+     - parameter limit: (query)  (optional)
+     - parameter event: (query)  (optional)
+     - parameter ownership: (query)  (optional)
+     - parameter platform: (query)  (optional)
+     - parameter outcome: (query)  (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listEventPolicyDecisions(cursor: String? = nil, limit: Int? = nil, event: Event_listEventPolicyDecisions? = nil, ownership: Ownership_listEventPolicyDecisions? = nil, platform: String? = nil, outcome: Outcome_listEventPolicyDecisions? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListEventPolicyDecisionsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listEventPolicyDecisionsWithRequestBuilder(cursor: cursor, limit: limit, event: event, ownership: ownership, platform: platform, outcome: outcome).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The decision log, newest first: for each detected event, what the rule or default asked for, what was done (after capability fallback and the email confidence ceiling), the rule that decided it, and the outcome (done / skipped / failed / review). Cursor-paged; filter by event, ownership, platform or outcome (outcome=review: still waiting for the seller). Kept 90 days.
+     - GET /v1/event-policies/decisions
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter cursor: (query)  (optional)
+     - parameter limit: (query)  (optional)
+     - parameter event: (query)  (optional)
+     - parameter ownership: (query)  (optional)
+     - parameter platform: (query)  (optional)
+     - parameter outcome: (query)  (optional)
+     - returns: RequestBuilder<ListEventPolicyDecisionsResponse> 
+     */
+    open class func listEventPolicyDecisionsWithRequestBuilder(cursor: String? = nil, limit: Int? = nil, event: Event_listEventPolicyDecisions? = nil, ownership: Ownership_listEventPolicyDecisions? = nil, platform: String? = nil, outcome: Outcome_listEventPolicyDecisions? = nil) -> RequestBuilder<ListEventPolicyDecisionsResponse> {
+        let localVariablePath = "/v1/event-policies/decisions"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "cursor": cursor?.encodeToJSON(),
+            "limit": limit?.encodeToJSON(),
+            "event": event?.encodeToJSON(),
+            "ownership": ownership?.encodeToJSON(),
+            "platform": platform?.encodeToJSON(),
+            "outcome": outcome?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListEventPolicyDecisionsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Replace a detection rule. An id default:<key> stores your edit of that shipped default (delete it, or reset-defaults, to go back to the shipped one).
+     
+     - parameter id: (path)  
+     - parameter createDetectedEventRuleRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateDetectedEventRule(id: String, createDetectedEventRuleRequest: CreateDetectedEventRuleRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateDetectedEventRuleResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateDetectedEventRuleWithRequestBuilder(id: id, createDetectedEventRuleRequest: createDetectedEventRuleRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Replace a detection rule. An id default:<key> stores your edit of that shipped default (delete it, or reset-defaults, to go back to the shipped one).
+     - PUT /v1/detected-events/rules/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - parameter createDetectedEventRuleRequest: (body)  
+     - returns: RequestBuilder<CreateDetectedEventRuleResponse> 
+     */
+    open class func updateDetectedEventRuleWithRequestBuilder(id: String, createDetectedEventRuleRequest: CreateDetectedEventRuleRequest) -> RequestBuilder<CreateDetectedEventRuleResponse> {
+        var localVariablePath = "/v1/detected-events/rules/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createDetectedEventRuleRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateDetectedEventRuleResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Set what Crossly does with one kind of detected event for one kind of item: scope global (scopeValue null), platform (scopeValue = platform id) or app (scopeValue = OAuth app id, app_managed items only). Replaces the rule for the same cell and scope. The action must be one the matrix allows for that cell; import actions exist only for untracked items.
+     
+     - parameter updateEventPolicyRuleRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateEventPolicyRule(updateEventPolicyRuleRequest: UpdateEventPolicyRuleRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: UpdateEventPolicyRuleResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateEventPolicyRuleWithRequestBuilder(updateEventPolicyRuleRequest: updateEventPolicyRuleRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Set what Crossly does with one kind of detected event for one kind of item: scope global (scopeValue null), platform (scopeValue = platform id) or app (scopeValue = OAuth app id, app_managed items only). Replaces the rule for the same cell and scope. The action must be one the matrix allows for that cell; import actions exist only for untracked items.
+     - PUT /v1/event-policies/rules
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter updateEventPolicyRuleRequest: (body)  
+     - returns: RequestBuilder<UpdateEventPolicyRuleResponse> 
+     */
+    open class func updateEventPolicyRuleWithRequestBuilder(updateEventPolicyRuleRequest: UpdateEventPolicyRuleRequest) -> RequestBuilder<UpdateEventPolicyRuleResponse> {
+        let localVariablePath = "/v1/event-policies/rules"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: updateEventPolicyRuleRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<UpdateEventPolicyRuleResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
 }

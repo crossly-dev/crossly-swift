@@ -13,10 +13,10 @@ import AnyCodable
 public struct GetVaultMarketCreatorRoomResponseRoom: Codable, JSONEncodable, Hashable {
 
     public enum Status: String, Codable, CaseIterable {
-        case applied = "applied"
-        case verified = "verified"
-        case rejected = "rejected"
         case paused = "paused"
+        case verified = "verified"
+        case applied = "applied"
+        case rejected = "rejected"
     }
     public var id: String
     public var slug: String

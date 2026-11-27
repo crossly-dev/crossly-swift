@@ -1047,6 +1047,187 @@ open class BuyerAPI {
     }
 
     /**
+     Create a buyer company: name, taxId?, website?. You become its owner; a user is in at most one company.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createBuyerCompany(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerCompanyResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createBuyerCompanyWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Create a buyer company: name, taxId?, website?. You become its owner; a user is in at most one company.
+     - POST /v1/buyer/company
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<BuyerCompanyResponse> 
+     */
+    open class func createBuyerCompanyWithRequestBuilder() -> RequestBuilder<BuyerCompanyResponse> {
+        let localVariablePath = "/v1/buyer/company"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BuyerCompanyResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Ask for approval of a trade order above your limit: sellerUserId, amountCents, note?, poReference?. Good for 7 days, used once at checkout.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createBuyerCompanyApproval(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: CreateBuyerCompanyApprovalResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createBuyerCompanyApprovalWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Ask for approval of a trade order above your limit: sellerUserId, amountCents, note?, poReference?. Good for 7 days, used once at checkout.
+     - POST /v1/buyer/company/approvals
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<CreateBuyerCompanyApprovalResponse> 
+     */
+    open class func createBuyerCompanyApprovalWithRequestBuilder() -> RequestBuilder<CreateBuyerCompanyApprovalResponse> {
+        let localVariablePath = "/v1/buyer/company/approvals"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateBuyerCompanyApprovalResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Approve or decline a pending request (owner, accounts payable): decision approved | declined, note?.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createBuyerCompanyApprovalDecide(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: CreateBuyerCompanyApprovalResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createBuyerCompanyApprovalDecideWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Approve or decline a pending request (owner, accounts payable): decision approved | declined, note?.
+     - POST /v1/buyer/company/approvals/{id}/decide
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateBuyerCompanyApprovalResponse> 
+     */
+    open class func createBuyerCompanyApprovalDecideWithRequestBuilder(id: String) -> RequestBuilder<CreateBuyerCompanyApprovalResponse> {
+        var localVariablePath = "/v1/buyer/company/approvals/{id}/decide"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateBuyerCompanyApprovalResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Invite a teammate by email (owner): role owner | buyer | accounts_payable | viewer, approvalLimitCents for a buyer (orders above it need an approval).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createBuyerCompanyMember(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerCompanyResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createBuyerCompanyMemberWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Invite a teammate by email (owner): role owner | buyer | accounts_payable | viewer, approvalLimitCents for a buyer (orders above it need an approval).
+     - POST /v1/buyer/company/members
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<BuyerCompanyResponse> 
+     */
+    open class func createBuyerCompanyMemberWithRequestBuilder() -> RequestBuilder<BuyerCompanyResponse> {
+        let localVariablePath = "/v1/buyer/company/members"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BuyerCompanyResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Invite a friend into a chat with a seller: a single-use link (7 days) that makes whoever opens it a guest who can read and post. Only the thread’s buyer can invite; at most 5 guests.
      
      - parameter id: (path)  
@@ -1140,6 +1321,55 @@ open class BuyerAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<CreateBuyerConversationJoinResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     RSVP to an event: going (counts against its capacity) or interested.
+     
+     - parameter slug: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createBuyerEventRsvp(slug: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: CreateBuyerEventRsvpResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createBuyerEventRsvpWithRequestBuilder(slug: slug).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     RSVP to an event: going (counts against its capacity) or interested.
+     - POST /v1/buyer/events/{slug}/rsvp
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter slug: (path)  
+     - returns: RequestBuilder<CreateBuyerEventRsvpResponse> 
+     */
+    open class func createBuyerEventRsvpWithRequestBuilder(slug: String) -> RequestBuilder<CreateBuyerEventRsvpResponse> {
+        var localVariablePath = "/v1/buyer/events/{slug}/rsvp"
+        let slugPreEscape = "\(APIHelper.mapValueToPathItem(slug))"
+        let slugPostEscape = slugPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{slug}", with: slugPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateBuyerEventRsvpResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -1376,7 +1606,7 @@ open class BuyerAPI {
     }
 
     /**
-     Join a group buy: a hold at the starting price, captured at the price the group reaches. Checked against this key’s spending controls; send an Idempotency-Key.
+     Join a group buy with a quantity (up to its per-buyer max): a hold (or, for pay-now pools, a charge refunded the difference) at the starting price, settled at the price the group reaches. `linkToken` opens a link-only pool. Checked against this key’s spending controls; send an Idempotency-Key.
      
      - parameter id: (path)  
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -1395,7 +1625,7 @@ open class BuyerAPI {
     }
 
     /**
-     Join a group buy: a hold at the starting price, captured at the price the group reaches. Checked against this key’s spending controls; send an Idempotency-Key.
+     Join a group buy with a quantity (up to its per-buyer max): a hold (or, for pay-now pools, a charge refunded the difference) at the starting price, settled at the price the group reaches. `linkToken` opens a link-only pool. Checked against this key’s spending controls; send an Idempotency-Key.
      - POST /v1/buyer/group-buys/{id}/join
      - BASIC:
        - type: http
@@ -2391,7 +2621,7 @@ open class BuyerAPI {
     }
 
     /**
-     Claim a passport as the item’s current owner (the buyer of its latest sale) — shown as “in its owner’s hands” until it sells again.
+     Claim a passport as the item’s current owner — the buyer of its latest Crossly sale, or (after a sale on another marketplace) with the transfer code from the card in the box — shown as “in its owner’s hands” until it sells again.
      
      - parameter code: (path)  
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -2410,7 +2640,7 @@ open class BuyerAPI {
     }
 
     /**
-     Claim a passport as the item’s current owner (the buyer of its latest sale) — shown as “in its owner’s hands” until it sells again.
+     Claim a passport as the item’s current owner — the buyer of its latest Crossly sale, or (after a sale on another marketplace) with the transfer code from the card in the box — shown as “in its owner’s hands” until it sells again.
      - POST /v1/buyer/passports/{code}/claim
      - BASIC:
        - type: http
@@ -2484,55 +2714,6 @@ open class BuyerAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<CreateBuyerProtectionPlanCancelResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
-
-        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
-    }
-
-    /**
-     A ten-minute link to a digital purchase’s file; each call uses one of its downloads.
-     
-     - parameter id: (path)  
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
-     */
-    @discardableResult
-    open class func createBuyerPurchaseDownload(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: CreateBuyerPurchaseDownloadResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return createBuyerPurchaseDownloadWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
-    }
-
-    /**
-     A ten-minute link to a digital purchase’s file; each call uses one of its downloads.
-     - POST /v1/buyer/purchases/{id}/download
-     - BASIC:
-       - type: http
-       - name: BuyerOAuth
-     - parameter id: (path)  
-     - returns: RequestBuilder<CreateBuyerPurchaseDownloadResponse> 
-     */
-    open class func createBuyerPurchaseDownloadWithRequestBuilder(id: String) -> RequestBuilder<CreateBuyerPurchaseDownloadResponse> {
-        var localVariablePath = "/v1/buyer/purchases/{id}/download"
-        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
-        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
-        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
-        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
-        let localVariableParameters: [String: Any]? = nil
-
-        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
-
-        let localVariableNillableHeaders: [String: Any?] = [
-            :
-        ]
-
-        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
-
-        let localVariableRequestBuilder: RequestBuilder<CreateBuyerPurchaseDownloadResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -2741,7 +2922,7 @@ open class BuyerAPI {
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func createBuyerRentalArrivalPhoto(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: CreateBuyerRentalArrivalPhotoResponse?, _ error: Error?) -> Void)) -> RequestTask {
+    open class func createBuyerRentalArrivalPhoto(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerRentalResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return createBuyerRentalArrivalPhotoWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
@@ -2759,9 +2940,9 @@ open class BuyerAPI {
        - type: http
        - name: BuyerOAuth
      - parameter id: (path)  
-     - returns: RequestBuilder<CreateBuyerRentalArrivalPhotoResponse> 
+     - returns: RequestBuilder<BuyerRentalResponse> 
      */
-    open class func createBuyerRentalArrivalPhotoWithRequestBuilder(id: String) -> RequestBuilder<CreateBuyerRentalArrivalPhotoResponse> {
+    open class func createBuyerRentalArrivalPhotoWithRequestBuilder(id: String) -> RequestBuilder<BuyerRentalResponse> {
         var localVariablePath = "/v1/buyer/rentals/{id}/arrival-photos"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -2777,7 +2958,56 @@ open class BuyerAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<CreateBuyerRentalArrivalPhotoResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<BuyerRentalResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Buy the item you are renting: the price less the rent-to-own credit → clientSecret.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createBuyerRentalBuyout(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: CreateBuyerRentalBuyoutResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createBuyerRentalBuyoutWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Buy the item you are renting: the price less the rent-to-own credit → clientSecret.
+     - POST /v1/buyer/rentals/{id}/buyout
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateBuyerRentalBuyoutResponse> 
+     */
+    open class func createBuyerRentalBuyoutWithRequestBuilder(id: String) -> RequestBuilder<CreateBuyerRentalBuyoutResponse> {
+        var localVariablePath = "/v1/buyer/rentals/{id}/buyout"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateBuyerRentalBuyoutResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -2881,6 +3111,158 @@ open class BuyerAPI {
     }
 
     /**
+     Confirm your rental arrived.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createBuyerRentalDelivered(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerRentalResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createBuyerRentalDeliveredWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Confirm your rental arrived.
+     - POST /v1/buyer/rentals/{id}/delivered
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter id: (path)  
+     - returns: RequestBuilder<BuyerRentalResponse> 
+     */
+    open class func createBuyerRentalDeliveredWithRequestBuilder(id: String) -> RequestBuilder<BuyerRentalResponse> {
+        var localVariablePath = "/v1/buyer/rentals/{id}/delivered"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BuyerRentalResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Ask for more days. Auto-approved extensions return a clientSecret to pay with Stripe.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createBuyerRentalExtension(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: CreateBuyerRentalExtensionResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createBuyerRentalExtensionWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Ask for more days. Auto-approved extensions return a clientSecret to pay with Stripe.
+     - POST /v1/buyer/rentals/{id}/extensions
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateBuyerRentalExtensionResponse> 
+     */
+    open class func createBuyerRentalExtensionWithRequestBuilder(id: String) -> RequestBuilder<CreateBuyerRentalExtensionResponse> {
+        var localVariablePath = "/v1/buyer/rentals/{id}/extensions"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateBuyerRentalExtensionResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Pay for an extension the seller approved → clientSecret.
+     
+     - parameter id: (path)  
+     - parameter extensionId: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createBuyerRentalExtensionPay(id: String, extensionId: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: CreateBuyerRentalExtensionPayResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createBuyerRentalExtensionPayWithRequestBuilder(id: id, extensionId: extensionId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Pay for an extension the seller approved → clientSecret.
+     - POST /v1/buyer/rentals/{id}/extensions/{extensionId}/pay
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter id: (path)  
+     - parameter extensionId: (path)  
+     - returns: RequestBuilder<CreateBuyerRentalExtensionPayResponse> 
+     */
+    open class func createBuyerRentalExtensionPayWithRequestBuilder(id: String, extensionId: String) -> RequestBuilder<CreateBuyerRentalExtensionPayResponse> {
+        var localVariablePath = "/v1/buyer/rentals/{id}/extensions/{extensionId}/pay"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let extensionIdPreEscape = "\(APIHelper.mapValueToPathItem(extensionId))"
+        let extensionIdPostEscape = extensionIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{extensionId}", with: extensionIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateBuyerRentalExtensionPayResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Start the ID check renting needs (Stripe Identity: photo ID + selfie). Open `url` (hosted) or use `clientSecret` with Stripe.js.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -2920,6 +3302,55 @@ open class BuyerAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<CreateBuyerRentalIdentityStartResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Say you sent your rental back (optionally with photos).
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createBuyerRentalReturnShipped(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerRentalResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createBuyerRentalReturnShippedWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Say you sent your rental back (optionally with photos).
+     - POST /v1/buyer/rentals/{id}/return-shipped
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter id: (path)  
+     - returns: RequestBuilder<BuyerRentalResponse> 
+     */
+    open class func createBuyerRentalReturnShippedWithRequestBuilder(id: String) -> RequestBuilder<BuyerRentalResponse> {
+        var localVariablePath = "/v1/buyer/rentals/{id}/return-shipped"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BuyerRentalResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -3072,6 +3503,55 @@ open class BuyerAPI {
     }
 
     /**
+     Join a seller’s loyalty club. Invite-only clubs take only invited buyers. Your tier and its perks are granted at once.
+     
+     - parameter sellerUserId: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createBuyerSellerLoyaltyJoin(sellerUserId: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: GetBuyerSellerLoyaltyResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createBuyerSellerLoyaltyJoinWithRequestBuilder(sellerUserId: sellerUserId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Join a seller’s loyalty club. Invite-only clubs take only invited buyers. Your tier and its perks are granted at once.
+     - POST /v1/buyer/sellers/{sellerUserId}/loyalty/join
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter sellerUserId: (path)  
+     - returns: RequestBuilder<GetBuyerSellerLoyaltyResponse> 
+     */
+    open class func createBuyerSellerLoyaltyJoinWithRequestBuilder(sellerUserId: String) -> RequestBuilder<GetBuyerSellerLoyaltyResponse> {
+        var localVariablePath = "/v1/buyer/sellers/{sellerUserId}/loyalty/join"
+        let sellerUserIdPreEscape = "\(APIHelper.mapValueToPathItem(sellerUserId))"
+        let sellerUserIdPostEscape = sellerUserIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{sellerUserId}", with: sellerUserIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetBuyerSellerLoyaltyResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Report a seller to Crossly’s trust team.
      
      - parameter username: (path) The seller’s shop handle. 
@@ -3080,7 +3560,7 @@ open class BuyerAPI {
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func createBuyerSellerReport(username: String, createBuyerSellerReportRequest: CreateBuyerSellerReportRequest, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: CreateBuyerSellerReportResponse?, _ error: Error?) -> Void)) -> RequestTask {
+    open class func createBuyerSellerReport(username: String, createBuyerSellerReportRequest: CreateBuyerSellerReportRequest, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: CreateBuyerStoreReportResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return createBuyerSellerReportWithRequestBuilder(username: username, createBuyerSellerReportRequest: createBuyerSellerReportRequest).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
@@ -3100,9 +3580,9 @@ open class BuyerAPI {
        - name: BuyerOAuth
      - parameter username: (path) The seller’s shop handle. 
      - parameter createBuyerSellerReportRequest: (body)  
-     - returns: RequestBuilder<CreateBuyerSellerReportResponse> 
+     - returns: RequestBuilder<CreateBuyerStoreReportResponse> 
      */
-    open class func createBuyerSellerReportWithRequestBuilder(username: String, createBuyerSellerReportRequest: CreateBuyerSellerReportRequest) -> RequestBuilder<CreateBuyerSellerReportResponse> {
+    open class func createBuyerSellerReportWithRequestBuilder(username: String, createBuyerSellerReportRequest: CreateBuyerSellerReportRequest) -> RequestBuilder<CreateBuyerStoreReportResponse> {
         var localVariablePath = "/v1/buyer/sellers/{username}/report"
         let usernamePreEscape = "\(APIHelper.mapValueToPathItem(username))"
         let usernamePostEscape = usernamePreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -3118,7 +3598,7 @@ open class BuyerAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<CreateBuyerSellerReportResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<CreateBuyerStoreReportResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -3168,6 +3648,58 @@ open class BuyerAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<BuyerResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Report a store to Crossly’s trust team.
+     
+     - parameter slug: (path) The store’s slug (its /shop/s/&lt;slug&gt; address). 
+     - parameter createBuyerSellerReportRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createBuyerStoreReport(slug: String, createBuyerSellerReportRequest: CreateBuyerSellerReportRequest, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: CreateBuyerStoreReportResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createBuyerStoreReportWithRequestBuilder(slug: slug, createBuyerSellerReportRequest: createBuyerSellerReportRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Report a store to Crossly’s trust team.
+     - POST /v1/buyer/stores/{slug}/report
+     - Files against whoever runs the store. A second report while your first is still under review updates that report instead of filing another. `purchaseId` is attached only if it is your order from this seller.
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter slug: (path) The store’s slug (its /shop/s/&lt;slug&gt; address). 
+     - parameter createBuyerSellerReportRequest: (body)  
+     - returns: RequestBuilder<CreateBuyerStoreReportResponse> 
+     */
+    open class func createBuyerStoreReportWithRequestBuilder(slug: String, createBuyerSellerReportRequest: CreateBuyerSellerReportRequest) -> RequestBuilder<CreateBuyerStoreReportResponse> {
+        var localVariablePath = "/v1/buyer/stores/{slug}/report"
+        let slugPreEscape = "\(APIHelper.mapValueToPathItem(slug))"
+        let slugPostEscape = slugPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{slug}", with: slugPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createBuyerSellerReportRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateBuyerStoreReportResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -3656,6 +4188,383 @@ open class BuyerAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<CreateBuyerVaultWithdrawResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Apply to a store's wholesale catalog: { message?, answers [{ id, value }], resaleCertUrl?, resaleCertState?, taxId?, businessInfo? }. The seller's requirements are enforced (400 trade_apply_requirements names the first one missing); the seller reviews the request.
+     
+     - parameter storeSlug: (path)  
+     - parameter catalogSlug: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createBuyerWholesaleCatalogApply(storeSlug: String, catalogSlug: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: CreateBuyerWholesaleCatalogApplyResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createBuyerWholesaleCatalogApplyWithRequestBuilder(storeSlug: storeSlug, catalogSlug: catalogSlug).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Apply to a store's wholesale catalog: { message?, answers [{ id, value }], resaleCertUrl?, resaleCertState?, taxId?, businessInfo? }. The seller's requirements are enforced (400 trade_apply_requirements names the first one missing); the seller reviews the request.
+     - POST /v1/buyer/wholesale/catalogs/{storeSlug}/{catalogSlug}/apply
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter storeSlug: (path)  
+     - parameter catalogSlug: (path)  
+     - returns: RequestBuilder<CreateBuyerWholesaleCatalogApplyResponse> 
+     */
+    open class func createBuyerWholesaleCatalogApplyWithRequestBuilder(storeSlug: String, catalogSlug: String) -> RequestBuilder<CreateBuyerWholesaleCatalogApplyResponse> {
+        var localVariablePath = "/v1/buyer/wholesale/catalogs/{storeSlug}/{catalogSlug}/apply"
+        let storeSlugPreEscape = "\(APIHelper.mapValueToPathItem(storeSlug))"
+        let storeSlugPostEscape = storeSlugPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{storeSlug}", with: storeSlugPostEscape, options: .literal, range: nil)
+        let catalogSlugPreEscape = "\(APIHelper.mapValueToPathItem(catalogSlug))"
+        let catalogSlugPostEscape = catalogSlugPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{catalogSlug}", with: catalogSlugPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateBuyerWholesaleCatalogApplyResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Ask a seller to quote freight for their lines in your cart (an order over their pallet threshold): { sellerUserId, weightLbs?, shipTo? { postalCode, country, city?, region?, liftgate?, dock? }, note? }. One open request per seller.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createBuyerWholesaleFreightRequest(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: CreateBuyerWholesaleFreightRequestResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createBuyerWholesaleFreightRequestWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Ask a seller to quote freight for their lines in your cart (an order over their pallet threshold): { sellerUserId, weightLbs?, shipTo? { postalCode, country, city?, region?, liftgate?, dock? }, note? }. One open request per seller.
+     - POST /v1/buyer/wholesale/freight-requests
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<CreateBuyerWholesaleFreightRequestResponse> 
+     */
+    open class func createBuyerWholesaleFreightRequestWithRequestBuilder() -> RequestBuilder<CreateBuyerWholesaleFreightRequestResponse> {
+        let localVariablePath = "/v1/buyer/wholesale/freight-requests"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateBuyerWholesaleFreightRequestResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     A hosted payment page for an on-account invoice: amountCents? (part of the balance, at least $1), method? card | ach. Nothing is charged until the buyer completes the page.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createBuyerWholesaleInvoicePayLink(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: CreateBuyerWholesaleInvoicePayLinkResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createBuyerWholesaleInvoicePayLinkWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A hosted payment page for an on-account invoice: amountCents? (part of the balance, at least $1), method? card | ach. Nothing is charged until the buyer completes the page.
+     - POST /v1/buyer/wholesale/invoices/{id}/pay-link
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateBuyerWholesaleInvoicePayLinkResponse> 
+     */
+    open class func createBuyerWholesaleInvoicePayLinkWithRequestBuilder(id: String) -> RequestBuilder<CreateBuyerWholesaleInvoicePayLinkResponse> {
+        var localVariablePath = "/v1/buyer/wholesale/invoices/{id}/pay-link"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateBuyerWholesaleInvoicePayLinkResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Save an order sheet: name, lines [{ platformListingId, listingVariantId?, catalogId?, quantity }] from one seller, optional catalogId, poReference, note.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createBuyerWholesaleOrderSheet(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerWholesaleOrderSheetResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createBuyerWholesaleOrderSheetWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Save an order sheet: name, lines [{ platformListingId, listingVariantId?, catalogId?, quantity }] from one seller, optional catalogId, poReference, note.
+     - POST /v1/buyer/wholesale/order-sheets
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<BuyerWholesaleOrderSheetResponse> 
+     */
+    open class func createBuyerWholesaleOrderSheetWithRequestBuilder() -> RequestBuilder<BuyerWholesaleOrderSheetResponse> {
+        let localVariablePath = "/v1/buyer/wholesale/order-sheets"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BuyerWholesaleOrderSheetResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Ask one seller for a quote: items [{ platformListingId, listingVariantId?, quantity, targetUnitPriceCents? }] (one seller per quote), optional catalogId, note, poReference.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createBuyerWholesaleQuote(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerWholesaleQuoteResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createBuyerWholesaleQuoteWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Ask one seller for a quote: items [{ platformListingId, listingVariantId?, quantity, targetUnitPriceCents? }] (one seller per quote), optional catalogId, note, poReference.
+     - POST /v1/buyer/wholesale/quotes
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<BuyerWholesaleQuoteResponse> 
+     */
+    open class func createBuyerWholesaleQuoteWithRequestBuilder() -> RequestBuilder<BuyerWholesaleQuoteResponse> {
+        let localVariablePath = "/v1/buyer/wholesale/quotes"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BuyerWholesaleQuoteResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Accept an answered quote: its priced items go into your cart at the quoted quantities, locked at the quoted prices until the quote expires (changing a line's quantity drops the lock). Paying happens at checkout on Crossly.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createBuyerWholesaleQuoteAccept(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: CreateBuyerWholesaleQuoteAcceptResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createBuyerWholesaleQuoteAcceptWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Accept an answered quote: its priced items go into your cart at the quoted quantities, locked at the quoted prices until the quote expires (changing a line's quantity drops the lock). Paying happens at checkout on Crossly.
+     - POST /v1/buyer/wholesale/quotes/{id}/accept
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateBuyerWholesaleQuoteAcceptResponse> 
+     */
+    open class func createBuyerWholesaleQuoteAcceptWithRequestBuilder(id: String) -> RequestBuilder<CreateBuyerWholesaleQuoteAcceptResponse> {
+        var localVariablePath = "/v1/buyer/wholesale/quotes/{id}/accept"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateBuyerWholesaleQuoteAcceptResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Withdraw a quote request that is still requested or answered.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createBuyerWholesaleQuoteWithdraw(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerWholesaleQuoteResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createBuyerWholesaleQuoteWithdrawWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Withdraw a quote request that is still requested or answered.
+     - POST /v1/buyer/wholesale/quotes/{id}/withdraw
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter id: (path)  
+     - returns: RequestBuilder<BuyerWholesaleQuoteResponse> 
+     */
+    open class func createBuyerWholesaleQuoteWithdrawWithRequestBuilder(id: String) -> RequestBuilder<BuyerWholesaleQuoteResponse> {
+        var localVariablePath = "/v1/buyer/wholesale/quotes/{id}/withdraw"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BuyerWholesaleQuoteResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Validate a CSV / PO against one catalog: rows [{ line, sku, quantity }] are matched by SKU (item or option SKU, or listing slug), merged per item and priced today; unmatched rows come back by line.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createBuyerWholesaleUploadValidate(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: CreateBuyerWholesaleUploadValidateResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createBuyerWholesaleUploadValidateWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Validate a CSV / PO against one catalog: rows [{ line, sku, quantity }] are matched by SKU (item or option SKU, or listing slug), merged per item and priced today; unmatched rows come back by line.
+     - POST /v1/buyer/wholesale/upload/validate
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<CreateBuyerWholesaleUploadValidateResponse> 
+     */
+    open class func createBuyerWholesaleUploadValidateWithRequestBuilder() -> RequestBuilder<CreateBuyerWholesaleUploadValidateResponse> {
+        let localVariablePath = "/v1/buyer/wholesale/upload/validate"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateBuyerWholesaleUploadValidateResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -4163,6 +5072,55 @@ open class BuyerAPI {
     }
 
     /**
+     Remove a member or cancel an invite (owner), or leave the company (your own member id).
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func deleteBuyerCompanyMember(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerCompanyResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return deleteBuyerCompanyMemberWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Remove a member or cancel an invite (owner), or leave the company (your own member id).
+     - DELETE /v1/buyer/company/members/{id}
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter id: (path)  
+     - returns: RequestBuilder<BuyerCompanyResponse> 
+     */
+    open class func deleteBuyerCompanyMemberWithRequestBuilder(id: String) -> RequestBuilder<BuyerCompanyResponse> {
+        var localVariablePath = "/v1/buyer/company/members/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BuyerCompanyResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Remove a guest (the thread’s buyer), or leave (a guest, with your own user id).
      
      - parameter id: (path)  
@@ -4200,6 +5158,119 @@ open class BuyerAPI {
         let userIdPreEscape = "\(APIHelper.mapValueToPathItem(userId))"
         let userIdPostEscape = userIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{userId}", with: userIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BuyerResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     * enum for parameter format
+     */
+    public enum Format_deleteBuyerCreationReview: String, CaseIterable {
+        case wearable = "wearable"
+        case decor = "decor"
+        case interactive = "interactive"
+        case card = "card"
+    }
+
+    /**
+     Remove your review of a creation (its vote leaves the rating with it).
+     
+     - parameter format: (path) The creation format. 
+     - parameter id: (path) The creation id (a card is &lt;setId&gt;.&lt;slug&gt;). 
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func deleteBuyerCreationReview(format: Format_deleteBuyerCreationReview, id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return deleteBuyerCreationReviewWithRequestBuilder(format: format, id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Remove your review of a creation (its vote leaves the rating with it).
+     - DELETE /v1/buyer/creations/{format}/{id}/review
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter format: (path) The creation format. 
+     - parameter id: (path) The creation id (a card is &lt;setId&gt;.&lt;slug&gt;). 
+     - returns: RequestBuilder<BuyerResponse> 
+     */
+    open class func deleteBuyerCreationReviewWithRequestBuilder(format: Format_deleteBuyerCreationReview, id: String) -> RequestBuilder<BuyerResponse> {
+        var localVariablePath = "/v1/buyer/creations/{format}/{id}/review"
+        let formatPreEscape = "\(format.rawValue)"
+        let formatPostEscape = formatPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{format}", with: formatPostEscape, options: .literal, range: nil)
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BuyerResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Take back your RSVP.
+     
+     - parameter slug: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func deleteBuyerEventRsvp(slug: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return deleteBuyerEventRsvpWithRequestBuilder(slug: slug).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Take back your RSVP.
+     - DELETE /v1/buyer/events/{slug}/rsvp
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter slug: (path)  
+     - returns: RequestBuilder<BuyerResponse> 
+     */
+    open class func deleteBuyerEventRsvpWithRequestBuilder(slug: String) -> RequestBuilder<BuyerResponse> {
+        var localVariablePath = "/v1/buyer/events/{slug}/rsvp"
+        let slugPreEscape = "\(APIHelper.mapValueToPathItem(slug))"
+        let slugPostEscape = slugPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{slug}", with: slugPostEscape, options: .literal, range: nil)
         let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
@@ -4261,6 +5332,55 @@ open class BuyerAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<BuyerResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Hide a line from your home’s guestbook.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func deleteBuyerHomeGuestbook(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) -> RequestTask {
+        return deleteBuyerHomeGuestbookWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case .success:
+                completion((), nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Hide a line from your home’s guestbook.
+     - DELETE /v1/buyer/home/guestbook/{id}
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter id: (path)  
+     - returns: RequestBuilder<Void> 
+     */
+    open class func deleteBuyerHomeGuestbookWithRequestBuilder(id: String) -> RequestBuilder<Void> {
+        var localVariablePath = "/v1/buyer/home/guestbook/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<Void>.Type = CrosslyBuyerAPI.requestBuilderFactory.getNonDecodableBuilder()
 
         return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -4606,6 +5726,55 @@ open class BuyerAPI {
     }
 
     /**
+     Leave a seller’s loyalty club.
+     
+     - parameter sellerUserId: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func deleteBuyerSellerLoyaltyJoin(sellerUserId: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return deleteBuyerSellerLoyaltyJoinWithRequestBuilder(sellerUserId: sellerUserId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Leave a seller’s loyalty club.
+     - DELETE /v1/buyer/sellers/{sellerUserId}/loyalty/join
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter sellerUserId: (path)  
+     - returns: RequestBuilder<BuyerResponse> 
+     */
+    open class func deleteBuyerSellerLoyaltyJoinWithRequestBuilder(sellerUserId: String) -> RequestBuilder<BuyerResponse> {
+        var localVariablePath = "/v1/buyer/sellers/{sellerUserId}/loyalty/join"
+        let sellerUserIdPreEscape = "\(APIHelper.mapValueToPathItem(sellerUserId))"
+        let sellerUserIdPostEscape = sellerUserIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{sellerUserId}", with: sellerUserIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BuyerResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Take an item you added off a room’s board.
      
      - parameter code: (path)  
@@ -4753,6 +5922,55 @@ open class BuyerAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<DeleteBuyerTryOnResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Delete an order sheet.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func deleteBuyerWholesaleOrderSheet(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: DeleteBuyerWholesaleOrderSheetResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return deleteBuyerWholesaleOrderSheetWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Delete an order sheet.
+     - DELETE /v1/buyer/wholesale/order-sheets/{id}
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter id: (path)  
+     - returns: RequestBuilder<DeleteBuyerWholesaleOrderSheetResponse> 
+     */
+    open class func deleteBuyerWholesaleOrderSheetWithRequestBuilder(id: String) -> RequestBuilder<DeleteBuyerWholesaleOrderSheetResponse> {
+        var localVariablePath = "/v1/buyer/wholesale/order-sheets/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<DeleteBuyerWholesaleOrderSheetResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -5503,6 +6721,114 @@ open class BuyerAPI {
     }
 
     /**
+     Your buyer company (members, roles, approval limits, shared addresses), or null when you are in none.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerCompany(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerCompanyResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerCompanyWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your buyer company (members, roles, approval limits, shared addresses), or null when you are in none.
+     - GET /v1/buyer/company
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<BuyerCompanyResponse> 
+     */
+    open class func getBuyerCompanyWithRequestBuilder() -> RequestBuilder<BuyerCompanyResponse> {
+        let localVariablePath = "/v1/buyer/company"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BuyerCompanyResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     * enum for parameter format
+     */
+    public enum Format_getBuyerCreation: String, CaseIterable {
+        case wearable = "wearable"
+        case decor = "decor"
+        case interactive = "interactive"
+        case card = "card"
+    }
+
+    /**
+     A live creation's public page: its rating breakdown, recent reviews and whether you can review it.
+     
+     - parameter format: (path) The creation format. 
+     - parameter id: (path) The creation id (a card is &lt;setId&gt;.&lt;slug&gt;). 
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerCreation(format: Format_getBuyerCreation, id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: GetBuyerCreationResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerCreationWithRequestBuilder(format: format, id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A live creation's public page: its rating breakdown, recent reviews and whether you can review it.
+     - GET /v1/buyer/creations/{format}/{id}
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter format: (path) The creation format. 
+     - parameter id: (path) The creation id (a card is &lt;setId&gt;.&lt;slug&gt;). 
+     - returns: RequestBuilder<GetBuyerCreationResponse> 
+     */
+    open class func getBuyerCreationWithRequestBuilder(format: Format_getBuyerCreation, id: String) -> RequestBuilder<GetBuyerCreationResponse> {
+        var localVariablePath = "/v1/buyer/creations/{format}/{id}"
+        let formatPreEscape = "\(format.rawValue)"
+        let formatPostEscape = formatPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{format}", with: formatPostEscape, options: .literal, range: nil)
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetBuyerCreationResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      A creator storefront: profile, affiliate code, and shelves of live picks.
      
      - parameter handle: (path)  
@@ -5547,6 +6873,55 @@ open class BuyerAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<GetBuyerCreatorResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     A seller event: schedule, location, host, linked listings, live show, promo code, RSVP counts and your own RSVP.
+     
+     - parameter slug: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerEvent(slug: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: GetBuyerEventResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerEventWithRequestBuilder(slug: slug).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A seller event: schedule, location, host, linked listings, live show, promo code, RSVP counts and your own RSVP.
+     - GET /v1/buyer/events/{slug}
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter slug: (path)  
+     - returns: RequestBuilder<GetBuyerEventResponse> 
+     */
+    open class func getBuyerEventWithRequestBuilder(slug: String) -> RequestBuilder<GetBuyerEventResponse> {
+        var localVariablePath = "/v1/buyer/events/{slug}"
+        let slugPreEscape = "\(APIHelper.mapValueToPathItem(slug))"
+        let slugPostEscape = slugPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{slug}", with: slugPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetBuyerEventResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -5635,6 +7010,94 @@ open class BuyerAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<GetBuyerGiftFinderOptionResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your home in Crossly World (made on first read).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerHome(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerHomeResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerHomeWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your home in Crossly World (made on first read).
+     - GET /v1/buyer/home
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<BuyerHomeResponse> 
+     */
+    open class func getBuyerHomeWithRequestBuilder() -> RequestBuilder<BuyerHomeResponse> {
+        let localVariablePath = "/v1/buyer/home"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BuyerHomeResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     What you could place in your home: your items and delivered furniture.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerHomePlaceable(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: GetBuyerHomePlaceableResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerHomePlaceableWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     What you could place in your home: your items and delivered furniture.
+     - GET /v1/buyer/home/placeable
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<GetBuyerHomePlaceableResponse> 
+     */
+    open class func getBuyerHomePlaceableWithRequestBuilder() -> RequestBuilder<GetBuyerHomePlaceableResponse> {
+        let localVariablePath = "/v1/buyer/home/placeable"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetBuyerHomePlaceableResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -6610,7 +8073,7 @@ open class BuyerAPI {
     }
 
     /**
-     What a product passport tag opens: the item, whether it was authenticated, how many owners on Crossly and since when — never who or for how much.
+     What a product passport tag opens: the item, the verify verdict (registered, tag bound, tag matches with ?uid=, authenticated, graded, in its owner’s hands), how many owners and since when — never who or for how much.
      
      - parameter code: (path)  
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -6629,7 +8092,7 @@ open class BuyerAPI {
     }
 
     /**
-     What a product passport tag opens: the item, whether it was authenticated, how many owners on Crossly and since when — never who or for how much.
+     What a product passport tag opens: the item, the verify verdict (registered, tag bound, tag matches with ?uid=, authenticated, graded, in its owner’s hands), how many owners and since when — never who or for how much.
      - GET /v1/buyer/passports/{code}
      - BASIC:
        - type: http
@@ -7086,6 +8549,55 @@ open class BuyerAPI {
     }
 
     /**
+     One of your rentals: timeline, payments, the return label, extension and buy-out terms.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerRental(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: GetBuyerRentalResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerRentalWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One of your rentals: timeline, payments, the return label, extension and buy-out terms.
+     - GET /v1/buyer/rentals/{id}
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetBuyerRentalResponse> 
+     */
+    open class func getBuyerRentalWithRequestBuilder(id: String) -> RequestBuilder<GetBuyerRentalResponse> {
+        var localVariablePath = "/v1/buyer/rentals/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetBuyerRentalResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Can you rent right now: ID-verified (a photo ID and a matching selfie, once), the verified name rentals ship to, and your standing (one rental at a time until your first comes back; none after one that never did).
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -7174,6 +8686,55 @@ open class BuyerAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<GetBuyerSellerClubResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     A seller’s loyalty club with its typed perks per tier, its join mode (automatic, opt-in, invite-only) and your standing. null when they run none.
+     
+     - parameter sellerUserId: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerSellerLoyalty(sellerUserId: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: GetBuyerSellerLoyaltyResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerSellerLoyaltyWithRequestBuilder(sellerUserId: sellerUserId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A seller’s loyalty club with its typed perks per tier, its join mode (automatic, opt-in, invite-only) and your standing. null when they run none.
+     - GET /v1/buyer/sellers/{sellerUserId}/loyalty
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter sellerUserId: (path)  
+     - returns: RequestBuilder<GetBuyerSellerLoyaltyResponse> 
+     */
+    open class func getBuyerSellerLoyaltyWithRequestBuilder(sellerUserId: String) -> RequestBuilder<GetBuyerSellerLoyaltyResponse> {
+        var localVariablePath = "/v1/buyer/sellers/{sellerUserId}/loyalty"
+        let sellerUserIdPreEscape = "\(APIHelper.mapValueToPathItem(sellerUserId))"
+        let sellerUserIdPostEscape = sellerUserIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{sellerUserId}", with: sellerUserIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetBuyerSellerLoyaltyResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -7419,6 +8980,716 @@ open class BuyerAPI {
     }
 
     /**
+     Options analytics on an underlying: vol surface and smile, IV rank and percentile, open interest and volume by strike and expiry, put/call ratios, expected move and historical vol. Derived, display only. Read only.
+     
+     - parameter underlying: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerVaultMarketOptionAnalytic(underlying: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: GetBuyerVaultMarketOptionAnalyticResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerVaultMarketOptionAnalyticWithRequestBuilder(underlying: underlying).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Options analytics on an underlying: vol surface and smile, IV rank and percentile, open interest and volume by strike and expiry, put/call ratios, expected move and historical vol. Derived, display only. Read only.
+     - GET /v1/buyer/vault-markets/options/analytics/{underlying}
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter underlying: (path)  
+     - returns: RequestBuilder<GetBuyerVaultMarketOptionAnalyticResponse> 
+     */
+    open class func getBuyerVaultMarketOptionAnalyticWithRequestBuilder(underlying: String) -> RequestBuilder<GetBuyerVaultMarketOptionAnalyticResponse> {
+        var localVariablePath = "/v1/buyer/vault-markets/options/analytics/{underlying}"
+        let underlyingPreEscape = "\(APIHelper.mapValueToPathItem(underlying))"
+        let underlyingPostEscape = underlyingPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{underlying}", with: underlyingPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetBuyerVaultMarketOptionAnalyticResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The option chain for an underlying (index slug or book key): expiries, and for one expiry each strike’s call and put with bid / ask, last, open interest, theoretical price, implied vol (display only) and Greeks. Prices are cents per contract.
+     
+     - parameter underlying: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerVaultMarketOptionChain(underlying: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: GetBuyerVaultMarketOptionChainResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerVaultMarketOptionChainWithRequestBuilder(underlying: underlying).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The option chain for an underlying (index slug or book key): expiries, and for one expiry each strike’s call and put with bid / ask, last, open interest, theoretical price, implied vol (display only) and Greeks. Prices are cents per contract.
+     - GET /v1/buyer/vault-markets/options/chain/{underlying}
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter underlying: (path)  
+     - returns: RequestBuilder<GetBuyerVaultMarketOptionChainResponse> 
+     */
+    open class func getBuyerVaultMarketOptionChainWithRequestBuilder(underlying: String) -> RequestBuilder<GetBuyerVaultMarketOptionChainResponse> {
+        var localVariablePath = "/v1/buyer/vault-markets/options/chain/{underlying}"
+        let underlyingPreEscape = "\(APIHelper.mapValueToPathItem(underlying))"
+        let underlyingPostEscape = underlyingPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{underlying}", with: underlyingPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetBuyerVaultMarketOptionChainResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The at-the-money implied vol on an underlying’s nearest expiry, for display: derived from the options book, quality C, never a mark.
+     
+     - parameter underlying: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerVaultMarketOptionIv(underlying: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: GetBuyerVaultMarketOptionIvResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerVaultMarketOptionIvWithRequestBuilder(underlying: underlying).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The at-the-money implied vol on an underlying’s nearest expiry, for display: derived from the options book, quality C, never a mark.
+     - GET /v1/buyer/vault-markets/options/iv/{underlying}
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter underlying: (path)  
+     - returns: RequestBuilder<GetBuyerVaultMarketOptionIvResponse> 
+     */
+    open class func getBuyerVaultMarketOptionIvWithRequestBuilder(underlying: String) -> RequestBuilder<GetBuyerVaultMarketOptionIvResponse> {
+        var localVariablePath = "/v1/buyer/vault-markets/options/iv/{underlying}"
+        let underlyingPreEscape = "\(APIHelper.mapValueToPathItem(underlying))"
+        let underlyingPostEscape = underlyingPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{underlying}", with: underlyingPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetBuyerVaultMarketOptionIvResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your fractional options positions with their marks, P&L and Greeks (open by default; `status` all for closed and settled too). Read only.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerVaultMarketOptionPosition(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: GetBuyerVaultMarketOptionPositionResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerVaultMarketOptionPositionWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your fractional options positions with their marks, P&L and Greeks (open by default; `status` all for closed and settled too). Read only.
+     - GET /v1/buyer/vault-markets/options/positions
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<GetBuyerVaultMarketOptionPositionResponse> 
+     */
+    open class func getBuyerVaultMarketOptionPositionWithRequestBuilder() -> RequestBuilder<GetBuyerVaultMarketOptionPositionResponse> {
+        let localVariablePath = "/v1/buyer/vault-markets/options/positions"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetBuyerVaultMarketOptionPositionResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your options portfolio Greeks, a scenario's P&L (`priceShift`, `volShift`, `daysForward`) and the beta-weighted delta against an index. Read only.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerVaultMarketOptionRisk(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: GetBuyerVaultMarketOptionRiskResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerVaultMarketOptionRiskWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your options portfolio Greeks, a scenario's P&L (`priceShift`, `volShift`, `daysForward`) and the beta-weighted delta against an index. Read only.
+     - GET /v1/buyer/vault-markets/options/risk
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<GetBuyerVaultMarketOptionRiskResponse> 
+     */
+    open class func getBuyerVaultMarketOptionRiskWithRequestBuilder() -> RequestBuilder<GetBuyerVaultMarketOptionRiskResponse> {
+        let localVariablePath = "/v1/buyer/vault-markets/options/risk"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetBuyerVaultMarketOptionRiskResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The busiest open prediction markets and their odds (the Trading Floor board). Anonymous.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerVaultMarketPredictionBoard(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: GetBuyerVaultMarketPredictionBoardResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerVaultMarketPredictionBoardWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The busiest open prediction markets and their odds (the Trading Floor board). Anonymous.
+     - GET /v1/buyer/vault-markets/predictions/board
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<GetBuyerVaultMarketPredictionBoardResponse> 
+     */
+    open class func getBuyerVaultMarketPredictionBoardWithRequestBuilder() -> RequestBuilder<GetBuyerVaultMarketPredictionBoardResponse> {
+        let localVariablePath = "/v1/buyer/vault-markets/predictions/board"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetBuyerVaultMarketPredictionBoardResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     One expiry’s markets with your holdings in each and their real worst and best case across them.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerVaultMarketPredictionEvent(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: GetBuyerVaultMarketPredictionEventResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerVaultMarketPredictionEventWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One expiry’s markets with your holdings in each and their real worst and best case across them.
+     - GET /v1/buyer/vault-markets/predictions/events/{id}
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetBuyerVaultMarketPredictionEventResponse> 
+     */
+    open class func getBuyerVaultMarketPredictionEventWithRequestBuilder(id: String) -> RequestBuilder<GetBuyerVaultMarketPredictionEventResponse> {
+        var localVariablePath = "/v1/buyer/vault-markets/predictions/events/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetBuyerVaultMarketPredictionEventResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Opt-in forecaster leaderboards (`period` week | month | all; `metric` pnl | accuracy | brier; `venue` live | paper).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerVaultMarketPredictionLeaderboard(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: GetBuyerVaultMarketPredictionLeaderboardResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerVaultMarketPredictionLeaderboardWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Opt-in forecaster leaderboards (`period` week | month | all; `metric` pnl | accuracy | brier; `venue` live | paper).
+     - GET /v1/buyer/vault-markets/predictions/leaderboard
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<GetBuyerVaultMarketPredictionLeaderboardResponse> 
+     */
+    open class func getBuyerVaultMarketPredictionLeaderboardWithRequestBuilder() -> RequestBuilder<GetBuyerVaultMarketPredictionLeaderboardResponse> {
+        let localVariablePath = "/v1/buyer/vault-markets/predictions/leaderboard"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetBuyerVaultMarketPredictionLeaderboardResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     One prediction market: terms, the Yes ladder (live and practice), recent trades, settlement history and the series rules with their hash.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerVaultMarketPredictionMarket(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: GetBuyerVaultMarketPredictionMarketResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerVaultMarketPredictionMarketWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One prediction market: terms, the Yes ladder (live and practice), recent trades, settlement history and the series rules with their hash.
+     - GET /v1/buyer/vault-markets/predictions/markets/{id}
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetBuyerVaultMarketPredictionMarketResponse> 
+     */
+    open class func getBuyerVaultMarketPredictionMarketWithRequestBuilder(id: String) -> RequestBuilder<GetBuyerVaultMarketPredictionMarketResponse> {
+        var localVariablePath = "/v1/buyer/vault-markets/predictions/markets/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetBuyerVaultMarketPredictionMarketResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     A prediction market’s probability over time (display only, never a mark), candles on the Yes price, volume and open interest (`range` 1d, 1w, 1m, all; `venue` live or paper).
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerVaultMarketPredictionMarketHistory(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: GetBuyerVaultMarketPredictionMarketHistoryResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerVaultMarketPredictionMarketHistoryWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A prediction market’s probability over time (display only, never a mark), candles on the Yes price, volume and open interest (`range` 1d, 1w, 1m, all; `venue` live or paper).
+     - GET /v1/buyer/vault-markets/predictions/markets/{id}/history
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetBuyerVaultMarketPredictionMarketHistoryResponse> 
+     */
+    open class func getBuyerVaultMarketPredictionMarketHistoryWithRequestBuilder(id: String) -> RequestBuilder<GetBuyerVaultMarketPredictionMarketHistoryResponse> {
+        var localVariablePath = "/v1/buyer/vault-markets/predictions/markets/{id}/history"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetBuyerVaultMarketPredictionMarketHistoryResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your Vault Shares: shares and percent of each item, cost, implied value at the last share price (display only, never a mark), subscriptions and payouts.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerVaultMarketShare(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: GetBuyerVaultMarketShareResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerVaultMarketShareWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your Vault Shares: shares and percent of each item, cost, implied value at the last share price (display only, never a mark), subscriptions and payouts.
+     - GET /v1/buyer/vault-markets/shares
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<GetBuyerVaultMarketShareResponse> 
+     */
+    open class func getBuyerVaultMarketShareWithRequestBuilder() -> RequestBuilder<GetBuyerVaultMarketShareResponse> {
+        let localVariablePath = "/v1/buyer/vault-markets/shares"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetBuyerVaultMarketShareResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     One theme basket: its series, weights and prices, and your holdings against them.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerVaultMarketShareBasket(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: GetBuyerVaultMarketShareBasketResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerVaultMarketShareBasketWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One theme basket: its series, weights and prices, and your holdings against them.
+     - GET /v1/buyer/vault-markets/shares/baskets/{id}
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetBuyerVaultMarketShareBasketResponse> 
+     */
+    open class func getBuyerVaultMarketShareBasketWithRequestBuilder(id: String) -> RequestBuilder<GetBuyerVaultMarketShareBasketResponse> {
+        var localVariablePath = "/v1/buyer/vault-markets/shares/baskets/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetBuyerVaultMarketShareBasketResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     One Vault Shares series: the offering, the share book, the latest fills, holders as percentages (nobody named) and buyouts.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerVaultMarketShareSery(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: GetBuyerVaultMarketShareSeryResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerVaultMarketShareSeryWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One Vault Shares series: the offering, the share book, the latest fills, holders as percentages (nobody named) and buyouts.
+     - GET /v1/buyer/vault-markets/shares/series/{id}
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetBuyerVaultMarketShareSeryResponse> 
+     */
+    open class func getBuyerVaultMarketShareSeryWithRequestBuilder(id: String) -> RequestBuilder<GetBuyerVaultMarketShareSeryResponse> {
+        var localVariablePath = "/v1/buyer/vault-markets/shares/series/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetBuyerVaultMarketShareSeryResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     A Vault Shares series’ full price history (candles), the offering price and the appraisal history. Display only, never a mark.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerVaultMarketShareSeryHistory(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: GetBuyerVaultMarketShareSeryHistoryResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerVaultMarketShareSeryHistoryWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A Vault Shares series’ full price history (candles), the offering price and the appraisal history. Display only, never a mark.
+     - GET /v1/buyer/vault-markets/shares/series/{id}/history
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetBuyerVaultMarketShareSeryHistoryResponse> 
+     */
+    open class func getBuyerVaultMarketShareSeryHistoryWithRequestBuilder(id: String) -> RequestBuilder<GetBuyerVaultMarketShareSeryHistoryResponse> {
+        var localVariablePath = "/v1/buyer/vault-markets/shares/series/{id}/history"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetBuyerVaultMarketShareSeryHistoryResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your holder perks on a series: badge, visit links, viewing days and your bookings.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerVaultMarketShareSeryPerk(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: GetBuyerVaultMarketShareSeryPerkResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerVaultMarketShareSeryPerkWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your holder perks on a series: badge, visit links, viewing days and your bookings.
+     - GET /v1/buyer/vault-markets/shares/series/{id}/perks
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetBuyerVaultMarketShareSeryPerkResponse> 
+     */
+    open class func getBuyerVaultMarketShareSeryPerkWithRequestBuilder(id: String) -> RequestBuilder<GetBuyerVaultMarketShareSeryPerkResponse> {
+        var localVariablePath = "/v1/buyer/vault-markets/shares/series/{id}/perks"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetBuyerVaultMarketShareSeryPerkResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      What your vault is worth now: value at the market prices (marks come only from trades) split into reliable and indicative marks, cost and P&L, today’s change, and an estimate of what the units free to sell would fetch from the bids resting on the book now. Read only.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -7458,6 +9729,349 @@ open class BuyerAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<GetBuyerVaultMarketWorthResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your cart grouped per seller: trade terms, the order-minimum progress, every rule the cart breaks (the messages checkout would refuse with), PO reference, quote-locked lines, and the checkout methods, deposit and freight threshold for each group.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerWholesaleCart(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: GetBuyerWholesaleCartResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerWholesaleCartWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your cart grouped per seller: trade terms, the order-minimum progress, every rule the cart breaks (the messages checkout would refuse with), PO reference, quote-locked lines, and the checkout methods, deposit and freight threshold for each group.
+     - GET /v1/buyer/wholesale/cart
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<GetBuyerWholesaleCartResponse> 
+     */
+    open class func getBuyerWholesaleCartWithRequestBuilder() -> RequestBuilder<GetBuyerWholesaleCartResponse> {
+        let localVariablePath = "/v1/buyer/wholesale/cart"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetBuyerWholesaleCartResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The application form for a store's wholesale catalog: the seller's requirements (resale certificate and accepted states, tax id, their custom questions) and your business info pre-filled. applicable=false for a catalog you cannot apply to.
+     
+     - parameter storeSlug: (path)  
+     - parameter catalogSlug: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerWholesaleCatalogApply(storeSlug: String, catalogSlug: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: GetBuyerWholesaleCatalogApplyResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerWholesaleCatalogApplyWithRequestBuilder(storeSlug: storeSlug, catalogSlug: catalogSlug).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The application form for a store's wholesale catalog: the seller's requirements (resale certificate and accepted states, tax id, their custom questions) and your business info pre-filled. applicable=false for a catalog you cannot apply to.
+     - GET /v1/buyer/wholesale/catalogs/{storeSlug}/{catalogSlug}/apply
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter storeSlug: (path)  
+     - parameter catalogSlug: (path)  
+     - returns: RequestBuilder<GetBuyerWholesaleCatalogApplyResponse> 
+     */
+    open class func getBuyerWholesaleCatalogApplyWithRequestBuilder(storeSlug: String, catalogSlug: String) -> RequestBuilder<GetBuyerWholesaleCatalogApplyResponse> {
+        var localVariablePath = "/v1/buyer/wholesale/catalogs/{storeSlug}/{catalogSlug}/apply"
+        let storeSlugPreEscape = "\(APIHelper.mapValueToPathItem(storeSlug))"
+        let storeSlugPostEscape = storeSlugPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{storeSlug}", with: storeSlugPostEscape, options: .literal, range: nil)
+        let catalogSlugPreEscape = "\(APIHelper.mapValueToPathItem(catalogSlug))"
+        let catalogSlugPostEscape = catalogSlugPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{catalogSlug}", with: catalogSlugPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetBuyerWholesaleCatalogApplyResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     One trade drop open to you: its listings once live (add one to your cart to reserve or buy it), and your reservations in it. 404 for a drop not open to you.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerWholesaleDrop(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: GetBuyerWholesaleDropResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerWholesaleDropWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One trade drop open to you: its listings once live (add one to your cart to reserve or buy it), and your reservations in it. 404 for a drop not open to you.
+     - GET /v1/buyer/wholesale/drops/{id}
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetBuyerWholesaleDropResponse> 
+     */
+    open class func getBuyerWholesaleDropWithRequestBuilder(id: String) -> RequestBuilder<GetBuyerWholesaleDropResponse> {
+        var localVariablePath = "/v1/buyer/wholesale/drops/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetBuyerWholesaleDropResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     What paying an on-account invoice costs now: balance due, the early-pay discount if still open, the minimum part payment and the methods (card, ach).
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerWholesaleInvoicePayQuote(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: GetBuyerWholesaleInvoicePayQuoteResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerWholesaleInvoicePayQuoteWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     What paying an on-account invoice costs now: balance due, the early-pay discount if still open, the minimum part payment and the methods (card, ach).
+     - GET /v1/buyer/wholesale/invoices/{id}/pay-quote
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetBuyerWholesaleInvoicePayQuoteResponse> 
+     */
+    open class func getBuyerWholesaleInvoicePayQuoteWithRequestBuilder(id: String) -> RequestBuilder<GetBuyerWholesaleInvoicePayQuoteResponse> {
+        var localVariablePath = "/v1/buyer/wholesale/invoices/{id}/pay-quote"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetBuyerWholesaleInvoicePayQuoteResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     One order sheet priced TODAY at its quantities, with stock, trade terms and flags (unavailable, out_of_stock, short_stock, price_hidden, needs_option).
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerWholesaleOrderSheet(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerWholesaleOrderSheetResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerWholesaleOrderSheetWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One order sheet priced TODAY at its quantities, with stock, trade terms and flags (unavailable, out_of_stock, short_stock, price_hidden, needs_option).
+     - GET /v1/buyer/wholesale/order-sheets/{id}
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter id: (path)  
+     - returns: RequestBuilder<BuyerWholesaleOrderSheetResponse> 
+     */
+    open class func getBuyerWholesaleOrderSheetWithRequestBuilder(id: String) -> RequestBuilder<BuyerWholesaleOrderSheetResponse> {
+        var localVariablePath = "/v1/buyer/wholesale/order-sheets/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BuyerWholesaleOrderSheetResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     One of your quotes with its items, the seller's prices and expiry.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerWholesaleQuote(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerWholesaleQuoteResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerWholesaleQuoteWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One of your quotes with its items, the seller's prices and expiry.
+     - GET /v1/buyer/wholesale/quotes/{id}
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter id: (path)  
+     - returns: RequestBuilder<BuyerWholesaleQuoteResponse> 
+     */
+    open class func getBuyerWholesaleQuoteWithRequestBuilder(id: String) -> RequestBuilder<BuyerWholesaleQuoteResponse> {
+        var localVariablePath = "/v1/buyer/wholesale/quotes/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BuyerWholesaleQuoteResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Buy again: a past wholesale order (purchase or order id) as order-sheet lines at the same quantities, priced today, out-of-stock flagged.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getBuyerWholesaleReorder(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: GetBuyerWholesaleReorderResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBuyerWholesaleReorderWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Buy again: a past wholesale order (purchase or order id) as order-sheet lines at the same quantities, priced today, out-of-stock flagged.
+     - GET /v1/buyer/wholesale/reorder/{id}
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetBuyerWholesaleReorderResponse> 
+     */
+    open class func getBuyerWholesaleReorderWithRequestBuilder(id: String) -> RequestBuilder<GetBuyerWholesaleReorderResponse> {
+        var localVariablePath = "/v1/buyer/wholesale/reorder/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetBuyerWholesaleReorderResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -8099,6 +10713,50 @@ open class BuyerAPI {
     }
 
     /**
+     Spend approval requests (owners and accounts payable see all; others their own). ?status=pending|approved|declined|used|expired.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerCompanyApprovals(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerResponse3?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerCompanyApprovalsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Spend approval requests (owners and accounts payable see all; others their own). ?status=pending|approved|declined|used|expired.
+     - GET /v1/buyer/company/approvals
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<BuyerResponse3> 
+     */
+    open class func listBuyerCompanyApprovalsWithRequestBuilder() -> RequestBuilder<BuyerResponse3> {
+        let localVariablePath = "/v1/buyer/company/approvals"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BuyerResponse3>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Your ship-together orders: parcels at the hub, and the one box out.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -8187,6 +10845,99 @@ open class BuyerAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<ListBuyerWishlistMembersResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Creations you bought (decor, wearables, interactive objects, cards from packs) and your review of each.
+     
+     - parameter purchaseRef: (query) Only the creation this purchase bought. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerCreationReviewable(purchaseRef: String? = nil, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: ListBuyerCreationReviewableResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerCreationReviewableWithRequestBuilder(purchaseRef: purchaseRef).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Creations you bought (decor, wearables, interactive objects, cards from packs) and your review of each.
+     - GET /v1/buyer/creations/reviewable
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter purchaseRef: (query) Only the creation this purchase bought. (optional)
+     - returns: RequestBuilder<ListBuyerCreationReviewableResponse> 
+     */
+    open class func listBuyerCreationReviewableWithRequestBuilder(purchaseRef: String? = nil) -> RequestBuilder<ListBuyerCreationReviewableResponse> {
+        let localVariablePath = "/v1/buyer/creations/reviewable"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "purchaseRef": purchaseRef?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListBuyerCreationReviewableResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Upcoming and live seller events across Crossly, soonest first.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerEvents(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: ListBuyerEventsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerEventsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Upcoming and live seller events across Crossly, soonest first.
+     - GET /v1/buyer/events
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<ListBuyerEventsResponse> 
+     */
+    open class func listBuyerEventsWithRequestBuilder() -> RequestBuilder<ListBuyerEventsResponse> {
+        let localVariablePath = "/v1/buyer/events"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListBuyerEventsResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -8541,6 +11292,94 @@ open class BuyerAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<ListBuyerGiftSentResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your co-builders: friends who may arrange your home with you.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerHomeBuilders(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: ListBuyerHomeBuildersResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerHomeBuildersWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your co-builders: friends who may arrange your home with you.
+     - GET /v1/buyer/home/builders
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<ListBuyerHomeBuildersResponse> 
+     */
+    open class func listBuyerHomeBuildersWithRequestBuilder() -> RequestBuilder<ListBuyerHomeBuildersResponse> {
+        let localVariablePath = "/v1/buyer/home/builders"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListBuyerHomeBuildersResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The homes you co-build, to visit and arrange.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerHomeBuilding(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: ListBuyerHomeBuildingResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerHomeBuildingWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The homes you co-build, to visit and arrange.
+     - GET /v1/buyer/homes/building
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<ListBuyerHomeBuildingResponse> 
+     */
+    open class func listBuyerHomeBuildingWithRequestBuilder() -> RequestBuilder<ListBuyerHomeBuildingResponse> {
+        let localVariablePath = "/v1/buyer/homes/building"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListBuyerHomeBuildingResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -8908,6 +11747,50 @@ open class BuyerAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<ListBuyerLiveStreamLineupResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your loyalty clubs: the tier you hold, progress and how to reach the next tier, the typed perks you hold now, and your history.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerLoyalty(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: ListBuyerLoyaltyResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerLoyaltyWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your loyalty clubs: the tier you hold, progress and how to reach the next tier, the typed perks you hold now, and your history.
+     - GET /v1/buyer/loyalty
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<ListBuyerLoyaltyResponse> 
+     */
+    open class func listBuyerLoyaltyWithRequestBuilder() -> RequestBuilder<ListBuyerLoyaltyResponse> {
+        let localVariablePath = "/v1/buyer/loyalty"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListBuyerLoyaltyResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -9287,6 +12170,51 @@ open class BuyerAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<BuyerResponse3>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your saved cards, the default first.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerPaymentMethods(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: ListBuyerPaymentMethodsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerPaymentMethodsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your saved cards, the default first.
+     - GET /v1/buyer/payment-methods
+     - Brand, last 4, expiry and whether it is your default. The `id` is what checkout and auction bids take as `paymentMethodId`.
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<ListBuyerPaymentMethodsResponse> 
+     */
+    open class func listBuyerPaymentMethodsWithRequestBuilder() -> RequestBuilder<ListBuyerPaymentMethodsResponse> {
+        let localVariablePath = "/v1/buyer/payment-methods"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListBuyerPaymentMethodsResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -9693,6 +12621,55 @@ open class BuyerAPI {
     }
 
     /**
+     A store's live listings, filtered by tag, category, text and program chips (f: on_sale, discount_eligible, code_eligible, group_buy_active, rentable, wholesale_available…; all must hold), sorted; each card carries its program badges.
+     
+     - parameter slug: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerStoreListings(slug: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: ListBuyerStoreListingsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerStoreListingsWithRequestBuilder(slug: slug).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A store's live listings, filtered by tag, category, text and program chips (f: on_sale, discount_eligible, code_eligible, group_buy_active, rentable, wholesale_available…; all must hold), sorted; each card carries its program badges.
+     - GET /v1/buyer/stores/{slug}/listings
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter slug: (path)  
+     - returns: RequestBuilder<ListBuyerStoreListingsResponse> 
+     */
+    open class func listBuyerStoreListingsWithRequestBuilder(slug: String) -> RequestBuilder<ListBuyerStoreListingsResponse> {
+        var localVariablePath = "/v1/buyer/stores/{slug}/listings"
+        let slugPreEscape = "\(APIHelper.mapValueToPathItem(slug))"
+        let slugPostEscape = slugPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{slug}", with: slugPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListBuyerStoreListingsResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Your subscribe & save standing orders.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -10046,6 +13023,534 @@ open class BuyerAPI {
     }
 
     /**
+     Your options strategies (working by default) with their legs, net price per unit and fills. Read only.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerVaultMarketOptionCombos(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: ListBuyerVaultMarketOptionCombosResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerVaultMarketOptionCombosWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your options strategies (working by default) with their legs, net price per unit and fills. Read only.
+     - GET /v1/buyer/vault-markets/options/combos
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<ListBuyerVaultMarketOptionCombosResponse> 
+     */
+    open class func listBuyerVaultMarketOptionCombosWithRequestBuilder() -> RequestBuilder<ListBuyerVaultMarketOptionCombosResponse> {
+        let localVariablePath = "/v1/buyer/vault-markets/options/combos"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListBuyerVaultMarketOptionCombosResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your options notices: expiry warnings, auto-closes, exercises, assignments, expiries worthless and rolls. Read only.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerVaultMarketOptionNotices(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: ListBuyerVaultMarketOptionNoticesResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerVaultMarketOptionNoticesWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your options notices: expiry warnings, auto-closes, exercises, assignments, expiries worthless and rolls. Read only.
+     - GET /v1/buyer/vault-markets/options/notices
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<ListBuyerVaultMarketOptionNoticesResponse> 
+     */
+    open class func listBuyerVaultMarketOptionNoticesWithRequestBuilder() -> RequestBuilder<ListBuyerVaultMarketOptionNoticesResponse> {
+        let localVariablePath = "/v1/buyer/vault-markets/options/notices"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListBuyerVaultMarketOptionNoticesResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Fractional options series on Crossly prices (indexes, and tier A item keys with 90 days of reliable marks): underlying, status and eligibility. Read only.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerVaultMarketOptionSeries(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: ListBuyerVaultMarketOptionSeriesResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerVaultMarketOptionSeriesWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Fractional options series on Crossly prices (indexes, and tier A item keys with 90 days of reliable marks): underlying, status and eligibility. Read only.
+     - GET /v1/buyer/vault-markets/options/series
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<ListBuyerVaultMarketOptionSeriesResponse> 
+     */
+    open class func listBuyerVaultMarketOptionSeriesWithRequestBuilder() -> RequestBuilder<ListBuyerVaultMarketOptionSeriesResponse> {
+        let localVariablePath = "/v1/buyer/vault-markets/options/series"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListBuyerVaultMarketOptionSeriesResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The options strategies the picker builds (vertical, calendar, diagonal, straddle, strangle, butterfly, iron condor, collar) and what each does. Read only.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerVaultMarketOptionStrategies(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: ListBuyerVaultMarketOptionStrategiesResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerVaultMarketOptionStrategiesWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The options strategies the picker builds (vertical, calendar, diagonal, straddle, strangle, butterfly, iron condor, collar) and what each does. Read only.
+     - GET /v1/buyer/vault-markets/options/strategies
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<ListBuyerVaultMarketOptionStrategiesResponse> 
+     */
+    open class func listBuyerVaultMarketOptionStrategiesWithRequestBuilder() -> RequestBuilder<ListBuyerVaultMarketOptionStrategiesResponse> {
+        let localVariablePath = "/v1/buyer/vault-markets/options/strategies"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListBuyerVaultMarketOptionStrategiesResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     A prediction market’s (or series’) discussion thread. Read only.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerVaultMarketPredictionComments(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: ListBuyerVaultMarketPredictionCommentsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerVaultMarketPredictionCommentsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A prediction market’s (or series’) discussion thread. Read only.
+     - GET /v1/buyer/vault-markets/predictions/comments
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<ListBuyerVaultMarketPredictionCommentsResponse> 
+     */
+    open class func listBuyerVaultMarketPredictionCommentsWithRequestBuilder() -> RequestBuilder<ListBuyerVaultMarketPredictionCommentsResponse> {
+        let localVariablePath = "/v1/buyer/vault-markets/predictions/comments"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListBuyerVaultMarketPredictionCommentsResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     \"Will it hit?\" prediction markets on Crossly prices (filter by book key, index slug, kind, status, expiry or text): strike, expiry, best Yes bid and ask, last price and the probability (the market's own price, display only).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerVaultMarketPredictionMarkets(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: ListBuyerVaultMarketPredictionMarketsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerVaultMarketPredictionMarketsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     \"Will it hit?\" prediction markets on Crossly prices (filter by book key, index slug, kind, status, expiry or text): strike, expiry, best Yes bid and ask, last price and the probability (the market's own price, display only).
+     - GET /v1/buyer/vault-markets/predictions/markets
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<ListBuyerVaultMarketPredictionMarketsResponse> 
+     */
+    open class func listBuyerVaultMarketPredictionMarketsWithRequestBuilder() -> RequestBuilder<ListBuyerVaultMarketPredictionMarketsResponse> {
+        let localVariablePath = "/v1/buyer/vault-markets/predictions/markets"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListBuyerVaultMarketPredictionMarketsResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your prediction positions (practice and live): side, contracts, cost, value at the last price, payout or refund once settled.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerVaultMarketPredictionPositions(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: ListBuyerVaultMarketPredictionPositionsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerVaultMarketPredictionPositionsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your prediction positions (practice and live): side, contracts, cost, value at the last price, payout or refund once settled.
+     - GET /v1/buyer/vault-markets/predictions/positions
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<ListBuyerVaultMarketPredictionPositionsResponse> 
+     */
+    open class func listBuyerVaultMarketPredictionPositionsWithRequestBuilder() -> RequestBuilder<ListBuyerVaultMarketPredictionPositionsResponse> {
+        let localVariablePath = "/v1/buyer/vault-markets/predictions/positions"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListBuyerVaultMarketPredictionPositionsResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your recurring Vault Shares auto-invest plans.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerVaultMarketShareAutoInvest(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: ListBuyerVaultMarketShareAutoInvestResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerVaultMarketShareAutoInvestWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your recurring Vault Shares auto-invest plans.
+     - GET /v1/buyer/vault-markets/shares/auto-invest
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<ListBuyerVaultMarketShareAutoInvestResponse> 
+     */
+    open class func listBuyerVaultMarketShareAutoInvestWithRequestBuilder() -> RequestBuilder<ListBuyerVaultMarketShareAutoInvestResponse> {
+        let localVariablePath = "/v1/buyer/vault-markets/shares/auto-invest"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListBuyerVaultMarketShareAutoInvestResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Theme baskets: model portfolios of Vault Shares series you would own directly, never a fund.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerVaultMarketShareBaskets(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: ListBuyerVaultMarketShareBasketsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerVaultMarketShareBasketsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Theme baskets: model portfolios of Vault Shares series you would own directly, never a fund.
+     - GET /v1/buyer/vault-markets/shares/baskets
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<ListBuyerVaultMarketShareBasketsResponse> 
+     */
+    open class func listBuyerVaultMarketShareBasketsWithRequestBuilder() -> RequestBuilder<ListBuyerVaultMarketShareBasketsResponse> {
+        let localVariablePath = "/v1/buyer/vault-markets/shares/baskets"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListBuyerVaultMarketShareBasketsResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Upcoming and open Vault Shares drops: phase, countdown, allocation (first come, pro-rata or lottery), your Crossly One early-access time (never a better price).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerVaultMarketShareDrops(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: ListBuyerVaultMarketShareDropsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerVaultMarketShareDropsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Upcoming and open Vault Shares drops: phase, countdown, allocation (first come, pro-rata or lottery), your Crossly One early-access time (never a better price).
+     - GET /v1/buyer/vault-markets/shares/drops
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<ListBuyerVaultMarketShareDropsResponse> 
+     */
+    open class func listBuyerVaultMarketShareDropsWithRequestBuilder() -> RequestBuilder<ListBuyerVaultMarketShareDropsResponse> {
+        let localVariablePath = "/v1/buyer/vault-markets/shares/drops"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListBuyerVaultMarketShareDropsResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Vault Shares gifts you sent or were offered.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerVaultMarketShareGifts(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: ListBuyerVaultMarketShareGiftsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerVaultMarketShareGiftsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Vault Shares gifts you sent or were offered.
+     - GET /v1/buyer/vault-markets/shares/gifts
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<ListBuyerVaultMarketShareGiftsResponse> 
+     */
+    open class func listBuyerVaultMarketShareGiftsWithRequestBuilder() -> RequestBuilder<ListBuyerVaultMarketShareGiftsResponse> {
+        let localVariablePath = "/v1/buyer/vault-markets/shares/gifts"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListBuyerVaultMarketShareGiftsResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Vault Shares series: open offerings first, then trading. Terms, progress, last share price and implied item value, and your holding.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerVaultMarketShareSeries(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: ListBuyerVaultMarketShareSeriesResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerVaultMarketShareSeriesWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Vault Shares series: open offerings first, then trading. Terms, progress, last share price and implied item value, and your holding.
+     - GET /v1/buyer/vault-markets/shares/series
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<ListBuyerVaultMarketShareSeriesResponse> 
+     */
+    open class func listBuyerVaultMarketShareSeriesWithRequestBuilder() -> RequestBuilder<ListBuyerVaultMarketShareSeriesResponse> {
+        let localVariablePath = "/v1/buyer/vault-markets/shares/series"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListBuyerVaultMarketShareSeriesResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      The book keys you watch, with mark and its quality, 24 h and 7 d change, and the last 30 daily marks.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -10129,6 +13634,402 @@ open class BuyerAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<ListBuyerVideoRequestsResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The perks your wallets unlock: each Collection holders deal (a shop’s percent off for holders of a collection) and creator shop perk on a collection a linked wallet or your Crossly wallet holds, best first. Checkout applies the best one; perks never stack with each other.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerWalletPerks(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: ListBuyerWalletPerksResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerWalletPerksWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The perks your wallets unlock: each Collection holders deal (a shop’s percent off for holders of a collection) and creator shop perk on a collection a linked wallet or your Crossly wallet holds, best first. Checkout applies the best one; perks never stack with each other.
+     - GET /v1/buyer/wallet/perks
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<ListBuyerWalletPerksResponse> 
+     */
+    open class func listBuyerWalletPerksWithRequestBuilder() -> RequestBuilder<ListBuyerWalletPerksResponse> {
+        let localVariablePath = "/v1/buyer/wallet/perks"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListBuyerWalletPerksResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Upcoming and live trade drops open to you: drops sellers release only to their approved trade buyers or to a catalog audience. kind prebook = reserve quantity now with a deposit (depositBps) at checkout; the balance is invoiced when the seller releases the stock.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerWholesaleDrops(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: ListBuyerWholesaleDropsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerWholesaleDropsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Upcoming and live trade drops open to you: drops sellers release only to their approved trade buyers or to a catalog audience. kind prebook = reserve quantity now with a deposit (depositBps) at checkout; the balance is invoiced when the seller releases the stock.
+     - GET /v1/buyer/wholesale/drops
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<ListBuyerWholesaleDropsResponse> 
+     */
+    open class func listBuyerWholesaleDropsWithRequestBuilder() -> RequestBuilder<ListBuyerWholesaleDropsResponse> {
+        let localVariablePath = "/v1/buyer/wholesale/drops"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListBuyerWholesaleDropsResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your freight (LTL) quote requests to sellers, with the seller's figure in cents once quoted.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerWholesaleFreightRequests(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerResponse3?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerWholesaleFreightRequestsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your freight (LTL) quote requests to sellers, with the seller's figure in cents once quoted.
+     - GET /v1/buyer/wholesale/freight-requests
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<BuyerResponse3> 
+     */
+    open class func listBuyerWholesaleFreightRequestsWithRequestBuilder() -> RequestBuilder<BuyerResponse3> {
+        let localVariablePath = "/v1/buyer/wholesale/freight-requests"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BuyerResponse3>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your saved wholesale order sheets (one seller each), newest first.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerWholesaleOrderSheets(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerResponse3?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerWholesaleOrderSheetsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your saved wholesale order sheets (one seller each), newest first.
+     - GET /v1/buyer/wholesale/order-sheets
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<BuyerResponse3> 
+     */
+    open class func listBuyerWholesaleOrderSheetsWithRequestBuilder() -> RequestBuilder<BuyerResponse3> {
+        let localVariablePath = "/v1/buyer/wholesale/order-sheets"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BuyerResponse3>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your past wholesale orders (trade-priced or on account), newest first — the starting point for reorder.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerWholesaleOrders(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerResponse3?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerWholesaleOrdersWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your past wholesale orders (trade-priced or on account), newest first — the starting point for reorder.
+     - GET /v1/buyer/wholesale/orders
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<BuyerResponse3> 
+     */
+    open class func listBuyerWholesaleOrdersWithRequestBuilder() -> RequestBuilder<BuyerResponse3> {
+        let localVariablePath = "/v1/buyer/wholesale/orders"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BuyerResponse3>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your pre-books: the drop, item, quantity, deposit paid, balance, status (awaiting_release, invoiced, paid, cancelled, failed) and the balance invoice once the seller released the stock.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerWholesalePrebooks(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: ListBuyerWholesalePrebooksResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerWholesalePrebooksWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your pre-books: the drop, item, quantity, deposit paid, balance, status (awaiting_release, invoiced, paid, cancelled, failed) and the balance invoice once the seller released the stock.
+     - GET /v1/buyer/wholesale/prebooks
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<ListBuyerWholesalePrebooksResponse> 
+     */
+    open class func listBuyerWholesalePrebooksWithRequestBuilder() -> RequestBuilder<ListBuyerWholesalePrebooksResponse> {
+        let localVariablePath = "/v1/buyer/wholesale/prebooks"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListBuyerWholesalePrebooksResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your requests for a quote (RFQ) to wholesale sellers. ?status=open|all|requested|answered|accepted|declined|withdrawn|expired. An answered or accepted quote past expiresAt reads expired.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerWholesaleQuotes(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerResponse3?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerWholesaleQuotesWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your requests for a quote (RFQ) to wholesale sellers. ?status=open|all|requested|answered|accepted|declined|withdrawn|expired. An answered or accepted quote past expiresAt reads expired.
+     - GET /v1/buyer/wholesale/quotes
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<BuyerResponse3> 
+     */
+    open class func listBuyerWholesaleQuotesWithRequestBuilder() -> RequestBuilder<BuyerResponse3> {
+        let localVariablePath = "/v1/buyer/wholesale/quotes"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BuyerResponse3>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your open trade balances per seller in aging buckets (current, 1-30, 31-60, 61-90, 90+ days past due), with the invoices behind them.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerWholesaleStatement(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerResponse3?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerWholesaleStatementWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your open trade balances per seller in aging buckets (current, 1-30, 31-60, 61-90, 90+ days past due), with the invoices behind them.
+     - GET /v1/buyer/wholesale/statement
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<BuyerResponse3> 
+     */
+    open class func listBuyerWholesaleStatementWithRequestBuilder() -> RequestBuilder<BuyerResponse3> {
+        let localVariablePath = "/v1/buyer/wholesale/statement"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BuyerResponse3>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The sellers you trade with: catalogs you can open, your terms (net days, credit limit, discount), customer groups, and what you owe each.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listBuyerWholesaleSuppliers(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerResponse3?, _ error: Error?) -> Void)) -> RequestTask {
+        return listBuyerWholesaleSuppliersWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The sellers you trade with: catalogs you can open, your terms (net days, credit limit, discount), customer groups, and what you owe each.
+     - GET /v1/buyer/wholesale/suppliers
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<BuyerResponse3> 
+     */
+    open class func listBuyerWholesaleSuppliersWithRequestBuilder() -> RequestBuilder<BuyerResponse3> {
+        let localVariablePath = "/v1/buyer/wholesale/suppliers"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BuyerResponse3>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -10418,6 +14319,210 @@ open class BuyerAPI {
     }
 
     /**
+     Rename the company or change its tax id / website (owner).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateBuyerCompany(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerCompanyResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateBuyerCompanyWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Rename the company or change its tax id / website (owner).
+     - PATCH /v1/buyer/company
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<BuyerCompanyResponse> 
+     */
+    open class func updateBuyerCompanyWithRequestBuilder() -> RequestBuilder<BuyerCompanyResponse> {
+        let localVariablePath = "/v1/buyer/company"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BuyerCompanyResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Replace the shared address book (owner): addresses [{ id, label, name, line1, line2?, city, region, postalCode, country, phone?, isDefault? }], at most 20.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateBuyerCompanyAddress(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerCompanyResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateBuyerCompanyAddressWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Replace the shared address book (owner): addresses [{ id, label, name, line1, line2?, city, region, postalCode, country, phone?, isDefault? }], at most 20.
+     - PUT /v1/buyer/company/addresses
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<BuyerCompanyResponse> 
+     */
+    open class func updateBuyerCompanyAddressWithRequestBuilder() -> RequestBuilder<BuyerCompanyResponse> {
+        let localVariablePath = "/v1/buyer/company/addresses"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BuyerCompanyResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Change a member's role or approval limit (owner). The last owner stays an owner.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateBuyerCompanyMember(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerCompanyResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateBuyerCompanyMemberWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Change a member's role or approval limit (owner). The last owner stays an owner.
+     - PATCH /v1/buyer/company/members/{id}
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter id: (path)  
+     - returns: RequestBuilder<BuyerCompanyResponse> 
+     */
+    open class func updateBuyerCompanyMemberWithRequestBuilder(id: String) -> RequestBuilder<BuyerCompanyResponse> {
+        var localVariablePath = "/v1/buyer/company/members/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BuyerCompanyResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     * enum for parameter format
+     */
+    public enum Format_updateBuyerCreationReview: String, CaseIterable {
+        case wearable = "wearable"
+        case decor = "decor"
+        case interactive = "interactive"
+        case card = "card"
+    }
+
+    /**
+     Review a creation you bought (or change your review): 1-5 stars and an optional comment.
+     
+     - parameter format: (path) The creation format. 
+     - parameter id: (path) The creation id (a card is &lt;setId&gt;.&lt;slug&gt;). 
+     - parameter updateBuyerCreationReviewRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateBuyerCreationReview(format: Format_updateBuyerCreationReview, id: String, updateBuyerCreationReviewRequest: UpdateBuyerCreationReviewRequest, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: UpdateBuyerCreationReviewResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateBuyerCreationReviewWithRequestBuilder(format: format, id: id, updateBuyerCreationReviewRequest: updateBuyerCreationReviewRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Review a creation you bought (or change your review): 1-5 stars and an optional comment.
+     - PUT /v1/buyer/creations/{format}/{id}/review
+     - Only a buyer of it may review it (a bought copy, or a pack that held the card). One review per creation; a second call replaces it. The comment is moderated.
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter format: (path) The creation format. 
+     - parameter id: (path) The creation id (a card is &lt;setId&gt;.&lt;slug&gt;). 
+     - parameter updateBuyerCreationReviewRequest: (body)  
+     - returns: RequestBuilder<UpdateBuyerCreationReviewResponse> 
+     */
+    open class func updateBuyerCreationReviewWithRequestBuilder(format: Format_updateBuyerCreationReview, id: String, updateBuyerCreationReviewRequest: UpdateBuyerCreationReviewRequest) -> RequestBuilder<UpdateBuyerCreationReviewResponse> {
+        var localVariablePath = "/v1/buyer/creations/{format}/{id}/review"
+        let formatPreEscape = "\(format.rawValue)"
+        let formatPostEscape = formatPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{format}", with: formatPostEscape, options: .literal, range: nil)
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: updateBuyerCreationReviewRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<UpdateBuyerCreationReviewResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Revise feedback you left, within 60 days.
      
      - parameter id: (path) The id. 
@@ -10470,6 +14575,138 @@ open class BuyerAPI {
     }
 
     /**
+     Who may walk in (privacy), the lighting (theme), wallpaper/floor/mood decor and whether visitors see your vault wall values.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateBuyerHome(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerHomeResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateBuyerHomeWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Who may walk in (privacy), the lighting (theme), wallpaper/floor/mood decor and whether visitors see your vault wall values.
+     - PATCH /v1/buyer/home
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<BuyerHomeResponse> 
+     */
+    open class func updateBuyerHomeWithRequestBuilder() -> RequestBuilder<BuyerHomeResponse> {
+        let localVariablePath = "/v1/buyer/home"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BuyerHomeResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Set your co-builders (friends only, at most 4).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateBuyerHomeBuilder(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: ListBuyerHomeBuildersResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateBuyerHomeBuilderWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Set your co-builders (friends only, at most 4).
+     - PUT /v1/buyer/home/builders
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<ListBuyerHomeBuildersResponse> 
+     */
+    open class func updateBuyerHomeBuilderWithRequestBuilder() -> RequestBuilder<ListBuyerHomeBuildersResponse> {
+        let localVariablePath = "/v1/buyer/home/builders"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListBuyerHomeBuildersResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Arrange your home: the whole layout, checked against what you own.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateBuyerHomeLayout(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerHomeResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateBuyerHomeLayoutWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Arrange your home: the whole layout, checked against what you own.
+     - PUT /v1/buyer/home/layout
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<BuyerHomeResponse> 
+     */
+    open class func updateBuyerHomeLayoutWithRequestBuilder() -> RequestBuilder<BuyerHomeResponse> {
+        let localVariablePath = "/v1/buyer/home/layout"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BuyerHomeResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Pause, resume or stop a hunt.
      
      - parameter id: (path)  
@@ -10516,6 +14753,56 @@ open class BuyerAPI {
         let localVariableRequestBuilder: RequestBuilder<BuyerResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Make one of your saved cards the default.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateBuyerPaymentMethodDefault(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: UpdateBuyerPaymentMethodDefaultResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateBuyerPaymentMethodDefaultWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Make one of your saved cards the default.
+     - PUT /v1/buyer/payment-methods/{id}/default
+     - The default is the card express checkout offers first. Only your own saved card: any other id is a 404.
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter id: (path)  
+     - returns: RequestBuilder<UpdateBuyerPaymentMethodDefaultResponse> 
+     */
+    open class func updateBuyerPaymentMethodDefaultWithRequestBuilder(id: String) -> RequestBuilder<UpdateBuyerPaymentMethodDefaultResponse> {
+        var localVariablePath = "/v1/buyer/payment-methods/{id}/default"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<UpdateBuyerPaymentMethodDefaultResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
 
     /**
@@ -10715,6 +15002,99 @@ open class BuyerAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<BuyerResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Set the PO reference for one seller's group of your cart: { sellerUserId, poReference } (empty clears it).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateBuyerWholesaleCartPo(apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: UpdateBuyerWholesaleCartPoResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateBuyerWholesaleCartPoWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Set the PO reference for one seller's group of your cart: { sellerUserId, poReference } (empty clears it).
+     - PUT /v1/buyer/wholesale/cart/po
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - returns: RequestBuilder<UpdateBuyerWholesaleCartPoResponse> 
+     */
+    open class func updateBuyerWholesaleCartPoWithRequestBuilder() -> RequestBuilder<UpdateBuyerWholesaleCartPoResponse> {
+        let localVariablePath = "/v1/buyer/wholesale/cart/po"
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<UpdateBuyerWholesaleCartPoResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Rename an order sheet, change its PO reference or note, or replace its lines.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateBuyerWholesaleOrderSheet(id: String, apiResponseQueue: DispatchQueue = CrosslyBuyerAPI.apiResponseQueue, completion: @escaping ((_ data: BuyerWholesaleOrderSheetResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateBuyerWholesaleOrderSheetWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Rename an order sheet, change its PO reference or note, or replace its lines.
+     - PATCH /v1/buyer/wholesale/order-sheets/{id}
+     - BASIC:
+       - type: http
+       - name: BuyerOAuth
+     - parameter id: (path)  
+     - returns: RequestBuilder<BuyerWholesaleOrderSheetResponse> 
+     */
+    open class func updateBuyerWholesaleOrderSheetWithRequestBuilder(id: String) -> RequestBuilder<BuyerWholesaleOrderSheetResponse> {
+        var localVariablePath = "/v1/buyer/wholesale/order-sheets/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyBuyerAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BuyerWholesaleOrderSheetResponse>.Type = CrosslyBuyerAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }

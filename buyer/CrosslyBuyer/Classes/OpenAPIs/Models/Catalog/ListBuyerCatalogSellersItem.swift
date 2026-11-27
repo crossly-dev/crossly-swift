@@ -12,28 +12,28 @@ import AnyCodable
 
 public struct ListBuyerCatalogSellersItem: Codable, JSONEncodable, Hashable {
 
-    public var displayName: String
     public var username: String
-    public var totalItemsSold: Double
+    public var displayName: String
     public var isVerified: Bool
     public var activeListings: Double
+    public var totalItemsSold: Double
     public var avatarUrl: String?
 
-    public init(displayName: String, username: String, totalItemsSold: Double, isVerified: Bool, activeListings: Double, avatarUrl: String? = nil) {
-        self.displayName = displayName
+    public init(username: String, displayName: String, isVerified: Bool, activeListings: Double, totalItemsSold: Double, avatarUrl: String? = nil) {
         self.username = username
-        self.totalItemsSold = totalItemsSold
+        self.displayName = displayName
         self.isVerified = isVerified
         self.activeListings = activeListings
+        self.totalItemsSold = totalItemsSold
         self.avatarUrl = avatarUrl
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case displayName
         case username
-        case totalItemsSold
+        case displayName
         case isVerified
         case activeListings
+        case totalItemsSold
         case avatarUrl
     }
 
@@ -41,11 +41,11 @@ public struct ListBuyerCatalogSellersItem: Codable, JSONEncodable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(displayName, forKey: .displayName)
         try container.encode(username, forKey: .username)
-        try container.encode(totalItemsSold, forKey: .totalItemsSold)
+        try container.encode(displayName, forKey: .displayName)
         try container.encode(isVerified, forKey: .isVerified)
         try container.encode(activeListings, forKey: .activeListings)
+        try container.encode(totalItemsSold, forKey: .totalItemsSold)
         try container.encodeIfPresent(avatarUrl, forKey: .avatarUrl)
     }
 }

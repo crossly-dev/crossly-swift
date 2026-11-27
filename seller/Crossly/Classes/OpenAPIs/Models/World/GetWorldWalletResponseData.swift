@@ -13,13 +13,19 @@ import AnyCodable
 public struct GetWorldWalletResponseData: Codable, JSONEncodable, Hashable {
 
     public var bucksCents: Double
+    public var cbx: GetWorldWalletResponseDataCbx
+    public var cosm: GetWorldWalletResponseDataCosm
 
-    public init(bucksCents: Double) {
+    public init(bucksCents: Double, cbx: GetWorldWalletResponseDataCbx, cosm: GetWorldWalletResponseDataCosm) {
         self.bucksCents = bucksCents
+        self.cbx = cbx
+        self.cosm = cosm
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case bucksCents
+        case cbx
+        case cosm
     }
 
     // Encodable protocol methods
@@ -27,6 +33,8 @@ public struct GetWorldWalletResponseData: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(bucksCents, forKey: .bucksCents)
+        try container.encode(cbx, forKey: .cbx)
+        try container.encode(cosm, forKey: .cosm)
     }
 }
 

@@ -47,8 +47,8 @@ public struct UpdateSpatialSceneCosmeticResponseData: Codable, JSONEncodable, Ha
     public enum Shopfront: String, Codable, CaseIterable {
         case full = "full"
         case _none = "none"
-        case awning = "awning"
         case fascia = "fascia"
+        case awning = "awning"
         case neonFascia = "neon_fascia"
         case gildedFascia = "gilded_fascia"
         case scallopedAwning = "scalloped_awning"
@@ -101,7 +101,7 @@ public struct UpdateSpatialSceneCosmeticResponseData: Codable, JSONEncodable, Ha
     /** Cove brightness multiplier, clamped. A room you cannot look at is not a room somebody gets to sell from. */
     public var coveIntensity: Double?
     /** Decorative props. Never containers — see CosmeticProp. */
-    public var props: [UpdateSpatialSceneCosmeticResponseDataProps]?
+    public var props: [GetShowroomResponseDataRoomProps]?
     /** How this room's door presents itself in the hall. See SHOPFRONT_STYLES.  Undefined means \"never chosen\", which the renderer reads as SHOPFRONT_DEFAULT — NOT as `none`. The two are different answers and the distinction is the whole reason this is optional rather than defaulted here: a validator that filled in `fascia` would make \"I explicitly want a bare opening\" unrepresentable. */
     public var shopfront: Shopfront?
     /** The awning's canvas colour, as hex.  Separate from `coveColour` on purpose. The cove is the light INSIDE a room and the awning is fabric seen from outside it; a seller who wants a warm room and a green awning should get both, and forcing one hex to serve two materials is how you end up with a shop lit like its own signage.  The mesh is authored a neutral mid-tone precisely so this can multiply over it without muddying. */
@@ -117,7 +117,7 @@ public struct UpdateSpatialSceneCosmeticResponseData: Codable, JSONEncodable, Ha
     /** How the cosmetic was obtained, for display and for support questions. */
     public var source: Source?
 
-    public init(theme: String? = nil, wall: Wall? = nil, floor: Floor? = nil, coveColour: String? = nil, coveIntensity: Double? = nil, props: [UpdateSpatialSceneCosmeticResponseDataProps]? = nil, shopfront: Shopfront? = nil, shopfrontColour: String? = nil, facade: Facade? = nil, signStyle: SignStyle? = nil, signFont: SignFont? = nil, windowMood: WindowMood? = nil, source: Source? = nil) {
+    public init(theme: String? = nil, wall: Wall? = nil, floor: Floor? = nil, coveColour: String? = nil, coveIntensity: Double? = nil, props: [GetShowroomResponseDataRoomProps]? = nil, shopfront: Shopfront? = nil, shopfrontColour: String? = nil, facade: Facade? = nil, signStyle: SignStyle? = nil, signFont: SignFont? = nil, windowMood: WindowMood? = nil, source: Source? = nil) {
         self.theme = theme
         self.wall = wall
         self.floor = floor

@@ -12,37 +12,37 @@ import AnyCodable
 
 public struct GetBuyerCreatorResponseDataCreator: Codable, JSONEncodable, Hashable {
 
-    public var displayName: String?
-    public var avatarUrl: String?
-    public var bio: String?
-    public var code: String?
     public var handle: String
+    public var displayName: String?
+    public var bio: String?
+    public var avatarUrl: String?
+    public var code: String?
 
-    public init(displayName: String? = nil, avatarUrl: String? = nil, bio: String? = nil, code: String? = nil, handle: String) {
-        self.displayName = displayName
-        self.avatarUrl = avatarUrl
-        self.bio = bio
-        self.code = code
+    public init(handle: String, displayName: String? = nil, bio: String? = nil, avatarUrl: String? = nil, code: String? = nil) {
         self.handle = handle
+        self.displayName = displayName
+        self.bio = bio
+        self.avatarUrl = avatarUrl
+        self.code = code
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case displayName
-        case avatarUrl
-        case bio
-        case code
         case handle
+        case displayName
+        case bio
+        case avatarUrl
+        case code
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(displayName, forKey: .displayName)
-        try container.encodeIfPresent(avatarUrl, forKey: .avatarUrl)
-        try container.encodeIfPresent(bio, forKey: .bio)
-        try container.encodeIfPresent(code, forKey: .code)
         try container.encode(handle, forKey: .handle)
+        try container.encodeIfPresent(displayName, forKey: .displayName)
+        try container.encodeIfPresent(bio, forKey: .bio)
+        try container.encodeIfPresent(avatarUrl, forKey: .avatarUrl)
+        try container.encodeIfPresent(code, forKey: .code)
     }
 }
 

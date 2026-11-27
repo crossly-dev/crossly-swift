@@ -15,8 +15,8 @@ public struct ListVaultMarketIndexConsultationsItem: Codable, JSONEncodable, Has
     public enum Status: String, Codable, CaseIterable {
         case _open = "open"
         case closed = "closed"
-        case adopted = "adopted"
         case withdrawn = "withdrawn"
+        case adopted = "adopted"
     }
     public var comments: [ListVaultMarketIndexConsultationsItemComments]?
     public var id: String

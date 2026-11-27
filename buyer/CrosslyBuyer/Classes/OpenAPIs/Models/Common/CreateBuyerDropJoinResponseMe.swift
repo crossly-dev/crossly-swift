@@ -13,8 +13,8 @@ import AnyCodable
 public struct CreateBuyerDropJoinResponseMe: Codable, JSONEncodable, Hashable {
 
     public enum Outcome: String, Codable, CaseIterable {
-        case won = "won"
         case expired = "expired"
+        case won = "won"
         case waitlist = "waitlist"
         case claimed = "claimed"
     }

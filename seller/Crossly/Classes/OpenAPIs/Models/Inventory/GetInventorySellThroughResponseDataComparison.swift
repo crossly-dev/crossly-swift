@@ -12,29 +12,39 @@ import AnyCodable
 
 public struct GetInventorySellThroughResponseDataComparison: Codable, JSONEncodable, Hashable {
 
-    public var pctChange: Double?
+    /** Always null: a relative change of a rate is not reported. Read `pp`. */
+    public var pctChange: AnyCodable?
+    /** Percentage points, null when not comparable. */
+    public var pp: Double?
     public var comparable: Bool
     public var reason: String?
+    public var delta: GetAnalyticOverviewResponseDataKpisNetSalesDelta
 
-    public init(pctChange: Double? = nil, comparable: Bool, reason: String? = nil) {
+    public init(pctChange: AnyCodable?, pp: Double? = nil, comparable: Bool, reason: String? = nil, delta: GetAnalyticOverviewResponseDataKpisNetSalesDelta) {
         self.pctChange = pctChange
+        self.pp = pp
         self.comparable = comparable
         self.reason = reason
+        self.delta = delta
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case pctChange
+        case pp
         case comparable
         case reason
+        case delta
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(pctChange, forKey: .pctChange)
+        try container.encode(pctChange, forKey: .pctChange)
+        try container.encodeIfPresent(pp, forKey: .pp)
         try container.encode(comparable, forKey: .comparable)
         try container.encodeIfPresent(reason, forKey: .reason)
+        try container.encode(delta, forKey: .delta)
     }
 }
 

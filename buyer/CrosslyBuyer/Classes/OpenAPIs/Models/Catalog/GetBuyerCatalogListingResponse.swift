@@ -15,12 +15,14 @@ public struct GetBuyerCatalogListingResponse: Codable, JSONEncodable, Hashable {
     public var slug: String
     public var title: String
     public var description: String?
+    public var descriptionBlocks: [GetBuyerCatalogListingResponseDescriptionBlocksItem]
     public var priceCents: Double
     public var compareAtCents: Double?
     public var currency: String
     public var status: String
     public var available: Bool
     public var quantityAvailable: Double
+    public var variants: [GetBuyerCatalogListingResponseVariants]?
     public var condition: String?
     public var brand: String?
     public var size: String?
@@ -31,17 +33,20 @@ public struct GetBuyerCatalogListingResponse: Codable, JSONEncodable, Hashable {
     public var sellerUsername: String?
     public var sellerDisplayName: String?
     public var listedAt: String?
+    public var tokenGate: GetBuyerCatalogListingResponseTokenGate?
 
-    public init(slug: String, title: String, description: String? = nil, priceCents: Double, compareAtCents: Double? = nil, currency: String, status: String, available: Bool, quantityAvailable: Double, condition: String? = nil, brand: String? = nil, size: String? = nil, color: [String]? = nil, categoryMain: String? = nil, categorySub: String? = nil, images: [String], sellerUsername: String? = nil, sellerDisplayName: String? = nil, listedAt: String? = nil) {
+    public init(slug: String, title: String, description: String? = nil, descriptionBlocks: [GetBuyerCatalogListingResponseDescriptionBlocksItem], priceCents: Double, compareAtCents: Double? = nil, currency: String, status: String, available: Bool, quantityAvailable: Double, variants: [GetBuyerCatalogListingResponseVariants]? = nil, condition: String? = nil, brand: String? = nil, size: String? = nil, color: [String]? = nil, categoryMain: String? = nil, categorySub: String? = nil, images: [String], sellerUsername: String? = nil, sellerDisplayName: String? = nil, listedAt: String? = nil, tokenGate: GetBuyerCatalogListingResponseTokenGate? = nil) {
         self.slug = slug
         self.title = title
         self.description = description
+        self.descriptionBlocks = descriptionBlocks
         self.priceCents = priceCents
         self.compareAtCents = compareAtCents
         self.currency = currency
         self.status = status
         self.available = available
         self.quantityAvailable = quantityAvailable
+        self.variants = variants
         self.condition = condition
         self.brand = brand
         self.size = size
@@ -52,18 +57,21 @@ public struct GetBuyerCatalogListingResponse: Codable, JSONEncodable, Hashable {
         self.sellerUsername = sellerUsername
         self.sellerDisplayName = sellerDisplayName
         self.listedAt = listedAt
+        self.tokenGate = tokenGate
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case slug
         case title
         case description
+        case descriptionBlocks
         case priceCents
         case compareAtCents
         case currency
         case status
         case available
         case quantityAvailable
+        case variants
         case condition
         case brand
         case size
@@ -74,6 +82,7 @@ public struct GetBuyerCatalogListingResponse: Codable, JSONEncodable, Hashable {
         case sellerUsername
         case sellerDisplayName
         case listedAt
+        case tokenGate
     }
 
     // Encodable protocol methods
@@ -83,12 +92,14 @@ public struct GetBuyerCatalogListingResponse: Codable, JSONEncodable, Hashable {
         try container.encode(slug, forKey: .slug)
         try container.encode(title, forKey: .title)
         try container.encodeIfPresent(description, forKey: .description)
+        try container.encode(descriptionBlocks, forKey: .descriptionBlocks)
         try container.encode(priceCents, forKey: .priceCents)
         try container.encodeIfPresent(compareAtCents, forKey: .compareAtCents)
         try container.encode(currency, forKey: .currency)
         try container.encode(status, forKey: .status)
         try container.encode(available, forKey: .available)
         try container.encode(quantityAvailable, forKey: .quantityAvailable)
+        try container.encodeIfPresent(variants, forKey: .variants)
         try container.encodeIfPresent(condition, forKey: .condition)
         try container.encodeIfPresent(brand, forKey: .brand)
         try container.encodeIfPresent(size, forKey: .size)
@@ -99,6 +110,7 @@ public struct GetBuyerCatalogListingResponse: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(sellerUsername, forKey: .sellerUsername)
         try container.encodeIfPresent(sellerDisplayName, forKey: .sellerDisplayName)
         try container.encodeIfPresent(listedAt, forKey: .listedAt)
+        try container.encodeIfPresent(tokenGate, forKey: .tokenGate)
     }
 }
 

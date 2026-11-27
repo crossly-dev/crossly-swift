@@ -13,10 +13,10 @@ import AnyCodable
 public struct ListVaultMarketSetGoalsItemBasket: Codable, JSONEncodable, Hashable {
 
     public enum Status: String, Codable, CaseIterable {
+        case completed = "completed"
         case cancelled = "cancelled"
         case ended = "ended"
         case working = "working"
-        case completed = "completed"
     }
     public var id: String
     public var status: Status

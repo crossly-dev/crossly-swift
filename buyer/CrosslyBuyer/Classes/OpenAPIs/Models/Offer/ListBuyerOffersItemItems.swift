@@ -15,27 +15,27 @@ public struct ListBuyerOffersItemItems: Codable, JSONEncodable, Hashable {
     public var id: String
     /** Listing price now, in cents. */
     public var priceCents: Double
-    public var status: String?
-    public var title: String?
     public var slug: String?
+    public var title: String?
     public var thumbnail: String?
+    public var status: String?
 
-    public init(id: String, priceCents: Double, status: String? = nil, title: String? = nil, slug: String? = nil, thumbnail: String? = nil) {
+    public init(id: String, priceCents: Double, slug: String? = nil, title: String? = nil, thumbnail: String? = nil, status: String? = nil) {
         self.id = id
         self.priceCents = priceCents
-        self.status = status
-        self.title = title
         self.slug = slug
+        self.title = title
         self.thumbnail = thumbnail
+        self.status = status
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
         case priceCents
-        case status
-        case title
         case slug
+        case title
         case thumbnail
+        case status
     }
 
     // Encodable protocol methods
@@ -44,10 +44,10 @@ public struct ListBuyerOffersItemItems: Codable, JSONEncodable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
         try container.encode(priceCents, forKey: .priceCents)
-        try container.encodeIfPresent(status, forKey: .status)
-        try container.encodeIfPresent(title, forKey: .title)
         try container.encodeIfPresent(slug, forKey: .slug)
+        try container.encodeIfPresent(title, forKey: .title)
         try container.encodeIfPresent(thumbnail, forKey: .thumbnail)
+        try container.encodeIfPresent(status, forKey: .status)
     }
 }
 

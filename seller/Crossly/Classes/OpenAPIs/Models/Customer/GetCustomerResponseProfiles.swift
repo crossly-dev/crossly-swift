@@ -19,8 +19,8 @@ public struct GetCustomerResponseProfiles: Codable, JSONEncodable, Hashable {
     }
     public enum FetchStatus: String, Codable, CaseIterable {
         case error = "error"
-        case unsupported = "unsupported"
         case ok = "ok"
+        case unsupported = "unsupported"
         case notFound = "not_found"
     }
     public var platform: String

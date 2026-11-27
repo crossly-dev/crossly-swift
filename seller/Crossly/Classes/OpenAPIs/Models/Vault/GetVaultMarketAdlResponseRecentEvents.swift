@@ -13,8 +13,8 @@ import AnyCodable
 public struct GetVaultMarketAdlResponseRecentEvents: Codable, JSONEncodable, Hashable {
 
     public enum BankruptSide: String, Codable, CaseIterable {
-        case long = "long"
         case short = "short"
+        case long = "long"
     }
     public var bookKey: String
     /** The side that went under water. */

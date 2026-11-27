@@ -14,8 +14,8 @@ public struct GetVaultMarketAlertPrefResponseChannels: Codable, JSONEncodable, H
 
     public enum Key: String, Codable, CaseIterable {
         case email = "email"
-        case webhook = "webhook"
         case push = "push"
+        case webhook = "webhook"
         case telegram = "telegram"
         case terminal = "terminal"
     }

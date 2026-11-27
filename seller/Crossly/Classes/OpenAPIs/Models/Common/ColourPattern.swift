@@ -13,22 +13,22 @@ import AnyCodable
 public struct ColourPattern: Codable, JSONEncodable, Hashable {
 
     public enum Colour: String, Codable, CaseIterable {
+        case yellow = "yellow"
+        case blue = "blue"
+        case green = "green"
+        case pink = "pink"
+        case purple = "purple"
+        case charcoal = "charcoal"
         case red = "red"
         case orange = "orange"
-        case yellow = "yellow"
-        case green = "green"
         case teal = "teal"
-        case blue = "blue"
-        case purple = "purple"
-        case pink = "pink"
         case cream = "cream"
-        case charcoal = "charcoal"
     }
     public enum Pattern: String, Codable, CaseIterable {
-        case solid = "solid"
-        case stripe = "stripe"
-        case scallop = "scallop"
         case check = "check"
+        case stripe = "stripe"
+        case solid = "solid"
+        case scallop = "scallop"
     }
     public var colour: Colour
     public var pattern: Pattern

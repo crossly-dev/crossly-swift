@@ -13,36 +13,36 @@ import AnyCodable
 public struct GetBuyerCatalogListingPriceResponseDataPriceCheck: Codable, JSONEncodable, Hashable {
 
     public enum Verdict: String, Codable, CaseIterable {
-        case high = "high"
-        case fair = "fair"
         case good = "good"
+        case fair = "fair"
+        case high = "high"
         case great = "great"
     }
     public var verdict: Verdict
-    public var sales: Double
     public var medianCents: Double
-    public var days: Double
     public var lowCents: Double
     public var highCents: Double
+    public var sales: Double
+    public var days: Double
     public var lastSoldAt: String
 
-    public init(verdict: Verdict, sales: Double, medianCents: Double, days: Double, lowCents: Double, highCents: Double, lastSoldAt: String) {
+    public init(verdict: Verdict, medianCents: Double, lowCents: Double, highCents: Double, sales: Double, days: Double, lastSoldAt: String) {
         self.verdict = verdict
-        self.sales = sales
         self.medianCents = medianCents
-        self.days = days
         self.lowCents = lowCents
         self.highCents = highCents
+        self.sales = sales
+        self.days = days
         self.lastSoldAt = lastSoldAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case verdict
-        case sales
         case medianCents
-        case days
         case lowCents
         case highCents
+        case sales
+        case days
         case lastSoldAt
     }
 
@@ -51,11 +51,11 @@ public struct GetBuyerCatalogListingPriceResponseDataPriceCheck: Codable, JSONEn
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(verdict, forKey: .verdict)
-        try container.encode(sales, forKey: .sales)
         try container.encode(medianCents, forKey: .medianCents)
-        try container.encode(days, forKey: .days)
         try container.encode(lowCents, forKey: .lowCents)
         try container.encode(highCents, forKey: .highCents)
+        try container.encode(sales, forKey: .sales)
+        try container.encode(days, forKey: .days)
         try container.encode(lastSoldAt, forKey: .lastSoldAt)
     }
 }

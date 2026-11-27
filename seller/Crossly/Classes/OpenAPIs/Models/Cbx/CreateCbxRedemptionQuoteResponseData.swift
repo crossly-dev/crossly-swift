@@ -14,8 +14,8 @@ public struct CreateCbxRedemptionQuoteResponseData: Codable, JSONEncodable, Hash
 
     public enum ServiceKind: String, Codable, CaseIterable {
         case grading = "grading"
-        case authentication = "authentication"
         case subscription = "subscription"
+        case authentication = "authentication"
     }
     public var serviceKind: ServiceKind
     public var label: String

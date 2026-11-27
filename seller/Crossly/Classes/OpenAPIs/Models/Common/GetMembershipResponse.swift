@@ -13,19 +13,21 @@ import AnyCodable
 public struct GetMembershipResponse: Codable, JSONEncodable, Hashable {
 
     public enum Tier: String, Codable, CaseIterable {
-        case classic = "classic"
         case pro = "pro"
+        case classic = "classic"
     }
     public var tier: Tier?
     public var active: Bool
     public var startedAt: Date?
     public var endsAt: Date?
+    public var benefits: GetMembershipResponseBenefits?
 
-    public init(tier: Tier? = nil, active: Bool, startedAt: Date? = nil, endsAt: Date? = nil) {
+    public init(tier: Tier? = nil, active: Bool, startedAt: Date? = nil, endsAt: Date? = nil, benefits: GetMembershipResponseBenefits? = nil) {
         self.tier = tier
         self.active = active
         self.startedAt = startedAt
         self.endsAt = endsAt
+        self.benefits = benefits
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -33,6 +35,7 @@ public struct GetMembershipResponse: Codable, JSONEncodable, Hashable {
         case active
         case startedAt
         case endsAt
+        case benefits
     }
 
     // Encodable protocol methods
@@ -43,6 +46,7 @@ public struct GetMembershipResponse: Codable, JSONEncodable, Hashable {
         try container.encode(active, forKey: .active)
         try container.encodeIfPresent(startedAt, forKey: .startedAt)
         try container.encodeIfPresent(endsAt, forKey: .endsAt)
+        try container.encodeIfPresent(benefits, forKey: .benefits)
     }
 }
 

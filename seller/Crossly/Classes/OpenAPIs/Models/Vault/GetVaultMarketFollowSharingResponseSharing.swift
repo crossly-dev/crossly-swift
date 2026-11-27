@@ -14,24 +14,24 @@ public struct GetVaultMarketFollowSharingResponseSharing: Codable, JSONEncodable
 
     public var orders: Bool
     public var sales: Bool
-    public var hallLoans: Bool
     public var leaderboard: Bool
     public var deposits: Bool
+    public var hallLoans: Bool
 
-    public init(orders: Bool, sales: Bool, hallLoans: Bool, leaderboard: Bool, deposits: Bool) {
+    public init(orders: Bool, sales: Bool, leaderboard: Bool, deposits: Bool, hallLoans: Bool) {
         self.orders = orders
         self.sales = sales
-        self.hallLoans = hallLoans
         self.leaderboard = leaderboard
         self.deposits = deposits
+        self.hallLoans = hallLoans
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case orders
         case sales
-        case hallLoans
         case leaderboard
         case deposits
+        case hallLoans
     }
 
     // Encodable protocol methods
@@ -40,9 +40,9 @@ public struct GetVaultMarketFollowSharingResponseSharing: Codable, JSONEncodable
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(orders, forKey: .orders)
         try container.encode(sales, forKey: .sales)
-        try container.encode(hallLoans, forKey: .hallLoans)
         try container.encode(leaderboard, forKey: .leaderboard)
         try container.encode(deposits, forKey: .deposits)
+        try container.encode(hallLoans, forKey: .hallLoans)
     }
 }
 

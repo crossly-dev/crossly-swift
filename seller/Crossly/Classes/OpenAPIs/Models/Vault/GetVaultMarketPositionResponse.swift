@@ -13,11 +13,11 @@ import AnyCodable
 public struct GetVaultMarketPositionResponse: Codable, JSONEncodable, Hashable {
 
     public enum Kind: String, Codable, CaseIterable {
-        case long = "long"
         case short = "short"
+        case long = "long"
     }
     public var loans: [GetVaultMarketPositionResponseLoans]
-    public var auctions: [AnyCodable]
+    public var auctions: [GetVaultMarketPositionResponseAuctionsItem]
     public var instructions: [GetVaultMarketPositionResponseInstructions]
     public var legs: [GetVaultMarketPositionResponseLegs]
     public var splits: [GetVaultMarketPositionResponseSplits]
@@ -57,7 +57,7 @@ public struct GetVaultMarketPositionResponse: Codable, JSONEncodable, Hashable {
     public var closedAt: String?
     public var createdAt: String
 
-    public init(loans: [GetVaultMarketPositionResponseLoans], auctions: [AnyCodable], instructions: [GetVaultMarketPositionResponseInstructions], legs: [GetVaultMarketPositionResponseLegs], splits: [GetVaultMarketPositionResponseSplits], id: String, kind: Kind, status: String, bookKey: String, variantId: String, condition: String, gradeKey: String? = nil, units: Double, entryCents: Double? = nil, exitCents: Double? = nil, limitCents: Double? = nil, leverageX100: Double, collateralUsdCents: Double, collateralCbxValueCents: Double, collateralCbxBaseUnits: String, loanCents: Double, proceedsCents: Double, feesOwedCents: Double, feesPaidCents: Double, interestOwedCents: Double, interestPaidCents: Double, tier: String? = nil, markCents: Double? = nil, healthBps: Double? = nil, calledAt: String? = nil, unrealisedPnlCents: Double? = nil, realizedPnlCents: Double? = nil, collateralState: String, settled: Bool, needsOps: Bool, shortfallUnpaidCents: Double, openedAt: String? = nil, closedAt: String? = nil, createdAt: String) {
+    public init(loans: [GetVaultMarketPositionResponseLoans], auctions: [GetVaultMarketPositionResponseAuctionsItem], instructions: [GetVaultMarketPositionResponseInstructions], legs: [GetVaultMarketPositionResponseLegs], splits: [GetVaultMarketPositionResponseSplits], id: String, kind: Kind, status: String, bookKey: String, variantId: String, condition: String, gradeKey: String? = nil, units: Double, entryCents: Double? = nil, exitCents: Double? = nil, limitCents: Double? = nil, leverageX100: Double, collateralUsdCents: Double, collateralCbxValueCents: Double, collateralCbxBaseUnits: String, loanCents: Double, proceedsCents: Double, feesOwedCents: Double, feesPaidCents: Double, interestOwedCents: Double, interestPaidCents: Double, tier: String? = nil, markCents: Double? = nil, healthBps: Double? = nil, calledAt: String? = nil, unrealisedPnlCents: Double? = nil, realizedPnlCents: Double? = nil, collateralState: String, settled: Bool, needsOps: Bool, shortfallUnpaidCents: Double, openedAt: String? = nil, closedAt: String? = nil, createdAt: String) {
         self.loans = loans
         self.auctions = auctions
         self.instructions = instructions

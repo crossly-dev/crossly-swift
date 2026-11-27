@@ -14,28 +14,29 @@ public struct GetVaultMarketGradingSignalResponse: Codable, JSONEncodable, Hasha
 
     public enum RawMarkQuality: String, Codable, CaseIterable {
         case _none = "none"
+        case c = "C"
         case a = "A"
         case b = "B"
-        case c = "C"
     }
     public enum RawTier: String, Codable, CaseIterable {
-        case standard = "standard"
         case closed = "closed"
+        case standard = "standard"
         case deep = "deep"
         case thin = "thin"
     }
     public var bookKey: String
     public var rawMarkCents: Double?
     public var rawMarkQuality: RawMarkQuality
-    public var graded: [GetVaultMarketKeyStatResponse]
+    public var graded: [GetVaultMarketGradingSignalResponseGraded]
     public var graders: [GetVaultMarketGradingSignalResponseGraders]
     public var worthIt: Bool
     public var rawTier: RawTier
     /** Units of yours it pays to grade (none when no grade pays). */
     public var myUnits: [String]
     public var myRawUnits: Double
+    public var cta: GetVaultMarketGradingSignalResponseCta?
 
-    public init(bookKey: String, rawMarkCents: Double? = nil, rawMarkQuality: RawMarkQuality, graded: [GetVaultMarketKeyStatResponse], graders: [GetVaultMarketGradingSignalResponseGraders], worthIt: Bool, rawTier: RawTier, myUnits: [String], myRawUnits: Double) {
+    public init(bookKey: String, rawMarkCents: Double? = nil, rawMarkQuality: RawMarkQuality, graded: [GetVaultMarketGradingSignalResponseGraded], graders: [GetVaultMarketGradingSignalResponseGraders], worthIt: Bool, rawTier: RawTier, myUnits: [String], myRawUnits: Double, cta: GetVaultMarketGradingSignalResponseCta? = nil) {
         self.bookKey = bookKey
         self.rawMarkCents = rawMarkCents
         self.rawMarkQuality = rawMarkQuality
@@ -45,6 +46,7 @@ public struct GetVaultMarketGradingSignalResponse: Codable, JSONEncodable, Hasha
         self.rawTier = rawTier
         self.myUnits = myUnits
         self.myRawUnits = myRawUnits
+        self.cta = cta
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -57,6 +59,7 @@ public struct GetVaultMarketGradingSignalResponse: Codable, JSONEncodable, Hasha
         case rawTier
         case myUnits
         case myRawUnits
+        case cta
     }
 
     // Encodable protocol methods
@@ -72,6 +75,7 @@ public struct GetVaultMarketGradingSignalResponse: Codable, JSONEncodable, Hasha
         try container.encode(rawTier, forKey: .rawTier)
         try container.encode(myUnits, forKey: .myUnits)
         try container.encode(myRawUnits, forKey: .myRawUnits)
+        try container.encodeIfPresent(cta, forKey: .cta)
     }
 }
 

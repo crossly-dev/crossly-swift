@@ -14,23 +14,29 @@ public struct GetMileageSummaryResponse: Codable, JSONEncodable, Hashable {
 
     public var year: Double
     public var ratePerMile: Double
+    public var rates: [GetMileageSummaryResponseRates]
     public var totalMiles: Double
     public var deduction: Double
+    public var deductionCents: Double
     public var entryCount: Double
 
-    public init(year: Double, ratePerMile: Double, totalMiles: Double, deduction: Double, entryCount: Double) {
+    public init(year: Double, ratePerMile: Double, rates: [GetMileageSummaryResponseRates], totalMiles: Double, deduction: Double, deductionCents: Double, entryCount: Double) {
         self.year = year
         self.ratePerMile = ratePerMile
+        self.rates = rates
         self.totalMiles = totalMiles
         self.deduction = deduction
+        self.deductionCents = deductionCents
         self.entryCount = entryCount
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case year
         case ratePerMile
+        case rates
         case totalMiles
         case deduction
+        case deductionCents
         case entryCount
     }
 
@@ -40,8 +46,10 @@ public struct GetMileageSummaryResponse: Codable, JSONEncodable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(year, forKey: .year)
         try container.encode(ratePerMile, forKey: .ratePerMile)
+        try container.encode(rates, forKey: .rates)
         try container.encode(totalMiles, forKey: .totalMiles)
         try container.encode(deduction, forKey: .deduction)
+        try container.encode(deductionCents, forKey: .deductionCents)
         try container.encode(entryCount, forKey: .entryCount)
     }
 }

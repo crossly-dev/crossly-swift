@@ -14,11 +14,11 @@ public struct GetSpatialEmployeeConfigResponseDataConfigRules: Codable, JSONEnco
 
     public enum When: String, Codable, CaseIterable {
         case entered = "entered"
+        case asked = "asked"
         case lingered = "lingered"
         case inspected = "inspected"
         case addedToCart = "added_to_cart"
         case leavingWithCart = "leaving_with_cart"
-        case asked = "asked"
     }
     public var when: When
     /** Seconds of dwell before `lingered` counts. Ignored for other triggers. */

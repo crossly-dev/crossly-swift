@@ -13,8 +13,8 @@ import AnyCodable
 public struct GetVaultMarketTaxResponsePositions: Codable, JSONEncodable, Hashable {
 
     public enum Term: String, Codable, CaseIterable {
-        case long = "long"
         case short = "short"
+        case long = "long"
     }
     public var id: String
     public var kind: String

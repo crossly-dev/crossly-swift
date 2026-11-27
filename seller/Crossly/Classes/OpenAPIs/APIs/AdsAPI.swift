@@ -103,6 +103,437 @@ open class AdsAPI {
     }
 
     /**
+     Add listings to a campaign by master listing id: each listing's live row on `platform` joins campaignId (a Crossly campaign uuid, or the marketplace's campaign id). A listing not live there is its own failed result.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createListingAdBulkAdd(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateListingAdBulkAddResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createListingAdBulkAddWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Add listings to a campaign by master listing id: each listing's live row on `platform` joins campaignId (a Crossly campaign uuid, or the marketplace's campaign id). A listing not live there is its own failed result.
+     - POST /v1/listing-ads/bulk-add
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateListingAdBulkAddResponse> 
+     */
+    open class func createListingAdBulkAddWithRequestBuilder() -> RequestBuilder<CreateListingAdBulkAddResponse> {
+        let localVariablePath = "/v1/listing-ads/bulk-add"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateListingAdBulkAddResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Create a campaign on the marketplace: program (promoted_listing_rate = eBay General, a % of the sale; cpc_campaign = eBay Priority, a daily budget), name, ratePct or dailyBudgetCents, startsAt/endsAt, and the program fields. Idempotency-Key supported.
+     
+     - parameter platform: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createListingAdCampaign(platform: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateListingAdCampaignResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createListingAdCampaignWithRequestBuilder(platform: platform).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Create a campaign on the marketplace: program (promoted_listing_rate = eBay General, a % of the sale; cpc_campaign = eBay Priority, a daily budget), name, ratePct or dailyBudgetCents, startsAt/endsAt, and the program fields. Idempotency-Key supported.
+     - POST /v1/listing-ads/{platform}/campaigns
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter platform: (path)  
+     - returns: RequestBuilder<CreateListingAdCampaignResponse> 
+     */
+    open class func createListingAdCampaignWithRequestBuilder(platform: String) -> RequestBuilder<CreateListingAdCampaignResponse> {
+        var localVariablePath = "/v1/listing-ads/{platform}/campaigns"
+        let platformPreEscape = "\(APIHelper.mapValueToPathItem(platform))"
+        let platformPostEscape = platformPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{platform}", with: platformPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateListingAdCampaignResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Promote listings in a marketplace campaign. platformListingIds are Crossly platform-listing ids on that marketplace; ratePct sets the ad rate (eBay General). One result per listing.
+     
+     - parameter platform: (path)  
+     - parameter campaignId: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createListingAdCampaignListing(platform: String, campaignId: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateListingAdCampaignListingResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createListingAdCampaignListingWithRequestBuilder(platform: platform, campaignId: campaignId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Promote listings in a marketplace campaign. platformListingIds are Crossly platform-listing ids on that marketplace; ratePct sets the ad rate (eBay General). One result per listing.
+     - POST /v1/listing-ads/{platform}/campaigns/{campaignId}/listings
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter platform: (path)  
+     - parameter campaignId: (path)  
+     - returns: RequestBuilder<CreateListingAdCampaignListingResponse> 
+     */
+    open class func createListingAdCampaignListingWithRequestBuilder(platform: String, campaignId: String) -> RequestBuilder<CreateListingAdCampaignListingResponse> {
+        var localVariablePath = "/v1/listing-ads/{platform}/campaigns/{campaignId}/listings"
+        let platformPreEscape = "\(APIHelper.mapValueToPathItem(platform))"
+        let platformPostEscape = platformPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{platform}", with: platformPostEscape, options: .literal, range: nil)
+        let campaignIdPreEscape = "\(APIHelper.mapValueToPathItem(campaignId))"
+        let campaignIdPostEscape = campaignIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{campaignId}", with: campaignIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateListingAdCampaignListingResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Stop promoting listings in a marketplace campaign. One result per listing.
+     
+     - parameter platform: (path)  
+     - parameter campaignId: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createListingAdCampaignListingRemove(platform: String, campaignId: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateListingAdCampaignListingResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createListingAdCampaignListingRemoveWithRequestBuilder(platform: platform, campaignId: campaignId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Stop promoting listings in a marketplace campaign. One result per listing.
+     - POST /v1/listing-ads/{platform}/campaigns/{campaignId}/listings/remove
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter platform: (path)  
+     - parameter campaignId: (path)  
+     - returns: RequestBuilder<CreateListingAdCampaignListingResponse> 
+     */
+    open class func createListingAdCampaignListingRemoveWithRequestBuilder(platform: String, campaignId: String) -> RequestBuilder<CreateListingAdCampaignListingResponse> {
+        var localVariablePath = "/v1/listing-ads/{platform}/campaigns/{campaignId}/listings/remove"
+        let platformPreEscape = "\(APIHelper.mapValueToPathItem(platform))"
+        let platformPostEscape = platformPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{platform}", with: platformPostEscape, options: .literal, range: nil)
+        let campaignIdPreEscape = "\(APIHelper.mapValueToPathItem(campaignId))"
+        let campaignIdPostEscape = campaignIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{campaignId}", with: campaignIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateListingAdCampaignListingResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     A Stripe Checkout link that adds amountCents ($5–$10,000) to the ad balance when the seller pays it. Nothing is charged until they do. Use an Idempotency-Key to get the same link back on a retry.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createSponsoredAdBillingTopupLink(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateSponsoredAdBillingTopupLinkResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createSponsoredAdBillingTopupLinkWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A Stripe Checkout link that adds amountCents ($5–$10,000) to the ad balance when the seller pays it. Nothing is charged until they do. Use an Idempotency-Key to get the same link back on a retry.
+     - POST /v1/sponsored-ads/billing/topup-link
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateSponsoredAdBillingTopupLinkResponse> 
+     */
+    open class func createSponsoredAdBillingTopupLinkWithRequestBuilder() -> RequestBuilder<CreateSponsoredAdBillingTopupLinkResponse> {
+        let localVariablePath = "/v1/sponsored-ads/billing/topup-link"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateSponsoredAdBillingTopupLinkResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Stop boosting listings in bulk.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createSponsoredAdBoostRemove(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateSponsoredAdBoostRemoveResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createSponsoredAdBoostRemoveWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Stop boosting listings in bulk.
+     - POST /v1/sponsored-ads/boosts/remove
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateSponsoredAdBoostRemoveResponse> 
+     */
+    open class func createSponsoredAdBoostRemoveWithRequestBuilder() -> RequestBuilder<CreateSponsoredAdBoostRemoveResponse> {
+        let localVariablePath = "/v1/sponsored-ads/boosts/remove"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateSponsoredAdBoostRemoveResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Create a Sponsored Listings campaign: name, dailyBudgetCents (≥100), optional totalBudgetCents, defaultBidCents (5–10000; the max bid under bidStrategy \"auto\"), placements (search, browse, product_page, home_rail, storefront, worlds_surface), goal (sales | visits), optional targetCategories / targetRegions (ISO countries) / targetDevices (mobile, desktop, app), optional startsAt/endsAt, listings [{platformListingId, bidCents?, boostBps? (100–2000, pay-on-sale Boost; null clears)}], keywords [{keyword, matchType broad|phrase|exact, negative?, bidCents?}], worldTargets [{kind showroom|convention, id, bidCents?, status?}] (your showroom or a convention you host, promoted in the Crossly World directory; at least one listing or world target), status active|draft. A catalog boost: targetType \"wholesale_catalog\" + targetCatalogId (your catalog), no listings, keywords or world targets; it ranks Sponsored in the wholesale directory. bidStrategy defaults to your account default. Clicks are charged from your ad funds (ad balance and/or CBX, ad credit first); with none it waits as out_of_budget.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createSponsoredAdCampaign(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: SponsoredAdCampaignResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createSponsoredAdCampaignWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Create a Sponsored Listings campaign: name, dailyBudgetCents (≥100), optional totalBudgetCents, defaultBidCents (5–10000; the max bid under bidStrategy \"auto\"), placements (search, browse, product_page, home_rail, storefront, worlds_surface), goal (sales | visits), optional targetCategories / targetRegions (ISO countries) / targetDevices (mobile, desktop, app), optional startsAt/endsAt, listings [{platformListingId, bidCents?, boostBps? (100–2000, pay-on-sale Boost; null clears)}], keywords [{keyword, matchType broad|phrase|exact, negative?, bidCents?}], worldTargets [{kind showroom|convention, id, bidCents?, status?}] (your showroom or a convention you host, promoted in the Crossly World directory; at least one listing or world target), status active|draft. A catalog boost: targetType \"wholesale_catalog\" + targetCatalogId (your catalog), no listings, keywords or world targets; it ranks Sponsored in the wholesale directory. bidStrategy defaults to your account default. Clicks are charged from your ad funds (ad balance and/or CBX, ad credit first); with none it waits as out_of_budget.
+     - POST /v1/sponsored-ads/campaigns
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<SponsoredAdCampaignResponse> 
+     */
+    open class func createSponsoredAdCampaignWithRequestBuilder() -> RequestBuilder<SponsoredAdCampaignResponse> {
+        let localVariablePath = "/v1/sponsored-ads/campaigns"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<SponsoredAdCampaignResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Copy a campaign (settings, listings, keywords) as a new draft.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createSponsoredAdCampaignDuplicate(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: SponsoredAdCampaignResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createSponsoredAdCampaignDuplicateWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Copy a campaign (settings, listings, keywords) as a new draft.
+     - POST /v1/sponsored-ads/campaigns/{id}/duplicate
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<SponsoredAdCampaignResponse> 
+     */
+    open class func createSponsoredAdCampaignDuplicateWithRequestBuilder(id: String) -> RequestBuilder<SponsoredAdCampaignResponse> {
+        var localVariablePath = "/v1/sponsored-ads/campaigns/{id}/duplicate"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<SponsoredAdCampaignResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Set a campaign active (launch/resume), paused, or ended (final). Resuming with no ad funds to pay for clicks leaves it out_of_budget until you top up.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createSponsoredAdCampaignStatus(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: SponsoredAdCampaignResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createSponsoredAdCampaignStatusWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Set a campaign active (launch/resume), paused, or ended (final). Resuming with no ad funds to pay for clicks leaves it out_of_budget until you top up.
+     - POST /v1/sponsored-ads/campaigns/{id}/status
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<SponsoredAdCampaignResponse> 
+     */
+    open class func createSponsoredAdCampaignStatusWithRequestBuilder(id: String) -> RequestBuilder<SponsoredAdCampaignResponse> {
+        var localVariablePath = "/v1/sponsored-ads/campaigns/{id}/status"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<SponsoredAdCampaignResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Your offsite-ads opt-in and its terms.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -238,6 +669,740 @@ open class AdsAPI {
     }
 
     /**
+     Every promotion of one listing: its Crossly campaigns and Boost, and each marketplace ad with status, campaign, rate and last sync.
+     
+     - parameter listingId: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getListingAdListing(listingId: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetListingAdListingResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getListingAdListingWithRequestBuilder(listingId: listingId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Every promotion of one listing: its Crossly campaigns and Boost, and each marketplace ad with status, campaign, rate and last sync.
+     - GET /v1/listing-ads/listings/{listingId}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter listingId: (path)  
+     - returns: RequestBuilder<GetListingAdListingResponse> 
+     */
+    open class func getListingAdListingWithRequestBuilder(listingId: String) -> RequestBuilder<GetListingAdListingResponse> {
+        var localVariablePath = "/v1/listing-ads/listings/{listingId}"
+        let listingIdPreEscape = "\(APIHelper.mapValueToPathItem(listingId))"
+        let listingIdPostEscape = listingIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{listingId}", with: listingIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetListingAdListingResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     What pays for your ads: headroom across the billing rails (ad balance and/or CBX), unbilled click spend, settlement charges, daily spend, Boost fees and CBX ad-credit grants; funds is the full funds summary (same as /v1/sponsored-ads/funds). refresh=true re-reads the balance.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getSponsoredAdBilling(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetSponsoredAdBillingResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getSponsoredAdBillingWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     What pays for your ads: headroom across the billing rails (ad balance and/or CBX), unbilled click spend, settlement charges, daily spend, Boost fees and CBX ad-credit grants; funds is the full funds summary (same as /v1/sponsored-ads/funds). refresh=true re-reads the balance.
+     - GET /v1/sponsored-ads/billing
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetSponsoredAdBillingResponse> 
+     */
+    open class func getSponsoredAdBillingWithRequestBuilder() -> RequestBuilder<GetSponsoredAdBillingResponse> {
+        let localVariablePath = "/v1/sponsored-ads/billing"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetSponsoredAdBillingResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     One month's ads statement: opening and closing ad balance, top-ups, click spend by campaign, how clicks were paid, credits, refunds and Boost fees.
+     
+     - parameter month: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getSponsoredAdBillingStatement(month: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetSponsoredAdBillingStatementResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getSponsoredAdBillingStatementWithRequestBuilder(month: month).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One month's ads statement: opening and closing ad balance, top-ups, click spend by campaign, how clicks were paid, credits, refunds and Boost fees.
+     - GET /v1/sponsored-ads/billing/statements/{month}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter month: (path)  
+     - returns: RequestBuilder<GetSponsoredAdBillingStatementResponse> 
+     */
+    open class func getSponsoredAdBillingStatementWithRequestBuilder(month: String) -> RequestBuilder<GetSponsoredAdBillingStatementResponse> {
+        var localVariablePath = "/v1/sponsored-ads/billing/statements/{month}"
+        let monthPreEscape = "\(APIHelper.mapValueToPathItem(month))"
+        let monthPostEscape = monthPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{month}", with: monthPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetSponsoredAdBillingStatementResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     One month's ads statement as a PDF.
+     
+     - parameter month: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getSponsoredAdBillingStatementPdf(month: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: URL?, _ error: Error?) -> Void)) -> RequestTask {
+        return getSponsoredAdBillingStatementPdfWithRequestBuilder(month: month).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One month's ads statement as a PDF.
+     - GET /v1/sponsored-ads/billing/statements/{month}/pdf
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter month: (path)  
+     - returns: RequestBuilder<URL> 
+     */
+    open class func getSponsoredAdBillingStatementPdfWithRequestBuilder(month: String) -> RequestBuilder<URL> {
+        var localVariablePath = "/v1/sponsored-ads/billing/statements/{month}/pdf"
+        let monthPreEscape = "\(APIHelper.mapValueToPathItem(month))"
+        let monthPostEscape = monthPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{month}", with: monthPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<URL>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     One ad balance top-up's receipt as a PDF (each top-up in the billing history carries its id and receipt number).
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getSponsoredAdBillingTopupReceipt(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: URL?, _ error: Error?) -> Void)) -> RequestTask {
+        return getSponsoredAdBillingTopupReceiptWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One ad balance top-up's receipt as a PDF (each top-up in the billing history carries its id and receipt number).
+     - GET /v1/sponsored-ads/billing/topups/{id}/receipt
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<URL> 
+     */
+    open class func getSponsoredAdBillingTopupReceiptWithRequestBuilder(id: String) -> RequestBuilder<URL> {
+        var localVariablePath = "/v1/sponsored-ads/billing/topups/{id}/receipt"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<URL>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     One campaign: settings, its listings (bid, suggested bid, live, per-listing stats) and keywords. A catalog boost (targetType wholesale_catalog) has `catalogs`: per boosted catalog impressions, clicks, spend, attributed trade orders and revenue, CTR and ROAS.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getSponsoredAdCampaign(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: SponsoredAdCampaignResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getSponsoredAdCampaignWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One campaign: settings, its listings (bid, suggested bid, live, per-listing stats) and keywords. A catalog boost (targetType wholesale_catalog) has `catalogs`: per boosted catalog impressions, clicks, spend, attributed trade orders and revenue, CTR and ROAS.
+     - GET /v1/sponsored-ads/campaigns/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<SponsoredAdCampaignResponse> 
+     */
+    open class func getSponsoredAdCampaignWithRequestBuilder(id: String) -> RequestBuilder<SponsoredAdCampaignResponse> {
+        var localVariablePath = "/v1/sponsored-ads/campaigns/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<SponsoredAdCampaignResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     What can pay for clicks now: the billing rails in effect (ad balance and/or CBX), the ad balance and ad credit, CBX headroom, unbilled clicks, available cents, auto top-up, the saved payment method and the refundable balance. refresh=true re-reads CBX.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getSponsoredAdFund(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetSponsoredAdFundResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getSponsoredAdFundWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     What can pay for clicks now: the billing rails in effect (ad balance and/or CBX), the ad balance and ad credit, CBX headroom, unbilled clicks, available cents, auto top-up, the saved payment method and the refundable balance. refresh=true re-reads CBX.
+     - GET /v1/sponsored-ads/funds
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetSponsoredAdFundResponse> 
+     */
+    open class func getSponsoredAdFundWithRequestBuilder() -> RequestBuilder<GetSponsoredAdFundResponse> {
+        let localVariablePath = "/v1/sponsored-ads/funds"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetSponsoredAdFundResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Sponsored report for a range: totals (spend, impressions, clicks, CTR, average CPC, attributed orders and revenue, ROAS), a zero-filled daily series, per-campaign rows (targetType listings | wholesale_catalog) and `catalogs`, one row per boosted catalog. Listing orders are Crossly purchases of the advertised listing within 7 days of a click by the same buyer; catalog orders are trade orders with that seller within 7 days of a catalog click by the same buyer. Catalog impressions count once per viewer per day.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getSponsoredAdReport(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetSponsoredAdReportResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getSponsoredAdReportWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Sponsored report for a range: totals (spend, impressions, clicks, CTR, average CPC, attributed orders and revenue, ROAS), a zero-filled daily series, per-campaign rows (targetType listings | wholesale_catalog) and `catalogs`, one row per boosted catalog. Listing orders are Crossly purchases of the advertised listing within 7 days of a click by the same buyer; catalog orders are trade orders with that seller within 7 days of a catalog click by the same buyer. Catalog impressions count once per viewer per day.
+     - GET /v1/sponsored-ads/report
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetSponsoredAdReportResponse> 
+     */
+    open class func getSponsoredAdReportWithRequestBuilder() -> RequestBuilder<GetSponsoredAdReportResponse> {
+        let localVariablePath = "/v1/sponsored-ads/report"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetSponsoredAdReportResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Ads quick settings: adsPaused, accountDailyCapCents and spentTodayCents, defaultBidStrategy, autoTopup.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getSponsoredAdSetting(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: SponsoredAdResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getSponsoredAdSettingWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Ads quick settings: adsPaused, accountDailyCapCents and spentTodayCents, defaultBidStrategy, autoTopup.
+     - GET /v1/sponsored-ads/settings
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<SponsoredAdResponse> 
+     */
+    open class func getSponsoredAdSettingWithRequestBuilder() -> RequestBuilder<SponsoredAdResponse> {
+        let localVariablePath = "/v1/sponsored-ads/settings"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<SponsoredAdResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your ad campaigns on one marketplace (cached up to 15 minutes; refresh=true asks the marketplace now).
+     
+     - parameter platform: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listListingAdCampaigns(platform: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListListingAdCampaignsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listListingAdCampaignsWithRequestBuilder(platform: platform).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your ad campaigns on one marketplace (cached up to 15 minutes; refresh=true asks the marketplace now).
+     - GET /v1/listing-ads/{platform}/campaigns
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter platform: (path)  
+     - returns: RequestBuilder<ListListingAdCampaignsResponse> 
+     */
+    open class func listListingAdCampaignsWithRequestBuilder(platform: String) -> RequestBuilder<ListListingAdCampaignsResponse> {
+        var localVariablePath = "/v1/listing-ads/{platform}/campaigns"
+        let platformPreEscape = "\(APIHelper.mapValueToPathItem(platform))"
+        let platformPostEscape = platformPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{platform}", with: platformPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListListingAdCampaignsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The ads registry: each marketplace that sells promotion, its programs (kind, scope, campaign and listing fields), which verbs are wired / need a capture / are unsupported, and whether you are connected there.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listListingAdPlatforms(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListListingAdPlatformsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listListingAdPlatformsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The ads registry: each marketplace that sells promotion, its programs (kind, scope, campaign and listing fields), which verbs are wired / need a capture / are unsupported, and whether you are connected there.
+     - GET /v1/listing-ads/platforms
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListListingAdPlatformsResponse> 
+     */
+    open class func listListingAdPlatformsWithRequestBuilder() -> RequestBuilder<ListListingAdPlatformsResponse> {
+        let localVariablePath = "/v1/listing-ads/platforms"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListListingAdPlatformsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Billing history newest first: top-ups (status, receipt number), click charges (how each was paid: ad balance, credit, CBX, written off), credits, refunds and Boost fees. kind filters; before (ISO time) pages; limit ≤ 100.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listSponsoredAdBillingHistory(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListSponsoredAdBillingHistoryResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listSponsoredAdBillingHistoryWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Billing history newest first: top-ups (status, receipt number), click charges (how each was paid: ad balance, credit, CBX, written off), credits, refunds and Boost fees. kind filters; before (ISO time) pages; limit ≤ 100.
+     - GET /v1/sponsored-ads/billing/history
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListSponsoredAdBillingHistoryResponse> 
+     */
+    open class func listSponsoredAdBillingHistoryWithRequestBuilder() -> RequestBuilder<ListSponsoredAdBillingHistoryResponse> {
+        let localVariablePath = "/v1/sponsored-ads/billing/history"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListSponsoredAdBillingHistoryResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Months (YYYY-MM) with any ad billing activity, newest first.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listSponsoredAdBillingStatements(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListSponsoredAdBillingStatementsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listSponsoredAdBillingStatementsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Months (YYYY-MM) with any ad billing activity, newest first.
+     - GET /v1/sponsored-ads/billing/statements
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListSponsoredAdBillingStatementsResponse> 
+     */
+    open class func listSponsoredAdBillingStatementsWithRequestBuilder() -> RequestBuilder<ListSponsoredAdBillingStatementsResponse> {
+        let localVariablePath = "/v1/sponsored-ads/billing/statements"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListSponsoredAdBillingStatementsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Boosted (pay-on-sale) listings: the rate, sales and fees taken so far. A boost lifts organic ranking by up to 10% and costs its rate only when the listing sells on Crossly.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listSponsoredAdBoosts(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListSponsoredAdBoostsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listSponsoredAdBoostsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Boosted (pay-on-sale) listings: the rate, sales and fees taken so far. A boost lifts organic ranking by up to 10% and costs its rate only when the listing sells on Crossly.
+     - GET /v1/sponsored-ads/boosts
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListSponsoredAdBoostsResponse> 
+     */
+    open class func listSponsoredAdBoostsWithRequestBuilder() -> RequestBuilder<ListSponsoredAdBoostsResponse> {
+        let localVariablePath = "/v1/sponsored-ads/boosts"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListSponsoredAdBoostsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your Sponsored Listings campaigns with status, pacing (spent today, daily cap reached), budgets, bids, placements and stats for the range (from/to, YYYY-MM-DD; default last 30 days).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listSponsoredAdCampaigns(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListSponsoredAdCampaignsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listSponsoredAdCampaignsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your Sponsored Listings campaigns with status, pacing (spent today, daily cap reached), budgets, bids, placements and stats for the range (from/to, YYYY-MM-DD; default last 30 days).
+     - GET /v1/sponsored-ads/campaigns
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListSponsoredAdCampaignsResponse> 
+     */
+    open class func listSponsoredAdCampaignsWithRequestBuilder() -> RequestBuilder<ListSponsoredAdCampaignsResponse> {
+        let localVariablePath = "/v1/sponsored-ads/campaigns"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListSponsoredAdCampaignsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Per-listing ad performance across campaigns for a range, plus suggestions: live listings with views but few sales that are not sponsored yet, with a suggested bid.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listSponsoredAdListings(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListSponsoredAdListingsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listSponsoredAdListingsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Per-listing ad performance across campaigns for a range, plus suggestions: live listings with views but few sales that are not sponsored yet, with a suggested bid.
+     - GET /v1/sponsored-ads/listings
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListSponsoredAdListingsResponse> 
+     */
+    open class func listSponsoredAdListingsWithRequestBuilder() -> RequestBuilder<ListSponsoredAdListingsResponse> {
+        let localVariablePath = "/v1/sponsored-ads/listings"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListSponsoredAdListingsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Turn offsite ads on or off. Yours alone to set.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -280,5 +1445,294 @@ open class AdsAPI {
         let localVariableRequestBuilder: RequestBuilder<UpdateAdOffsiteResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Change a marketplace campaign: name, dailyBudgetCents, endsAt (null clears), status paused | running | ended.
+     
+     - parameter platform: (path)  
+     - parameter campaignId: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateListingAdCampaign(platform: String, campaignId: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateListingAdCampaignResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateListingAdCampaignWithRequestBuilder(platform: platform, campaignId: campaignId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Change a marketplace campaign: name, dailyBudgetCents, endsAt (null clears), status paused | running | ended.
+     - PATCH /v1/listing-ads/{platform}/campaigns/{campaignId}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter platform: (path)  
+     - parameter campaignId: (path)  
+     - returns: RequestBuilder<CreateListingAdCampaignResponse> 
+     */
+    open class func updateListingAdCampaignWithRequestBuilder(platform: String, campaignId: String) -> RequestBuilder<CreateListingAdCampaignResponse> {
+        var localVariablePath = "/v1/listing-ads/{platform}/campaigns/{campaignId}"
+        let platformPreEscape = "\(APIHelper.mapValueToPathItem(platform))"
+        let platformPostEscape = platformPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{platform}", with: platformPostEscape, options: .literal, range: nil)
+        let campaignIdPreEscape = "\(APIHelper.mapValueToPathItem(campaignId))"
+        let campaignIdPostEscape = campaignIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{campaignId}", with: campaignIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateListingAdCampaignResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Change one promoted listing's ad rate (percent of the sale) in the campaign it is in.
+     
+     - parameter platform: (path)  
+     - parameter platformListingId: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateListingAdListingRate(platform: String, platformListingId: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: UpdateListingAdListingRateResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateListingAdListingRateWithRequestBuilder(platform: platform, platformListingId: platformListingId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Change one promoted listing's ad rate (percent of the sale) in the campaign it is in.
+     - PUT /v1/listing-ads/{platform}/listings/{platformListingId}/rate
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter platform: (path)  
+     - parameter platformListingId: (path)  
+     - returns: RequestBuilder<UpdateListingAdListingRateResponse> 
+     */
+    open class func updateListingAdListingRateWithRequestBuilder(platform: String, platformListingId: String) -> RequestBuilder<UpdateListingAdListingRateResponse> {
+        var localVariablePath = "/v1/listing-ads/{platform}/listings/{platformListingId}/rate"
+        let platformPreEscape = "\(APIHelper.mapValueToPathItem(platform))"
+        let platformPostEscape = platformPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{platform}", with: platformPostEscape, options: .literal, range: nil)
+        let platformListingIdPreEscape = "\(APIHelper.mapValueToPathItem(platformListingId))"
+        let platformListingIdPostEscape = platformListingIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{platformListingId}", with: platformListingIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<UpdateListingAdListingRateResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Auto top-up: enabled, thresholdCents (top up when the ad balance drops below it), amountCents (how much). Needs a saved payment method (the first top-up saves it).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateSponsoredAdBillingAutoTopup(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: SponsoredAdResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateSponsoredAdBillingAutoTopupWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Auto top-up: enabled, thresholdCents (top up when the ad balance drops below it), amountCents (how much). Needs a saved payment method (the first top-up saves it).
+     - PUT /v1/sponsored-ads/billing/auto-topup
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<SponsoredAdResponse> 
+     */
+    open class func updateSponsoredAdBillingAutoTopupWithRequestBuilder() -> RequestBuilder<SponsoredAdResponse> {
+        let localVariablePath = "/v1/sponsored-ads/billing/auto-topup"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<SponsoredAdResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Boost listings in bulk (platformListingIds, upliftBps 100–2000 = 1–20%), or change their rate. Your own live Crossly listings only.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateSponsoredAdBoost(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: UpdateSponsoredAdBoostResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateSponsoredAdBoostWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Boost listings in bulk (platformListingIds, upliftBps 100–2000 = 1–20%), or change their rate. Your own live Crossly listings only.
+     - PUT /v1/sponsored-ads/boosts
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<UpdateSponsoredAdBoostResponse> 
+     */
+    open class func updateSponsoredAdBoostWithRequestBuilder() -> RequestBuilder<UpdateSponsoredAdBoostResponse> {
+        let localVariablePath = "/v1/sponsored-ads/boosts"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<UpdateSponsoredAdBoostResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Edit a campaign. Any of the create fields; listings and keywords, when given, replace the current set. Raising the total budget resumes a campaign stopped by it.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateSponsoredAdCampaign(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: SponsoredAdCampaignResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateSponsoredAdCampaignWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Edit a campaign. Any of the create fields; listings and keywords, when given, replace the current set. Raising the total budget resumes a campaign stopped by it.
+     - PATCH /v1/sponsored-ads/campaigns/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<SponsoredAdCampaignResponse> 
+     */
+    open class func updateSponsoredAdCampaignWithRequestBuilder(id: String) -> RequestBuilder<SponsoredAdCampaignResponse> {
+        var localVariablePath = "/v1/sponsored-ads/campaigns/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<SponsoredAdCampaignResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Change ads quick settings: adsPaused (pause / resume every ad), accountDailyCapCents (null = no cap), defaultBidStrategy (auto | manual) for new campaigns, autoTopup {enabled, thresholdCents?, amountCents?}, railPreference (cash_first | cbx_first, both rails live only).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateSponsoredAdSetting(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: SponsoredAdResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateSponsoredAdSettingWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Change ads quick settings: adsPaused (pause / resume every ad), accountDailyCapCents (null = no cap), defaultBidStrategy (auto | manual) for new campaigns, autoTopup {enabled, thresholdCents?, amountCents?}, railPreference (cash_first | cbx_first, both rails live only).
+     - PATCH /v1/sponsored-ads/settings
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<SponsoredAdResponse> 
+     */
+    open class func updateSponsoredAdSettingWithRequestBuilder() -> RequestBuilder<SponsoredAdResponse> {
+        let localVariablePath = "/v1/sponsored-ads/settings"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<SponsoredAdResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
 }

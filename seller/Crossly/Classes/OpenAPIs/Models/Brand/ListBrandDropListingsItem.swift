@@ -18,14 +18,20 @@ public struct ListBrandDropListingsItem: Codable, JSONEncodable, Hashable {
     public var imageUrl: String?
     public var priceCents: Double?
     public var status: String
+    /** The Crossly listing's slug (platform_listings.platform_listing_id): what the cart adds by. */
+    public var slug: String?
+    /** Units the listing offers (null = untracked): a pre-book's reservable quantity. */
+    public var quantity: Double?
 
-    public init(platformListingId: String, listingId: String, title: String? = nil, imageUrl: String? = nil, priceCents: Double? = nil, status: String) {
+    public init(platformListingId: String, listingId: String, title: String? = nil, imageUrl: String? = nil, priceCents: Double? = nil, status: String, slug: String? = nil, quantity: Double? = nil) {
         self.platformListingId = platformListingId
         self.listingId = listingId
         self.title = title
         self.imageUrl = imageUrl
         self.priceCents = priceCents
         self.status = status
+        self.slug = slug
+        self.quantity = quantity
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -35,6 +41,8 @@ public struct ListBrandDropListingsItem: Codable, JSONEncodable, Hashable {
         case imageUrl
         case priceCents
         case status
+        case slug
+        case quantity
     }
 
     // Encodable protocol methods
@@ -47,6 +55,8 @@ public struct ListBrandDropListingsItem: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(imageUrl, forKey: .imageUrl)
         try container.encodeIfPresent(priceCents, forKey: .priceCents)
         try container.encode(status, forKey: .status)
+        try container.encodeIfPresent(slug, forKey: .slug)
+        try container.encodeIfPresent(quantity, forKey: .quantity)
     }
 }
 

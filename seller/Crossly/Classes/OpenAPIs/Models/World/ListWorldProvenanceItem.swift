@@ -13,10 +13,10 @@ import AnyCodable
 public struct ListWorldProvenanceItem: Codable, JSONEncodable, Hashable {
 
     public enum Kind: String, Codable, CaseIterable {
-        case auction = "auction"
         case window = "window"
-        case agent = "agent"
+        case auction = "auction"
         case room = "room"
+        case agent = "agent"
         case stall = "stall"
         case worn = "worn"
         case drop = "drop"

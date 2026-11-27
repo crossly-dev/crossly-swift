@@ -39,6 +39,8 @@ public struct ListBuyerCatalogBrowseItem: Codable, JSONEncodable, Hashable {
     public var aiMediaDetected: Bool
     /** ISO alpha-2 the seller ships from (storefront ship-from, default US) —  the tile's \"Ships from {country}\" chip when it isn't the buyer's. */
     public var shipsFromCountry: String
+    /** The item has an active Crossly Passport (the tile's \"Crossly Passport\" chip, docs/PASSPORTS.md §7.4).  Optional: only the main browse query reads it; other row builders leave it out. */
+    public var hasPassport: Bool?
     /** ISO timestamp of the sale. */
     public var soldAt: String?
     /** Per-unit item price the buyer paid. Also in `priceCents`, so a plain  product tile shows the sold price. */
@@ -46,7 +48,7 @@ public struct ListBuyerCatalogBrowseItem: Codable, JSONEncodable, Hashable {
     /** Units in this sale. */
     public var soldQuantity: Double?
 
-    public init(slug: String, title: String, priceCents: Double, compareAtCents: Double? = nil, thumbnail: String? = nil, sellerDisplayName: String? = nil, sellerAvatarUrl: String? = nil, sellerHandle: String? = nil, brand: String? = nil, condition: String? = nil, promoted: Bool, viewCount: Double, watcherCount: Double, soldCount: Double, salePriceCents: Double? = nil, saleEndsAt: String? = nil, aiMedia: Bool, aiMediaDetected: Bool, shipsFromCountry: String, soldAt: String? = nil, soldPriceCents: Double? = nil, soldQuantity: Double? = nil) {
+    public init(slug: String, title: String, priceCents: Double, compareAtCents: Double? = nil, thumbnail: String? = nil, sellerDisplayName: String? = nil, sellerAvatarUrl: String? = nil, sellerHandle: String? = nil, brand: String? = nil, condition: String? = nil, promoted: Bool, viewCount: Double, watcherCount: Double, soldCount: Double, salePriceCents: Double? = nil, saleEndsAt: String? = nil, aiMedia: Bool, aiMediaDetected: Bool, shipsFromCountry: String, hasPassport: Bool? = nil, soldAt: String? = nil, soldPriceCents: Double? = nil, soldQuantity: Double? = nil) {
         self.slug = slug
         self.title = title
         self.priceCents = priceCents
@@ -66,6 +68,7 @@ public struct ListBuyerCatalogBrowseItem: Codable, JSONEncodable, Hashable {
         self.aiMedia = aiMedia
         self.aiMediaDetected = aiMediaDetected
         self.shipsFromCountry = shipsFromCountry
+        self.hasPassport = hasPassport
         self.soldAt = soldAt
         self.soldPriceCents = soldPriceCents
         self.soldQuantity = soldQuantity
@@ -91,6 +94,7 @@ public struct ListBuyerCatalogBrowseItem: Codable, JSONEncodable, Hashable {
         case aiMedia
         case aiMediaDetected
         case shipsFromCountry
+        case hasPassport
         case soldAt
         case soldPriceCents
         case soldQuantity
@@ -119,6 +123,7 @@ public struct ListBuyerCatalogBrowseItem: Codable, JSONEncodable, Hashable {
         try container.encode(aiMedia, forKey: .aiMedia)
         try container.encode(aiMediaDetected, forKey: .aiMediaDetected)
         try container.encode(shipsFromCountry, forKey: .shipsFromCountry)
+        try container.encodeIfPresent(hasPassport, forKey: .hasPassport)
         try container.encodeIfPresent(soldAt, forKey: .soldAt)
         try container.encodeIfPresent(soldPriceCents, forKey: .soldPriceCents)
         try container.encodeIfPresent(soldQuantity, forKey: .soldQuantity)

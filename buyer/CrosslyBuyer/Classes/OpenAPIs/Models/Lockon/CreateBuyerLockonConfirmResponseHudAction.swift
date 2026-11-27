@@ -14,10 +14,10 @@ public struct CreateBuyerLockonConfirmResponseHudAction: Codable, JSONEncodable,
 
     public enum Kind: String, Codable, CaseIterable {
         case _none = "none"
-        case confirm = "confirm"
         case save = "save"
         case buyCrossly = "buy_crossly"
         case buyOffsite = "buy_offsite"
+        case confirm = "confirm"
     }
     public var kind: Kind
     public var label: String

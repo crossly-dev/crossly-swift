@@ -13,60 +13,60 @@ import AnyCodable
 public struct ListBuyerVaultItem: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var condition: String
-    public var gradeKey: String?
     public var status: String
-    public var receivedAt: String?
+    public var skuId: String
+    public var skuName: String?
     public var imageUrl: String?
     public var variantId: String?
+    public var variantLabel: String?
+    public var condition: String
+    public var gradeKey: String?
+    public var location: String?
     public var lastSaleCents: Double?
-    public var skuId: String
+    public var askPriceCents: Double?
     public var withdrawSpeed: String?
     public var withdrawTracking: String?
-    public var location: String?
-    public var skuName: String?
-    public var variantLabel: String?
-    public var askPriceCents: Double?
+    public var receivedAt: String?
     /** What is really going on with it: in_auction, pledged, collateral, lent, in_grading, gift_pending, else the status. */
     public var situation: String?
     public var earlyWithdrawFeeCents: Double?
 
-    public init(id: String, condition: String, gradeKey: String? = nil, status: String, receivedAt: String? = nil, imageUrl: String? = nil, variantId: String? = nil, lastSaleCents: Double? = nil, skuId: String, withdrawSpeed: String? = nil, withdrawTracking: String? = nil, location: String? = nil, skuName: String? = nil, variantLabel: String? = nil, askPriceCents: Double? = nil, situation: String? = nil, earlyWithdrawFeeCents: Double? = nil) {
+    public init(id: String, status: String, skuId: String, skuName: String? = nil, imageUrl: String? = nil, variantId: String? = nil, variantLabel: String? = nil, condition: String, gradeKey: String? = nil, location: String? = nil, lastSaleCents: Double? = nil, askPriceCents: Double? = nil, withdrawSpeed: String? = nil, withdrawTracking: String? = nil, receivedAt: String? = nil, situation: String? = nil, earlyWithdrawFeeCents: Double? = nil) {
         self.id = id
-        self.condition = condition
-        self.gradeKey = gradeKey
         self.status = status
-        self.receivedAt = receivedAt
+        self.skuId = skuId
+        self.skuName = skuName
         self.imageUrl = imageUrl
         self.variantId = variantId
+        self.variantLabel = variantLabel
+        self.condition = condition
+        self.gradeKey = gradeKey
+        self.location = location
         self.lastSaleCents = lastSaleCents
-        self.skuId = skuId
+        self.askPriceCents = askPriceCents
         self.withdrawSpeed = withdrawSpeed
         self.withdrawTracking = withdrawTracking
-        self.location = location
-        self.skuName = skuName
-        self.variantLabel = variantLabel
-        self.askPriceCents = askPriceCents
+        self.receivedAt = receivedAt
         self.situation = situation
         self.earlyWithdrawFeeCents = earlyWithdrawFeeCents
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case condition
-        case gradeKey
         case status
-        case receivedAt
+        case skuId
+        case skuName
         case imageUrl
         case variantId
+        case variantLabel
+        case condition
+        case gradeKey
+        case location
         case lastSaleCents
-        case skuId
+        case askPriceCents
         case withdrawSpeed
         case withdrawTracking
-        case location
-        case skuName
-        case variantLabel
-        case askPriceCents
+        case receivedAt
         case situation
         case earlyWithdrawFeeCents
     }
@@ -76,20 +76,20 @@ public struct ListBuyerVaultItem: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(condition, forKey: .condition)
-        try container.encodeIfPresent(gradeKey, forKey: .gradeKey)
         try container.encode(status, forKey: .status)
-        try container.encodeIfPresent(receivedAt, forKey: .receivedAt)
+        try container.encode(skuId, forKey: .skuId)
+        try container.encodeIfPresent(skuName, forKey: .skuName)
         try container.encodeIfPresent(imageUrl, forKey: .imageUrl)
         try container.encodeIfPresent(variantId, forKey: .variantId)
+        try container.encodeIfPresent(variantLabel, forKey: .variantLabel)
+        try container.encode(condition, forKey: .condition)
+        try container.encodeIfPresent(gradeKey, forKey: .gradeKey)
+        try container.encodeIfPresent(location, forKey: .location)
         try container.encodeIfPresent(lastSaleCents, forKey: .lastSaleCents)
-        try container.encode(skuId, forKey: .skuId)
+        try container.encodeIfPresent(askPriceCents, forKey: .askPriceCents)
         try container.encodeIfPresent(withdrawSpeed, forKey: .withdrawSpeed)
         try container.encodeIfPresent(withdrawTracking, forKey: .withdrawTracking)
-        try container.encodeIfPresent(location, forKey: .location)
-        try container.encodeIfPresent(skuName, forKey: .skuName)
-        try container.encodeIfPresent(variantLabel, forKey: .variantLabel)
-        try container.encodeIfPresent(askPriceCents, forKey: .askPriceCents)
+        try container.encodeIfPresent(receivedAt, forKey: .receivedAt)
         try container.encodeIfPresent(situation, forKey: .situation)
         try container.encodeIfPresent(earlyWithdrawFeeCents, forKey: .earlyWithdrawFeeCents)
     }

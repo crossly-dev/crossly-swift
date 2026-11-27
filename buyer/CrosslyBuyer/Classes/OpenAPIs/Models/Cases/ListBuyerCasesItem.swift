@@ -13,55 +13,55 @@ import AnyCodable
 public struct ListBuyerCasesItem: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var createdAt: String
-    public var updatedAt: String
+    public var purchaseId: String
     /** inr, snad, counterfeit, damaged, wrong_item, other. */
     public var reason: String
     public var state: String
+    public var createdAt: String
+    public var updatedAt: String
     /** not_received | return | problem. */
     public var kind: String
-    public var purchaseId: String
     public var closed: Bool
     /** The case is waiting on you. */
     public var yourTurn: Bool
-    public var resolvedAt: String?
-    /** What you paid for the order, in cents. */
-    public var buyerPaidCents: Double?
     public var awaitingParty: String?
     public var escalateAfter: String?
     /** A refund on the table, in cents. */
     public var offeredRefundCents: Double?
     public var resolvedRefundCents: Double?
+    public var resolvedAt: String?
     public var returnLabelUrl: String?
     public var returnTrackingCode: String?
     public var returnTrackingCarrier: String?
     public var returnTrackingStatus: String?
     public var returnDeliveredAt: String?
+    /** What you paid for the order, in cents. */
+    public var buyerPaidCents: Double?
     public var itemTitle: String?
     public var itemThumbnail: String?
     public var sellerName: String?
 
-    public init(id: String, createdAt: String, updatedAt: String, reason: String, state: String, kind: String, purchaseId: String, closed: Bool, yourTurn: Bool, resolvedAt: String? = nil, buyerPaidCents: Double? = nil, awaitingParty: String? = nil, escalateAfter: String? = nil, offeredRefundCents: Double? = nil, resolvedRefundCents: Double? = nil, returnLabelUrl: String? = nil, returnTrackingCode: String? = nil, returnTrackingCarrier: String? = nil, returnTrackingStatus: String? = nil, returnDeliveredAt: String? = nil, itemTitle: String? = nil, itemThumbnail: String? = nil, sellerName: String? = nil) {
+    public init(id: String, purchaseId: String, reason: String, state: String, createdAt: String, updatedAt: String, kind: String, closed: Bool, yourTurn: Bool, awaitingParty: String? = nil, escalateAfter: String? = nil, offeredRefundCents: Double? = nil, resolvedRefundCents: Double? = nil, resolvedAt: String? = nil, returnLabelUrl: String? = nil, returnTrackingCode: String? = nil, returnTrackingCarrier: String? = nil, returnTrackingStatus: String? = nil, returnDeliveredAt: String? = nil, buyerPaidCents: Double? = nil, itemTitle: String? = nil, itemThumbnail: String? = nil, sellerName: String? = nil) {
         self.id = id
-        self.createdAt = createdAt
-        self.updatedAt = updatedAt
+        self.purchaseId = purchaseId
         self.reason = reason
         self.state = state
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
         self.kind = kind
-        self.purchaseId = purchaseId
         self.closed = closed
         self.yourTurn = yourTurn
-        self.resolvedAt = resolvedAt
-        self.buyerPaidCents = buyerPaidCents
         self.awaitingParty = awaitingParty
         self.escalateAfter = escalateAfter
         self.offeredRefundCents = offeredRefundCents
         self.resolvedRefundCents = resolvedRefundCents
+        self.resolvedAt = resolvedAt
         self.returnLabelUrl = returnLabelUrl
         self.returnTrackingCode = returnTrackingCode
         self.returnTrackingCarrier = returnTrackingCarrier
         self.returnTrackingStatus = returnTrackingStatus
         self.returnDeliveredAt = returnDeliveredAt
+        self.buyerPaidCents = buyerPaidCents
         self.itemTitle = itemTitle
         self.itemThumbnail = itemThumbnail
         self.sellerName = sellerName
@@ -69,25 +69,25 @@ public struct ListBuyerCasesItem: Codable, JSONEncodable, Hashable {
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case createdAt
-        case updatedAt
+        case purchaseId
         case reason
         case state
+        case createdAt
+        case updatedAt
         case kind
-        case purchaseId
         case closed
         case yourTurn
-        case resolvedAt
-        case buyerPaidCents
         case awaitingParty
         case escalateAfter
         case offeredRefundCents
         case resolvedRefundCents
+        case resolvedAt
         case returnLabelUrl
         case returnTrackingCode
         case returnTrackingCarrier
         case returnTrackingStatus
         case returnDeliveredAt
+        case buyerPaidCents
         case itemTitle
         case itemThumbnail
         case sellerName
@@ -98,25 +98,25 @@ public struct ListBuyerCasesItem: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(createdAt, forKey: .createdAt)
-        try container.encode(updatedAt, forKey: .updatedAt)
+        try container.encode(purchaseId, forKey: .purchaseId)
         try container.encode(reason, forKey: .reason)
         try container.encode(state, forKey: .state)
+        try container.encode(createdAt, forKey: .createdAt)
+        try container.encode(updatedAt, forKey: .updatedAt)
         try container.encode(kind, forKey: .kind)
-        try container.encode(purchaseId, forKey: .purchaseId)
         try container.encode(closed, forKey: .closed)
         try container.encode(yourTurn, forKey: .yourTurn)
-        try container.encodeIfPresent(resolvedAt, forKey: .resolvedAt)
-        try container.encodeIfPresent(buyerPaidCents, forKey: .buyerPaidCents)
         try container.encodeIfPresent(awaitingParty, forKey: .awaitingParty)
         try container.encodeIfPresent(escalateAfter, forKey: .escalateAfter)
         try container.encodeIfPresent(offeredRefundCents, forKey: .offeredRefundCents)
         try container.encodeIfPresent(resolvedRefundCents, forKey: .resolvedRefundCents)
+        try container.encodeIfPresent(resolvedAt, forKey: .resolvedAt)
         try container.encodeIfPresent(returnLabelUrl, forKey: .returnLabelUrl)
         try container.encodeIfPresent(returnTrackingCode, forKey: .returnTrackingCode)
         try container.encodeIfPresent(returnTrackingCarrier, forKey: .returnTrackingCarrier)
         try container.encodeIfPresent(returnTrackingStatus, forKey: .returnTrackingStatus)
         try container.encodeIfPresent(returnDeliveredAt, forKey: .returnDeliveredAt)
+        try container.encodeIfPresent(buyerPaidCents, forKey: .buyerPaidCents)
         try container.encodeIfPresent(itemTitle, forKey: .itemTitle)
         try container.encodeIfPresent(itemThumbnail, forKey: .itemThumbnail)
         try container.encodeIfPresent(sellerName, forKey: .sellerName)

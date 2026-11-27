@@ -13,19 +13,19 @@ import AnyCodable
 public struct CreateBuyerListingSplitResponseDataShares: Codable, JSONEncodable, Hashable {
 
     public var token: String
-    public var position: Double
     public var shareCents: Double
+    public var position: Double
 
-    public init(token: String, position: Double, shareCents: Double) {
+    public init(token: String, shareCents: Double, position: Double) {
         self.token = token
-        self.position = position
         self.shareCents = shareCents
+        self.position = position
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case token
-        case position
         case shareCents
+        case position
     }
 
     // Encodable protocol methods
@@ -33,8 +33,8 @@ public struct CreateBuyerListingSplitResponseDataShares: Codable, JSONEncodable,
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(token, forKey: .token)
-        try container.encode(position, forKey: .position)
         try container.encode(shareCents, forKey: .shareCents)
+        try container.encode(position, forKey: .position)
     }
 }
 

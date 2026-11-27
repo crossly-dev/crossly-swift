@@ -12,20 +12,30 @@ import AnyCodable
 
 public struct GetInboxResponse: Codable, JSONEncodable, Hashable {
 
-    public var messages: [GetInboxResponseMessages]
+    public var messages: [CreateInboxSendOfferResponseMessage]
+    public var listingId: String?
+    public var itemTitle: String?
+    public var itemThumbnail: String?
+    public var itemUrl: String?
+    public var crosslyListingSlug: String?
+    public var itemPrice: Double?
+    public var itemCurrency: String?
+    public var canSendOffer: Bool
     public var id: String
     public var createdAt: Date
     public var userId: String
-    public var status: String
     public var platform: String
-    public var listingId: String?
     public var accountSlot: Double
+    public var status: String
+    public var source: String?
+    public var labels: [String]
     public var inventoryItemId: String?
     public var platformListingId: String?
     public var buyerUsername: String?
-    public var subject: String?
     public var platformConversationId: String
     public var buyerPlatformId: String?
+    public var buyerAvatarUrl: String?
+    public var subject: String?
     public var isRead: Bool
     public var isHidden: Bool
     public var hasOffer: Bool
@@ -33,22 +43,34 @@ public struct GetInboxResponse: Codable, JSONEncodable, Hashable {
     public var offerStatus: String?
     public var platformConversationUrl: String?
     public var lastMessageAt: Date?
+    public var supersededAt: Date?
+    public var isStarred: Bool
 
-    public init(messages: [GetInboxResponseMessages], id: String, createdAt: Date, userId: String, status: String, platform: String, listingId: String? = nil, accountSlot: Double, inventoryItemId: String? = nil, platformListingId: String? = nil, buyerUsername: String? = nil, subject: String? = nil, platformConversationId: String, buyerPlatformId: String? = nil, isRead: Bool, isHidden: Bool, hasOffer: Bool, offerAmount: String? = nil, offerStatus: String? = nil, platformConversationUrl: String? = nil, lastMessageAt: Date? = nil) {
+    public init(messages: [CreateInboxSendOfferResponseMessage], listingId: String? = nil, itemTitle: String? = nil, itemThumbnail: String? = nil, itemUrl: String? = nil, crosslyListingSlug: String? = nil, itemPrice: Double? = nil, itemCurrency: String? = nil, canSendOffer: Bool, id: String, createdAt: Date, userId: String, platform: String, accountSlot: Double, status: String, source: String? = nil, labels: [String], inventoryItemId: String? = nil, platformListingId: String? = nil, buyerUsername: String? = nil, platformConversationId: String, buyerPlatformId: String? = nil, buyerAvatarUrl: String? = nil, subject: String? = nil, isRead: Bool, isHidden: Bool, hasOffer: Bool, offerAmount: String? = nil, offerStatus: String? = nil, platformConversationUrl: String? = nil, lastMessageAt: Date? = nil, supersededAt: Date? = nil, isStarred: Bool) {
         self.messages = messages
+        self.listingId = listingId
+        self.itemTitle = itemTitle
+        self.itemThumbnail = itemThumbnail
+        self.itemUrl = itemUrl
+        self.crosslyListingSlug = crosslyListingSlug
+        self.itemPrice = itemPrice
+        self.itemCurrency = itemCurrency
+        self.canSendOffer = canSendOffer
         self.id = id
         self.createdAt = createdAt
         self.userId = userId
-        self.status = status
         self.platform = platform
-        self.listingId = listingId
         self.accountSlot = accountSlot
+        self.status = status
+        self.source = source
+        self.labels = labels
         self.inventoryItemId = inventoryItemId
         self.platformListingId = platformListingId
         self.buyerUsername = buyerUsername
-        self.subject = subject
         self.platformConversationId = platformConversationId
         self.buyerPlatformId = buyerPlatformId
+        self.buyerAvatarUrl = buyerAvatarUrl
+        self.subject = subject
         self.isRead = isRead
         self.isHidden = isHidden
         self.hasOffer = hasOffer
@@ -56,23 +78,35 @@ public struct GetInboxResponse: Codable, JSONEncodable, Hashable {
         self.offerStatus = offerStatus
         self.platformConversationUrl = platformConversationUrl
         self.lastMessageAt = lastMessageAt
+        self.supersededAt = supersededAt
+        self.isStarred = isStarred
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case messages
+        case listingId
+        case itemTitle
+        case itemThumbnail
+        case itemUrl
+        case crosslyListingSlug
+        case itemPrice
+        case itemCurrency
+        case canSendOffer
         case id
         case createdAt
         case userId
-        case status
         case platform
-        case listingId
         case accountSlot
+        case status
+        case source
+        case labels
         case inventoryItemId
         case platformListingId
         case buyerUsername
-        case subject
         case platformConversationId
         case buyerPlatformId
+        case buyerAvatarUrl
+        case subject
         case isRead
         case isHidden
         case hasOffer
@@ -80,6 +114,8 @@ public struct GetInboxResponse: Codable, JSONEncodable, Hashable {
         case offerStatus
         case platformConversationUrl
         case lastMessageAt
+        case supersededAt
+        case isStarred
     }
 
     // Encodable protocol methods
@@ -87,19 +123,29 @@ public struct GetInboxResponse: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(messages, forKey: .messages)
+        try container.encodeIfPresent(listingId, forKey: .listingId)
+        try container.encodeIfPresent(itemTitle, forKey: .itemTitle)
+        try container.encodeIfPresent(itemThumbnail, forKey: .itemThumbnail)
+        try container.encodeIfPresent(itemUrl, forKey: .itemUrl)
+        try container.encodeIfPresent(crosslyListingSlug, forKey: .crosslyListingSlug)
+        try container.encodeIfPresent(itemPrice, forKey: .itemPrice)
+        try container.encodeIfPresent(itemCurrency, forKey: .itemCurrency)
+        try container.encode(canSendOffer, forKey: .canSendOffer)
         try container.encode(id, forKey: .id)
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(userId, forKey: .userId)
-        try container.encode(status, forKey: .status)
         try container.encode(platform, forKey: .platform)
-        try container.encodeIfPresent(listingId, forKey: .listingId)
         try container.encode(accountSlot, forKey: .accountSlot)
+        try container.encode(status, forKey: .status)
+        try container.encodeIfPresent(source, forKey: .source)
+        try container.encode(labels, forKey: .labels)
         try container.encodeIfPresent(inventoryItemId, forKey: .inventoryItemId)
         try container.encodeIfPresent(platformListingId, forKey: .platformListingId)
         try container.encodeIfPresent(buyerUsername, forKey: .buyerUsername)
-        try container.encodeIfPresent(subject, forKey: .subject)
         try container.encode(platformConversationId, forKey: .platformConversationId)
         try container.encodeIfPresent(buyerPlatformId, forKey: .buyerPlatformId)
+        try container.encodeIfPresent(buyerAvatarUrl, forKey: .buyerAvatarUrl)
+        try container.encodeIfPresent(subject, forKey: .subject)
         try container.encode(isRead, forKey: .isRead)
         try container.encode(isHidden, forKey: .isHidden)
         try container.encode(hasOffer, forKey: .hasOffer)
@@ -107,6 +153,8 @@ public struct GetInboxResponse: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(offerStatus, forKey: .offerStatus)
         try container.encodeIfPresent(platformConversationUrl, forKey: .platformConversationUrl)
         try container.encodeIfPresent(lastMessageAt, forKey: .lastMessageAt)
+        try container.encodeIfPresent(supersededAt, forKey: .supersededAt)
+        try container.encode(isStarred, forKey: .isStarred)
     }
 }
 

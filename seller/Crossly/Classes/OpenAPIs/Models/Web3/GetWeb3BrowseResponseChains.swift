@@ -13,12 +13,12 @@ import AnyCodable
 public struct GetWeb3BrowseResponseChains: Codable, JSONEncodable, Hashable {
 
     public enum Key: String, Codable, CaseIterable {
-        case solana = "solana"
         case ethereum = "ethereum"
         case base = "base"
         case polygon = "polygon"
         case arbitrum = "arbitrum"
         case optimism = "optimism"
+        case solana = "solana"
     }
     public var key: Key
     public var label: String

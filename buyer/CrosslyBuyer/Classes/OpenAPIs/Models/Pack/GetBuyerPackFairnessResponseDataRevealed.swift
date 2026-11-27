@@ -13,28 +13,28 @@ import AnyCodable
 public struct GetBuyerPackFairnessResponseDataRevealed: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var nonce: Double
-    public var revealedAt: String
     public var serverSeed: String
     public var serverSeedHash: String
     public var clientSeed: String
+    public var nonce: Double
+    public var revealedAt: String
 
-    public init(id: String, nonce: Double, revealedAt: String, serverSeed: String, serverSeedHash: String, clientSeed: String) {
+    public init(id: String, serverSeed: String, serverSeedHash: String, clientSeed: String, nonce: Double, revealedAt: String) {
         self.id = id
-        self.nonce = nonce
-        self.revealedAt = revealedAt
         self.serverSeed = serverSeed
         self.serverSeedHash = serverSeedHash
         self.clientSeed = clientSeed
+        self.nonce = nonce
+        self.revealedAt = revealedAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case nonce
-        case revealedAt
         case serverSeed
         case serverSeedHash
         case clientSeed
+        case nonce
+        case revealedAt
     }
 
     // Encodable protocol methods
@@ -42,11 +42,11 @@ public struct GetBuyerPackFairnessResponseDataRevealed: Codable, JSONEncodable, 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(nonce, forKey: .nonce)
-        try container.encode(revealedAt, forKey: .revealedAt)
         try container.encode(serverSeed, forKey: .serverSeed)
         try container.encode(serverSeedHash, forKey: .serverSeedHash)
         try container.encode(clientSeed, forKey: .clientSeed)
+        try container.encode(nonce, forKey: .nonce)
+        try container.encode(revealedAt, forKey: .revealedAt)
     }
 }
 

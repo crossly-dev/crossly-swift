@@ -17,6 +17,11 @@ public struct ListBuyerRentalsItem: Codable, JSONEncodable, Hashable {
     public var closedAt: String?
     public var createdAt: String
     public var shipTo: [String: AnyCodable]?
+    public var platformListingId: String?
+    public var payoutTiming: String?
+    public var payoutReleasedAt: String?
+    public var orderId: String?
+    public var crosslyFeeCents: Double?
     public var id: String
     public var status: String
     public var slug: String?
@@ -39,13 +44,33 @@ public struct ListBuyerRentalsItem: Codable, JSONEncodable, Hashable {
     public var conditionPhotosIn: [String]
     public var approvalDueAt: String?
     public var depositRefundedCents: Double
+    public var unit: Double
+    public var fulfilment: String
+    public var cleaningFeeCents: Double
+    public var damageWaiver: Bool
+    public var damageWaiverCents: Double
+    public var lateFeeCents: Double
+    public var rentRefundedCents: Double
+    public var buyoutCents: Double?
+    public var charges: [String: AnyCodable]
+    public var conditionPhotosReturn: [String]
+    public var approvedAt: String?
+    public var deliveredAt: String?
+    public var returnShippedAt: String?
+    public var inspectedAt: String?
+    public var boughtOutAt: String?
 
-    public init(shippedAt: String? = nil, returnedAt: String? = nil, closedAt: String? = nil, createdAt: String, shipTo: [String: AnyCodable]? = nil, id: String, status: String, slug: String? = nil, title: String, imageUrl: String, startDate: String, endDate: String, days: Double, rentCents: Double, shippingCents: Double, depositCents: Double, outboundTracking: String? = nil, returnTracking: String? = nil, labelUrl: String? = nil, claimCents: Double, claimNote: String? = nil, claimPhotos: [String], claimDisputed: Bool, conditionPhotosOut: [String], conditionPhotosIn: [String], approvalDueAt: String? = nil, depositRefundedCents: Double) {
+    public init(shippedAt: String? = nil, returnedAt: String? = nil, closedAt: String? = nil, createdAt: String, shipTo: [String: AnyCodable]? = nil, platformListingId: String? = nil, payoutTiming: String? = nil, payoutReleasedAt: String? = nil, orderId: String? = nil, crosslyFeeCents: Double? = nil, id: String, status: String, slug: String? = nil, title: String, imageUrl: String, startDate: String, endDate: String, days: Double, rentCents: Double, shippingCents: Double, depositCents: Double, outboundTracking: String? = nil, returnTracking: String? = nil, labelUrl: String? = nil, claimCents: Double, claimNote: String? = nil, claimPhotos: [String], claimDisputed: Bool, conditionPhotosOut: [String], conditionPhotosIn: [String], approvalDueAt: String? = nil, depositRefundedCents: Double, unit: Double, fulfilment: String, cleaningFeeCents: Double, damageWaiver: Bool, damageWaiverCents: Double, lateFeeCents: Double, rentRefundedCents: Double, buyoutCents: Double? = nil, charges: [String: AnyCodable], conditionPhotosReturn: [String], approvedAt: String? = nil, deliveredAt: String? = nil, returnShippedAt: String? = nil, inspectedAt: String? = nil, boughtOutAt: String? = nil) {
         self.shippedAt = shippedAt
         self.returnedAt = returnedAt
         self.closedAt = closedAt
         self.createdAt = createdAt
         self.shipTo = shipTo
+        self.platformListingId = platformListingId
+        self.payoutTiming = payoutTiming
+        self.payoutReleasedAt = payoutReleasedAt
+        self.orderId = orderId
+        self.crosslyFeeCents = crosslyFeeCents
         self.id = id
         self.status = status
         self.slug = slug
@@ -68,6 +93,21 @@ public struct ListBuyerRentalsItem: Codable, JSONEncodable, Hashable {
         self.conditionPhotosIn = conditionPhotosIn
         self.approvalDueAt = approvalDueAt
         self.depositRefundedCents = depositRefundedCents
+        self.unit = unit
+        self.fulfilment = fulfilment
+        self.cleaningFeeCents = cleaningFeeCents
+        self.damageWaiver = damageWaiver
+        self.damageWaiverCents = damageWaiverCents
+        self.lateFeeCents = lateFeeCents
+        self.rentRefundedCents = rentRefundedCents
+        self.buyoutCents = buyoutCents
+        self.charges = charges
+        self.conditionPhotosReturn = conditionPhotosReturn
+        self.approvedAt = approvedAt
+        self.deliveredAt = deliveredAt
+        self.returnShippedAt = returnShippedAt
+        self.inspectedAt = inspectedAt
+        self.boughtOutAt = boughtOutAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -76,6 +116,11 @@ public struct ListBuyerRentalsItem: Codable, JSONEncodable, Hashable {
         case closedAt
         case createdAt
         case shipTo
+        case platformListingId
+        case payoutTiming
+        case payoutReleasedAt
+        case orderId
+        case crosslyFeeCents
         case id
         case status
         case slug
@@ -98,6 +143,21 @@ public struct ListBuyerRentalsItem: Codable, JSONEncodable, Hashable {
         case conditionPhotosIn
         case approvalDueAt
         case depositRefundedCents
+        case unit
+        case fulfilment
+        case cleaningFeeCents
+        case damageWaiver
+        case damageWaiverCents
+        case lateFeeCents
+        case rentRefundedCents
+        case buyoutCents
+        case charges
+        case conditionPhotosReturn
+        case approvedAt
+        case deliveredAt
+        case returnShippedAt
+        case inspectedAt
+        case boughtOutAt
     }
 
     // Encodable protocol methods
@@ -109,6 +169,11 @@ public struct ListBuyerRentalsItem: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(closedAt, forKey: .closedAt)
         try container.encode(createdAt, forKey: .createdAt)
         try container.encodeIfPresent(shipTo, forKey: .shipTo)
+        try container.encodeIfPresent(platformListingId, forKey: .platformListingId)
+        try container.encodeIfPresent(payoutTiming, forKey: .payoutTiming)
+        try container.encodeIfPresent(payoutReleasedAt, forKey: .payoutReleasedAt)
+        try container.encodeIfPresent(orderId, forKey: .orderId)
+        try container.encodeIfPresent(crosslyFeeCents, forKey: .crosslyFeeCents)
         try container.encode(id, forKey: .id)
         try container.encode(status, forKey: .status)
         try container.encodeIfPresent(slug, forKey: .slug)
@@ -131,6 +196,21 @@ public struct ListBuyerRentalsItem: Codable, JSONEncodable, Hashable {
         try container.encode(conditionPhotosIn, forKey: .conditionPhotosIn)
         try container.encodeIfPresent(approvalDueAt, forKey: .approvalDueAt)
         try container.encode(depositRefundedCents, forKey: .depositRefundedCents)
+        try container.encode(unit, forKey: .unit)
+        try container.encode(fulfilment, forKey: .fulfilment)
+        try container.encode(cleaningFeeCents, forKey: .cleaningFeeCents)
+        try container.encode(damageWaiver, forKey: .damageWaiver)
+        try container.encode(damageWaiverCents, forKey: .damageWaiverCents)
+        try container.encode(lateFeeCents, forKey: .lateFeeCents)
+        try container.encode(rentRefundedCents, forKey: .rentRefundedCents)
+        try container.encodeIfPresent(buyoutCents, forKey: .buyoutCents)
+        try container.encode(charges, forKey: .charges)
+        try container.encode(conditionPhotosReturn, forKey: .conditionPhotosReturn)
+        try container.encodeIfPresent(approvedAt, forKey: .approvedAt)
+        try container.encodeIfPresent(deliveredAt, forKey: .deliveredAt)
+        try container.encodeIfPresent(returnShippedAt, forKey: .returnShippedAt)
+        try container.encodeIfPresent(inspectedAt, forKey: .inspectedAt)
+        try container.encodeIfPresent(boughtOutAt, forKey: .boughtOutAt)
     }
 }
 

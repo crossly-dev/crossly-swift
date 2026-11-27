@@ -13,8 +13,8 @@ import AnyCodable
 public struct GetVaultMarketGradingSignalResponseGraders: Codable, JSONEncodable, Hashable {
 
     public enum Via: String, Codable, CaseIterable {
-        case run = "run"
         case single = "single"
+        case run = "run"
     }
     public var graderSlug: String
     public var graderName: String

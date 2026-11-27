@@ -17,12 +17,12 @@ public struct GetProductionCandidateResponseCandidates: Codable, JSONEncodable, 
     public var updatedAt: Date
     public var status: String
     public var retailPriceCents: Double?
-    public var creatorUserId: String?
-    public var completedAt: Date?
     public var acceptedAt: Date?
+    public var completedAt: Date?
+    public var creatorUserId: String?
+    public var cosmeticId: String
     public var merchantId: String
     public var creatorSubjectId: String
-    public var cosmeticId: String
     public var editionSize: Double?
     public var unitCostCents: Double?
     public var runCostCents: Double?
@@ -37,18 +37,18 @@ public struct GetProductionCandidateResponseCandidates: Codable, JSONEncodable, 
     public var greenlitAt: Date?
     public var declineReason: String?
 
-    public init(id: String, createdAt: Date, updatedAt: Date, status: String, retailPriceCents: Double? = nil, creatorUserId: String? = nil, completedAt: Date? = nil, acceptedAt: Date? = nil, merchantId: String, creatorSubjectId: String, cosmeticId: String, editionSize: Double? = nil, unitCostCents: Double? = nil, runCostCents: Double? = nil, designerRoyaltyBps: Double, fundingAtEligibleCents: Double, distinctHoldersAtEligible: Double, holderPriority: Bool, holderPriceCents: Double? = nil, designBrief: GetProductionCandidateResponseCandidatesDesignBrief? = nil, spec: CreateProductionDesignSpecResponsePrefsSpec? = nil, ipClearedAt: Date? = nil, greenlitAt: Date? = nil, declineReason: String? = nil) {
+    public init(id: String, createdAt: Date, updatedAt: Date, status: String, retailPriceCents: Double? = nil, acceptedAt: Date? = nil, completedAt: Date? = nil, creatorUserId: String? = nil, cosmeticId: String, merchantId: String, creatorSubjectId: String, editionSize: Double? = nil, unitCostCents: Double? = nil, runCostCents: Double? = nil, designerRoyaltyBps: Double, fundingAtEligibleCents: Double, distinctHoldersAtEligible: Double, holderPriority: Bool, holderPriceCents: Double? = nil, designBrief: GetProductionCandidateResponseCandidatesDesignBrief? = nil, spec: CreateProductionDesignSpecResponsePrefsSpec? = nil, ipClearedAt: Date? = nil, greenlitAt: Date? = nil, declineReason: String? = nil) {
         self.id = id
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.status = status
         self.retailPriceCents = retailPriceCents
-        self.creatorUserId = creatorUserId
-        self.completedAt = completedAt
         self.acceptedAt = acceptedAt
+        self.completedAt = completedAt
+        self.creatorUserId = creatorUserId
+        self.cosmeticId = cosmeticId
         self.merchantId = merchantId
         self.creatorSubjectId = creatorSubjectId
-        self.cosmeticId = cosmeticId
         self.editionSize = editionSize
         self.unitCostCents = unitCostCents
         self.runCostCents = runCostCents
@@ -70,12 +70,12 @@ public struct GetProductionCandidateResponseCandidates: Codable, JSONEncodable, 
         case updatedAt
         case status
         case retailPriceCents
-        case creatorUserId
-        case completedAt
         case acceptedAt
+        case completedAt
+        case creatorUserId
+        case cosmeticId
         case merchantId
         case creatorSubjectId
-        case cosmeticId
         case editionSize
         case unitCostCents
         case runCostCents
@@ -100,12 +100,12 @@ public struct GetProductionCandidateResponseCandidates: Codable, JSONEncodable, 
         try container.encode(updatedAt, forKey: .updatedAt)
         try container.encode(status, forKey: .status)
         try container.encodeIfPresent(retailPriceCents, forKey: .retailPriceCents)
-        try container.encodeIfPresent(creatorUserId, forKey: .creatorUserId)
-        try container.encodeIfPresent(completedAt, forKey: .completedAt)
         try container.encodeIfPresent(acceptedAt, forKey: .acceptedAt)
+        try container.encodeIfPresent(completedAt, forKey: .completedAt)
+        try container.encodeIfPresent(creatorUserId, forKey: .creatorUserId)
+        try container.encode(cosmeticId, forKey: .cosmeticId)
         try container.encode(merchantId, forKey: .merchantId)
         try container.encode(creatorSubjectId, forKey: .creatorSubjectId)
-        try container.encode(cosmeticId, forKey: .cosmeticId)
         try container.encodeIfPresent(editionSize, forKey: .editionSize)
         try container.encodeIfPresent(unitCostCents, forKey: .unitCostCents)
         try container.encodeIfPresent(runCostCents, forKey: .runCostCents)

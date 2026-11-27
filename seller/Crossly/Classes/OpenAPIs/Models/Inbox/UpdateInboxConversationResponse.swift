@@ -12,9 +12,9 @@ import AnyCodable
 
 public struct UpdateInboxConversationResponse: Codable, JSONEncodable, Hashable {
 
-    public var conversation: ListInboxItem
+    public var conversation: UpdateInboxConversationResponseConversation
 
-    public init(conversation: ListInboxItem) {
+    public init(conversation: UpdateInboxConversationResponseConversation) {
         self.conversation = conversation
     }
 

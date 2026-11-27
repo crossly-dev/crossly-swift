@@ -12,6 +12,9 @@ import AnyCodable
 
 public struct ListPolicyPresetsItem: Codable, JSONEncodable, Hashable {
 
+    public var summary: String
+    public var incomplete: Bool
+    public var listingCount: Double
     public var id: String
     public var name: String
     public var createdAt: Date
@@ -19,8 +22,13 @@ public struct ListPolicyPresetsItem: Codable, JSONEncodable, Hashable {
     public var userId: String
     public var isDefault: Bool
     public var kind: String
+    public var revision: Double
+    public var hasDomesticRules: Bool
 
-    public init(id: String, name: String, createdAt: Date, updatedAt: Date, userId: String, isDefault: Bool, kind: String) {
+    public init(summary: String, incomplete: Bool, listingCount: Double, id: String, name: String, createdAt: Date, updatedAt: Date, userId: String, isDefault: Bool, kind: String, revision: Double, hasDomesticRules: Bool) {
+        self.summary = summary
+        self.incomplete = incomplete
+        self.listingCount = listingCount
         self.id = id
         self.name = name
         self.createdAt = createdAt
@@ -28,9 +36,14 @@ public struct ListPolicyPresetsItem: Codable, JSONEncodable, Hashable {
         self.userId = userId
         self.isDefault = isDefault
         self.kind = kind
+        self.revision = revision
+        self.hasDomesticRules = hasDomesticRules
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case summary
+        case incomplete
+        case listingCount
         case id
         case name
         case createdAt
@@ -38,12 +51,17 @@ public struct ListPolicyPresetsItem: Codable, JSONEncodable, Hashable {
         case userId
         case isDefault
         case kind
+        case revision
+        case hasDomesticRules
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(summary, forKey: .summary)
+        try container.encode(incomplete, forKey: .incomplete)
+        try container.encode(listingCount, forKey: .listingCount)
         try container.encode(id, forKey: .id)
         try container.encode(name, forKey: .name)
         try container.encode(createdAt, forKey: .createdAt)
@@ -51,6 +69,8 @@ public struct ListPolicyPresetsItem: Codable, JSONEncodable, Hashable {
         try container.encode(userId, forKey: .userId)
         try container.encode(isDefault, forKey: .isDefault)
         try container.encode(kind, forKey: .kind)
+        try container.encode(revision, forKey: .revision)
+        try container.encode(hasDomesticRules, forKey: .hasDomesticRules)
     }
 }
 

@@ -13,14 +13,14 @@ import AnyCodable
 public struct ListWorldDecorStreetsItemDecor: Codable, JSONEncodable, Hashable {
 
     public enum BannerColour: String, Codable, CaseIterable {
-        case red = "red"
-        case green = "green"
-        case teal = "teal"
         case blue = "blue"
+        case green = "green"
         case purple = "purple"
+        case red = "red"
+        case teal = "teal"
         case cream = "cream"
-        case amber = "amber"
         case ink = "ink"
+        case amber = "amber"
     }
     public var lamp: String?
     public var banner: String?

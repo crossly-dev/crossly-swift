@@ -13,19 +13,19 @@ import AnyCodable
 public struct GetBuyerListingFitResponseDataChart: Codable, JSONEncodable, Hashable {
 
     public var kind: String
-    public var rows: [GetBuyerListingFitResponseDataChartRows]
     public var kindLabel: String
+    public var rows: [GetBuyerListingFitResponseDataChartRows]
 
-    public init(kind: String, rows: [GetBuyerListingFitResponseDataChartRows], kindLabel: String) {
+    public init(kind: String, kindLabel: String, rows: [GetBuyerListingFitResponseDataChartRows]) {
         self.kind = kind
-        self.rows = rows
         self.kindLabel = kindLabel
+        self.rows = rows
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case kind
-        case rows
         case kindLabel
+        case rows
     }
 
     // Encodable protocol methods
@@ -33,8 +33,8 @@ public struct GetBuyerListingFitResponseDataChart: Codable, JSONEncodable, Hasha
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(kind, forKey: .kind)
-        try container.encode(rows, forKey: .rows)
         try container.encode(kindLabel, forKey: .kindLabel)
+        try container.encode(rows, forKey: .rows)
     }
 }
 

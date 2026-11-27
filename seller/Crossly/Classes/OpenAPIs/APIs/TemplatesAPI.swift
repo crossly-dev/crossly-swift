@@ -393,6 +393,52 @@ open class TemplatesAPI {
     }
 
     /**
+     A shared template by its share token (public, no auth).
+     
+     - parameter token: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getPublicTemplate(token: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetPublicTemplateResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getPublicTemplateWithRequestBuilder(token: token).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A shared template by its share token (public, no auth).
+     - GET /v1/public/templates/{token}
+     - parameter token: (path)  
+     - returns: RequestBuilder<GetPublicTemplateResponse> 
+     */
+    open class func getPublicTemplateWithRequestBuilder(token: String) -> RequestBuilder<GetPublicTemplateResponse> {
+        var localVariablePath = "/v1/public/templates/{token}"
+        let tokenPreEscape = "\(APIHelper.mapValueToPathItem(token))"
+        let tokenPostEscape = tokenPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{token}", with: tokenPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetPublicTemplateResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      List the seller's templates.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.

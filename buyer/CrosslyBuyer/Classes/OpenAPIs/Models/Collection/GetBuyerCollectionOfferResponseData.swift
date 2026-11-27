@@ -12,45 +12,45 @@ import AnyCodable
 
 public struct GetBuyerCollectionOfferResponseData: Codable, JSONEncodable, Hashable {
 
-    public var pending: GetBuyerCollectionOfferResponseDataPending?
+    public var portfolioId: String
     public var title: String?
     public var lastSaleCents: Double?
-    public var skuId: String?
-    public var portfolioId: String
-    public var offer: GetBuyerCollectionOfferResponseDataOffer?
     public var topBidCents: Double?
+    public var skuId: String?
+    public var offer: GetBuyerCollectionOfferResponseDataOffer?
+    public var pending: GetBuyerCollectionOfferResponseDataPending?
 
-    public init(pending: GetBuyerCollectionOfferResponseDataPending? = nil, title: String? = nil, lastSaleCents: Double? = nil, skuId: String? = nil, portfolioId: String, offer: GetBuyerCollectionOfferResponseDataOffer? = nil, topBidCents: Double? = nil) {
-        self.pending = pending
+    public init(portfolioId: String, title: String? = nil, lastSaleCents: Double? = nil, topBidCents: Double? = nil, skuId: String? = nil, offer: GetBuyerCollectionOfferResponseDataOffer? = nil, pending: GetBuyerCollectionOfferResponseDataPending? = nil) {
+        self.portfolioId = portfolioId
         self.title = title
         self.lastSaleCents = lastSaleCents
-        self.skuId = skuId
-        self.portfolioId = portfolioId
-        self.offer = offer
         self.topBidCents = topBidCents
+        self.skuId = skuId
+        self.offer = offer
+        self.pending = pending
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case pending
+        case portfolioId
         case title
         case lastSaleCents
-        case skuId
-        case portfolioId
-        case offer
         case topBidCents
+        case skuId
+        case offer
+        case pending
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(pending, forKey: .pending)
+        try container.encode(portfolioId, forKey: .portfolioId)
         try container.encodeIfPresent(title, forKey: .title)
         try container.encodeIfPresent(lastSaleCents, forKey: .lastSaleCents)
-        try container.encodeIfPresent(skuId, forKey: .skuId)
-        try container.encode(portfolioId, forKey: .portfolioId)
-        try container.encodeIfPresent(offer, forKey: .offer)
         try container.encodeIfPresent(topBidCents, forKey: .topBidCents)
+        try container.encodeIfPresent(skuId, forKey: .skuId)
+        try container.encodeIfPresent(offer, forKey: .offer)
+        try container.encodeIfPresent(pending, forKey: .pending)
     }
 }
 

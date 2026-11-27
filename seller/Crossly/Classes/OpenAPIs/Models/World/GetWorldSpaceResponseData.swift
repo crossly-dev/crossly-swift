@@ -13,11 +13,11 @@ import AnyCodable
 public struct GetWorldSpaceResponseData: Codable, JSONEncodable, Hashable {
 
     public enum Venue: String, Codable, CaseIterable {
+        case stage = "stage"
         case gallery = "gallery"
         case cardClub = "card_club"
         case sneakerMeet = "sneaker_meet"
         case vintageMarket = "vintage_market"
-        case stage = "stage"
         case clubhouse = "clubhouse"
     }
     public var id: String

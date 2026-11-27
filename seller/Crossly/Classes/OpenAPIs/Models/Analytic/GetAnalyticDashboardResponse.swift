@@ -15,15 +15,20 @@ public struct GetAnalyticDashboardResponse: Codable, JSONEncodable, Hashable {
     public var revenue: GetAnalyticDashboardResponseRevenue
     public var profit: GetAnalyticDashboardResponseRevenue
     public var soldItemsCount: GetAnalyticDashboardResponseRevenue
+    /** \"N sales pending details\": in the period, not in revenue/profit/avg. */
+    public var pendingDetailsCount: Double
     public var cancelledCount: GetAnalyticDashboardResponseRevenue
     public var cancelRate: GetAnalyticDashboardResponseCancelRate
     public var refundedAmount: GetAnalyticDashboardResponseRevenue
     public var refundedCount: GetAnalyticDashboardResponseRevenue
     public var listedItemsCount: GetAnalyticDashboardResponseRevenue
     public var avgSalePrice: GetAnalyticDashboardResponseRevenue
+    /** 0–100 (legacy unit). The full cohort is `sellThroughCohort`. */
     public var sellThroughRate: Double?
     public var sellThrough: GetAnalyticDashboardResponseSellThrough
+    public var sellThroughCohort: GetAnalyticDashboardResponseSellThroughCohort
     public var avgDaysToSell: Double?
+    public var medianDaysToSell: Double?
     public var salesByPlatform: [GetAnalyticDashboardResponseSalesByPlatform]
     public var avgSalePriceByPlatform: [GetAnalyticDashboardResponseAvgSalePriceByPlatform]
     public var revenueByDay: [GetAnalyticDashboardResponseRevenueByDay]
@@ -33,11 +38,13 @@ public struct GetAnalyticDashboardResponse: Codable, JSONEncodable, Hashable {
     public var top5ItemsByRevenue: [GetAnalyticDashboardResponseTop5ItemsByRevenue]
     public var recentSales: [GetAnalyticDashboardResponseRecentSales]
     public var availableLabels: [String]
+    public var period: GetAnalyticDashboardResponsePeriod
 
-    public init(revenue: GetAnalyticDashboardResponseRevenue, profit: GetAnalyticDashboardResponseRevenue, soldItemsCount: GetAnalyticDashboardResponseRevenue, cancelledCount: GetAnalyticDashboardResponseRevenue, cancelRate: GetAnalyticDashboardResponseCancelRate, refundedAmount: GetAnalyticDashboardResponseRevenue, refundedCount: GetAnalyticDashboardResponseRevenue, listedItemsCount: GetAnalyticDashboardResponseRevenue, avgSalePrice: GetAnalyticDashboardResponseRevenue, sellThroughRate: Double? = nil, sellThrough: GetAnalyticDashboardResponseSellThrough, avgDaysToSell: Double? = nil, salesByPlatform: [GetAnalyticDashboardResponseSalesByPlatform], avgSalePriceByPlatform: [GetAnalyticDashboardResponseAvgSalePriceByPlatform], revenueByDay: [GetAnalyticDashboardResponseRevenueByDay], topCategories: [GetAnalyticDashboardResponseTopCategories], topSubcategories: [GetAnalyticDashboardResponseTopCategories], topBrands: [GetAnalyticDashboardResponseTopCategories], top5ItemsByRevenue: [GetAnalyticDashboardResponseTop5ItemsByRevenue], recentSales: [GetAnalyticDashboardResponseRecentSales], availableLabels: [String]) {
+    public init(revenue: GetAnalyticDashboardResponseRevenue, profit: GetAnalyticDashboardResponseRevenue, soldItemsCount: GetAnalyticDashboardResponseRevenue, pendingDetailsCount: Double, cancelledCount: GetAnalyticDashboardResponseRevenue, cancelRate: GetAnalyticDashboardResponseCancelRate, refundedAmount: GetAnalyticDashboardResponseRevenue, refundedCount: GetAnalyticDashboardResponseRevenue, listedItemsCount: GetAnalyticDashboardResponseRevenue, avgSalePrice: GetAnalyticDashboardResponseRevenue, sellThroughRate: Double? = nil, sellThrough: GetAnalyticDashboardResponseSellThrough, sellThroughCohort: GetAnalyticDashboardResponseSellThroughCohort, avgDaysToSell: Double? = nil, medianDaysToSell: Double? = nil, salesByPlatform: [GetAnalyticDashboardResponseSalesByPlatform], avgSalePriceByPlatform: [GetAnalyticDashboardResponseAvgSalePriceByPlatform], revenueByDay: [GetAnalyticDashboardResponseRevenueByDay], topCategories: [GetAnalyticDashboardResponseTopCategories], topSubcategories: [GetAnalyticDashboardResponseTopCategories], topBrands: [GetAnalyticDashboardResponseTopCategories], top5ItemsByRevenue: [GetAnalyticDashboardResponseTop5ItemsByRevenue], recentSales: [GetAnalyticDashboardResponseRecentSales], availableLabels: [String], period: GetAnalyticDashboardResponsePeriod) {
         self.revenue = revenue
         self.profit = profit
         self.soldItemsCount = soldItemsCount
+        self.pendingDetailsCount = pendingDetailsCount
         self.cancelledCount = cancelledCount
         self.cancelRate = cancelRate
         self.refundedAmount = refundedAmount
@@ -46,7 +53,9 @@ public struct GetAnalyticDashboardResponse: Codable, JSONEncodable, Hashable {
         self.avgSalePrice = avgSalePrice
         self.sellThroughRate = sellThroughRate
         self.sellThrough = sellThrough
+        self.sellThroughCohort = sellThroughCohort
         self.avgDaysToSell = avgDaysToSell
+        self.medianDaysToSell = medianDaysToSell
         self.salesByPlatform = salesByPlatform
         self.avgSalePriceByPlatform = avgSalePriceByPlatform
         self.revenueByDay = revenueByDay
@@ -56,12 +65,14 @@ public struct GetAnalyticDashboardResponse: Codable, JSONEncodable, Hashable {
         self.top5ItemsByRevenue = top5ItemsByRevenue
         self.recentSales = recentSales
         self.availableLabels = availableLabels
+        self.period = period
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case revenue
         case profit
         case soldItemsCount
+        case pendingDetailsCount
         case cancelledCount
         case cancelRate
         case refundedAmount
@@ -70,7 +81,9 @@ public struct GetAnalyticDashboardResponse: Codable, JSONEncodable, Hashable {
         case avgSalePrice
         case sellThroughRate
         case sellThrough
+        case sellThroughCohort
         case avgDaysToSell
+        case medianDaysToSell
         case salesByPlatform
         case avgSalePriceByPlatform
         case revenueByDay
@@ -80,6 +93,7 @@ public struct GetAnalyticDashboardResponse: Codable, JSONEncodable, Hashable {
         case top5ItemsByRevenue
         case recentSales
         case availableLabels
+        case period
     }
 
     // Encodable protocol methods
@@ -89,6 +103,7 @@ public struct GetAnalyticDashboardResponse: Codable, JSONEncodable, Hashable {
         try container.encode(revenue, forKey: .revenue)
         try container.encode(profit, forKey: .profit)
         try container.encode(soldItemsCount, forKey: .soldItemsCount)
+        try container.encode(pendingDetailsCount, forKey: .pendingDetailsCount)
         try container.encode(cancelledCount, forKey: .cancelledCount)
         try container.encode(cancelRate, forKey: .cancelRate)
         try container.encode(refundedAmount, forKey: .refundedAmount)
@@ -97,7 +112,9 @@ public struct GetAnalyticDashboardResponse: Codable, JSONEncodable, Hashable {
         try container.encode(avgSalePrice, forKey: .avgSalePrice)
         try container.encodeIfPresent(sellThroughRate, forKey: .sellThroughRate)
         try container.encode(sellThrough, forKey: .sellThrough)
+        try container.encode(sellThroughCohort, forKey: .sellThroughCohort)
         try container.encodeIfPresent(avgDaysToSell, forKey: .avgDaysToSell)
+        try container.encodeIfPresent(medianDaysToSell, forKey: .medianDaysToSell)
         try container.encode(salesByPlatform, forKey: .salesByPlatform)
         try container.encode(avgSalePriceByPlatform, forKey: .avgSalePriceByPlatform)
         try container.encode(revenueByDay, forKey: .revenueByDay)
@@ -107,6 +124,7 @@ public struct GetAnalyticDashboardResponse: Codable, JSONEncodable, Hashable {
         try container.encode(top5ItemsByRevenue, forKey: .top5ItemsByRevenue)
         try container.encode(recentSales, forKey: .recentSales)
         try container.encode(availableLabels, forKey: .availableLabels)
+        try container.encode(period, forKey: .period)
     }
 }
 

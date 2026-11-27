@@ -13,49 +13,49 @@ import AnyCodable
 public struct ListBuyerPackOpeningsItem: Codable, JSONEncodable, Hashable {
 
     public var id: String
+    public var packTitle: String
+    public var packSlug: String
     public var status: String
     public var priceCents: Double
-    public var imageUrl: String?
-    public var vaultItemId: String?
-    public var openedAt: String?
-    public var tierName: String?
     public var valueCents: Double?
     public var buybackCents: Double?
     public var itemTitle: String?
+    public var imageUrl: String?
+    public var tierName: String?
+    public var vaultItemId: String?
+    public var openedAt: String?
     public var proof: ListBuyerPackOpeningsItemProof
-    public var packTitle: String
-    public var packSlug: String
 
-    public init(id: String, status: String, priceCents: Double, imageUrl: String? = nil, vaultItemId: String? = nil, openedAt: String? = nil, tierName: String? = nil, valueCents: Double? = nil, buybackCents: Double? = nil, itemTitle: String? = nil, proof: ListBuyerPackOpeningsItemProof, packTitle: String, packSlug: String) {
+    public init(id: String, packTitle: String, packSlug: String, status: String, priceCents: Double, valueCents: Double? = nil, buybackCents: Double? = nil, itemTitle: String? = nil, imageUrl: String? = nil, tierName: String? = nil, vaultItemId: String? = nil, openedAt: String? = nil, proof: ListBuyerPackOpeningsItemProof) {
         self.id = id
+        self.packTitle = packTitle
+        self.packSlug = packSlug
         self.status = status
         self.priceCents = priceCents
-        self.imageUrl = imageUrl
-        self.vaultItemId = vaultItemId
-        self.openedAt = openedAt
-        self.tierName = tierName
         self.valueCents = valueCents
         self.buybackCents = buybackCents
         self.itemTitle = itemTitle
+        self.imageUrl = imageUrl
+        self.tierName = tierName
+        self.vaultItemId = vaultItemId
+        self.openedAt = openedAt
         self.proof = proof
-        self.packTitle = packTitle
-        self.packSlug = packSlug
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
+        case packTitle
+        case packSlug
         case status
         case priceCents
-        case imageUrl
-        case vaultItemId
-        case openedAt
-        case tierName
         case valueCents
         case buybackCents
         case itemTitle
+        case imageUrl
+        case tierName
+        case vaultItemId
+        case openedAt
         case proof
-        case packTitle
-        case packSlug
     }
 
     // Encodable protocol methods
@@ -63,18 +63,18 @@ public struct ListBuyerPackOpeningsItem: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
+        try container.encode(packTitle, forKey: .packTitle)
+        try container.encode(packSlug, forKey: .packSlug)
         try container.encode(status, forKey: .status)
         try container.encode(priceCents, forKey: .priceCents)
-        try container.encodeIfPresent(imageUrl, forKey: .imageUrl)
-        try container.encodeIfPresent(vaultItemId, forKey: .vaultItemId)
-        try container.encodeIfPresent(openedAt, forKey: .openedAt)
-        try container.encodeIfPresent(tierName, forKey: .tierName)
         try container.encodeIfPresent(valueCents, forKey: .valueCents)
         try container.encodeIfPresent(buybackCents, forKey: .buybackCents)
         try container.encodeIfPresent(itemTitle, forKey: .itemTitle)
+        try container.encodeIfPresent(imageUrl, forKey: .imageUrl)
+        try container.encodeIfPresent(tierName, forKey: .tierName)
+        try container.encodeIfPresent(vaultItemId, forKey: .vaultItemId)
+        try container.encodeIfPresent(openedAt, forKey: .openedAt)
         try container.encode(proof, forKey: .proof)
-        try container.encode(packTitle, forKey: .packTitle)
-        try container.encode(packSlug, forKey: .packSlug)
     }
 }
 

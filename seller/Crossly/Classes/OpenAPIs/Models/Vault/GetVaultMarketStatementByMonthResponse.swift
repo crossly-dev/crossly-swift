@@ -28,9 +28,10 @@ public struct GetVaultMarketStatementByMonthResponse: Codable, JSONEncodable, Ha
     public var pledges: [[String: AnyCodable]]?
     public var activity: [ListVaultMarketConfirmationsItem]?
     public var fees: GetVaultMarketStatementByMonthResponseOneOf1Fees?
+    public var cash: AnyCodable?
     public var notes: [String]?
 
-    public init(frozen: Bool, hash: AnyCodable?, generatedAt: String, account: CreateVaultMarketPortfolioMarginEnrollResponseOneOfAccount? = nil, month: String? = nil, from: String? = nil, to: String? = nil, holdingsAsOf: String? = nil, provisional: Bool? = nil, summary: GetVaultMarketStatementByMonthResponseOneOf1Summary? = nil, holdings: [GetVaultMarketStatementByMonthResponseOneOf1Holdings]? = nil, loansOut: [[String: AnyCodable]]? = nil, positions: [[String: AnyCodable]]? = nil, pledges: [[String: AnyCodable]]? = nil, activity: [ListVaultMarketConfirmationsItem]? = nil, fees: GetVaultMarketStatementByMonthResponseOneOf1Fees? = nil, notes: [String]? = nil) {
+    public init(frozen: Bool, hash: AnyCodable?, generatedAt: String, account: CreateVaultMarketPortfolioMarginEnrollResponseOneOfAccount? = nil, month: String? = nil, from: String? = nil, to: String? = nil, holdingsAsOf: String? = nil, provisional: Bool? = nil, summary: GetVaultMarketStatementByMonthResponseOneOf1Summary? = nil, holdings: [GetVaultMarketStatementByMonthResponseOneOf1Holdings]? = nil, loansOut: [[String: AnyCodable]]? = nil, positions: [[String: AnyCodable]]? = nil, pledges: [[String: AnyCodable]]? = nil, activity: [ListVaultMarketConfirmationsItem]? = nil, fees: GetVaultMarketStatementByMonthResponseOneOf1Fees? = nil, cash: AnyCodable? = nil, notes: [String]? = nil) {
         self.frozen = frozen
         self.hash = hash
         self.generatedAt = generatedAt
@@ -47,6 +48,7 @@ public struct GetVaultMarketStatementByMonthResponse: Codable, JSONEncodable, Ha
         self.pledges = pledges
         self.activity = activity
         self.fees = fees
+        self.cash = cash
         self.notes = notes
     }
 
@@ -67,6 +69,7 @@ public struct GetVaultMarketStatementByMonthResponse: Codable, JSONEncodable, Ha
         case pledges
         case activity
         case fees
+        case cash
         case notes
     }
 
@@ -90,6 +93,7 @@ public struct GetVaultMarketStatementByMonthResponse: Codable, JSONEncodable, Ha
         try container.encodeIfPresent(pledges, forKey: .pledges)
         try container.encodeIfPresent(activity, forKey: .activity)
         try container.encodeIfPresent(fees, forKey: .fees)
+        try container.encodeIfPresent(cash, forKey: .cash)
         try container.encodeIfPresent(notes, forKey: .notes)
     }
 }

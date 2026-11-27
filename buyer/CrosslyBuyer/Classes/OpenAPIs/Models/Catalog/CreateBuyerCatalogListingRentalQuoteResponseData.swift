@@ -12,49 +12,97 @@ import AnyCodable
 
 public struct CreateBuyerCatalogListingRentalQuoteResponseData: Codable, JSONEncodable, Hashable {
 
+    public enum Fulfilment: String, Codable, CaseIterable {
+        case ship = "ship"
+        case pickup = "pickup"
+    }
+    public var fulfilment: Fulfilment
+    public var shippingCents: Double?
+    public var totalCents: Double?
+    public var needsApproval: Bool
+    public var cancellation: CreateBuyerCatalogListingRentalQuoteResponseDataCancellation
+    public var buyout: CreateBuyerCatalogListingRentalQuoteResponseDataBuyout
+    public var problem: String?
     public var startDate: String
     public var endDate: String
     public var days: Double
-    public var problem: String?
+    /** The unit the booking would hold (null when none is free). */
+    public var unit: Double?
+    public var lines: [CreateBuyerCatalogListingRentalQuoteResponseDataLines]
+    /** Rent after discounts. */
     public var rentCents: Double
+    public var cleaningFeeCents: Double
+    public var damageWaiverCents: Double
     public var depositCents: Double
-    public var shippingCents: Double?
-    public var totalCents: Double?
+    /** Why the deposit is 0 or lowered, when it is. */
+    public var depositNote: String?
+    /** Everything but shipping and the deposit: what the seller's fee is taken on. */
+    public var chargeableCents: Double
 
-    public init(startDate: String, endDate: String, days: Double, problem: String? = nil, rentCents: Double, depositCents: Double, shippingCents: Double? = nil, totalCents: Double? = nil) {
+    public init(fulfilment: Fulfilment, shippingCents: Double? = nil, totalCents: Double? = nil, needsApproval: Bool, cancellation: CreateBuyerCatalogListingRentalQuoteResponseDataCancellation, buyout: CreateBuyerCatalogListingRentalQuoteResponseDataBuyout, problem: String? = nil, startDate: String, endDate: String, days: Double, unit: Double? = nil, lines: [CreateBuyerCatalogListingRentalQuoteResponseDataLines], rentCents: Double, cleaningFeeCents: Double, damageWaiverCents: Double, depositCents: Double, depositNote: String? = nil, chargeableCents: Double) {
+        self.fulfilment = fulfilment
+        self.shippingCents = shippingCents
+        self.totalCents = totalCents
+        self.needsApproval = needsApproval
+        self.cancellation = cancellation
+        self.buyout = buyout
+        self.problem = problem
         self.startDate = startDate
         self.endDate = endDate
         self.days = days
-        self.problem = problem
+        self.unit = unit
+        self.lines = lines
         self.rentCents = rentCents
+        self.cleaningFeeCents = cleaningFeeCents
+        self.damageWaiverCents = damageWaiverCents
         self.depositCents = depositCents
-        self.shippingCents = shippingCents
-        self.totalCents = totalCents
+        self.depositNote = depositNote
+        self.chargeableCents = chargeableCents
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case fulfilment
+        case shippingCents
+        case totalCents
+        case needsApproval
+        case cancellation
+        case buyout
+        case problem
         case startDate
         case endDate
         case days
-        case problem
+        case unit
+        case lines
         case rentCents
+        case cleaningFeeCents
+        case damageWaiverCents
         case depositCents
-        case shippingCents
-        case totalCents
+        case depositNote
+        case chargeableCents
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(fulfilment, forKey: .fulfilment)
+        try container.encodeIfPresent(shippingCents, forKey: .shippingCents)
+        try container.encodeIfPresent(totalCents, forKey: .totalCents)
+        try container.encode(needsApproval, forKey: .needsApproval)
+        try container.encode(cancellation, forKey: .cancellation)
+        try container.encode(buyout, forKey: .buyout)
+        try container.encodeIfPresent(problem, forKey: .problem)
         try container.encode(startDate, forKey: .startDate)
         try container.encode(endDate, forKey: .endDate)
         try container.encode(days, forKey: .days)
-        try container.encodeIfPresent(problem, forKey: .problem)
+        try container.encodeIfPresent(unit, forKey: .unit)
+        try container.encode(lines, forKey: .lines)
         try container.encode(rentCents, forKey: .rentCents)
+        try container.encode(cleaningFeeCents, forKey: .cleaningFeeCents)
+        try container.encode(damageWaiverCents, forKey: .damageWaiverCents)
         try container.encode(depositCents, forKey: .depositCents)
-        try container.encodeIfPresent(shippingCents, forKey: .shippingCents)
-        try container.encodeIfPresent(totalCents, forKey: .totalCents)
+        try container.encodeIfPresent(depositNote, forKey: .depositNote)
+        try container.encode(chargeableCents, forKey: .chargeableCents)
     }
 }
 

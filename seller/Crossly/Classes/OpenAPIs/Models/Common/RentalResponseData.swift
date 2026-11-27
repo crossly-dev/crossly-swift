@@ -15,26 +15,34 @@ public struct RentalResponseData: Codable, JSONEncodable, Hashable {
     public var id: String
     public var createdAt: Date
     public var status: String
-    public var cancelledAt: Date?
+    public var days: Double
     public var platformListingId: String
+    public var storefrontId: String?
     public var shippedAt: Date?
-    public var sellerUserId: String
+    public var deliveredAt: Date?
+    public var cancelledAt: Date?
+    public var orderId: String?
+    public var inspectedAt: Date?
     public var stripePaymentIntentId: String?
+    public var sellerUserId: String
+    public var payoutAccountId: String?
     public var crosslyFeeCents: Double
     public var shippingCents: Double
     public var returnLabelUrl: String?
     public var closedAt: Date?
-    public var outboundLabelUrl: String?
+    public var approvedAt: Date?
+    public var terms: [String: AnyCodable]
     public var depositCents: Double
+    public var outboundLabelUrl: String?
     public var claimedAt: Date?
+    public var fulfilment: String
     public var shipTo: [String: AnyCodable]
-    public var outboundTracking: String?
     public var renterUserId: String
     public var startDate: String
     public var endDate: String
-    public var days: Double
     public var rentCents: Double
     public var shipFrom: [String: AnyCodable]?
+    public var outboundTracking: String?
     public var returnTracking: String?
     public var returnedAt: Date?
     public var claimCents: Double
@@ -45,31 +53,54 @@ public struct RentalResponseData: Codable, JSONEncodable, Hashable {
     public var approvalDueAt: Date?
     public var conditionPhotosOut: [String]
     public var conditionPhotosIn: [String]
+    public var unitIndex: Double
+    public var charges: [String: AnyCodable]
+    public var damageWaiver: Bool
+    public var cleaningFeeCents: Double
+    public var damageWaiverCents: Double
+    public var lateFeeCents: Double
+    public var rentRefundedCents: Double
+    public var payoutTiming: String
+    public var payoutReleasedAt: Date?
+    public var returnShippedAt: Date?
+    public var conditionPhotosReturn: [String]
+    public var inspection: [RentalResponseDataInspection]
+    public var boughtOutAt: Date?
+    public var buyoutCents: Double?
+    public var notReturnedAt: Date?
 
-    public init(id: String, createdAt: Date, status: String, cancelledAt: Date? = nil, platformListingId: String, shippedAt: Date? = nil, sellerUserId: String, stripePaymentIntentId: String? = nil, crosslyFeeCents: Double, shippingCents: Double, returnLabelUrl: String? = nil, closedAt: Date? = nil, outboundLabelUrl: String? = nil, depositCents: Double, claimedAt: Date? = nil, shipTo: [String: AnyCodable], outboundTracking: String? = nil, renterUserId: String, startDate: String, endDate: String, days: Double, rentCents: Double, shipFrom: [String: AnyCodable]? = nil, returnTracking: String? = nil, returnedAt: Date? = nil, claimCents: Double, claimNote: String? = nil, claimPhotos: [String], claimDisputed: Bool, depositRefundedCents: Double, approvalDueAt: Date? = nil, conditionPhotosOut: [String], conditionPhotosIn: [String]) {
+    public init(id: String, createdAt: Date, status: String, days: Double, platformListingId: String, storefrontId: String? = nil, shippedAt: Date? = nil, deliveredAt: Date? = nil, cancelledAt: Date? = nil, orderId: String? = nil, inspectedAt: Date? = nil, stripePaymentIntentId: String? = nil, sellerUserId: String, payoutAccountId: String? = nil, crosslyFeeCents: Double, shippingCents: Double, returnLabelUrl: String? = nil, closedAt: Date? = nil, approvedAt: Date? = nil, terms: [String: AnyCodable], depositCents: Double, outboundLabelUrl: String? = nil, claimedAt: Date? = nil, fulfilment: String, shipTo: [String: AnyCodable], renterUserId: String, startDate: String, endDate: String, rentCents: Double, shipFrom: [String: AnyCodable]? = nil, outboundTracking: String? = nil, returnTracking: String? = nil, returnedAt: Date? = nil, claimCents: Double, claimNote: String? = nil, claimPhotos: [String], claimDisputed: Bool, depositRefundedCents: Double, approvalDueAt: Date? = nil, conditionPhotosOut: [String], conditionPhotosIn: [String], unitIndex: Double, charges: [String: AnyCodable], damageWaiver: Bool, cleaningFeeCents: Double, damageWaiverCents: Double, lateFeeCents: Double, rentRefundedCents: Double, payoutTiming: String, payoutReleasedAt: Date? = nil, returnShippedAt: Date? = nil, conditionPhotosReturn: [String], inspection: [RentalResponseDataInspection], boughtOutAt: Date? = nil, buyoutCents: Double? = nil, notReturnedAt: Date? = nil) {
         self.id = id
         self.createdAt = createdAt
         self.status = status
-        self.cancelledAt = cancelledAt
+        self.days = days
         self.platformListingId = platformListingId
+        self.storefrontId = storefrontId
         self.shippedAt = shippedAt
-        self.sellerUserId = sellerUserId
+        self.deliveredAt = deliveredAt
+        self.cancelledAt = cancelledAt
+        self.orderId = orderId
+        self.inspectedAt = inspectedAt
         self.stripePaymentIntentId = stripePaymentIntentId
+        self.sellerUserId = sellerUserId
+        self.payoutAccountId = payoutAccountId
         self.crosslyFeeCents = crosslyFeeCents
         self.shippingCents = shippingCents
         self.returnLabelUrl = returnLabelUrl
         self.closedAt = closedAt
-        self.outboundLabelUrl = outboundLabelUrl
+        self.approvedAt = approvedAt
+        self.terms = terms
         self.depositCents = depositCents
+        self.outboundLabelUrl = outboundLabelUrl
         self.claimedAt = claimedAt
+        self.fulfilment = fulfilment
         self.shipTo = shipTo
-        self.outboundTracking = outboundTracking
         self.renterUserId = renterUserId
         self.startDate = startDate
         self.endDate = endDate
-        self.days = days
         self.rentCents = rentCents
         self.shipFrom = shipFrom
+        self.outboundTracking = outboundTracking
         self.returnTracking = returnTracking
         self.returnedAt = returnedAt
         self.claimCents = claimCents
@@ -80,32 +111,55 @@ public struct RentalResponseData: Codable, JSONEncodable, Hashable {
         self.approvalDueAt = approvalDueAt
         self.conditionPhotosOut = conditionPhotosOut
         self.conditionPhotosIn = conditionPhotosIn
+        self.unitIndex = unitIndex
+        self.charges = charges
+        self.damageWaiver = damageWaiver
+        self.cleaningFeeCents = cleaningFeeCents
+        self.damageWaiverCents = damageWaiverCents
+        self.lateFeeCents = lateFeeCents
+        self.rentRefundedCents = rentRefundedCents
+        self.payoutTiming = payoutTiming
+        self.payoutReleasedAt = payoutReleasedAt
+        self.returnShippedAt = returnShippedAt
+        self.conditionPhotosReturn = conditionPhotosReturn
+        self.inspection = inspection
+        self.boughtOutAt = boughtOutAt
+        self.buyoutCents = buyoutCents
+        self.notReturnedAt = notReturnedAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
         case createdAt
         case status
-        case cancelledAt
+        case days
         case platformListingId
+        case storefrontId
         case shippedAt
-        case sellerUserId
+        case deliveredAt
+        case cancelledAt
+        case orderId
+        case inspectedAt
         case stripePaymentIntentId
+        case sellerUserId
+        case payoutAccountId
         case crosslyFeeCents
         case shippingCents
         case returnLabelUrl
         case closedAt
-        case outboundLabelUrl
+        case approvedAt
+        case terms
         case depositCents
+        case outboundLabelUrl
         case claimedAt
+        case fulfilment
         case shipTo
-        case outboundTracking
         case renterUserId
         case startDate
         case endDate
-        case days
         case rentCents
         case shipFrom
+        case outboundTracking
         case returnTracking
         case returnedAt
         case claimCents
@@ -116,6 +170,21 @@ public struct RentalResponseData: Codable, JSONEncodable, Hashable {
         case approvalDueAt
         case conditionPhotosOut
         case conditionPhotosIn
+        case unitIndex
+        case charges
+        case damageWaiver
+        case cleaningFeeCents
+        case damageWaiverCents
+        case lateFeeCents
+        case rentRefundedCents
+        case payoutTiming
+        case payoutReleasedAt
+        case returnShippedAt
+        case conditionPhotosReturn
+        case inspection
+        case boughtOutAt
+        case buyoutCents
+        case notReturnedAt
     }
 
     // Encodable protocol methods
@@ -125,26 +194,34 @@ public struct RentalResponseData: Codable, JSONEncodable, Hashable {
         try container.encode(id, forKey: .id)
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(status, forKey: .status)
-        try container.encodeIfPresent(cancelledAt, forKey: .cancelledAt)
+        try container.encode(days, forKey: .days)
         try container.encode(platformListingId, forKey: .platformListingId)
+        try container.encodeIfPresent(storefrontId, forKey: .storefrontId)
         try container.encodeIfPresent(shippedAt, forKey: .shippedAt)
-        try container.encode(sellerUserId, forKey: .sellerUserId)
+        try container.encodeIfPresent(deliveredAt, forKey: .deliveredAt)
+        try container.encodeIfPresent(cancelledAt, forKey: .cancelledAt)
+        try container.encodeIfPresent(orderId, forKey: .orderId)
+        try container.encodeIfPresent(inspectedAt, forKey: .inspectedAt)
         try container.encodeIfPresent(stripePaymentIntentId, forKey: .stripePaymentIntentId)
+        try container.encode(sellerUserId, forKey: .sellerUserId)
+        try container.encodeIfPresent(payoutAccountId, forKey: .payoutAccountId)
         try container.encode(crosslyFeeCents, forKey: .crosslyFeeCents)
         try container.encode(shippingCents, forKey: .shippingCents)
         try container.encodeIfPresent(returnLabelUrl, forKey: .returnLabelUrl)
         try container.encodeIfPresent(closedAt, forKey: .closedAt)
-        try container.encodeIfPresent(outboundLabelUrl, forKey: .outboundLabelUrl)
+        try container.encodeIfPresent(approvedAt, forKey: .approvedAt)
+        try container.encode(terms, forKey: .terms)
         try container.encode(depositCents, forKey: .depositCents)
+        try container.encodeIfPresent(outboundLabelUrl, forKey: .outboundLabelUrl)
         try container.encodeIfPresent(claimedAt, forKey: .claimedAt)
+        try container.encode(fulfilment, forKey: .fulfilment)
         try container.encode(shipTo, forKey: .shipTo)
-        try container.encodeIfPresent(outboundTracking, forKey: .outboundTracking)
         try container.encode(renterUserId, forKey: .renterUserId)
         try container.encode(startDate, forKey: .startDate)
         try container.encode(endDate, forKey: .endDate)
-        try container.encode(days, forKey: .days)
         try container.encode(rentCents, forKey: .rentCents)
         try container.encodeIfPresent(shipFrom, forKey: .shipFrom)
+        try container.encodeIfPresent(outboundTracking, forKey: .outboundTracking)
         try container.encodeIfPresent(returnTracking, forKey: .returnTracking)
         try container.encodeIfPresent(returnedAt, forKey: .returnedAt)
         try container.encode(claimCents, forKey: .claimCents)
@@ -155,6 +232,21 @@ public struct RentalResponseData: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(approvalDueAt, forKey: .approvalDueAt)
         try container.encode(conditionPhotosOut, forKey: .conditionPhotosOut)
         try container.encode(conditionPhotosIn, forKey: .conditionPhotosIn)
+        try container.encode(unitIndex, forKey: .unitIndex)
+        try container.encode(charges, forKey: .charges)
+        try container.encode(damageWaiver, forKey: .damageWaiver)
+        try container.encode(cleaningFeeCents, forKey: .cleaningFeeCents)
+        try container.encode(damageWaiverCents, forKey: .damageWaiverCents)
+        try container.encode(lateFeeCents, forKey: .lateFeeCents)
+        try container.encode(rentRefundedCents, forKey: .rentRefundedCents)
+        try container.encode(payoutTiming, forKey: .payoutTiming)
+        try container.encodeIfPresent(payoutReleasedAt, forKey: .payoutReleasedAt)
+        try container.encodeIfPresent(returnShippedAt, forKey: .returnShippedAt)
+        try container.encode(conditionPhotosReturn, forKey: .conditionPhotosReturn)
+        try container.encode(inspection, forKey: .inspection)
+        try container.encodeIfPresent(boughtOutAt, forKey: .boughtOutAt)
+        try container.encodeIfPresent(buyoutCents, forKey: .buyoutCents)
+        try container.encodeIfPresent(notReturnedAt, forKey: .notReturnedAt)
     }
 }
 

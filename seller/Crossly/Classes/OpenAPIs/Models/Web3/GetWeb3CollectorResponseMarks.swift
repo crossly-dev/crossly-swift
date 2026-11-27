@@ -15,9 +15,9 @@ public struct GetWeb3CollectorResponseMarks: Codable, JSONEncodable, Hashable {
     public enum Source: String, Codable, CaseIterable {
         case crossly = "crossly"
         case card = "card"
-        case tensor = "tensor"
-        case magicEden = "magic_eden"
         case rarible = "rarible"
+        case magicEden = "magic_eden"
+        case tensor = "tensor"
     }
     public var chain: String
     public var contract: String

@@ -14,8 +14,8 @@ public struct CreateMagicScanSynthesizeResponsePayload: Codable, JSONEncodable, 
 
     public enum Condition: String, Codable, CaseIterable {
         case new = "new"
-        case fair = "fair"
         case good = "good"
+        case fair = "fair"
         case likeNew = "like_new"
         case poor = "poor"
         case refurbished = "refurbished"
@@ -25,15 +25,15 @@ public struct CreateMagicScanSynthesizeResponsePayload: Codable, JSONEncodable, 
         case buyer = "buyer"
     }
     public enum ReturnsAccepted: String, Codable, CaseIterable {
-        case yes = "yes"
         case no = "no"
+        case yes = "yes"
     }
     public var title: String
     public var description: String
     public var brand: String?
     /** Master form enum value — one of new/like_new/good/fair/poor. The heuristic synth maps eBay/Mercari/Poshmark condition strings into this canonical form so the UI's <Select> finds a match. */
     public var condition: Condition?
-    public var grading: ListGradingSubmissionsItemGrading?
+    public var grading: CreateBulkBatchItemResponseGrading?
     public var color: String?
     public var material: String?
     public var size: String?
@@ -87,7 +87,7 @@ public struct CreateMagicScanSynthesizeResponsePayload: Codable, JSONEncodable, 
     public var notes: String?
     public var sectionApplicability: CreateMagicScanSynthesizeResponsePayloadSectionApplicability?
 
-    public init(title: String, description: String, brand: String? = nil, condition: Condition? = nil, grading: ListGradingSubmissionsItemGrading? = nil, color: String? = nil, material: String? = nil, size: String? = nil, sizeSystem: String? = nil, weightOz: Double? = nil, dimensions: CreateMagicScanSynthesizeResponsePayloadDimensions? = nil, priceCents: Double? = nil, sellerNote: String? = nil, priceLowCents: Double? = nil, priceMedianCents: Double? = nil, priceHighCents: Double? = nil, quantity: Double? = nil, createInventoryItem: Bool? = nil, inventoryQuantity: Double? = nil, unitsPerListing: Double? = nil, costBasisCents: Double? = nil, chosenDimensions: CreateMagicScanSynthesizeResponsePayloadDimensions? = nil, imageUrls: [String]? = nil, category: CreateMagicScanSynthesizeResponsePayloadCategory? = nil, department: String? = nil, gender: String? = nil, style: String? = nil, pattern: String? = nil, itemType: String? = nil, upc: String? = nil, shippingPaidBy: ShippingPaidBy? = nil, handlingTimeDays: String? = nil, returnsAccepted: ReturnsAccepted? = nil, returnWindowDays: String? = nil, tags: [String]? = nil, itemSpecifics: String? = nil, perPlatformOverrides: [String: AnyCodable], confidence: Double, notes: String? = nil, sectionApplicability: CreateMagicScanSynthesizeResponsePayloadSectionApplicability? = nil) {
+    public init(title: String, description: String, brand: String? = nil, condition: Condition? = nil, grading: CreateBulkBatchItemResponseGrading? = nil, color: String? = nil, material: String? = nil, size: String? = nil, sizeSystem: String? = nil, weightOz: Double? = nil, dimensions: CreateMagicScanSynthesizeResponsePayloadDimensions? = nil, priceCents: Double? = nil, sellerNote: String? = nil, priceLowCents: Double? = nil, priceMedianCents: Double? = nil, priceHighCents: Double? = nil, quantity: Double? = nil, createInventoryItem: Bool? = nil, inventoryQuantity: Double? = nil, unitsPerListing: Double? = nil, costBasisCents: Double? = nil, chosenDimensions: CreateMagicScanSynthesizeResponsePayloadDimensions? = nil, imageUrls: [String]? = nil, category: CreateMagicScanSynthesizeResponsePayloadCategory? = nil, department: String? = nil, gender: String? = nil, style: String? = nil, pattern: String? = nil, itemType: String? = nil, upc: String? = nil, shippingPaidBy: ShippingPaidBy? = nil, handlingTimeDays: String? = nil, returnsAccepted: ReturnsAccepted? = nil, returnWindowDays: String? = nil, tags: [String]? = nil, itemSpecifics: String? = nil, perPlatformOverrides: [String: AnyCodable], confidence: Double, notes: String? = nil, sectionApplicability: CreateMagicScanSynthesizeResponsePayloadSectionApplicability? = nil) {
         self.title = title
         self.description = description
         self.brand = brand

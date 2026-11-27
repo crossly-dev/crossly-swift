@@ -12,6 +12,13 @@ import AnyCodable
 
 public struct GetInboxConversationMessageResponseMessages: Codable, JSONEncodable, Hashable {
 
+    public enum OfferStatus: String, Codable, CaseIterable {
+        case pending = "pending"
+        case accepted = "accepted"
+        case declined = "declined"
+        case expired = "expired"
+        case voided = "voided"
+    }
     public var id: String
     public var conversationId: String
     public var platformMessageId: String?
@@ -25,8 +32,10 @@ public struct GetInboxConversationMessageResponseMessages: Codable, JSONEncodabl
     public var aiScamScore: Double?
     public var aiSuggestedReply: String?
     public var aiTriagedAt: Date?
+    public var offerAmount: String?
+    public var offerStatus: OfferStatus?
 
-    public init(id: String, conversationId: String, platformMessageId: String? = nil, sender: String, body: String? = nil, attachments: [String]? = nil, sentAt: Date, syncedAt: Date? = nil, aiIntent: String? = nil, aiUrgency: String? = nil, aiScamScore: Double? = nil, aiSuggestedReply: String? = nil, aiTriagedAt: Date? = nil) {
+    public init(id: String, conversationId: String, platformMessageId: String? = nil, sender: String, body: String? = nil, attachments: [String]? = nil, sentAt: Date, syncedAt: Date? = nil, aiIntent: String? = nil, aiUrgency: String? = nil, aiScamScore: Double? = nil, aiSuggestedReply: String? = nil, aiTriagedAt: Date? = nil, offerAmount: String? = nil, offerStatus: OfferStatus? = nil) {
         self.id = id
         self.conversationId = conversationId
         self.platformMessageId = platformMessageId
@@ -40,6 +49,8 @@ public struct GetInboxConversationMessageResponseMessages: Codable, JSONEncodabl
         self.aiScamScore = aiScamScore
         self.aiSuggestedReply = aiSuggestedReply
         self.aiTriagedAt = aiTriagedAt
+        self.offerAmount = offerAmount
+        self.offerStatus = offerStatus
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -56,6 +67,8 @@ public struct GetInboxConversationMessageResponseMessages: Codable, JSONEncodabl
         case aiScamScore
         case aiSuggestedReply
         case aiTriagedAt
+        case offerAmount
+        case offerStatus
     }
 
     // Encodable protocol methods
@@ -75,6 +88,8 @@ public struct GetInboxConversationMessageResponseMessages: Codable, JSONEncodabl
         try container.encodeIfPresent(aiScamScore, forKey: .aiScamScore)
         try container.encodeIfPresent(aiSuggestedReply, forKey: .aiSuggestedReply)
         try container.encodeIfPresent(aiTriagedAt, forKey: .aiTriagedAt)
+        try container.encodeIfPresent(offerAmount, forKey: .offerAmount)
+        try container.encodeIfPresent(offerStatus, forKey: .offerStatus)
     }
 }
 

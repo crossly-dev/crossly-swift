@@ -19,13 +19,13 @@ public struct ListMarketBullionItem: Codable, JSONEncodable, Hashable {
         case palladium = "palladium"
     }
     public enum Form: String, Codable, CaseIterable {
-        case round = "round"
         case bullionCoin = "bullion_coin"
         case bar = "bar"
+        case round = "round"
     }
     public enum Size: String, Codable, CaseIterable {
-        case quarter = "quarter"
         case fractional = "fractional"
+        case quarter = "quarter"
         case half = "half"
         case one = "one"
         case twoFive = "two-five"

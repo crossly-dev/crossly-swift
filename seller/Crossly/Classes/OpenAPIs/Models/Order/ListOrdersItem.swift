@@ -12,27 +12,52 @@ import AnyCodable
 
 public struct ListOrdersItem: Codable, JSONEncodable, Hashable {
 
-    public var id: String
-    public var createdAt: Date
-    public var updatedAt: Date
-    public var userId: String
+    public var appShare: GetOrderResponseAppShare?
+    public var trade: GetOrderResponseTrade?
+    /** DOLLARS (numbers, as order.created sends them). null = not known (no sale row, or details pending). */
+    public var salePrice: Double?
+    public var platformFee: Double?
+    public var taxCollected: Double?
+    public var shippingCharged: Double?
+    /** 'exact' (the marketplace's charged fee) | 'estimated'. */
+    public var feeSource: String?
+    public var detailsPending: Bool
+    /** The listing's SKU (order.created `sku`). */
+    public var sku: String?
+    /** Units purchased in this order (default 1). Drives how many units the Available→Reserved→Sold state machine moves. See migration 0139. Units on the order (order.created `quantity`). */
     public var quantity: Double
-    public var notes: String?
-    public var status: String
-    public var platform: String
-    public var cancelledAt: Date?
-    public var listingId: String?
+    public var lineItems: [GetOrderResponseLineItems]?
+    public var id: String
+    public var userId: String
     public var inventoryItemId: String?
+    public var listingId: String?
     public var platformListingId: String?
-    public var handlingTimeDays: Double?
+    public var platform: String
     public var platformOrderId: String?
+    /** 1066 (order relay): the developer app that reported this order through an inbound item.sold (FK oauth_apps.id ON DELETE SET NULL in SQL). Null for every order Crossly detected itself. Read by action authority. */
+    public var reportedByAppId: String?
+    /** Crossly orders only: the seller's storefront this sale came from. Null for every non-crossly platform. See db/schema/storefronts.ts. */
+    public var storefrontId: String?
     public var buyerUsername: String?
+    /** C8 (0448): the carrier location the parcel is held at — services/pickup-points.ts. */
     public var pickupPoint: [String: AnyCodable]?
+    /** D4 (0448): set when this seller ships to the consolidation hub, not the buyer — services/hub/. */
     public var consolidationId: String?
+    /** X4 (0479): import duties + taxes + fees the buyer paid at checkout for this parcel (services/landed-cost/); the label ships DDP. */
     public var dutiesCents: Double
+    /** X4: refunded because the order never shipped. */
     public var dutiesRefundedAt: Date?
+    public var status: String
+    /** Where the sale happened, as distinct from which platform it was on.  Shopify POS orders arrive through the same Orders API as web orders, so before this they were detected as ordinary online sales and landed in `needs_fulfillment` — queued for a shipment that will never happen, because the customer already walked out with the item.  'online' for everything else, which is what every pre-existing row is. */
     public var salesChannel: String
+    /** POS location that rang it up. Null for online sales. */
     public var channelLocationId: String?
+    /** 1121 — which BUSINESS channel sold it: retail | wholesale | auction | live | world | pos (@crosslister/shared/wholesale ORDER_CHANNELS). Orthogonal to `salesChannel` (online vs in person): a wholesale order is usually online. Written at sale record time (sale/detect/order-write.ts). */
+    public var channel: String
+    /** 1121 — the on-account invoice this order was placed on (crossly_invoices.id). */
+    public var invoiceId: String?
+    /** 1121 — the buyer company (W7 crossly_buyer_companies; no FK until that table exists). */
+    public var buyerCompanyId: String?
     public var packagePresetId: String?
     public var carrier: String?
     public var service: String?
@@ -47,8 +72,11 @@ public struct ListOrdersItem: Codable, JSONEncodable, Hashable {
     public var deliveredAt: Date?
     public var carrierStatus: String?
     public var carrierStatusDetail: String?
-    public var trackingHistory: [ListOrdersItemTrackingHistory]?
+    /** Every carrier scan, newest first (migration 0243).  The two columns above are the CURRENT state, overwritten on each refresh. For a dispute that proves nothing: \"delivered\" with no date, no location and no chain of scans is a claim, not evidence. Shippo returns the full history on every track call; it used to be discarded. */
+    public var trackingHistory: [GetOrderResponseTrackingHistory]?
+    /** Where the carrier says it was left, when they say. */
     public var deliveryLocation: String?
+    /** Signature name, where the service captured one. Most residential deliveries have none — absence is not evidence of non-delivery. */
     public var deliverySignature: String?
     public var trackingSubmittedAt: Date?
     public var trackingSubmitStatus: String?
@@ -56,10 +84,14 @@ public struct ListOrdersItem: Codable, JSONEncodable, Hashable {
     public var costOfGoods: String?
     public var requestedCarrier: String?
     public var requestedService: String?
+    public var handlingTimeDays: Double?
     public var shipByAt: Date?
     public var shipByAlertedAt: Date?
+    /** Units this order could NOT be covered from stock — an oversell (0 = normal). Set at detection by recordSale's shortfall; the seller must cancel or refund. See migration 0156. */
     public var oversoldBy: Double
+    /** Last time this order's status was reconciled against the platform. NULL = never. Drives the targeted sweeper for orders that fall off page 1 of the sold-list walk. See migration 0157. */
     public var lastStatusCheckAt: Date?
+    /** Last time this order's platform CHAT thread was pulled. NULL = never. Separate from lastStatusCheckAt because the cadences differ by an order of magnitude — a buyer question needs answering in minutes, a status reconcile can wait an hour. See migration 0158. */
     public var lastChatCheckAt: Date?
     public var isDisputed: Bool
     public var disputeReason: String?
@@ -69,39 +101,65 @@ public struct ListOrdersItem: Codable, JSONEncodable, Hashable {
     public var refundReason: String?
     public var refundPlatformId: String?
     public var refundedAt: Date?
+    public var cancelledAt: Date?
     public var cancellationReason: String?
+    public var notes: String?
+    /** The arrival-condition ask, recorded on the ORDER rather than read off the seller's toggle at review time. The seller can flip that toggle later; what a reviewer needs is what was asked of THIS buyer on THIS delivery — including that they were asked and declined. */
     public var arrivalConditionRequestedAt: Date?
     public var arrivalConditionSubmittedAt: Date?
     public var arrivalConditionDeclinedAt: Date?
+    /** The courier's proof-of-delivery photo, when one can be obtained. Third-party provenance, which makes it the strongest seal frame we can get — see services/evidence/delivery-photo.ts. */
     public var deliveryPhotoUrl: String?
+    /** Where it came from: 'carrier_api:ups' | 'trackified' | 'platform:<p>' | 'pasted' | 'uploaded' (shared delivery-photo-source.ts). */
+    public var deliveryPhotoSource: String?
+    /** The buyer's OWN purchase-order reference.  A trade buyer's accounts department reconciles on their number, not ours. An order without it is one somebody has to chase by hand, which is the difference between getting paid on day 30 and day 75. */
     public var purchaseOrderRef: String?
+    /** Buyer's arrival photos. Always read as a set, for one delivery. */
     public var arrivalConditionPhotos: [String]
     public var buyerEmail: String?
+    /** `'ship'` | `'pickup'` | `'mixed'` — a DERIVED summary of this order's lines, for reads that only need the headline.  The authority is `crossly_order_items.fulfillment_method`: a buyer can collect part of one seller's order and have the rest posted, so the order-level value is 'mixed' whenever its lines disagree. Anything that acts on the difference — buying a label, packing a parcel — must read the lines, not this (migrations 0219, 0220). */
     public var fulfillmentMethod: String
+    /** 1074 — 'email' = the sale was found by the email monitor, not reported by the platform: the order is incomplete (no buyer address, label or confirmed fees) until the platform reports it. NULL = platform-reported. */
+    public var source: String?
+    /** 1074 — when the platform itself reported this email-found order (same order id). Clears the banner. */
+    public var platformConfirmedAt: Date?
+    public var createdAt: Date
+    public var updatedAt: Date
+    /** Soft-delete tombstone for bulk-delete on /orders. UI list + count queries filter WHERE deleted_at IS NULL. */
     public var deletedAt: Date?
 
-    public init(id: String, createdAt: Date, updatedAt: Date, userId: String, quantity: Double, notes: String? = nil, status: String, platform: String, cancelledAt: Date? = nil, listingId: String? = nil, inventoryItemId: String? = nil, platformListingId: String? = nil, handlingTimeDays: Double? = nil, platformOrderId: String? = nil, buyerUsername: String? = nil, pickupPoint: [String: AnyCodable]? = nil, consolidationId: String? = nil, dutiesCents: Double, dutiesRefundedAt: Date? = nil, salesChannel: String, channelLocationId: String? = nil, packagePresetId: String? = nil, carrier: String? = nil, service: String? = nil, trackingNumber: String? = nil, easypostShipmentId: String? = nil, easypostTrackerId: String? = nil, easypostRateId: String? = nil, shippingLabelUrl: String? = nil, labelPurchasedAt: Date? = nil, shippedAt: Date? = nil, estimatedDelivery: String? = nil, deliveredAt: Date? = nil, carrierStatus: String? = nil, carrierStatusDetail: String? = nil, trackingHistory: [ListOrdersItemTrackingHistory]? = nil, deliveryLocation: String? = nil, deliverySignature: String? = nil, trackingSubmittedAt: Date? = nil, trackingSubmitStatus: String? = nil, labelCost: String? = nil, costOfGoods: String? = nil, requestedCarrier: String? = nil, requestedService: String? = nil, shipByAt: Date? = nil, shipByAlertedAt: Date? = nil, oversoldBy: Double, lastStatusCheckAt: Date? = nil, lastChatCheckAt: Date? = nil, isDisputed: Bool, disputeReason: String? = nil, disputePlatformCaseId: String? = nil, disputeResolvedAt: Date? = nil, refundAmount: String? = nil, refundReason: String? = nil, refundPlatformId: String? = nil, refundedAt: Date? = nil, cancellationReason: String? = nil, arrivalConditionRequestedAt: Date? = nil, arrivalConditionSubmittedAt: Date? = nil, arrivalConditionDeclinedAt: Date? = nil, deliveryPhotoUrl: String? = nil, purchaseOrderRef: String? = nil, arrivalConditionPhotos: [String], buyerEmail: String? = nil, fulfillmentMethod: String, deletedAt: Date? = nil) {
-        self.id = id
-        self.createdAt = createdAt
-        self.updatedAt = updatedAt
-        self.userId = userId
+    public init(appShare: GetOrderResponseAppShare? = nil, trade: GetOrderResponseTrade? = nil, salePrice: Double? = nil, platformFee: Double? = nil, taxCollected: Double? = nil, shippingCharged: Double? = nil, feeSource: String? = nil, detailsPending: Bool, sku: String? = nil, quantity: Double, lineItems: [GetOrderResponseLineItems]? = nil, id: String, userId: String, inventoryItemId: String? = nil, listingId: String? = nil, platformListingId: String? = nil, platform: String, platformOrderId: String? = nil, reportedByAppId: String? = nil, storefrontId: String? = nil, buyerUsername: String? = nil, pickupPoint: [String: AnyCodable]? = nil, consolidationId: String? = nil, dutiesCents: Double, dutiesRefundedAt: Date? = nil, status: String, salesChannel: String, channelLocationId: String? = nil, channel: String, invoiceId: String? = nil, buyerCompanyId: String? = nil, packagePresetId: String? = nil, carrier: String? = nil, service: String? = nil, trackingNumber: String? = nil, easypostShipmentId: String? = nil, easypostTrackerId: String? = nil, easypostRateId: String? = nil, shippingLabelUrl: String? = nil, labelPurchasedAt: Date? = nil, shippedAt: Date? = nil, estimatedDelivery: String? = nil, deliveredAt: Date? = nil, carrierStatus: String? = nil, carrierStatusDetail: String? = nil, trackingHistory: [GetOrderResponseTrackingHistory]? = nil, deliveryLocation: String? = nil, deliverySignature: String? = nil, trackingSubmittedAt: Date? = nil, trackingSubmitStatus: String? = nil, labelCost: String? = nil, costOfGoods: String? = nil, requestedCarrier: String? = nil, requestedService: String? = nil, handlingTimeDays: Double? = nil, shipByAt: Date? = nil, shipByAlertedAt: Date? = nil, oversoldBy: Double, lastStatusCheckAt: Date? = nil, lastChatCheckAt: Date? = nil, isDisputed: Bool, disputeReason: String? = nil, disputePlatformCaseId: String? = nil, disputeResolvedAt: Date? = nil, refundAmount: String? = nil, refundReason: String? = nil, refundPlatformId: String? = nil, refundedAt: Date? = nil, cancelledAt: Date? = nil, cancellationReason: String? = nil, notes: String? = nil, arrivalConditionRequestedAt: Date? = nil, arrivalConditionSubmittedAt: Date? = nil, arrivalConditionDeclinedAt: Date? = nil, deliveryPhotoUrl: String? = nil, deliveryPhotoSource: String? = nil, purchaseOrderRef: String? = nil, arrivalConditionPhotos: [String], buyerEmail: String? = nil, fulfillmentMethod: String, source: String? = nil, platformConfirmedAt: Date? = nil, createdAt: Date, updatedAt: Date, deletedAt: Date? = nil) {
+        self.appShare = appShare
+        self.trade = trade
+        self.salePrice = salePrice
+        self.platformFee = platformFee
+        self.taxCollected = taxCollected
+        self.shippingCharged = shippingCharged
+        self.feeSource = feeSource
+        self.detailsPending = detailsPending
+        self.sku = sku
         self.quantity = quantity
-        self.notes = notes
-        self.status = status
-        self.platform = platform
-        self.cancelledAt = cancelledAt
-        self.listingId = listingId
+        self.lineItems = lineItems
+        self.id = id
+        self.userId = userId
         self.inventoryItemId = inventoryItemId
+        self.listingId = listingId
         self.platformListingId = platformListingId
-        self.handlingTimeDays = handlingTimeDays
+        self.platform = platform
         self.platformOrderId = platformOrderId
+        self.reportedByAppId = reportedByAppId
+        self.storefrontId = storefrontId
         self.buyerUsername = buyerUsername
         self.pickupPoint = pickupPoint
         self.consolidationId = consolidationId
         self.dutiesCents = dutiesCents
         self.dutiesRefundedAt = dutiesRefundedAt
+        self.status = status
         self.salesChannel = salesChannel
         self.channelLocationId = channelLocationId
+        self.channel = channel
+        self.invoiceId = invoiceId
+        self.buyerCompanyId = buyerCompanyId
         self.packagePresetId = packagePresetId
         self.carrier = carrier
         self.service = service
@@ -125,6 +183,7 @@ public struct ListOrdersItem: Codable, JSONEncodable, Hashable {
         self.costOfGoods = costOfGoods
         self.requestedCarrier = requestedCarrier
         self.requestedService = requestedService
+        self.handlingTimeDays = handlingTimeDays
         self.shipByAt = shipByAt
         self.shipByAlertedAt = shipByAlertedAt
         self.oversoldBy = oversoldBy
@@ -138,40 +197,57 @@ public struct ListOrdersItem: Codable, JSONEncodable, Hashable {
         self.refundReason = refundReason
         self.refundPlatformId = refundPlatformId
         self.refundedAt = refundedAt
+        self.cancelledAt = cancelledAt
         self.cancellationReason = cancellationReason
+        self.notes = notes
         self.arrivalConditionRequestedAt = arrivalConditionRequestedAt
         self.arrivalConditionSubmittedAt = arrivalConditionSubmittedAt
         self.arrivalConditionDeclinedAt = arrivalConditionDeclinedAt
         self.deliveryPhotoUrl = deliveryPhotoUrl
+        self.deliveryPhotoSource = deliveryPhotoSource
         self.purchaseOrderRef = purchaseOrderRef
         self.arrivalConditionPhotos = arrivalConditionPhotos
         self.buyerEmail = buyerEmail
         self.fulfillmentMethod = fulfillmentMethod
+        self.source = source
+        self.platformConfirmedAt = platformConfirmedAt
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
         self.deletedAt = deletedAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case id
-        case createdAt
-        case updatedAt
-        case userId
+        case appShare
+        case trade
+        case salePrice
+        case platformFee
+        case taxCollected
+        case shippingCharged
+        case feeSource
+        case detailsPending
+        case sku
         case quantity
-        case notes
-        case status
-        case platform
-        case cancelledAt
-        case listingId
+        case lineItems
+        case id
+        case userId
         case inventoryItemId
+        case listingId
         case platformListingId
-        case handlingTimeDays
+        case platform
         case platformOrderId
+        case reportedByAppId
+        case storefrontId
         case buyerUsername
         case pickupPoint
         case consolidationId
         case dutiesCents
         case dutiesRefundedAt
+        case status
         case salesChannel
         case channelLocationId
+        case channel
+        case invoiceId
+        case buyerCompanyId
         case packagePresetId
         case carrier
         case service
@@ -195,6 +271,7 @@ public struct ListOrdersItem: Codable, JSONEncodable, Hashable {
         case costOfGoods
         case requestedCarrier
         case requestedService
+        case handlingTimeDays
         case shipByAt
         case shipByAlertedAt
         case oversoldBy
@@ -208,15 +285,22 @@ public struct ListOrdersItem: Codable, JSONEncodable, Hashable {
         case refundReason
         case refundPlatformId
         case refundedAt
+        case cancelledAt
         case cancellationReason
+        case notes
         case arrivalConditionRequestedAt
         case arrivalConditionSubmittedAt
         case arrivalConditionDeclinedAt
         case deliveryPhotoUrl
+        case deliveryPhotoSource
         case purchaseOrderRef
         case arrivalConditionPhotos
         case buyerEmail
         case fulfillmentMethod
+        case source
+        case platformConfirmedAt
+        case createdAt
+        case updatedAt
         case deletedAt
     }
 
@@ -224,27 +308,37 @@ public struct ListOrdersItem: Codable, JSONEncodable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(id, forKey: .id)
-        try container.encode(createdAt, forKey: .createdAt)
-        try container.encode(updatedAt, forKey: .updatedAt)
-        try container.encode(userId, forKey: .userId)
+        try container.encodeIfPresent(appShare, forKey: .appShare)
+        try container.encodeIfPresent(trade, forKey: .trade)
+        try container.encodeIfPresent(salePrice, forKey: .salePrice)
+        try container.encodeIfPresent(platformFee, forKey: .platformFee)
+        try container.encodeIfPresent(taxCollected, forKey: .taxCollected)
+        try container.encodeIfPresent(shippingCharged, forKey: .shippingCharged)
+        try container.encodeIfPresent(feeSource, forKey: .feeSource)
+        try container.encode(detailsPending, forKey: .detailsPending)
+        try container.encodeIfPresent(sku, forKey: .sku)
         try container.encode(quantity, forKey: .quantity)
-        try container.encodeIfPresent(notes, forKey: .notes)
-        try container.encode(status, forKey: .status)
-        try container.encode(platform, forKey: .platform)
-        try container.encodeIfPresent(cancelledAt, forKey: .cancelledAt)
-        try container.encodeIfPresent(listingId, forKey: .listingId)
+        try container.encodeIfPresent(lineItems, forKey: .lineItems)
+        try container.encode(id, forKey: .id)
+        try container.encode(userId, forKey: .userId)
         try container.encodeIfPresent(inventoryItemId, forKey: .inventoryItemId)
+        try container.encodeIfPresent(listingId, forKey: .listingId)
         try container.encodeIfPresent(platformListingId, forKey: .platformListingId)
-        try container.encodeIfPresent(handlingTimeDays, forKey: .handlingTimeDays)
+        try container.encode(platform, forKey: .platform)
         try container.encodeIfPresent(platformOrderId, forKey: .platformOrderId)
+        try container.encodeIfPresent(reportedByAppId, forKey: .reportedByAppId)
+        try container.encodeIfPresent(storefrontId, forKey: .storefrontId)
         try container.encodeIfPresent(buyerUsername, forKey: .buyerUsername)
         try container.encodeIfPresent(pickupPoint, forKey: .pickupPoint)
         try container.encodeIfPresent(consolidationId, forKey: .consolidationId)
         try container.encode(dutiesCents, forKey: .dutiesCents)
         try container.encodeIfPresent(dutiesRefundedAt, forKey: .dutiesRefundedAt)
+        try container.encode(status, forKey: .status)
         try container.encode(salesChannel, forKey: .salesChannel)
         try container.encodeIfPresent(channelLocationId, forKey: .channelLocationId)
+        try container.encode(channel, forKey: .channel)
+        try container.encodeIfPresent(invoiceId, forKey: .invoiceId)
+        try container.encodeIfPresent(buyerCompanyId, forKey: .buyerCompanyId)
         try container.encodeIfPresent(packagePresetId, forKey: .packagePresetId)
         try container.encodeIfPresent(carrier, forKey: .carrier)
         try container.encodeIfPresent(service, forKey: .service)
@@ -268,6 +362,7 @@ public struct ListOrdersItem: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(costOfGoods, forKey: .costOfGoods)
         try container.encodeIfPresent(requestedCarrier, forKey: .requestedCarrier)
         try container.encodeIfPresent(requestedService, forKey: .requestedService)
+        try container.encodeIfPresent(handlingTimeDays, forKey: .handlingTimeDays)
         try container.encodeIfPresent(shipByAt, forKey: .shipByAt)
         try container.encodeIfPresent(shipByAlertedAt, forKey: .shipByAlertedAt)
         try container.encode(oversoldBy, forKey: .oversoldBy)
@@ -281,15 +376,22 @@ public struct ListOrdersItem: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(refundReason, forKey: .refundReason)
         try container.encodeIfPresent(refundPlatformId, forKey: .refundPlatformId)
         try container.encodeIfPresent(refundedAt, forKey: .refundedAt)
+        try container.encodeIfPresent(cancelledAt, forKey: .cancelledAt)
         try container.encodeIfPresent(cancellationReason, forKey: .cancellationReason)
+        try container.encodeIfPresent(notes, forKey: .notes)
         try container.encodeIfPresent(arrivalConditionRequestedAt, forKey: .arrivalConditionRequestedAt)
         try container.encodeIfPresent(arrivalConditionSubmittedAt, forKey: .arrivalConditionSubmittedAt)
         try container.encodeIfPresent(arrivalConditionDeclinedAt, forKey: .arrivalConditionDeclinedAt)
         try container.encodeIfPresent(deliveryPhotoUrl, forKey: .deliveryPhotoUrl)
+        try container.encodeIfPresent(deliveryPhotoSource, forKey: .deliveryPhotoSource)
         try container.encodeIfPresent(purchaseOrderRef, forKey: .purchaseOrderRef)
         try container.encode(arrivalConditionPhotos, forKey: .arrivalConditionPhotos)
         try container.encodeIfPresent(buyerEmail, forKey: .buyerEmail)
         try container.encode(fulfillmentMethod, forKey: .fulfillmentMethod)
+        try container.encodeIfPresent(source, forKey: .source)
+        try container.encodeIfPresent(platformConfirmedAt, forKey: .platformConfirmedAt)
+        try container.encode(createdAt, forKey: .createdAt)
+        try container.encode(updatedAt, forKey: .updatedAt)
         try container.encodeIfPresent(deletedAt, forKey: .deletedAt)
     }
 }

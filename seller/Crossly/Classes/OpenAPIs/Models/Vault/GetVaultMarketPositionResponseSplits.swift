@@ -13,8 +13,8 @@ import AnyCodable
 public struct GetVaultMarketPositionResponseSplits: Codable, JSONEncodable, Hashable {
 
     public enum Reason: String, Codable, CaseIterable {
-        case auction = "auction"
         case close = "close"
+        case auction = "auction"
         case recall = "recall"
     }
     public enum Status: String, Codable, CaseIterable {
@@ -24,8 +24,8 @@ public struct GetVaultMarketPositionResponseSplits: Codable, JSONEncodable, Hash
         case merged = "merged"
     }
     public enum Action: String, Codable, CaseIterable {
-        case auction = "auction"
         case close = "close"
+        case auction = "auction"
     }
     public var slicePositionId: String
     public var parentPositionId: String

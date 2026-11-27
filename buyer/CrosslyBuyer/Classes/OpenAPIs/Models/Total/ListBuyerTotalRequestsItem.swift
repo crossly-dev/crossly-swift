@@ -13,44 +13,44 @@ import AnyCodable
 public struct ListBuyerTotalRequestsItem: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var createdAt: String
+    public var sellerUserId: String
     /** requested | quoted | declined | expired. */
     public var status: String
-    public var sellerUserId: String
     /** The cart lines the request covers. */
     public var lines: [ListBuyerTotalRequestsItemLines]
+    public var createdAt: String
     /** Your cart still holds exactly the quoted items, so checkout applies the quote. */
     public var matchesCart: Bool
-    public var expiresAt: String?
+    public var sellerDisplayName: String?
     /** The seller's combined shipping for these items, in cents, once quoted. */
     public var quotedShippingCents: Double?
     public var sellerMessage: String?
-    public var sellerDisplayName: String?
+    public var expiresAt: String?
 
-    public init(id: String, createdAt: String, status: String, sellerUserId: String, lines: [ListBuyerTotalRequestsItemLines], matchesCart: Bool, expiresAt: String? = nil, quotedShippingCents: Double? = nil, sellerMessage: String? = nil, sellerDisplayName: String? = nil) {
+    public init(id: String, sellerUserId: String, status: String, lines: [ListBuyerTotalRequestsItemLines], createdAt: String, matchesCart: Bool, sellerDisplayName: String? = nil, quotedShippingCents: Double? = nil, sellerMessage: String? = nil, expiresAt: String? = nil) {
         self.id = id
-        self.createdAt = createdAt
-        self.status = status
         self.sellerUserId = sellerUserId
+        self.status = status
         self.lines = lines
+        self.createdAt = createdAt
         self.matchesCart = matchesCart
-        self.expiresAt = expiresAt
+        self.sellerDisplayName = sellerDisplayName
         self.quotedShippingCents = quotedShippingCents
         self.sellerMessage = sellerMessage
-        self.sellerDisplayName = sellerDisplayName
+        self.expiresAt = expiresAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case createdAt
-        case status
         case sellerUserId
+        case status
         case lines
+        case createdAt
         case matchesCart
-        case expiresAt
+        case sellerDisplayName
         case quotedShippingCents
         case sellerMessage
-        case sellerDisplayName
+        case expiresAt
     }
 
     // Encodable protocol methods
@@ -58,15 +58,15 @@ public struct ListBuyerTotalRequestsItem: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(createdAt, forKey: .createdAt)
-        try container.encode(status, forKey: .status)
         try container.encode(sellerUserId, forKey: .sellerUserId)
+        try container.encode(status, forKey: .status)
         try container.encode(lines, forKey: .lines)
+        try container.encode(createdAt, forKey: .createdAt)
         try container.encode(matchesCart, forKey: .matchesCart)
-        try container.encodeIfPresent(expiresAt, forKey: .expiresAt)
+        try container.encodeIfPresent(sellerDisplayName, forKey: .sellerDisplayName)
         try container.encodeIfPresent(quotedShippingCents, forKey: .quotedShippingCents)
         try container.encodeIfPresent(sellerMessage, forKey: .sellerMessage)
-        try container.encodeIfPresent(sellerDisplayName, forKey: .sellerDisplayName)
+        try container.encodeIfPresent(expiresAt, forKey: .expiresAt)
     }
 }
 

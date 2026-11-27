@@ -13,6 +13,197 @@ import AnyCodable
 open class AnalyticsAPI {
 
     /**
+     Start a listing experiment. split: 2-4 live platform listings observed over the same window; sequential: one platform listing, before vs after changeAt (optionally applying a new price).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createAnalyticExperiment(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: AnalyticExperimentResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createAnalyticExperimentWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Start a listing experiment. split: 2-4 live platform listings observed over the same window; sequential: one platform listing, before vs after changeAt (optionally applying a new price).
+     - POST /v1/analytics/experiments
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<AnalyticExperimentResponse> 
+     */
+    open class func createAnalyticExperimentWithRequestBuilder() -> RequestBuilder<AnalyticExperimentResponse> {
+        let localVariablePath = "/v1/analytics/experiments"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<AnalyticExperimentResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Record the outcome: a winning arm, no difference, or inconclusive. Concludes the experiment.
+     
+     - parameter id: (path) The experiment id (a uuid; any other id is a 404). 
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createAnalyticExperimentDeclare(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: AnalyticExperimentResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createAnalyticExperimentDeclareWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Record the outcome: a winning arm, no difference, or inconclusive. Concludes the experiment.
+     - POST /v1/analytics/experiments/{id}/declare
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path) The experiment id (a uuid; any other id is a 404). 
+     - returns: RequestBuilder<AnalyticExperimentResponse> 
+     */
+    open class func createAnalyticExperimentDeclareWithRequestBuilder(id: String) -> RequestBuilder<AnalyticExperimentResponse> {
+        var localVariablePath = "/v1/analytics/experiments/{id}/declare"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<AnalyticExperimentResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Stop an experiment: no more data is counted after now.
+     
+     - parameter id: (path) The experiment id (a uuid; any other id is a 404). 
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createAnalyticExperimentStop(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: AnalyticExperimentResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createAnalyticExperimentStopWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Stop an experiment: no more data is counted after now.
+     - POST /v1/analytics/experiments/{id}/stop
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path) The experiment id (a uuid; any other id is a 404). 
+     - returns: RequestBuilder<AnalyticExperimentResponse> 
+     */
+    open class func createAnalyticExperimentStopWithRequestBuilder(id: String) -> RequestBuilder<AnalyticExperimentResponse> {
+        var localVariablePath = "/v1/analytics/experiments/{id}/stop"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<AnalyticExperimentResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Delete an experiment. The listings are untouched.
+     
+     - parameter id: (path) The experiment id (a uuid; any other id is a 404). 
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func deleteAnalyticExperiment(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: DeleteStoryResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return deleteAnalyticExperimentWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Delete an experiment. The listings are untouched.
+     - DELETE /v1/analytics/experiments/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path) The experiment id (a uuid; any other id is a 404). 
+     - returns: RequestBuilder<DeleteStoryResponse> 
+     */
+    open class func deleteAnalyticExperimentWithRequestBuilder(id: String) -> RequestBuilder<DeleteStoryResponse> {
+        var localVariablePath = "/v1/analytics/experiments/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<DeleteStoryResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Monthly P&L + per-platform breakdown for a calendar year.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -57,14 +248,16 @@ open class AnalyticsAPI {
     }
 
     /**
-     Sales + revenue grouped by platform for the last N days.
+     Sales, net sales, fees and net profit by platform for the last N days.
      
+     - parameter days: (query) Calendar days back, today included. Larger values are clamped to 365. (optional, default to 30)
+     - parameter tz: (query) IANA time zone for day boundaries. Default UTC. (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func getAnalyticByPlatform(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetAnalyticByPlatformResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getAnalyticByPlatformWithRequestBuilder().execute(apiResponseQueue) { result in
+    open class func getAnalyticByPlatform(days: Int? = nil, tz: String? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetAnalyticByPlatformResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getAnalyticByPlatformWithRequestBuilder(days: days, tz: tz).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -75,19 +268,25 @@ open class AnalyticsAPI {
     }
 
     /**
-     Sales + revenue grouped by platform for the last N days.
+     Sales, net sales, fees and net profit by platform for the last N days.
      - GET /v1/analytics/by-platform
      - BASIC:
        - type: http
        - name: PersonalAccessToken
+     - parameter days: (query) Calendar days back, today included. Larger values are clamped to 365. (optional, default to 30)
+     - parameter tz: (query) IANA time zone for day boundaries. Default UTC. (optional)
      - returns: RequestBuilder<GetAnalyticByPlatformResponse> 
      */
-    open class func getAnalyticByPlatformWithRequestBuilder() -> RequestBuilder<GetAnalyticByPlatformResponse> {
+    open class func getAnalyticByPlatformWithRequestBuilder(days: Int? = nil, tz: String? = nil) -> RequestBuilder<GetAnalyticByPlatformResponse> {
         let localVariablePath = "/v1/analytics/by-platform"
         let localVariableURLString = CrosslyAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
-        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "days": days?.encodeToJSON(),
+            "tz": tz?.encodeToJSON(),
+        ])
 
         let localVariableNillableHeaders: [String: Any?] = [
             :
@@ -96,6 +295,72 @@ open class AnalyticsAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<GetAnalyticByPlatformResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     * enum for parameter align
+     */
+    public enum Align_getAnalyticCompare: String, CaseIterable {
+        case age = "age"
+        case calendar = "calendar"
+    }
+
+    /**
+     Compare 2-4 of your listings: columns of price, quality, channels, views, favorites, offers and outcome, engagement curves, the fields that differ, and observational tests of favorite rate, view-to-offer rate and views per day.
+     
+     - parameter ids: (query) Comma-separated listing ids, 2 to 4. The first is arm A. 
+     - parameter align: (query) age &#x3D; x is days since first listed (default); calendar &#x3D; x is the date. (optional)
+     - parameter platform: (query) Restrict engagement to one channel (platform id). (optional)
+     - parameter tz: (query) IANA time zone. Default UTC. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getAnalyticCompare(ids: String, align: Align_getAnalyticCompare? = nil, platform: String? = nil, tz: String? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetAnalyticCompareResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getAnalyticCompareWithRequestBuilder(ids: ids, align: align, platform: platform, tz: tz).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Compare 2-4 of your listings: columns of price, quality, channels, views, favorites, offers and outcome, engagement curves, the fields that differ, and observational tests of favorite rate, view-to-offer rate and views per day.
+     - GET /v1/analytics/compare
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter ids: (query) Comma-separated listing ids, 2 to 4. The first is arm A. 
+     - parameter align: (query) age &#x3D; x is days since first listed (default); calendar &#x3D; x is the date. (optional)
+     - parameter platform: (query) Restrict engagement to one channel (platform id). (optional)
+     - parameter tz: (query) IANA time zone. Default UTC. (optional)
+     - returns: RequestBuilder<GetAnalyticCompareResponse> 
+     */
+    open class func getAnalyticCompareWithRequestBuilder(ids: String, align: Align_getAnalyticCompare? = nil, platform: String? = nil, tz: String? = nil) -> RequestBuilder<GetAnalyticCompareResponse> {
+        let localVariablePath = "/v1/analytics/compare"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "ids": ids.encodeToJSON(),
+            "align": align?.encodeToJSON(),
+            "platform": platform?.encodeToJSON(),
+            "tz": tz?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetAnalyticCompareResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -145,6 +410,234 @@ open class AnalyticsAPI {
     }
 
     /**
+     * enum for parameter status
+     */
+    public enum Status_getAnalyticExperiment: String, CaseIterable {
+        case all = "all"
+        case running = "running"
+        case concluded = "concluded"
+        case draft = "draft"
+    }
+
+    /**
+     Your listing A/B experiments, newest first, with status, days running and the current verdict.
+     
+     - parameter status: (query) Default all. (optional)
+     - parameter page: (query) 1-indexed page. Default 1. (optional)
+     - parameter size: (query) Rows per page. Default 20. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getAnalyticExperiment(status: Status_getAnalyticExperiment? = nil, page: Int? = nil, size: Int? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetAnalyticExperimentResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getAnalyticExperimentWithRequestBuilder(status: status, page: page, size: size).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your listing A/B experiments, newest first, with status, days running and the current verdict.
+     - GET /v1/analytics/experiments
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter status: (query) Default all. (optional)
+     - parameter page: (query) 1-indexed page. Default 1. (optional)
+     - parameter size: (query) Rows per page. Default 20. (optional)
+     - returns: RequestBuilder<GetAnalyticExperimentResponse> 
+     */
+    open class func getAnalyticExperimentWithRequestBuilder(status: Status_getAnalyticExperiment? = nil, page: Int? = nil, size: Int? = nil) -> RequestBuilder<GetAnalyticExperimentResponse> {
+        let localVariablePath = "/v1/analytics/experiments"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "status": status?.encodeToJSON(),
+            "page": page?.encodeToJSON(),
+            "size": size?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetAnalyticExperimentResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     One experiment: arms with their windows, exposure and rates, the primary-metric test per arm against A, guardrail tests, the daily series and what to do next.
+     
+     - parameter id: (path) The experiment id (a uuid). 
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getAnalyticExperimentById(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetAnalyticExperimentByIdResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getAnalyticExperimentByIdWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One experiment: arms with their windows, exposure and rates, the primary-metric test per arm against A, guardrail tests, the daily series and what to do next.
+     - GET /v1/analytics/experiments/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path) The experiment id (a uuid). 
+     - returns: RequestBuilder<GetAnalyticExperimentByIdResponse> 
+     */
+    open class func getAnalyticExperimentByIdWithRequestBuilder(id: String) -> RequestBuilder<GetAnalyticExperimentByIdResponse> {
+        var localVariablePath = "/v1/analytics/experiments/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetAnalyticExperimentByIdResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     * enum for parameter range
+     */
+    public enum ModelRange_getAnalyticInventory: String, CaseIterable {
+        case _7d = "7d"
+        case _30d = "30d"
+        case _90d = "90d"
+        case _1y = "1y"
+        case ytd = "ytd"
+        case all = "all"
+        case custom = "custom"
+    }
+
+    /**
+     * enum for parameter compare
+     */
+    public enum Compare_getAnalyticInventory: String, CaseIterable {
+        case prev = "prev"
+        case yoy = "yoy"
+        case _none = "none"
+        case custom = "custom"
+    }
+
+    /**
+     * enum for parameter maturity
+     */
+    public enum Maturity_getAnalyticInventory: Int, CaseIterable {
+        case _30 = 30
+        case _60 = 60
+        case _90 = 90
+    }
+
+    /**
+     Unsold stock: aging buckets with cost, listed value and market value, the 20 listings most in need of attention, shelf value over time, cohort sell-through at the chosen maturity, listed vs sold velocity and data health.
+     
+     - parameter range: (query) Reporting window. Default 30d. custom needs from and to. (optional)
+     - parameter from: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter to: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter compare: (query) Comparison window for deltas: prev (same length just before), yoy, none, custom (cmpFrom/cmpTo). (optional)
+     - parameter cmpFrom: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter cmpTo: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter labels: (query) Comma-separated inventory labels (any of them). (optional)
+     - parameter platforms: (query) Comma-separated platform ids. (optional)
+     - parameter category: (query) Canonical main-category key. (optional)
+     - parameter brand: (query) Brand name. (optional)
+     - parameter tz: (query) IANA time zone for day boundaries. Default UTC. An invalid name is a 400. (optional)
+     - parameter maturity: (query) Days an item has to sell within to count as sold in the cohort. Default 30. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getAnalyticInventory(range: ModelRange_getAnalyticInventory? = nil, from: String? = nil, to: String? = nil, compare: Compare_getAnalyticInventory? = nil, cmpFrom: String? = nil, cmpTo: String? = nil, labels: String? = nil, platforms: String? = nil, category: String? = nil, brand: String? = nil, tz: String? = nil, maturity: Maturity_getAnalyticInventory? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetAnalyticInventoryResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getAnalyticInventoryWithRequestBuilder(range: range, from: from, to: to, compare: compare, cmpFrom: cmpFrom, cmpTo: cmpTo, labels: labels, platforms: platforms, category: category, brand: brand, tz: tz, maturity: maturity).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Unsold stock: aging buckets with cost, listed value and market value, the 20 listings most in need of attention, shelf value over time, cohort sell-through at the chosen maturity, listed vs sold velocity and data health.
+     - GET /v1/analytics/inventory
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter range: (query) Reporting window. Default 30d. custom needs from and to. (optional)
+     - parameter from: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter to: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter compare: (query) Comparison window for deltas: prev (same length just before), yoy, none, custom (cmpFrom/cmpTo). (optional)
+     - parameter cmpFrom: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter cmpTo: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter labels: (query) Comma-separated inventory labels (any of them). (optional)
+     - parameter platforms: (query) Comma-separated platform ids. (optional)
+     - parameter category: (query) Canonical main-category key. (optional)
+     - parameter brand: (query) Brand name. (optional)
+     - parameter tz: (query) IANA time zone for day boundaries. Default UTC. An invalid name is a 400. (optional)
+     - parameter maturity: (query) Days an item has to sell within to count as sold in the cohort. Default 30. (optional)
+     - returns: RequestBuilder<GetAnalyticInventoryResponse> 
+     */
+    open class func getAnalyticInventoryWithRequestBuilder(range: ModelRange_getAnalyticInventory? = nil, from: String? = nil, to: String? = nil, compare: Compare_getAnalyticInventory? = nil, cmpFrom: String? = nil, cmpTo: String? = nil, labels: String? = nil, platforms: String? = nil, category: String? = nil, brand: String? = nil, tz: String? = nil, maturity: Maturity_getAnalyticInventory? = nil) -> RequestBuilder<GetAnalyticInventoryResponse> {
+        let localVariablePath = "/v1/analytics/inventory"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "range": range?.encodeToJSON(),
+            "from": from?.encodeToJSON(),
+            "to": to?.encodeToJSON(),
+            "compare": compare?.encodeToJSON(),
+            "cmpFrom": cmpFrom?.encodeToJSON(),
+            "cmpTo": cmpTo?.encodeToJSON(),
+            "labels": labels?.encodeToJSON(),
+            "platforms": platforms?.encodeToJSON(),
+            "category": category?.encodeToJSON(),
+            "brand": brand?.encodeToJSON(),
+            "tz": tz?.encodeToJSON(),
+            "maturity": maturity?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetAnalyticInventoryResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Per-item P&L for sold inventory.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -189,15 +682,25 @@ open class AnalyticsAPI {
     }
 
     /**
-     Headline KPIs for the last N days.
+     * enum for parameter by
+     */
+    public enum By_getAnalyticItemByListingId: String, CaseIterable {
+        case listing = "listing"
+        case inventory = "inventory"
+    }
+
+    /**
+     One listing in depth: channels with views, favorites and offers, the merged timeline, engagement series, price history, comps, money waterfall, days on market, offers, messages, experiments and suggestions.
      
-     - parameter days: (query)  (optional, default to 30)
+     - parameter listingId: (path) A listings.id you own (or an inventory item id with by&#x3D;inventory). 
+     - parameter by: (query) inventory &#x3D; the id is an inventory item id; the answer is { redirectListingId }. Default listing. (optional)
+     - parameter tz: (query) IANA time zone for day boundaries. Default UTC. (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func getAnalyticSummary(days: Int? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetAnalyticSummaryResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getAnalyticSummaryWithRequestBuilder(days: days).execute(apiResponseQueue) { result in
+    open class func getAnalyticItemByListingId(listingId: String, by: By_getAnalyticItemByListingId? = nil, tz: String? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetAnalyticItemByListingIdResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getAnalyticItemByListingIdWithRequestBuilder(listingId: listingId, by: by, tz: tz).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -208,15 +711,948 @@ open class AnalyticsAPI {
     }
 
     /**
-     Headline KPIs for the last N days.
+     One listing in depth: channels with views, favorites and offers, the merged timeline, engagement series, price history, comps, money waterfall, days on market, offers, messages, experiments and suggestions.
+     - GET /v1/analytics/items/{listingId}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter listingId: (path) A listings.id you own (or an inventory item id with by&#x3D;inventory). 
+     - parameter by: (query) inventory &#x3D; the id is an inventory item id; the answer is { redirectListingId }. Default listing. (optional)
+     - parameter tz: (query) IANA time zone for day boundaries. Default UTC. (optional)
+     - returns: RequestBuilder<GetAnalyticItemByListingIdResponse> 
+     */
+    open class func getAnalyticItemByListingIdWithRequestBuilder(listingId: String, by: By_getAnalyticItemByListingId? = nil, tz: String? = nil) -> RequestBuilder<GetAnalyticItemByListingIdResponse> {
+        var localVariablePath = "/v1/analytics/items/{listingId}"
+        let listingIdPreEscape = "\(APIHelper.mapValueToPathItem(listingId))"
+        let listingIdPostEscape = listingIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{listingId}", with: listingIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "by": by?.encodeToJSON(),
+            "tz": tz?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetAnalyticItemByListingIdResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     * enum for parameter range
+     */
+    public enum ModelRange_getAnalyticMarketplace: String, CaseIterable {
+        case _7d = "7d"
+        case _30d = "30d"
+        case _90d = "90d"
+        case _1y = "1y"
+        case ytd = "ytd"
+        case all = "all"
+        case custom = "custom"
+    }
+
+    /**
+     * enum for parameter compare
+     */
+    public enum Compare_getAnalyticMarketplace: String, CaseIterable {
+        case prev = "prev"
+        case yoy = "yoy"
+        case _none = "none"
+        case custom = "custom"
+    }
+
+    /**
+     * enum for parameter sort
+     */
+    public enum Sort_getAnalyticMarketplace: String, CaseIterable {
+        case netsales = "netSales"
+        case netprofit = "netProfit"
+        case unitssold = "unitsSold"
+        case asp = "asp"
+        case takerate = "takeRate"
+        case marginrate = "marginRate"
+        case shippingsubsidy = "shippingSubsidy"
+        case mediandaystosell = "medianDaysToSell"
+        case sellthroughrate = "sellThroughRate"
+        case cancelrate = "cancelRate"
+        case returnrate = "returnRate"
+        case offeracceptrate = "offerAcceptRate"
+        case avgofferpctofask = "avgOfferPctOfAsk"
+        case viewsperlistingday = "viewsPerListingDay"
+        case favoriterate = "favoriteRate"
+        case platform = "platform"
+        case activelistings = "activeListings"
+        case stalelistings = "staleListings"
+    }
+
+    /**
+     * enum for parameter dir
+     */
+    public enum Dir_getAnalyticMarketplace: String, CaseIterable {
+        case asc = "asc"
+        case desc = "desc"
+    }
+
+    /**
+     Every marketplace side by side: net sales and profit, units, ASP, take rate, margin, shipping subsidy, days to sell, sell-through, cancel and return rates, offers and engagement; with vs=2-3 platforms, a head-to-head over listings live on all of them.
+     
+     - parameter range: (query) Reporting window. Default 30d. custom needs from and to. (optional)
+     - parameter from: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter to: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter compare: (query) Comparison window for deltas: prev (same length just before), yoy, none, custom (cmpFrom/cmpTo). (optional)
+     - parameter cmpFrom: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter cmpTo: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter labels: (query) Comma-separated inventory labels (any of them). (optional)
+     - parameter platforms: (query) Comma-separated platform ids. (optional)
+     - parameter category: (query) Canonical main-category key. (optional)
+     - parameter brand: (query) Brand name. (optional)
+     - parameter tz: (query) IANA time zone for day boundaries. Default UTC. An invalid name is a 400. (optional)
+     - parameter vs: (query) Comma-separated 2-3 platform ids for the head-to-head. (optional)
+     - parameter sort: (query) Default netSales. (optional)
+     - parameter dir: (query) Default desc. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getAnalyticMarketplace(range: ModelRange_getAnalyticMarketplace? = nil, from: String? = nil, to: String? = nil, compare: Compare_getAnalyticMarketplace? = nil, cmpFrom: String? = nil, cmpTo: String? = nil, labels: String? = nil, platforms: String? = nil, category: String? = nil, brand: String? = nil, tz: String? = nil, vs: String? = nil, sort: Sort_getAnalyticMarketplace? = nil, dir: Dir_getAnalyticMarketplace? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetAnalyticMarketplaceResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getAnalyticMarketplaceWithRequestBuilder(range: range, from: from, to: to, compare: compare, cmpFrom: cmpFrom, cmpTo: cmpTo, labels: labels, platforms: platforms, category: category, brand: brand, tz: tz, vs: vs, sort: sort, dir: dir).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Every marketplace side by side: net sales and profit, units, ASP, take rate, margin, shipping subsidy, days to sell, sell-through, cancel and return rates, offers and engagement; with vs=2-3 platforms, a head-to-head over listings live on all of them.
+     - GET /v1/analytics/marketplaces
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter range: (query) Reporting window. Default 30d. custom needs from and to. (optional)
+     - parameter from: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter to: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter compare: (query) Comparison window for deltas: prev (same length just before), yoy, none, custom (cmpFrom/cmpTo). (optional)
+     - parameter cmpFrom: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter cmpTo: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter labels: (query) Comma-separated inventory labels (any of them). (optional)
+     - parameter platforms: (query) Comma-separated platform ids. (optional)
+     - parameter category: (query) Canonical main-category key. (optional)
+     - parameter brand: (query) Brand name. (optional)
+     - parameter tz: (query) IANA time zone for day boundaries. Default UTC. An invalid name is a 400. (optional)
+     - parameter vs: (query) Comma-separated 2-3 platform ids for the head-to-head. (optional)
+     - parameter sort: (query) Default netSales. (optional)
+     - parameter dir: (query) Default desc. (optional)
+     - returns: RequestBuilder<GetAnalyticMarketplaceResponse> 
+     */
+    open class func getAnalyticMarketplaceWithRequestBuilder(range: ModelRange_getAnalyticMarketplace? = nil, from: String? = nil, to: String? = nil, compare: Compare_getAnalyticMarketplace? = nil, cmpFrom: String? = nil, cmpTo: String? = nil, labels: String? = nil, platforms: String? = nil, category: String? = nil, brand: String? = nil, tz: String? = nil, vs: String? = nil, sort: Sort_getAnalyticMarketplace? = nil, dir: Dir_getAnalyticMarketplace? = nil) -> RequestBuilder<GetAnalyticMarketplaceResponse> {
+        let localVariablePath = "/v1/analytics/marketplaces"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "range": range?.encodeToJSON(),
+            "from": from?.encodeToJSON(),
+            "to": to?.encodeToJSON(),
+            "compare": compare?.encodeToJSON(),
+            "cmpFrom": cmpFrom?.encodeToJSON(),
+            "cmpTo": cmpTo?.encodeToJSON(),
+            "labels": labels?.encodeToJSON(),
+            "platforms": platforms?.encodeToJSON(),
+            "category": category?.encodeToJSON(),
+            "brand": brand?.encodeToJSON(),
+            "tz": tz?.encodeToJSON(),
+            "vs": vs?.encodeToJSON(),
+            "sort": sort?.encodeToJSON(),
+            "dir": dir?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetAnalyticMarketplaceResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     * enum for parameter range
+     */
+    public enum ModelRange_getAnalyticMarketplaceByPlatform: String, CaseIterable {
+        case _7d = "7d"
+        case _30d = "30d"
+        case _90d = "90d"
+        case _1y = "1y"
+        case ytd = "ytd"
+        case all = "all"
+        case custom = "custom"
+    }
+
+    /**
+     * enum for parameter compare
+     */
+    public enum Compare_getAnalyticMarketplaceByPlatform: String, CaseIterable {
+        case prev = "prev"
+        case yoy = "yoy"
+        case _none = "none"
+        case custom = "custom"
+    }
+
+    /**
+     One marketplace in depth: its row, the money series, fee breakdown, days-to-sell and price-realization histograms, categories, top items, at-risk listings, a day-by-hour sales heatmap and offer stats.
+     
+     - parameter platform: (path) A platform id, e.g. ebay, poshmark. 
+     - parameter range: (query) Reporting window. Default 30d. custom needs from and to. (optional)
+     - parameter from: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter to: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter compare: (query) Comparison window for deltas: prev (same length just before), yoy, none, custom (cmpFrom/cmpTo). (optional)
+     - parameter cmpFrom: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter cmpTo: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter labels: (query) Comma-separated inventory labels (any of them). (optional)
+     - parameter platforms: (query) Comma-separated platform ids. (optional)
+     - parameter category: (query) Canonical main-category key. (optional)
+     - parameter brand: (query) Brand name. (optional)
+     - parameter tz: (query) IANA time zone for day boundaries. Default UTC. An invalid name is a 400. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getAnalyticMarketplaceByPlatform(platform: String, range: ModelRange_getAnalyticMarketplaceByPlatform? = nil, from: String? = nil, to: String? = nil, compare: Compare_getAnalyticMarketplaceByPlatform? = nil, cmpFrom: String? = nil, cmpTo: String? = nil, labels: String? = nil, platforms: String? = nil, category: String? = nil, brand: String? = nil, tz: String? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetAnalyticMarketplaceByPlatformResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getAnalyticMarketplaceByPlatformWithRequestBuilder(platform: platform, range: range, from: from, to: to, compare: compare, cmpFrom: cmpFrom, cmpTo: cmpTo, labels: labels, platforms: platforms, category: category, brand: brand, tz: tz).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One marketplace in depth: its row, the money series, fee breakdown, days-to-sell and price-realization histograms, categories, top items, at-risk listings, a day-by-hour sales heatmap and offer stats.
+     - GET /v1/analytics/marketplaces/{platform}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter platform: (path) A platform id, e.g. ebay, poshmark. 
+     - parameter range: (query) Reporting window. Default 30d. custom needs from and to. (optional)
+     - parameter from: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter to: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter compare: (query) Comparison window for deltas: prev (same length just before), yoy, none, custom (cmpFrom/cmpTo). (optional)
+     - parameter cmpFrom: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter cmpTo: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter labels: (query) Comma-separated inventory labels (any of them). (optional)
+     - parameter platforms: (query) Comma-separated platform ids. (optional)
+     - parameter category: (query) Canonical main-category key. (optional)
+     - parameter brand: (query) Brand name. (optional)
+     - parameter tz: (query) IANA time zone for day boundaries. Default UTC. An invalid name is a 400. (optional)
+     - returns: RequestBuilder<GetAnalyticMarketplaceByPlatformResponse> 
+     */
+    open class func getAnalyticMarketplaceByPlatformWithRequestBuilder(platform: String, range: ModelRange_getAnalyticMarketplaceByPlatform? = nil, from: String? = nil, to: String? = nil, compare: Compare_getAnalyticMarketplaceByPlatform? = nil, cmpFrom: String? = nil, cmpTo: String? = nil, labels: String? = nil, platforms: String? = nil, category: String? = nil, brand: String? = nil, tz: String? = nil) -> RequestBuilder<GetAnalyticMarketplaceByPlatformResponse> {
+        var localVariablePath = "/v1/analytics/marketplaces/{platform}"
+        let platformPreEscape = "\(APIHelper.mapValueToPathItem(platform))"
+        let platformPostEscape = platformPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{platform}", with: platformPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "range": range?.encodeToJSON(),
+            "from": from?.encodeToJSON(),
+            "to": to?.encodeToJSON(),
+            "compare": compare?.encodeToJSON(),
+            "cmpFrom": cmpFrom?.encodeToJSON(),
+            "cmpTo": cmpTo?.encodeToJSON(),
+            "labels": labels?.encodeToJSON(),
+            "platforms": platforms?.encodeToJSON(),
+            "category": category?.encodeToJSON(),
+            "brand": brand?.encodeToJSON(),
+            "tz": tz?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetAnalyticMarketplaceByPlatformResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     * enum for parameter range
+     */
+    public enum ModelRange_getAnalyticOverview: String, CaseIterable {
+        case _7d = "7d"
+        case _30d = "30d"
+        case _90d = "90d"
+        case _1y = "1y"
+        case ytd = "ytd"
+        case all = "all"
+        case custom = "custom"
+    }
+
+    /**
+     * enum for parameter compare
+     */
+    public enum Compare_getAnalyticOverview: String, CaseIterable {
+        case prev = "prev"
+        case yoy = "yoy"
+        case _none = "none"
+        case custom = "custom"
+    }
+
+    /**
+     KPIs with deltas (net sales, net profit, units, ASP, margin, sell-through, median days to sell, active listings, take rate), the trend series, by-marketplace split, top categories, brands and items, sell-through cohort, data health and insights.
+     
+     - parameter range: (query) Reporting window. Default 30d. custom needs from and to. (optional)
+     - parameter from: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter to: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter compare: (query) Comparison window for deltas: prev (same length just before), yoy, none, custom (cmpFrom/cmpTo). (optional)
+     - parameter cmpFrom: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter cmpTo: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter labels: (query) Comma-separated inventory labels (any of them). (optional)
+     - parameter platforms: (query) Comma-separated platform ids. (optional)
+     - parameter category: (query) Canonical main-category key. (optional)
+     - parameter brand: (query) Brand name. (optional)
+     - parameter tz: (query) IANA time zone for day boundaries. Default UTC. An invalid name is a 400. (optional)
+     - parameter stores: (query) Comma-separated store ids. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getAnalyticOverview(range: ModelRange_getAnalyticOverview? = nil, from: String? = nil, to: String? = nil, compare: Compare_getAnalyticOverview? = nil, cmpFrom: String? = nil, cmpTo: String? = nil, labels: String? = nil, platforms: String? = nil, category: String? = nil, brand: String? = nil, tz: String? = nil, stores: String? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetAnalyticOverviewResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getAnalyticOverviewWithRequestBuilder(range: range, from: from, to: to, compare: compare, cmpFrom: cmpFrom, cmpTo: cmpTo, labels: labels, platforms: platforms, category: category, brand: brand, tz: tz, stores: stores).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     KPIs with deltas (net sales, net profit, units, ASP, margin, sell-through, median days to sell, active listings, take rate), the trend series, by-marketplace split, top categories, brands and items, sell-through cohort, data health and insights.
+     - GET /v1/analytics/overview
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter range: (query) Reporting window. Default 30d. custom needs from and to. (optional)
+     - parameter from: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter to: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter compare: (query) Comparison window for deltas: prev (same length just before), yoy, none, custom (cmpFrom/cmpTo). (optional)
+     - parameter cmpFrom: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter cmpTo: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter labels: (query) Comma-separated inventory labels (any of them). (optional)
+     - parameter platforms: (query) Comma-separated platform ids. (optional)
+     - parameter category: (query) Canonical main-category key. (optional)
+     - parameter brand: (query) Brand name. (optional)
+     - parameter tz: (query) IANA time zone for day boundaries. Default UTC. An invalid name is a 400. (optional)
+     - parameter stores: (query) Comma-separated store ids. (optional)
+     - returns: RequestBuilder<GetAnalyticOverviewResponse> 
+     */
+    open class func getAnalyticOverviewWithRequestBuilder(range: ModelRange_getAnalyticOverview? = nil, from: String? = nil, to: String? = nil, compare: Compare_getAnalyticOverview? = nil, cmpFrom: String? = nil, cmpTo: String? = nil, labels: String? = nil, platforms: String? = nil, category: String? = nil, brand: String? = nil, tz: String? = nil, stores: String? = nil) -> RequestBuilder<GetAnalyticOverviewResponse> {
+        let localVariablePath = "/v1/analytics/overview"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "range": range?.encodeToJSON(),
+            "from": from?.encodeToJSON(),
+            "to": to?.encodeToJSON(),
+            "compare": compare?.encodeToJSON(),
+            "cmpFrom": cmpFrom?.encodeToJSON(),
+            "cmpTo": cmpTo?.encodeToJSON(),
+            "labels": labels?.encodeToJSON(),
+            "platforms": platforms?.encodeToJSON(),
+            "category": category?.encodeToJSON(),
+            "brand": brand?.encodeToJSON(),
+            "tz": tz?.encodeToJSON(),
+            "stores": stores?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetAnalyticOverviewResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     * enum for parameter range
+     */
+    public enum ModelRange_getAnalyticPerformance: String, CaseIterable {
+        case _7d = "7d"
+        case _30d = "30d"
+        case _90d = "90d"
+        case _1y = "1y"
+        case ytd = "ytd"
+        case all = "all"
+        case custom = "custom"
+    }
+
+    /**
+     * enum for parameter compare
+     */
+    public enum Compare_getAnalyticPerformance: String, CaseIterable {
+        case prev = "prev"
+        case yoy = "yoy"
+        case _none = "none"
+        case custom = "custom"
+    }
+
+    /**
+     * enum for parameter status
+     */
+    public enum Status_getAnalyticPerformance: String, CaseIterable {
+        case all = "all"
+        case active = "active"
+        case sold = "sold"
+        case unsold = "unsold"
+        case ended = "ended"
+    }
+
+    /**
+     * enum for parameter sort
+     */
+    public enum Sort_getAnalyticPerformance: String, CaseIterable {
+        case lastactivity = "lastActivity"
+        case title = "title"
+        case price = "price"
+        case dayslisted = "daysListed"
+        case views = "views"
+        case favorites = "favorites"
+        case offers = "offers"
+        case unitssold = "unitsSold"
+        case netsales = "netSales"
+        case netprofit = "netProfit"
+        case margin = "margin"
+        case daystosell = "daysToSell"
+        case health = "health"
+    }
+
+    /**
+     * enum for parameter dir
+     */
+    public enum Dir_getAnalyticPerformance: String, CaseIterable {
+        case asc = "asc"
+        case desc = "desc"
+    }
+
+    /**
+     * enum for parameter size
+     */
+    public enum Size_getAnalyticPerformance: Int, CaseIterable {
+        case _25 = 25
+        case _50 = 50
+        case _100 = 100
+    }
+
+    /**
+     Per-listing performance: channels, views, favorites, offers and conversations in the period, units sold, net sales and profit, margin, days to sell and a 0-100 health score, paged and sortable.
+     
+     - parameter range: (query) Reporting window. Default 30d. custom needs from and to. (optional)
+     - parameter from: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter to: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter compare: (query) Comparison window for deltas: prev (same length just before), yoy, none, custom (cmpFrom/cmpTo). (optional)
+     - parameter cmpFrom: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter cmpTo: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter labels: (query) Comma-separated inventory labels (any of them). (optional)
+     - parameter platforms: (query) Comma-separated platform ids. (optional)
+     - parameter category: (query) Canonical main-category key. (optional)
+     - parameter brand: (query) Brand name. (optional)
+     - parameter tz: (query) IANA time zone for day boundaries. Default UTC. An invalid name is a 400. (optional)
+     - parameter status: (query) unsold &#x3D; listed at least minDays with no completed sale. (optional)
+     - parameter q: (query) Title, SKU or brand contains. (optional)
+     - parameter sort: (query) Default lastActivity. (optional)
+     - parameter dir: (query) Default desc. (optional)
+     - parameter page: (query) 1-indexed page. Default 1. (optional)
+     - parameter size: (query) Rows per page. Default 50. (optional)
+     - parameter minDays: (query) Minimum days listed (for status&#x3D;unsold). Default 0. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getAnalyticPerformance(range: ModelRange_getAnalyticPerformance? = nil, from: String? = nil, to: String? = nil, compare: Compare_getAnalyticPerformance? = nil, cmpFrom: String? = nil, cmpTo: String? = nil, labels: String? = nil, platforms: String? = nil, category: String? = nil, brand: String? = nil, tz: String? = nil, status: Status_getAnalyticPerformance? = nil, q: String? = nil, sort: Sort_getAnalyticPerformance? = nil, dir: Dir_getAnalyticPerformance? = nil, page: Int? = nil, size: Size_getAnalyticPerformance? = nil, minDays: Int? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetAnalyticPerformanceResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getAnalyticPerformanceWithRequestBuilder(range: range, from: from, to: to, compare: compare, cmpFrom: cmpFrom, cmpTo: cmpTo, labels: labels, platforms: platforms, category: category, brand: brand, tz: tz, status: status, q: q, sort: sort, dir: dir, page: page, size: size, minDays: minDays).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Per-listing performance: channels, views, favorites, offers and conversations in the period, units sold, net sales and profit, margin, days to sell and a 0-100 health score, paged and sortable.
+     - GET /v1/analytics/performance
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter range: (query) Reporting window. Default 30d. custom needs from and to. (optional)
+     - parameter from: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter to: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter compare: (query) Comparison window for deltas: prev (same length just before), yoy, none, custom (cmpFrom/cmpTo). (optional)
+     - parameter cmpFrom: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter cmpTo: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter labels: (query) Comma-separated inventory labels (any of them). (optional)
+     - parameter platforms: (query) Comma-separated platform ids. (optional)
+     - parameter category: (query) Canonical main-category key. (optional)
+     - parameter brand: (query) Brand name. (optional)
+     - parameter tz: (query) IANA time zone for day boundaries. Default UTC. An invalid name is a 400. (optional)
+     - parameter status: (query) unsold &#x3D; listed at least minDays with no completed sale. (optional)
+     - parameter q: (query) Title, SKU or brand contains. (optional)
+     - parameter sort: (query) Default lastActivity. (optional)
+     - parameter dir: (query) Default desc. (optional)
+     - parameter page: (query) 1-indexed page. Default 1. (optional)
+     - parameter size: (query) Rows per page. Default 50. (optional)
+     - parameter minDays: (query) Minimum days listed (for status&#x3D;unsold). Default 0. (optional)
+     - returns: RequestBuilder<GetAnalyticPerformanceResponse> 
+     */
+    open class func getAnalyticPerformanceWithRequestBuilder(range: ModelRange_getAnalyticPerformance? = nil, from: String? = nil, to: String? = nil, compare: Compare_getAnalyticPerformance? = nil, cmpFrom: String? = nil, cmpTo: String? = nil, labels: String? = nil, platforms: String? = nil, category: String? = nil, brand: String? = nil, tz: String? = nil, status: Status_getAnalyticPerformance? = nil, q: String? = nil, sort: Sort_getAnalyticPerformance? = nil, dir: Dir_getAnalyticPerformance? = nil, page: Int? = nil, size: Size_getAnalyticPerformance? = nil, minDays: Int? = nil) -> RequestBuilder<GetAnalyticPerformanceResponse> {
+        let localVariablePath = "/v1/analytics/performance"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "range": range?.encodeToJSON(),
+            "from": from?.encodeToJSON(),
+            "to": to?.encodeToJSON(),
+            "compare": compare?.encodeToJSON(),
+            "cmpFrom": cmpFrom?.encodeToJSON(),
+            "cmpTo": cmpTo?.encodeToJSON(),
+            "labels": labels?.encodeToJSON(),
+            "platforms": platforms?.encodeToJSON(),
+            "category": category?.encodeToJSON(),
+            "brand": brand?.encodeToJSON(),
+            "tz": tz?.encodeToJSON(),
+            "status": status?.encodeToJSON(),
+            "q": q?.encodeToJSON(),
+            "sort": sort?.encodeToJSON(),
+            "dir": dir?.encodeToJSON(),
+            "page": page?.encodeToJSON(),
+            "size": size?.encodeToJSON(),
+            "minDays": minDays?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetAnalyticPerformanceResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     * enum for parameter program
+     */
+    public enum Program_getAnalyticProgram: String, CaseIterable {
+        case wholesale = "wholesale"
+        case ads = "ads"
+        case rentals = "rentals"
+        case branding = "branding"
+        case events = "events"
+        case drops = "drops"
+        case discounts = "discounts"
+        case market = "market"
+        case worlds = "worlds"
+        case funding = "funding"
+        case vault = "vault"
+        case team = "team"
+        case referrals = "referrals"
+        case developerApps = "developer-apps"
+    }
+
+    /**
+     One program's report over a date range (default the last 30 days, at most 366): KPIs, a daily trend and a breakdown table. Money in integer cents.
+     
+     - parameter program: (path)  
+     - parameter from: (query) First UTC day (YYYY-MM-DD), inclusive. (optional)
+     - parameter to: (query) Last UTC day (YYYY-MM-DD), inclusive. Default today. (optional)
+     - parameter by: (query) Breakdown dimension, when the program offers one (worlds: showroom, property, event). (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getAnalyticProgram(program: Program_getAnalyticProgram, from: Date? = nil, to: Date? = nil, by: String? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetAnalyticProgramResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getAnalyticProgramWithRequestBuilder(program: program, from: from, to: to, by: by).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One program's report over a date range (default the last 30 days, at most 366): KPIs, a daily trend and a breakdown table. Money in integer cents.
+     - GET /v1/analytics/programs/{program}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter program: (path)  
+     - parameter from: (query) First UTC day (YYYY-MM-DD), inclusive. (optional)
+     - parameter to: (query) Last UTC day (YYYY-MM-DD), inclusive. Default today. (optional)
+     - parameter by: (query) Breakdown dimension, when the program offers one (worlds: showroom, property, event). (optional)
+     - returns: RequestBuilder<GetAnalyticProgramResponse> 
+     */
+    open class func getAnalyticProgramWithRequestBuilder(program: Program_getAnalyticProgram, from: Date? = nil, to: Date? = nil, by: String? = nil) -> RequestBuilder<GetAnalyticProgramResponse> {
+        var localVariablePath = "/v1/analytics/programs/{program}"
+        let programPreEscape = "\(program.rawValue)"
+        let programPostEscape = programPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{program}", with: programPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "from": from?.encodeToJSON(),
+            "to": to?.encodeToJSON(),
+            "by": by?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetAnalyticProgramResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     * enum for parameter range
+     */
+    public enum ModelRange_getAnalyticSegment: String, CaseIterable {
+        case _7d = "7d"
+        case _30d = "30d"
+        case _90d = "90d"
+        case _1y = "1y"
+        case ytd = "ytd"
+        case all = "all"
+        case custom = "custom"
+    }
+
+    /**
+     * enum for parameter compare
+     */
+    public enum Compare_getAnalyticSegment: String, CaseIterable {
+        case prev = "prev"
+        case yoy = "yoy"
+        case _none = "none"
+        case custom = "custom"
+    }
+
+    /**
+     * enum for parameter dim
+     */
+    public enum Dim_getAnalyticSegment: String, CaseIterable {
+        case category = "category"
+        case subcategory = "subcategory"
+        case brand = "brand"
+        case condition = "condition"
+        case size = "size"
+        case source = "source"
+        case department = "department"
+        case priceband = "priceBand"
+        case ageband = "ageBand"
+    }
+
+    /**
+     * enum for parameter sort
+     */
+    public enum Sort_getAnalyticSegment: String, CaseIterable {
+        case label = "label"
+        case listedcount = "listedCount"
+        case activecount = "activeCount"
+        case unitssold = "unitsSold"
+        case sellthrough = "sellThrough"
+        case mediandaystosell = "medianDaysToSell"
+        case netsales = "netSales"
+        case netprofit = "netProfit"
+        case marginrate = "marginRate"
+        case margin = "margin"
+        case roi = "roi"
+        case asp = "asp"
+        case share = "share"
+    }
+
+    /**
+     * enum for parameter dir
+     */
+    public enum Dir_getAnalyticSegment: String, CaseIterable {
+        case asc = "asc"
+        case desc = "desc"
+    }
+
+    /**
+     Niches along one dimension: listed and active counts, units sold, cohort sell-through, median days to sell, net sales and profit, margin, ROI, ASP and discount from ask; rows under minN are flagged lowSample.
+     
+     - parameter range: (query) Reporting window. Default 30d. custom needs from and to. (optional)
+     - parameter from: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter to: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter compare: (query) Comparison window for deltas: prev (same length just before), yoy, none, custom (cmpFrom/cmpTo). (optional)
+     - parameter cmpFrom: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter cmpTo: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter labels: (query) Comma-separated inventory labels (any of them). (optional)
+     - parameter platforms: (query) Comma-separated platform ids. (optional)
+     - parameter category: (query) Canonical main-category key. (optional)
+     - parameter brand: (query) Brand name. (optional)
+     - parameter tz: (query) IANA time zone for day boundaries. Default UTC. An invalid name is a 400. (optional)
+     - parameter dim: (query) category &#x3D; main category; subcategory &#x3D; main &gt; sub; brand; condition; size; source &#x3D; where you acquired it; department; priceBand &#x3D; ask in &lt;$10, $10-25, $25-50, $50-100, $100-250, $250+; ageBand &#x3D; days live at sale or now (&lt;7, 7-30, 30-90, 90+). (optional)
+     - parameter sort: (query) Default netSales. (optional)
+     - parameter dir: (query) Default desc. (optional)
+     - parameter minN: (query) Minimum sample for a row to count as a winner or loser. Default 3. (optional)
+     - parameter q: (query) Segment label contains. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getAnalyticSegment(range: ModelRange_getAnalyticSegment? = nil, from: String? = nil, to: String? = nil, compare: Compare_getAnalyticSegment? = nil, cmpFrom: String? = nil, cmpTo: String? = nil, labels: String? = nil, platforms: String? = nil, category: String? = nil, brand: String? = nil, tz: String? = nil, dim: Dim_getAnalyticSegment? = nil, sort: Sort_getAnalyticSegment? = nil, dir: Dir_getAnalyticSegment? = nil, minN: Int? = nil, q: String? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetAnalyticSegmentResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getAnalyticSegmentWithRequestBuilder(range: range, from: from, to: to, compare: compare, cmpFrom: cmpFrom, cmpTo: cmpTo, labels: labels, platforms: platforms, category: category, brand: brand, tz: tz, dim: dim, sort: sort, dir: dir, minN: minN, q: q).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Niches along one dimension: listed and active counts, units sold, cohort sell-through, median days to sell, net sales and profit, margin, ROI, ASP and discount from ask; rows under minN are flagged lowSample.
+     - GET /v1/analytics/segments
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter range: (query) Reporting window. Default 30d. custom needs from and to. (optional)
+     - parameter from: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter to: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter compare: (query) Comparison window for deltas: prev (same length just before), yoy, none, custom (cmpFrom/cmpTo). (optional)
+     - parameter cmpFrom: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter cmpTo: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter labels: (query) Comma-separated inventory labels (any of them). (optional)
+     - parameter platforms: (query) Comma-separated platform ids. (optional)
+     - parameter category: (query) Canonical main-category key. (optional)
+     - parameter brand: (query) Brand name. (optional)
+     - parameter tz: (query) IANA time zone for day boundaries. Default UTC. An invalid name is a 400. (optional)
+     - parameter dim: (query) category &#x3D; main category; subcategory &#x3D; main &gt; sub; brand; condition; size; source &#x3D; where you acquired it; department; priceBand &#x3D; ask in &lt;$10, $10-25, $25-50, $50-100, $100-250, $250+; ageBand &#x3D; days live at sale or now (&lt;7, 7-30, 30-90, 90+). (optional)
+     - parameter sort: (query) Default netSales. (optional)
+     - parameter dir: (query) Default desc. (optional)
+     - parameter minN: (query) Minimum sample for a row to count as a winner or loser. Default 3. (optional)
+     - parameter q: (query) Segment label contains. (optional)
+     - returns: RequestBuilder<GetAnalyticSegmentResponse> 
+     */
+    open class func getAnalyticSegmentWithRequestBuilder(range: ModelRange_getAnalyticSegment? = nil, from: String? = nil, to: String? = nil, compare: Compare_getAnalyticSegment? = nil, cmpFrom: String? = nil, cmpTo: String? = nil, labels: String? = nil, platforms: String? = nil, category: String? = nil, brand: String? = nil, tz: String? = nil, dim: Dim_getAnalyticSegment? = nil, sort: Sort_getAnalyticSegment? = nil, dir: Dir_getAnalyticSegment? = nil, minN: Int? = nil, q: String? = nil) -> RequestBuilder<GetAnalyticSegmentResponse> {
+        let localVariablePath = "/v1/analytics/segments"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "range": range?.encodeToJSON(),
+            "from": from?.encodeToJSON(),
+            "to": to?.encodeToJSON(),
+            "compare": compare?.encodeToJSON(),
+            "cmpFrom": cmpFrom?.encodeToJSON(),
+            "cmpTo": cmpTo?.encodeToJSON(),
+            "labels": labels?.encodeToJSON(),
+            "platforms": platforms?.encodeToJSON(),
+            "category": category?.encodeToJSON(),
+            "brand": brand?.encodeToJSON(),
+            "tz": tz?.encodeToJSON(),
+            "dim": dim?.encodeToJSON(),
+            "sort": sort?.encodeToJSON(),
+            "dir": dir?.encodeToJSON(),
+            "minN": minN?.encodeToJSON(),
+            "q": q?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetAnalyticSegmentResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     * enum for parameter range
+     */
+    public enum ModelRange_getAnalyticSegmentByKey: String, CaseIterable {
+        case _7d = "7d"
+        case _30d = "30d"
+        case _90d = "90d"
+        case _1y = "1y"
+        case ytd = "ytd"
+        case all = "all"
+        case custom = "custom"
+    }
+
+    /**
+     * enum for parameter compare
+     */
+    public enum Compare_getAnalyticSegmentByKey: String, CaseIterable {
+        case prev = "prev"
+        case yoy = "yoy"
+        case _none = "none"
+        case custom = "custom"
+    }
+
+    /**
+     One niche in depth: its row, series, by-marketplace split, days-to-sell histogram, price bands, top items and the 10 oldest unsold listings in it.
+     
+     - parameter dim: (path) One of category, subcategory, brand, condition, size, source, department, priceBand, ageBand. category &#x3D; main category; subcategory &#x3D; main &gt; sub; brand; condition; size; source &#x3D; where you acquired it; department; priceBand &#x3D; ask in &lt;$10, $10-25, $25-50, $50-100, $100-250, $250+; ageBand &#x3D; days live at sale or now (&lt;7, 7-30, 30-90, 90+). 
+     - parameter key: (path) The segment key from a segments row (URL-encoded). A key with no data in scope is a 404. 
+     - parameter range: (query) Reporting window. Default 30d. custom needs from and to. (optional)
+     - parameter from: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter to: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter compare: (query) Comparison window for deltas: prev (same length just before), yoy, none, custom (cmpFrom/cmpTo). (optional)
+     - parameter cmpFrom: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter cmpTo: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter labels: (query) Comma-separated inventory labels (any of them). (optional)
+     - parameter platforms: (query) Comma-separated platform ids. (optional)
+     - parameter category: (query) Canonical main-category key. (optional)
+     - parameter brand: (query) Brand name. (optional)
+     - parameter tz: (query) IANA time zone for day boundaries. Default UTC. An invalid name is a 400. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getAnalyticSegmentByKey(dim: String, key: String, range: ModelRange_getAnalyticSegmentByKey? = nil, from: String? = nil, to: String? = nil, compare: Compare_getAnalyticSegmentByKey? = nil, cmpFrom: String? = nil, cmpTo: String? = nil, labels: String? = nil, platforms: String? = nil, category: String? = nil, brand: String? = nil, tz: String? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetAnalyticSegmentByKeyResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getAnalyticSegmentByKeyWithRequestBuilder(dim: dim, key: key, range: range, from: from, to: to, compare: compare, cmpFrom: cmpFrom, cmpTo: cmpTo, labels: labels, platforms: platforms, category: category, brand: brand, tz: tz).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One niche in depth: its row, series, by-marketplace split, days-to-sell histogram, price bands, top items and the 10 oldest unsold listings in it.
+     - GET /v1/analytics/segments/{dim}/{key}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter dim: (path) One of category, subcategory, brand, condition, size, source, department, priceBand, ageBand. category &#x3D; main category; subcategory &#x3D; main &gt; sub; brand; condition; size; source &#x3D; where you acquired it; department; priceBand &#x3D; ask in &lt;$10, $10-25, $25-50, $50-100, $100-250, $250+; ageBand &#x3D; days live at sale or now (&lt;7, 7-30, 30-90, 90+). 
+     - parameter key: (path) The segment key from a segments row (URL-encoded). A key with no data in scope is a 404. 
+     - parameter range: (query) Reporting window. Default 30d. custom needs from and to. (optional)
+     - parameter from: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter to: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter compare: (query) Comparison window for deltas: prev (same length just before), yoy, none, custom (cmpFrom/cmpTo). (optional)
+     - parameter cmpFrom: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter cmpTo: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter labels: (query) Comma-separated inventory labels (any of them). (optional)
+     - parameter platforms: (query) Comma-separated platform ids. (optional)
+     - parameter category: (query) Canonical main-category key. (optional)
+     - parameter brand: (query) Brand name. (optional)
+     - parameter tz: (query) IANA time zone for day boundaries. Default UTC. An invalid name is a 400. (optional)
+     - returns: RequestBuilder<GetAnalyticSegmentByKeyResponse> 
+     */
+    open class func getAnalyticSegmentByKeyWithRequestBuilder(dim: String, key: String, range: ModelRange_getAnalyticSegmentByKey? = nil, from: String? = nil, to: String? = nil, compare: Compare_getAnalyticSegmentByKey? = nil, cmpFrom: String? = nil, cmpTo: String? = nil, labels: String? = nil, platforms: String? = nil, category: String? = nil, brand: String? = nil, tz: String? = nil) -> RequestBuilder<GetAnalyticSegmentByKeyResponse> {
+        var localVariablePath = "/v1/analytics/segments/{dim}/{key}"
+        let dimPreEscape = "\(APIHelper.mapValueToPathItem(dim))"
+        let dimPostEscape = dimPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{dim}", with: dimPostEscape, options: .literal, range: nil)
+        let keyPreEscape = "\(APIHelper.mapValueToPathItem(key))"
+        let keyPostEscape = keyPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{key}", with: keyPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "range": range?.encodeToJSON(),
+            "from": from?.encodeToJSON(),
+            "to": to?.encodeToJSON(),
+            "compare": compare?.encodeToJSON(),
+            "cmpFrom": cmpFrom?.encodeToJSON(),
+            "cmpTo": cmpTo?.encodeToJSON(),
+            "labels": labels?.encodeToJSON(),
+            "platforms": platforms?.encodeToJSON(),
+            "category": category?.encodeToJSON(),
+            "brand": brand?.encodeToJSON(),
+            "tz": tz?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetAnalyticSegmentByKeyResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Headline KPIs for the last N days (the same numbers as the analytics overview).
+     
+     - parameter days: (query) Calendar days back, today included. Larger values are clamped to 365. (optional, default to 30)
+     - parameter tz: (query) IANA time zone for day boundaries. Default UTC. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getAnalyticSummary(days: Int? = nil, tz: String? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetAnalyticSummaryResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getAnalyticSummaryWithRequestBuilder(days: days, tz: tz).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Headline KPIs for the last N days (the same numbers as the analytics overview).
      - GET /v1/analytics/summary
      - BASIC:
        - type: http
        - name: PersonalAccessToken
-     - parameter days: (query)  (optional, default to 30)
+     - parameter days: (query) Calendar days back, today included. Larger values are clamped to 365. (optional, default to 30)
+     - parameter tz: (query) IANA time zone for day boundaries. Default UTC. (optional)
      - returns: RequestBuilder<GetAnalyticSummaryResponse> 
      */
-    open class func getAnalyticSummaryWithRequestBuilder(days: Int? = nil) -> RequestBuilder<GetAnalyticSummaryResponse> {
+    open class func getAnalyticSummaryWithRequestBuilder(days: Int? = nil, tz: String? = nil) -> RequestBuilder<GetAnalyticSummaryResponse> {
         let localVariablePath = "/v1/analytics/summary"
         let localVariableURLString = CrosslyAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -224,6 +1660,7 @@ open class AnalyticsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "days": days?.encodeToJSON(),
+            "tz": tz?.encodeToJSON(),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -238,14 +1675,16 @@ open class AnalyticsAPI {
     }
 
     /**
-     Daily sales + revenue series for the last N days.
+     Sales and net sales over the last N days, zero-filled, one row per calendar day.
      
+     - parameter days: (query) Calendar days back, today included. Larger values are clamped to 365. (optional, default to 30)
+     - parameter tz: (query) IANA time zone for day boundaries. Default UTC. (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func getAnalyticTimesery(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetAnalyticTimeseryResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getAnalyticTimeseryWithRequestBuilder().execute(apiResponseQueue) { result in
+    open class func getAnalyticTimesery(days: Int? = nil, tz: String? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetAnalyticTimeseryResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getAnalyticTimeseryWithRequestBuilder(days: days, tz: tz).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -256,19 +1695,25 @@ open class AnalyticsAPI {
     }
 
     /**
-     Daily sales + revenue series for the last N days.
+     Sales and net sales over the last N days, zero-filled, one row per calendar day.
      - GET /v1/analytics/timeseries
      - BASIC:
        - type: http
        - name: PersonalAccessToken
+     - parameter days: (query) Calendar days back, today included. Larger values are clamped to 365. (optional, default to 30)
+     - parameter tz: (query) IANA time zone for day boundaries. Default UTC. (optional)
      - returns: RequestBuilder<GetAnalyticTimeseryResponse> 
      */
-    open class func getAnalyticTimeseryWithRequestBuilder() -> RequestBuilder<GetAnalyticTimeseryResponse> {
+    open class func getAnalyticTimeseryWithRequestBuilder(days: Int? = nil, tz: String? = nil) -> RequestBuilder<GetAnalyticTimeseryResponse> {
         let localVariablePath = "/v1/analytics/timeseries"
         let localVariableURLString = CrosslyAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
-        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "days": days?.encodeToJSON(),
+            "tz": tz?.encodeToJSON(),
+        ])
 
         let localVariableNillableHeaders: [String: Any?] = [
             :
@@ -326,14 +1771,15 @@ open class AnalyticsAPI {
     }
 
     /**
-     Platform velocity + margin insight (90-day window).
+     Platform velocity + margin insight (90-day window): units, net sales, median days to sell, ASP and net after the real marketplace fees.
      
+     - parameter tz: (query) IANA time zone for day boundaries. Default UTC. (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func listInsightByPlatform(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListInsightByPlatformResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return listInsightByPlatformWithRequestBuilder().execute(apiResponseQueue) { result in
+    open class func listInsightByPlatform(tz: String? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListInsightByPlatformResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listInsightByPlatformWithRequestBuilder(tz: tz).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -344,15 +1790,68 @@ open class AnalyticsAPI {
     }
 
     /**
-     Platform velocity + margin insight (90-day window).
+     Platform velocity + margin insight (90-day window): units, net sales, median days to sell, ASP and net after the real marketplace fees.
      - GET /v1/insights/by-platform
      - BASIC:
        - type: http
        - name: PersonalAccessToken
+     - parameter tz: (query) IANA time zone for day boundaries. Default UTC. (optional)
      - returns: RequestBuilder<ListInsightByPlatformResponse> 
      */
-    open class func listInsightByPlatformWithRequestBuilder() -> RequestBuilder<ListInsightByPlatformResponse> {
+    open class func listInsightByPlatformWithRequestBuilder(tz: String? = nil) -> RequestBuilder<ListInsightByPlatformResponse> {
         let localVariablePath = "/v1/insights/by-platform"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "tz": tz?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListInsightByPlatformResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Rename an experiment or change its hypothesis, notes or planned end.
+     
+     - parameter id: (path) The experiment id (a uuid; any other id is a 404). 
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateAnalyticExperiment(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: AnalyticExperimentResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateAnalyticExperimentWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Rename an experiment or change its hypothesis, notes or planned end.
+     - PATCH /v1/analytics/experiments/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path) The experiment id (a uuid; any other id is a 404). 
+     - returns: RequestBuilder<AnalyticExperimentResponse> 
+     */
+    open class func updateAnalyticExperimentWithRequestBuilder(id: String) -> RequestBuilder<AnalyticExperimentResponse> {
+        var localVariablePath = "/v1/analytics/experiments/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
         let localVariableURLString = CrosslyAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
@@ -364,8 +1863,8 @@ open class AnalyticsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ListInsightByPlatformResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<AnalyticExperimentResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
-        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+        return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
 }

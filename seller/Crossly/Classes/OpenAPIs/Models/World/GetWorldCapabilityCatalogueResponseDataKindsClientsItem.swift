@@ -11,9 +11,9 @@ import AnyCodable
 #endif
 
 public enum GetWorldCapabilityCatalogueResponseDataKindsClientsItem: String, Codable, CaseIterable {
-    case web = "web"
     case app = "app"
-    case godot = "godot"
     case api = "api"
+    case web = "web"
+    case godot = "godot"
     case runner = "runner"
 }

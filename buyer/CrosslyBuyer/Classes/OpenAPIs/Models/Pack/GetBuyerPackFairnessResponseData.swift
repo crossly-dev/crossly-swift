@@ -12,22 +12,22 @@ import AnyCodable
 
 public struct GetBuyerPackFairnessResponseData: Codable, JSONEncodable, Hashable {
 
-    public var nonce: Double
     public var serverSeedHash: String
     public var clientSeed: String
+    public var nonce: Double
     public var revealed: [GetBuyerPackFairnessResponseDataRevealed]
 
-    public init(nonce: Double, serverSeedHash: String, clientSeed: String, revealed: [GetBuyerPackFairnessResponseDataRevealed]) {
-        self.nonce = nonce
+    public init(serverSeedHash: String, clientSeed: String, nonce: Double, revealed: [GetBuyerPackFairnessResponseDataRevealed]) {
         self.serverSeedHash = serverSeedHash
         self.clientSeed = clientSeed
+        self.nonce = nonce
         self.revealed = revealed
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case nonce
         case serverSeedHash
         case clientSeed
+        case nonce
         case revealed
     }
 
@@ -35,9 +35,9 @@ public struct GetBuyerPackFairnessResponseData: Codable, JSONEncodable, Hashable
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(nonce, forKey: .nonce)
         try container.encode(serverSeedHash, forKey: .serverSeedHash)
         try container.encode(clientSeed, forKey: .clientSeed)
+        try container.encode(nonce, forKey: .nonce)
         try container.encode(revealed, forKey: .revealed)
     }
 }

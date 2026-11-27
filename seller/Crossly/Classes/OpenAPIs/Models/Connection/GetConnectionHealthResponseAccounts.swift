@@ -13,11 +13,11 @@ import AnyCodable
 public struct GetConnectionHealthResponseAccounts: Codable, JSONEncodable, Hashable {
 
     public enum State: String, Codable, CaseIterable {
-        case stale = "stale"
         case unknown = "unknown"
-        case healthy = "healthy"
         case unmonitored = "unmonitored"
         case disconnected = "disconnected"
+        case healthy = "healthy"
+        case stale = "stale"
         case partialBlank = "partial_blank"
         case blankCredential = "blank_credential"
         case signedOut = "signed_out"
@@ -25,11 +25,11 @@ public struct GetConnectionHealthResponseAccounts: Codable, JSONEncodable, Hasha
         case noCookies = "no_cookies"
     }
     public enum Severity: String, Codable, CaseIterable {
-        case error = "error"
-        case unknown = "unknown"
-        case ok = "ok"
-        case warn = "warn"
         case info = "info"
+        case unknown = "unknown"
+        case error = "error"
+        case warn = "warn"
+        case ok = "ok"
     }
     public enum Audience: String, Codable, CaseIterable {
         case seller = "seller"

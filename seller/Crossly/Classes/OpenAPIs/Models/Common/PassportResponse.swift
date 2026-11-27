@@ -12,9 +12,9 @@ import AnyCodable
 
 public struct PassportResponse: Codable, JSONEncodable, Hashable {
 
-    public var data: ListPassportsItem
+    public var data: PassportResponseData
 
-    public init(data: ListPassportsItem) {
+    public init(data: PassportResponseData) {
         self.data = data
     }
 

@@ -13,9 +13,9 @@ import AnyCodable
 public struct GetWorldPlaceLiveResponseData: Codable, JSONEncodable, Hashable {
 
     public var stream: GetWorldPlaceLiveResponseDataStream?
-    public var lot: GetWorldPlaceLiveResponseDataLot?
+    public var lot: GetMainStageResponseStreamLot?
 
-    public init(stream: GetWorldPlaceLiveResponseDataStream? = nil, lot: GetWorldPlaceLiveResponseDataLot? = nil) {
+    public init(stream: GetWorldPlaceLiveResponseDataStream? = nil, lot: GetMainStageResponseStreamLot? = nil) {
         self.stream = stream
         self.lot = lot
     }

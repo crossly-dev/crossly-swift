@@ -12,29 +12,43 @@ import AnyCodable
 
 public struct CreateInventoryBulkDeleteResponse: Codable, JSONEncodable, Hashable {
 
-    public var success: Bool
     public var deleted: Double
+    public var deletedIds: [String]
+    /** Items NOT deleted: a live listing Crossly may not end (action authority). */
+    public var refused: [CreateInventoryBulkDeleteResponseRefused]
+    /** Live rows handed to their managing app as delist commands. */
+    public var relayed: Double
     public var bulkJobId: String
+    public var success: Bool
 
-    public init(success: Bool, deleted: Double, bulkJobId: String) {
-        self.success = success
+    public init(deleted: Double, deletedIds: [String], refused: [CreateInventoryBulkDeleteResponseRefused], relayed: Double, bulkJobId: String, success: Bool) {
         self.deleted = deleted
+        self.deletedIds = deletedIds
+        self.refused = refused
+        self.relayed = relayed
         self.bulkJobId = bulkJobId
+        self.success = success
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case success
         case deleted
+        case deletedIds
+        case refused
+        case relayed
         case bulkJobId
+        case success
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(success, forKey: .success)
         try container.encode(deleted, forKey: .deleted)
+        try container.encode(deletedIds, forKey: .deletedIds)
+        try container.encode(refused, forKey: .refused)
+        try container.encode(relayed, forKey: .relayed)
         try container.encode(bulkJobId, forKey: .bulkJobId)
+        try container.encode(success, forKey: .success)
     }
 }
 

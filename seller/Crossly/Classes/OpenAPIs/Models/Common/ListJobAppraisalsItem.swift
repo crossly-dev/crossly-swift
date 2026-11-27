@@ -13,8 +13,8 @@ import AnyCodable
 public struct ListJobAppraisalsItem: Codable, JSONEncodable, Hashable {
 
     public enum Rail: String, Codable, CaseIterable {
-        case bucks = "bucks"
         case cbx = "cbx"
+        case bucks = "bucks"
     }
     public var id: String
     public var category: String

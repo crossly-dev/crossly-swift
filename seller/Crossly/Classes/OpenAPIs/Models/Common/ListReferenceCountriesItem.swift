@@ -21,10 +21,10 @@ public struct ListReferenceCountriesItem: Codable, JSONEncodable, Hashable {
     public var postalLabel: String
     public var stateRequired: Bool
     public var stateLabel: String
-    public var subdivisions: [ListReferenceCountriesItemSubdivisions]?
+    public var subdivisions: [CodeName]?
     public var embargoed: Bool
 
-    public init(code: String, name: String, currency: String, regions: [String], hasPostal: Bool, postalRequired: Bool, postalLabel: String, stateRequired: Bool, stateLabel: String, subdivisions: [ListReferenceCountriesItemSubdivisions]? = nil, embargoed: Bool) {
+    public init(code: String, name: String, currency: String, regions: [String], hasPostal: Bool, postalRequired: Bool, postalLabel: String, stateRequired: Bool, stateLabel: String, subdivisions: [CodeName]? = nil, embargoed: Bool) {
         self.code = code
         self.name = name
         self.currency = currency

@@ -18,13 +18,16 @@ public struct CreateStallBookResponseBookingUnits: Codable, JSONEncodable, Hasha
     public var cents: Double
     /** CBX only: the spend's external id for this unit (one spend per unit). */
     public var externalId: String?
+    /** CBX only, booked since gap 6: this unit's world_payments row (refunds go through refundWorld). */
+    public var paymentId: String?
 
-    public init(key: String, startsAt: String, endsAt: String, cents: Double, externalId: String? = nil) {
+    public init(key: String, startsAt: String, endsAt: String, cents: Double, externalId: String? = nil, paymentId: String? = nil) {
         self.key = key
         self.startsAt = startsAt
         self.endsAt = endsAt
         self.cents = cents
         self.externalId = externalId
+        self.paymentId = paymentId
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -33,6 +36,7 @@ public struct CreateStallBookResponseBookingUnits: Codable, JSONEncodable, Hasha
         case endsAt
         case cents
         case externalId
+        case paymentId
     }
 
     // Encodable protocol methods
@@ -44,6 +48,7 @@ public struct CreateStallBookResponseBookingUnits: Codable, JSONEncodable, Hasha
         try container.encode(endsAt, forKey: .endsAt)
         try container.encode(cents, forKey: .cents)
         try container.encodeIfPresent(externalId, forKey: .externalId)
+        try container.encodeIfPresent(paymentId, forKey: .paymentId)
     }
 }
 

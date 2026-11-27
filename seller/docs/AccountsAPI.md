@@ -5,11 +5,13 @@ All URIs are relative to *https://crossly.net/api*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**createAccount**](AccountsAPI.md#createaccount) | **POST** /v1/accounts | Connect a new platform account (kicks off OAuth or extension handshake).
+[**createConnectionCardnexusApiKey**](AccountsAPI.md#createconnectioncardnexusapikey) | **POST** /v1/connections/cardnexus/api-key | Connect CardNexus with a personal API key (validated live before it is stored).
 [**createConnectionEmailImap**](AccountsAPI.md#createconnectionemailimap) | **POST** /v1/connections/email/imap | Add an IMAP mailbox connection.
 [**createConnectionEmailImapTest**](AccountsAPI.md#createconnectionemailimaptest) | **POST** /v1/connections/email/imap/test | Validate IMAP credentials without persisting.
+[**createConnectionLightspeedXToken**](AccountsAPI.md#createconnectionlightspeedxtoken) | **POST** /v1/connections/lightspeed_x/token | Connect Lightspeed X-Series with a personal token (Setup → Personal tokens, Plus plan) and the store prefix.
 [**createConnectionRequest**](AccountsAPI.md#createconnectionrequest) | **POST** /v1/connections/{platform}/request | Express interest in a request_only platform.
 [**createPlatformAccountConnect**](AccountsAPI.md#createplatformaccountconnect) | **POST** /v1/platform-accounts/{platform}/connect | Revive or initiate connection for a cookie platform.
-[**createPlatformAccountDisconnect**](AccountsAPI.md#createplatformaccountdisconnect) | **POST** /v1/platform-accounts/{platform}/disconnect | Archive every active account row for a platform.
+[**createPlatformAccountDisconnect**](AccountsAPI.md#createplatformaccountdisconnect) | **POST** /v1/platform-accounts/{platform}/disconnect | Disconnect every account of a platform (archives the rows and deletes their stored sessions).
 [**createPlatformAccountHistoryImport**](AccountsAPI.md#createplatformaccounthistoryimport) | **POST** /v1/platform-accounts/{platform}/history-import | Set how far back to backfill order history + active listings for a platform, and run it now.
 [**createPlatformAccountRefreshStatus**](AccountsAPI.md#createplatformaccountrefreshstatus) | **POST** /v1/platform-accounts/refresh-status | Run on-demand healthchecks across cookie accounts.
 [**deleteAccount**](AccountsAPI.md#deleteaccount) | **DELETE** /v1/accounts/{id} | Disconnect a platform account.
@@ -17,11 +19,14 @@ Method | HTTP request | Description
 [**deleteConnectionEmailImap**](AccountsAPI.md#deleteconnectionemailimap) | **DELETE** /v1/connections/email/imap/{id} | Remove an IMAP mailbox connection.
 [**getConnectionEmail**](AccountsAPI.md#getconnectionemail) | **GET** /v1/connections/email | List IMAP and email-OAuth connections.
 [**getConnectionExtensionOnline**](AccountsAPI.md#getconnectionextensiononline) | **GET** /v1/connections/extension-online | Check if the browser extension is online.
+[**getConnectionPolicyManagementOption**](AccountsAPI.md#getconnectionpolicymanagementoption) | **GET** /v1/connections/policy-management/{connectionId}/options/{source} | List the live options a marketplace policy field offers (e.g. Allegro delivery methods).
 [**getOauthInit**](AccountsAPI.md#getoauthinit) | **GET** /v1/oauth/{platform}/init | Return the OAuth authorize URL for an API-track platform.
 [**getPlatformLimit**](AccountsAPI.md#getplatformlimit) | **GET** /v1/platforms/limits | eBay free-tier + Etsy fees aggregate.
 [**listAccounts**](AccountsAPI.md#listaccounts) | **GET** /v1/accounts | List your connected platform accounts.
+[**listConnectionPolicyManagement**](AccountsAPI.md#listconnectionpolicymanagement) | **GET** /v1/connections/policy-management | List eBay and Etsy accounts with whether Crossly manages their policies.
 [**listConnections**](AccountsAPI.md#listconnections) | **GET** /v1/connections | List OAuth-connected API platforms.
 [**updateConnectionEmailImap**](AccountsAPI.md#updateconnectionemailimap) | **PATCH** /v1/connections/email/imap/{id} | Edit an IMAP mailbox connection.
+[**updateConnectionPolicyManagement**](AccountsAPI.md#updateconnectionpolicymanagement) | **PUT** /v1/connections/policy-management/{connectionId} | Turn Crossly policy management on or off for one eBay or Etsy account.
 [**updatePlatformPreference**](AccountsAPI.md#updateplatformpreference) | **PATCH** /v1/platforms/{platform}/preferences | Update per-platform connection preferences.
 
 
@@ -57,6 +62,50 @@ This endpoint does not need any parameter.
 ### Return type
 
 **CreateAccountResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createConnectionCardnexusApiKey**
+```swift
+    open class func createConnectionCardnexusApiKey(completion: @escaping (_ data: CreateConnectionCardnexusApiKeyResponse?, _ error: Error?) -> Void)
+```
+
+Connect CardNexus with a personal API key (validated live before it is stored).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Connect CardNexus with a personal API key (validated live before it is stored).
+AccountsAPI.createConnectionCardnexusApiKey() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateConnectionCardnexusApiKeyResponse**
 
 ### Authorization
 
@@ -153,6 +202,54 @@ This endpoint does not need any parameter.
 ### HTTP request headers
 
  - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createConnectionLightspeedXToken**
+```swift
+    open class func createConnectionLightspeedXToken(createConnectionLightspeedXTokenRequest: CreateConnectionLightspeedXTokenRequest, completion: @escaping (_ data: CreateConnectionLightspeedXTokenResponse?, _ error: Error?) -> Void)
+```
+
+Connect Lightspeed X-Series with a personal token (Setup → Personal tokens, Plus plan) and the store prefix.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let createConnectionLightspeedXTokenRequest = CreateConnectionLightspeedXTokenRequest(domainPrefix: "domainPrefix_example", accessToken: "accessToken_example") // CreateConnectionLightspeedXTokenRequest | 
+
+// Connect Lightspeed X-Series with a personal token (Setup → Personal tokens, Plus plan) and the store prefix.
+AccountsAPI.createConnectionLightspeedXToken(createConnectionLightspeedXTokenRequest: createConnectionLightspeedXTokenRequest) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **createConnectionLightspeedXTokenRequest** | **CreateConnectionLightspeedXTokenRequest** |  | 
+
+### Return type
+
+**CreateConnectionLightspeedXTokenResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
@@ -258,7 +355,7 @@ Name | Type | Description  | Notes
     open class func createPlatformAccountDisconnect(platform: String, completion: @escaping (_ data: CreatePlatformAccountDisconnectResponse?, _ error: Error?) -> Void)
 ```
 
-Archive every active account row for a platform.
+Disconnect every account of a platform (archives the rows and deletes their stored sessions).
 
 ### Example
 ```swift
@@ -267,7 +364,7 @@ import Crossly
 
 let platform = "platform_example" // String | 
 
-// Archive every active account row for a platform.
+// Disconnect every account of a platform (archives the rows and deletes their stored sessions).
 AccountsAPI.createPlatformAccountDisconnect(platform: platform) { (response, error) in
     guard error == nil else {
         print(error)
@@ -627,6 +724,58 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **getConnectionPolicyManagementOption**
+```swift
+    open class func getConnectionPolicyManagementOption(connectionId: String, source: String, completion: @escaping (_ data: GetConnectionPolicyManagementOptionResponse?, _ error: Error?) -> Void)
+```
+
+List the live options a marketplace policy field offers (e.g. Allegro delivery methods).
+
+For one of your managed connections, the choices a preset's `platformFields` picker offers, from the marketplace (`source` is the field's `optionsSource`, e.g. `delivery-methods`). An unknown connection or source is a 404.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let connectionId = "connectionId_example" // String | 
+let source = "source_example" // String | 
+
+// List the live options a marketplace policy field offers (e.g. Allegro delivery methods).
+AccountsAPI.getConnectionPolicyManagementOption(connectionId: connectionId, source: source) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **connectionId** | **String** |  | 
+ **source** | **String** |  | 
+
+### Return type
+
+**GetConnectionPolicyManagementOptionResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **getOauthInit**
 ```swift
     open class func getOauthInit(platform: String, shop: String? = nil, region: String? = nil, siteUrl: String? = nil, completion: @escaping (_ data: GetOauthInitResponse?, _ error: Error?) -> Void)
@@ -634,7 +783,7 @@ This endpoint does not need any parameter.
 
 Return the OAuth authorize URL for an API-track platform.
 
-Most platforms return `{ url }`. Etsy adds `{ correlationId }` (PKCE verifier stashed in Redis). Bonanza adds `{ oneShot: true }`. WooCommerce requires `?siteUrl=...`. Walmart returns `{ status: \"request_only\", requestUrl, message }` instead of a URL because per-seller OAuth needs Solution Provider approval.
+Most platforms return `{ url }` (Shopify, Etsy, Amazon and the other marketplaces Atlas Connections connects: the URL Atlas returns for this seller). Bonanza adds `{ oneShot: true }`. WooCommerce requires `?siteUrl=...`. Walmart returns `{ status: \"request_only\", requestUrl, message }` instead of a URL because per-seller OAuth needs Solution Provider approval.
 
 ### Example
 ```swift
@@ -771,6 +920,52 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **listConnectionPolicyManagement**
+```swift
+    open class func listConnectionPolicyManagement(completion: @escaping (_ data: ListConnectionPolicyManagementResponse?, _ error: Error?) -> Void)
+```
+
+List eBay and Etsy accounts with whether Crossly manages their policies.
+
+One row per connected eBay or Etsy account: `eligible` (eBay only on EBAY_US), `managed` (Crossly keeps its policies / shipping profiles in step with your default presets) and sync `notes`.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// List eBay and Etsy accounts with whether Crossly manages their policies.
+AccountsAPI.listConnectionPolicyManagement() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListConnectionPolicyManagementResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **listConnections**
 ```swift
     open class func listConnections(completion: @escaping (_ data: ListConnectionsResponse?, _ error: Error?) -> Void)
@@ -851,6 +1046,56 @@ Name | Type | Description  | Notes
 ### Return type
 
 **SuccessResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **updateConnectionPolicyManagement**
+```swift
+    open class func updateConnectionPolicyManagement(connectionId: String, completion: @escaping (_ data: ListConnectionPolicyManagementItem?, _ error: Error?) -> Void)
+```
+
+Turn Crossly policy management on or off for one eBay or Etsy account.
+
+Body `{ managed: boolean }`. On: Crossly may overwrite that account's own policies with your default presets and queues a sync now (409 for an ineligible account, e.g. non-US eBay). Off: Crossly stops touching them. A connection that is not yours (or not eBay/Etsy) is a 404.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let connectionId = "connectionId_example" // String | 
+
+// Turn Crossly policy management on or off for one eBay or Etsy account.
+AccountsAPI.updateConnectionPolicyManagement(connectionId: connectionId) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **connectionId** | **String** |  | 
+
+### Return type
+
+**ListConnectionPolicyManagementItem**
 
 ### Authorization
 

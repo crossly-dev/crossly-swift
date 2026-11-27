@@ -16,9 +16,9 @@ public struct GetVaultMarketWidgetIndexResponse: Codable, JSONEncodable, Hashabl
         case custom = "custom"
         case brand = "brand"
         case category = "category"
+        case segment = "segment"
         case curated = "curated"
         case composite = "composite"
-        case segment = "segment"
     }
     public enum Weighting: String, Codable, CaseIterable {
         case mark = "mark"
@@ -28,9 +28,9 @@ public struct GetVaultMarketWidgetIndexResponse: Codable, JSONEncodable, Hashabl
     }
     public enum Quality: String, Codable, CaseIterable {
         case _none = "none"
+        case c = "C"
         case a = "A"
         case b = "B"
-        case c = "C"
     }
     public var slug: String
     public var name: String
@@ -42,7 +42,7 @@ public struct GetVaultMarketWidgetIndexResponse: Codable, JSONEncodable, Hashabl
     public var level: Double?
     public var changeBps: Double?
     public var sinceInceptionBps: Double?
-    public var points: [GetVaultMarketWidgetIndexResponsePoints]
+    public var points: [GetVaultMarketOptionAnalyticResponseHistoricalVolSeries]
     public var quality: Quality
     public var n: Double
     public var members: Double
@@ -50,7 +50,7 @@ public struct GetVaultMarketWidgetIndexResponse: Codable, JSONEncodable, Hashabl
     public var insufficient: Bool
     public var href: String
 
-    public init(slug: String, name: String, description: String? = nil, kind: Kind, weighting: Weighting, baseValue: Double, inceptionDay: String? = nil, level: Double? = nil, changeBps: Double? = nil, sinceInceptionBps: Double? = nil, points: [GetVaultMarketWidgetIndexResponsePoints], quality: Quality, n: Double, members: Double, asOf: String? = nil, insufficient: Bool, href: String) {
+    public init(slug: String, name: String, description: String? = nil, kind: Kind, weighting: Weighting, baseValue: Double, inceptionDay: String? = nil, level: Double? = nil, changeBps: Double? = nil, sinceInceptionBps: Double? = nil, points: [GetVaultMarketOptionAnalyticResponseHistoricalVolSeries], quality: Quality, n: Double, members: Double, asOf: String? = nil, insufficient: Bool, href: String) {
         self.slug = slug
         self.name = name
         self.description = description

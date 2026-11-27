@@ -14,10 +14,10 @@ public struct CreateWorldGamePackageResponseDataVersion: Codable, JSONEncodable,
 
     public var id: String
     public var semver: String
-    public var designVersion: Double
+    public var designVersion: Double?
     public var state: String
 
-    public init(id: String, semver: String, designVersion: Double, state: String) {
+    public init(id: String, semver: String, designVersion: Double? = nil, state: String) {
         self.id = id
         self.semver = semver
         self.designVersion = designVersion
@@ -37,7 +37,7 @@ public struct CreateWorldGamePackageResponseDataVersion: Codable, JSONEncodable,
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
         try container.encode(semver, forKey: .semver)
-        try container.encode(designVersion, forKey: .designVersion)
+        try container.encodeIfPresent(designVersion, forKey: .designVersion)
         try container.encode(state, forKey: .state)
     }
 }

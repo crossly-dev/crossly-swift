@@ -18,12 +18,12 @@ public struct GetVaultMarketCorrelationResponse: Codable, JSONEncodable, Hashabl
     public var minPairWeeks: Double
     public var insufficient: Bool
     public var reason: String?
-    public var indexes: [SlugName]
+    public var indexes: [NameSlug]
     public var rho: [[Double]]
     public var n: [[Double]]
     public var asOf: String
 
-    public init(label: String, derived: Bool, weeks: Double, minPairWeeks: Double, insufficient: Bool, reason: String? = nil, indexes: [SlugName], rho: [[Double]], n: [[Double]], asOf: String) {
+    public init(label: String, derived: Bool, weeks: Double, minPairWeeks: Double, insufficient: Bool, reason: String? = nil, indexes: [NameSlug], rho: [[Double]], n: [[Double]], asOf: String) {
         self.label = label
         self.derived = derived
         self.weeks = weeks

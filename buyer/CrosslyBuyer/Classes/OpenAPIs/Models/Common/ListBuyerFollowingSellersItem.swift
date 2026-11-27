@@ -17,19 +17,19 @@ public struct ListBuyerFollowingSellersItem: Codable, JSONEncodable, Hashable {
     public var activeListings: Double
     /** Active listings put up since you last marked this seller seen. */
     public var newListings: Double
+    public var username: String?
     public var name: String?
     public var avatarUrl: String?
-    public var username: String?
     public var lastSeenAt: String?
 
-    public init(sellerUserId: String, followedAt: String, activeListings: Double, newListings: Double, name: String? = nil, avatarUrl: String? = nil, username: String? = nil, lastSeenAt: String? = nil) {
+    public init(sellerUserId: String, followedAt: String, activeListings: Double, newListings: Double, username: String? = nil, name: String? = nil, avatarUrl: String? = nil, lastSeenAt: String? = nil) {
         self.sellerUserId = sellerUserId
         self.followedAt = followedAt
         self.activeListings = activeListings
         self.newListings = newListings
+        self.username = username
         self.name = name
         self.avatarUrl = avatarUrl
-        self.username = username
         self.lastSeenAt = lastSeenAt
     }
 
@@ -38,9 +38,9 @@ public struct ListBuyerFollowingSellersItem: Codable, JSONEncodable, Hashable {
         case followedAt
         case activeListings
         case newListings
+        case username
         case name
         case avatarUrl
-        case username
         case lastSeenAt
     }
 
@@ -52,9 +52,9 @@ public struct ListBuyerFollowingSellersItem: Codable, JSONEncodable, Hashable {
         try container.encode(followedAt, forKey: .followedAt)
         try container.encode(activeListings, forKey: .activeListings)
         try container.encode(newListings, forKey: .newListings)
+        try container.encodeIfPresent(username, forKey: .username)
         try container.encodeIfPresent(name, forKey: .name)
         try container.encodeIfPresent(avatarUrl, forKey: .avatarUrl)
-        try container.encodeIfPresent(username, forKey: .username)
         try container.encodeIfPresent(lastSeenAt, forKey: .lastSeenAt)
     }
 }

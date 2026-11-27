@@ -13,8 +13,8 @@ import AnyCodable
 public struct GetSpatialPartyResponsePartyMembers: Codable, JSONEncodable, Hashable {
 
     public enum Role: String, Codable, CaseIterable {
-        case member = "member"
         case leader = "leader"
+        case member = "member"
     }
     public var userId: String
     public var name: String

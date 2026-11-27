@@ -13,8 +13,8 @@ import AnyCodable
 public struct CreateVaultMarketInstantExitResponse: Codable, JSONEncodable, Hashable {
 
     public enum Status: String, Codable, CaseIterable {
-        case filled = "filled"
         case missed = "missed"
+        case filled = "filled"
     }
     public var status: Status
     public var filledCents: Double?

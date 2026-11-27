@@ -17,22 +17,22 @@ public struct ListVaultMarketRecurringRunsItem: Codable, JSONEncodable, Hashable
     public var id: String
     public var userId: String
     public var status: String
-    public var reason: String?
     public var orderId: String?
+    public var reason: String?
     public var markCents: Double?
     public var limitCents: Double?
     public var filledCents: Double?
     public var scheduleId: String
     public var usedBackup: Bool
 
-    public init(dueAt: String, createdAt: String, id: String, userId: String, status: String, reason: String? = nil, orderId: String? = nil, markCents: Double? = nil, limitCents: Double? = nil, filledCents: Double? = nil, scheduleId: String, usedBackup: Bool) {
+    public init(dueAt: String, createdAt: String, id: String, userId: String, status: String, orderId: String? = nil, reason: String? = nil, markCents: Double? = nil, limitCents: Double? = nil, filledCents: Double? = nil, scheduleId: String, usedBackup: Bool) {
         self.dueAt = dueAt
         self.createdAt = createdAt
         self.id = id
         self.userId = userId
         self.status = status
-        self.reason = reason
         self.orderId = orderId
+        self.reason = reason
         self.markCents = markCents
         self.limitCents = limitCents
         self.filledCents = filledCents
@@ -46,8 +46,8 @@ public struct ListVaultMarketRecurringRunsItem: Codable, JSONEncodable, Hashable
         case id
         case userId
         case status
-        case reason
         case orderId
+        case reason
         case markCents
         case limitCents
         case filledCents
@@ -64,8 +64,8 @@ public struct ListVaultMarketRecurringRunsItem: Codable, JSONEncodable, Hashable
         try container.encode(id, forKey: .id)
         try container.encode(userId, forKey: .userId)
         try container.encode(status, forKey: .status)
-        try container.encodeIfPresent(reason, forKey: .reason)
         try container.encodeIfPresent(orderId, forKey: .orderId)
+        try container.encodeIfPresent(reason, forKey: .reason)
         try container.encodeIfPresent(markCents, forKey: .markCents)
         try container.encodeIfPresent(limitCents, forKey: .limitCents)
         try container.encodeIfPresent(filledCents, forKey: .filledCents)

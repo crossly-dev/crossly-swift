@@ -14,12 +14,12 @@ public struct UpdateVaultMarketSupplyDepositResponse: Codable, JSONEncodable, Ha
 
     public enum Status: String, Codable, CaseIterable {
         case stored = "stored"
-        case listed = "listed"
-        case inbound = "inbound"
         case cancelled = "cancelled"
+        case listed = "listed"
+        case shipped = "shipped"
+        case inbound = "inbound"
         case soldOnBook = "sold_on_book"
         case channelSold = "channel_sold"
-        case shipped = "shipped"
     }
     public var id: String
     public var autoListBps: Double?

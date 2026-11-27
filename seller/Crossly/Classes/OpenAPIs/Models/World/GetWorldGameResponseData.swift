@@ -30,7 +30,7 @@ public struct GetWorldGameResponseData: Codable, JSONEncodable, Hashable {
     public var version: String
     public var description: String
     public var mode: Mode
-    public var players: GetWorldGameResponseDataPlayers
+    public var players: MinMax
     public var places: [GetWorldGameResponseDataPlacesItem]
     public var rating: Rating
     public var scoring: GetWorldGameLeaderboardResponseDataScoring?
@@ -41,7 +41,7 @@ public struct GetWorldGameResponseData: Codable, JSONEncodable, Hashable {
     public var piece: GetWorldGameResponseDataPiece
     public var author: String?
 
-    public init(stars: AverageCount, myStars: Double? = nil, store: [GetWorldGameResponseDataStore], id: String, slug: String, name: String, version: String, description: String, mode: Mode, players: GetWorldGameResponseDataPlayers, places: [GetWorldGameResponseDataPlacesItem], rating: Rating, scoring: GetWorldGameLeaderboardResponseDataScoring? = nil, contests: GetWorldGameResponseDataContests? = nil, rewards: [GetWorldGameResponseDataRewards], thumbnail: String? = nil, fits: [String: AnyCodable]? = nil, piece: GetWorldGameResponseDataPiece, author: String? = nil) {
+    public init(stars: AverageCount, myStars: Double? = nil, store: [GetWorldGameResponseDataStore], id: String, slug: String, name: String, version: String, description: String, mode: Mode, players: MinMax, places: [GetWorldGameResponseDataPlacesItem], rating: Rating, scoring: GetWorldGameLeaderboardResponseDataScoring? = nil, contests: GetWorldGameResponseDataContests? = nil, rewards: [GetWorldGameResponseDataRewards], thumbnail: String? = nil, fits: [String: AnyCodable]? = nil, piece: GetWorldGameResponseDataPiece, author: String? = nil) {
         self.stars = stars
         self.myStars = myStars
         self.store = store

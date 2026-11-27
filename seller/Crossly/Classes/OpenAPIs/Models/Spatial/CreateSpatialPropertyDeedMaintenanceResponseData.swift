@@ -14,21 +14,30 @@ public struct CreateSpatialPropertyDeedMaintenanceResponseData: Codable, JSONEnc
 
     public enum Status: String, Codable, CaseIterable {
         case active = "active"
-        case foreclosed = "foreclosed"
         case grace = "grace"
         case delinquent = "delinquent"
+        case foreclosed = "foreclosed"
     }
-    public var paidThrough: String
-    public var status: Status
-    public var paidCents: Double
+    public var requiresAction: Bool?
+    public var paymentId: String?
+    public var clientSecret: String?
+    public var paidThrough: String?
+    public var status: Status?
+    public var paidCents: Double?
 
-    public init(paidThrough: String, status: Status, paidCents: Double) {
+    public init(requiresAction: Bool? = nil, paymentId: String? = nil, clientSecret: String? = nil, paidThrough: String? = nil, status: Status? = nil, paidCents: Double? = nil) {
+        self.requiresAction = requiresAction
+        self.paymentId = paymentId
+        self.clientSecret = clientSecret
         self.paidThrough = paidThrough
         self.status = status
         self.paidCents = paidCents
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case requiresAction
+        case paymentId
+        case clientSecret
         case paidThrough
         case status
         case paidCents
@@ -38,9 +47,12 @@ public struct CreateSpatialPropertyDeedMaintenanceResponseData: Codable, JSONEnc
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(paidThrough, forKey: .paidThrough)
-        try container.encode(status, forKey: .status)
-        try container.encode(paidCents, forKey: .paidCents)
+        try container.encodeIfPresent(requiresAction, forKey: .requiresAction)
+        try container.encodeIfPresent(paymentId, forKey: .paymentId)
+        try container.encodeIfPresent(clientSecret, forKey: .clientSecret)
+        try container.encodeIfPresent(paidThrough, forKey: .paidThrough)
+        try container.encodeIfPresent(status, forKey: .status)
+        try container.encodeIfPresent(paidCents, forKey: .paidCents)
     }
 }
 

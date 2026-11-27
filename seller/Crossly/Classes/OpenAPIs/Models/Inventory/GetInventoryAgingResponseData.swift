@@ -12,26 +12,56 @@ import AnyCodable
 
 public struct GetInventoryAgingResponseData: Codable, JSONEncodable, Hashable {
 
+    public enum SizeBy: String, Codable, CaseIterable {
+        case valueOption = "value"
+        case cost = "cost"
+        case units = "units"
+    }
     public var buckets: [GetInventoryAgingResponseDataBuckets]
-    public var worst: [GetInventoryAgingResponseDataWorst]
+    public var worst: [GetAnalyticInventoryResponseDataWorst]
+    /** Cost of stock 30+ days listed or unlisted (30-90 + 90+ + unlisted): the same number as attentionCostCents. Not \"older than three months\"; that is over90CostCents. */
     public var stuckCapitalCents: Double
+    public var attentionCostCents: Double
+    public var over90CostCents: Double
+    public var over90ListedValueCents: Double
     public var totalItems: Double
     public var totalUnits: Double
+    public var costKnownItems: Double
+    public var costUnknownItems: Double
+    public var listedValueCents: Double
+    public var marketValueCents: Double?
+    public var sizeBy: SizeBy
 
-    public init(buckets: [GetInventoryAgingResponseDataBuckets], worst: [GetInventoryAgingResponseDataWorst], stuckCapitalCents: Double, totalItems: Double, totalUnits: Double) {
+    public init(buckets: [GetInventoryAgingResponseDataBuckets], worst: [GetAnalyticInventoryResponseDataWorst], stuckCapitalCents: Double, attentionCostCents: Double, over90CostCents: Double, over90ListedValueCents: Double, totalItems: Double, totalUnits: Double, costKnownItems: Double, costUnknownItems: Double, listedValueCents: Double, marketValueCents: Double? = nil, sizeBy: SizeBy) {
         self.buckets = buckets
         self.worst = worst
         self.stuckCapitalCents = stuckCapitalCents
+        self.attentionCostCents = attentionCostCents
+        self.over90CostCents = over90CostCents
+        self.over90ListedValueCents = over90ListedValueCents
         self.totalItems = totalItems
         self.totalUnits = totalUnits
+        self.costKnownItems = costKnownItems
+        self.costUnknownItems = costUnknownItems
+        self.listedValueCents = listedValueCents
+        self.marketValueCents = marketValueCents
+        self.sizeBy = sizeBy
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case buckets
         case worst
         case stuckCapitalCents
+        case attentionCostCents
+        case over90CostCents
+        case over90ListedValueCents
         case totalItems
         case totalUnits
+        case costKnownItems
+        case costUnknownItems
+        case listedValueCents
+        case marketValueCents
+        case sizeBy
     }
 
     // Encodable protocol methods
@@ -41,8 +71,16 @@ public struct GetInventoryAgingResponseData: Codable, JSONEncodable, Hashable {
         try container.encode(buckets, forKey: .buckets)
         try container.encode(worst, forKey: .worst)
         try container.encode(stuckCapitalCents, forKey: .stuckCapitalCents)
+        try container.encode(attentionCostCents, forKey: .attentionCostCents)
+        try container.encode(over90CostCents, forKey: .over90CostCents)
+        try container.encode(over90ListedValueCents, forKey: .over90ListedValueCents)
         try container.encode(totalItems, forKey: .totalItems)
         try container.encode(totalUnits, forKey: .totalUnits)
+        try container.encode(costKnownItems, forKey: .costKnownItems)
+        try container.encode(costUnknownItems, forKey: .costUnknownItems)
+        try container.encode(listedValueCents, forKey: .listedValueCents)
+        try container.encodeIfPresent(marketValueCents, forKey: .marketValueCents)
+        try container.encode(sizeBy, forKey: .sizeBy)
     }
 }
 

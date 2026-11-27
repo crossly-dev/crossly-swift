@@ -17,21 +17,21 @@ public struct GetTaxonomyCategoryAspectResponseAspects: Codable, JSONEncodable, 
     public var dataType: String
     public var enumValues: [String]?
     public var _required: Bool
-    /** Cardinality — SINGLE_VALUE / MULTIPLE_VALUES. */
-    public var cardinality: String
     public var variesByAspect: Bool?
     /** Helpful for client validation — max length when supplied. */
     public var maxLength: Double?
+    /** Cardinality — SINGLE_VALUE / MULTIPLE_VALUES. */
+    public var cardinality: String
     public var selectionOnly: Bool
 
-    public init(name: String, dataType: String, enumValues: [String]? = nil, _required: Bool, cardinality: String, variesByAspect: Bool? = nil, maxLength: Double? = nil, selectionOnly: Bool) {
+    public init(name: String, dataType: String, enumValues: [String]? = nil, _required: Bool, variesByAspect: Bool? = nil, maxLength: Double? = nil, cardinality: String, selectionOnly: Bool) {
         self.name = name
         self.dataType = dataType
         self.enumValues = enumValues
         self._required = _required
-        self.cardinality = cardinality
         self.variesByAspect = variesByAspect
         self.maxLength = maxLength
+        self.cardinality = cardinality
         self.selectionOnly = selectionOnly
     }
 
@@ -40,9 +40,9 @@ public struct GetTaxonomyCategoryAspectResponseAspects: Codable, JSONEncodable, 
         case dataType
         case enumValues
         case _required = "required"
-        case cardinality
         case variesByAspect
         case maxLength
+        case cardinality
         case selectionOnly
     }
 
@@ -54,9 +54,9 @@ public struct GetTaxonomyCategoryAspectResponseAspects: Codable, JSONEncodable, 
         try container.encode(dataType, forKey: .dataType)
         try container.encodeIfPresent(enumValues, forKey: .enumValues)
         try container.encode(_required, forKey: ._required)
-        try container.encode(cardinality, forKey: .cardinality)
         try container.encodeIfPresent(variesByAspect, forKey: .variesByAspect)
         try container.encodeIfPresent(maxLength, forKey: .maxLength)
+        try container.encode(cardinality, forKey: .cardinality)
         try container.encode(selectionOnly, forKey: .selectionOnly)
     }
 }

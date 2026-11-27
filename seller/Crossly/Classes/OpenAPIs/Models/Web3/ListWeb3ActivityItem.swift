@@ -13,9 +13,9 @@ import AnyCodable
 public struct ListWeb3ActivityItem: Codable, JSONEncodable, Hashable {
 
     public enum Event: String, Codable, CaseIterable {
-        case listing = "listing"
-        case offer = "offer"
         case sale = "sale"
+        case offer = "offer"
+        case listing = "listing"
         case cancel = "cancel"
     }
     public var chain: String

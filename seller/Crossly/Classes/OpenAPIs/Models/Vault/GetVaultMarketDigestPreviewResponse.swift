@@ -17,13 +17,15 @@ public struct GetVaultMarketDigestPreviewResponse: Codable, JSONEncodable, Hasha
     public var value: GetVaultMarketDigestPreviewResponseValue
     public var offers: [GetVaultMarketDigestPreviewResponseOffers]
     public var firstMarks: [GetVaultMarketDigestPreviewResponseFirstMarks]
+    public var learn: GetVaultMarketDigestPreviewResponseLearn
 
-    public init(lines: [String], week: String, value: GetVaultMarketDigestPreviewResponseValue, offers: [GetVaultMarketDigestPreviewResponseOffers], firstMarks: [GetVaultMarketDigestPreviewResponseFirstMarks]) {
+    public init(lines: [String], week: String, value: GetVaultMarketDigestPreviewResponseValue, offers: [GetVaultMarketDigestPreviewResponseOffers], firstMarks: [GetVaultMarketDigestPreviewResponseFirstMarks], learn: GetVaultMarketDigestPreviewResponseLearn) {
         self.lines = lines
         self.week = week
         self.value = value
         self.offers = offers
         self.firstMarks = firstMarks
+        self.learn = learn
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -32,6 +34,7 @@ public struct GetVaultMarketDigestPreviewResponse: Codable, JSONEncodable, Hasha
         case value
         case offers
         case firstMarks
+        case learn
     }
 
     // Encodable protocol methods
@@ -43,6 +46,7 @@ public struct GetVaultMarketDigestPreviewResponse: Codable, JSONEncodable, Hasha
         try container.encode(value, forKey: .value)
         try container.encode(offers, forKey: .offers)
         try container.encode(firstMarks, forKey: .firstMarks)
+        try container.encode(learn, forKey: .learn)
     }
 }
 

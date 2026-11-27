@@ -21,18 +21,18 @@ public struct GetTaxonomyRequiredFieldResponseRequiredFields: Codable, JSONEncod
     public var enumValues: [String]?
     public var label: String
     public var key: String
-    public var _required: Bool
     public var hint: String?
+    public var _required: Bool
     public var master: Bool
     public var selectionOnly: Bool
 
-    public init(dataType: DataType, enumValues: [String]? = nil, label: String, key: String, _required: Bool, hint: String? = nil, master: Bool, selectionOnly: Bool) {
+    public init(dataType: DataType, enumValues: [String]? = nil, label: String, key: String, hint: String? = nil, _required: Bool, master: Bool, selectionOnly: Bool) {
         self.dataType = dataType
         self.enumValues = enumValues
         self.label = label
         self.key = key
-        self._required = _required
         self.hint = hint
+        self._required = _required
         self.master = master
         self.selectionOnly = selectionOnly
     }
@@ -42,8 +42,8 @@ public struct GetTaxonomyRequiredFieldResponseRequiredFields: Codable, JSONEncod
         case enumValues
         case label
         case key
-        case _required = "required"
         case hint
+        case _required = "required"
         case master
         case selectionOnly
     }
@@ -56,8 +56,8 @@ public struct GetTaxonomyRequiredFieldResponseRequiredFields: Codable, JSONEncod
         try container.encodeIfPresent(enumValues, forKey: .enumValues)
         try container.encode(label, forKey: .label)
         try container.encode(key, forKey: .key)
-        try container.encode(_required, forKey: ._required)
         try container.encodeIfPresent(hint, forKey: .hint)
+        try container.encode(_required, forKey: ._required)
         try container.encode(master, forKey: .master)
         try container.encode(selectionOnly, forKey: .selectionOnly)
     }

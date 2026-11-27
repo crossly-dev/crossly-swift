@@ -13,34 +13,34 @@ import AnyCodable
 public struct GetBuyerTogetherResponseData: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var name: String
-    public var endsAt: String
     public var code: String
+    public var name: String
+    public var isHost: Bool
+    public var endsAt: String
     public var members: [GetBuyerTogetherResponseDataMembers]
     public var items: [GetBuyerTogetherResponseDataItems]
     public var messages: [GetBuyerTogetherResponseDataMessages]
-    public var isHost: Bool
 
-    public init(id: String, name: String, endsAt: String, code: String, members: [GetBuyerTogetherResponseDataMembers], items: [GetBuyerTogetherResponseDataItems], messages: [GetBuyerTogetherResponseDataMessages], isHost: Bool) {
+    public init(id: String, code: String, name: String, isHost: Bool, endsAt: String, members: [GetBuyerTogetherResponseDataMembers], items: [GetBuyerTogetherResponseDataItems], messages: [GetBuyerTogetherResponseDataMessages]) {
         self.id = id
-        self.name = name
-        self.endsAt = endsAt
         self.code = code
+        self.name = name
+        self.isHost = isHost
+        self.endsAt = endsAt
         self.members = members
         self.items = items
         self.messages = messages
-        self.isHost = isHost
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case name
-        case endsAt
         case code
+        case name
+        case isHost
+        case endsAt
         case members
         case items
         case messages
-        case isHost
     }
 
     // Encodable protocol methods
@@ -48,13 +48,13 @@ public struct GetBuyerTogetherResponseData: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(name, forKey: .name)
-        try container.encode(endsAt, forKey: .endsAt)
         try container.encode(code, forKey: .code)
+        try container.encode(name, forKey: .name)
+        try container.encode(isHost, forKey: .isHost)
+        try container.encode(endsAt, forKey: .endsAt)
         try container.encode(members, forKey: .members)
         try container.encode(items, forKey: .items)
         try container.encode(messages, forKey: .messages)
-        try container.encode(isHost, forKey: .isHost)
     }
 }
 

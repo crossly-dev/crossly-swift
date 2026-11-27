@@ -16,16 +16,20 @@ public struct CreateOrderPullPlatformLabelResponse: Codable, JSONEncodable, Hash
         case verified = "verified"
         case provisional = "provisional"
     }
-    public var url: String
-    public var persisted: Bool
-    public var expiresInSeconds: Double
+    public var url: String?
+    public var persisted: Bool?
+    public var expiresInSeconds: Double?
     public var provenance: Provenance
+    public var shippingLabelUrl: String?
+    public var trackingNumber: String?
 
-    public init(url: String, persisted: Bool, expiresInSeconds: Double, provenance: Provenance) {
+    public init(url: String? = nil, persisted: Bool? = nil, expiresInSeconds: Double? = nil, provenance: Provenance, shippingLabelUrl: String? = nil, trackingNumber: String? = nil) {
         self.url = url
         self.persisted = persisted
         self.expiresInSeconds = expiresInSeconds
         self.provenance = provenance
+        self.shippingLabelUrl = shippingLabelUrl
+        self.trackingNumber = trackingNumber
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -33,16 +37,20 @@ public struct CreateOrderPullPlatformLabelResponse: Codable, JSONEncodable, Hash
         case persisted
         case expiresInSeconds
         case provenance
+        case shippingLabelUrl
+        case trackingNumber
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(url, forKey: .url)
-        try container.encode(persisted, forKey: .persisted)
-        try container.encode(expiresInSeconds, forKey: .expiresInSeconds)
+        try container.encodeIfPresent(url, forKey: .url)
+        try container.encodeIfPresent(persisted, forKey: .persisted)
+        try container.encodeIfPresent(expiresInSeconds, forKey: .expiresInSeconds)
         try container.encode(provenance, forKey: .provenance)
+        try container.encodeIfPresent(shippingLabelUrl, forKey: .shippingLabelUrl)
+        try container.encodeIfPresent(trackingNumber, forKey: .trackingNumber)
     }
 }
 

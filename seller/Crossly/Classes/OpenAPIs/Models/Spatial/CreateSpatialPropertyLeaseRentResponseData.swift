@@ -12,17 +12,26 @@ import AnyCodable
 
 public struct CreateSpatialPropertyLeaseRentResponseData: Codable, JSONEncodable, Hashable {
 
-    public var paidThrough: String
-    public var waived: Bool
-    public var paidCents: Double
+    public var requiresAction: Bool?
+    public var paymentId: String?
+    public var clientSecret: String?
+    public var paidThrough: String?
+    public var waived: Bool?
+    public var paidCents: Double?
 
-    public init(paidThrough: String, waived: Bool, paidCents: Double) {
+    public init(requiresAction: Bool? = nil, paymentId: String? = nil, clientSecret: String? = nil, paidThrough: String? = nil, waived: Bool? = nil, paidCents: Double? = nil) {
+        self.requiresAction = requiresAction
+        self.paymentId = paymentId
+        self.clientSecret = clientSecret
         self.paidThrough = paidThrough
         self.waived = waived
         self.paidCents = paidCents
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case requiresAction
+        case paymentId
+        case clientSecret
         case paidThrough
         case waived
         case paidCents
@@ -32,9 +41,12 @@ public struct CreateSpatialPropertyLeaseRentResponseData: Codable, JSONEncodable
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(paidThrough, forKey: .paidThrough)
-        try container.encode(waived, forKey: .waived)
-        try container.encode(paidCents, forKey: .paidCents)
+        try container.encodeIfPresent(requiresAction, forKey: .requiresAction)
+        try container.encodeIfPresent(paymentId, forKey: .paymentId)
+        try container.encodeIfPresent(clientSecret, forKey: .clientSecret)
+        try container.encodeIfPresent(paidThrough, forKey: .paidThrough)
+        try container.encodeIfPresent(waived, forKey: .waived)
+        try container.encodeIfPresent(paidCents, forKey: .paidCents)
     }
 }
 

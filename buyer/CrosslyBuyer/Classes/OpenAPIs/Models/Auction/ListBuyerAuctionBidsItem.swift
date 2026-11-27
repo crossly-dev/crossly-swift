@@ -12,20 +12,20 @@ import AnyCodable
 
 public struct ListBuyerAuctionBidsItem: Codable, JSONEncodable, Hashable {
 
-    public var amountCents: Double
     /** \"You\" for your own bids; otherwise anonymised, e.g. \"a***e (12)\". */
     public var bidder: String
+    public var amountCents: Double
     public var placedAt: String?
 
-    public init(amountCents: Double, bidder: String, placedAt: String? = nil) {
-        self.amountCents = amountCents
+    public init(bidder: String, amountCents: Double, placedAt: String? = nil) {
         self.bidder = bidder
+        self.amountCents = amountCents
         self.placedAt = placedAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case amountCents
         case bidder
+        case amountCents
         case placedAt
     }
 
@@ -33,8 +33,8 @@ public struct ListBuyerAuctionBidsItem: Codable, JSONEncodable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(amountCents, forKey: .amountCents)
         try container.encode(bidder, forKey: .bidder)
+        try container.encode(amountCents, forKey: .amountCents)
         try container.encodeIfPresent(placedAt, forKey: .placedAt)
     }
 }

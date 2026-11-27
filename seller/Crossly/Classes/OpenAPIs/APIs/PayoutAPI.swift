@@ -60,6 +60,100 @@ open class PayoutAPI {
     }
 
     /**
+     Continue with Stripe: a one-time Stripe-hosted link that collects what Stripe needs.
+     
+     - parameter createPayoutConnectOnboardRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createPayoutIdentityLink(createPayoutConnectOnboardRequest: CreatePayoutConnectOnboardRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreatePayoutIdentityLinkResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createPayoutIdentityLinkWithRequestBuilder(createPayoutConnectOnboardRequest: createPayoutConnectOnboardRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Continue with Stripe: a one-time Stripe-hosted link that collects what Stripe needs.
+     - POST /v1/payouts/identity/link
+     - Creates the payout account first when there is none (country: ISO alpha-2, default the ship-from country). type is account_onboarding (Stripe shows only what is outstanding) or account_update. The link expires in minutes; ask for a new one rather than storing it. Nothing changes until a person completes it.
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter createPayoutConnectOnboardRequest: (body)  
+     - returns: RequestBuilder<CreatePayoutIdentityLinkResponse> 
+     */
+    open class func createPayoutIdentityLinkWithRequestBuilder(createPayoutConnectOnboardRequest: CreatePayoutConnectOnboardRequest) -> RequestBuilder<CreatePayoutIdentityLinkResponse> {
+        let localVariablePath = "/v1/payouts/identity/link"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createPayoutConnectOnboardRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreatePayoutIdentityLinkResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Pay out now: instant (fee, minutes, to an eligible card/bank) or standard (free, manual schedule only).
+     
+     - parameter createPayoutPayoutRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createPayoutPayout(createPayoutPayoutRequest: CreatePayoutPayoutRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreatePayoutPayoutResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createPayoutPayoutWithRequestBuilder(createPayoutPayoutRequest: createPayoutPayoutRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Pay out now: instant (fee, minutes, to an eligible card/bank) or standard (free, manual schedule only).
+     - POST /v1/payout/payouts
+     - amountCents defaults to everything eligible. Pass idempotencyKey so a retry is the same payout. Returns { payout, feeCents }. 409 when the account cannot be paid or instant is unavailable.
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter createPayoutPayoutRequest: (body)  
+     - returns: RequestBuilder<CreatePayoutPayoutResponse> 
+     */
+    open class func createPayoutPayoutWithRequestBuilder(createPayoutPayoutRequest: CreatePayoutPayoutRequest) -> RequestBuilder<CreatePayoutPayoutResponse> {
+        let localVariablePath = "/v1/payout/payouts"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createPayoutPayoutRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreatePayoutPayoutResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Your Stripe payout account: status, country, agreement and payout currency.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -193,6 +287,109 @@ open class PayoutAPI {
     }
 
     /**
+     * enum for parameter fresh
+     */
+    public enum Fresh_getPayoutIdentity: String, CaseIterable {
+        case _0 = "0"
+        case _1 = "1"
+    }
+
+    /**
+     Stripe's verification of your payout account: status and what Stripe still needs, in plain words.
+     
+     - parameter fresh: (query)  (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getPayoutIdentity(fresh: Fresh_getPayoutIdentity? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetPayoutIdentityResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getPayoutIdentityWithRequestBuilder(fresh: fresh).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Stripe's verification of your payout account: status and what Stripe still needs, in plain words.
+     - GET /v1/payouts/identity
+     - status is not_started, pending (Stripe is checking), action_required (dueNow lists what to add), verified (payouts on) or restricted (disabledReasonText says why). dueNow / dueLater / inReview are Stripe's requirement keys as plain-words lines ({ keys, label }); errors carry Stripe's reason. Cached up to 60 s; fresh=1 re-reads Stripe. Payouts are gated on payoutsEnabled only.
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter fresh: (query)  (optional)
+     - returns: RequestBuilder<GetPayoutIdentityResponse> 
+     */
+    open class func getPayoutIdentityWithRequestBuilder(fresh: Fresh_getPayoutIdentity? = nil) -> RequestBuilder<GetPayoutIdentityResponse> {
+        let localVariablePath = "/v1/payouts/identity"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "fresh": fresh?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetPayoutIdentityResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your payout wallet: balances, schedule, next payout, instant-payout quote, methods, payouts, transactions.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getPayoutWallet(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetPayoutWalletResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getPayoutWalletWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your payout wallet: balances, schedule, next payout, instant-payout quote, methods, payouts, transactions.
+     - GET /v1/payout/wallet
+     - connected:false (with defaultCountry) before onboarding. balance has availableCents, pendingCents and instantAvailableCents in the account currency. instant.available says whether an instant payout can be made now, with feeCents/netCents for the full instant-available amount and reason when not.
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetPayoutWalletResponse> 
+     */
+    open class func getPayoutWalletWithRequestBuilder() -> RequestBuilder<GetPayoutWalletResponse> {
+        let localVariablePath = "/v1/payout/wallet"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetPayoutWalletResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Rank platforms by what they net at a given price. Defaults to connected ones.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -234,5 +431,51 @@ open class PayoutAPI {
         let localVariableRequestBuilder: RequestBuilder<ListPayoutCompareResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Change the automatic payout schedule.
+     
+     - parameter updatePayoutScheduleRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updatePayoutSchedule(updatePayoutScheduleRequest: UpdatePayoutScheduleRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: UpdatePayoutScheduleResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updatePayoutScheduleWithRequestBuilder(updatePayoutScheduleRequest: updatePayoutScheduleRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Change the automatic payout schedule.
+     - PUT /v1/payout/schedule
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter updatePayoutScheduleRequest: (body)  
+     - returns: RequestBuilder<UpdatePayoutScheduleResponse> 
+     */
+    open class func updatePayoutScheduleWithRequestBuilder(updatePayoutScheduleRequest: UpdatePayoutScheduleRequest) -> RequestBuilder<UpdatePayoutScheduleResponse> {
+        let localVariablePath = "/v1/payout/schedule"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: updatePayoutScheduleRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<UpdatePayoutScheduleResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
 }

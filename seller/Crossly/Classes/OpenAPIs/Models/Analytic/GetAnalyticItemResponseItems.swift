@@ -13,27 +13,37 @@ import AnyCodable
 public struct GetAnalyticItemResponseItems: Codable, JSONEncodable, Hashable {
 
     public var saleId: String
+    public var inventoryItemId: String?
+    public var listingId: String?
+    public var platformListingId: String?
+    public var imageUrl: String?
     public var platform: String
     public var platformOrderId: String?
     public var itemTitle: String?
     public var itemBrand: String?
     public var itemSku: String?
+    public var detailsPending: Bool
     public var salePrice: Double?
     public var platformFee: Double?
     public var shippingCost: Double?
     public var costOfGoods: Double?
     public var netProfit: Double?
-    public var marginPct: Double
+    public var marginPct: Double?
     public var daysToSell: Double?
     public var detectedAt: Date
 
-    public init(saleId: String, platform: String, platformOrderId: String? = nil, itemTitle: String? = nil, itemBrand: String? = nil, itemSku: String? = nil, salePrice: Double? = nil, platformFee: Double? = nil, shippingCost: Double? = nil, costOfGoods: Double? = nil, netProfit: Double? = nil, marginPct: Double, daysToSell: Double? = nil, detectedAt: Date) {
+    public init(saleId: String, inventoryItemId: String? = nil, listingId: String? = nil, platformListingId: String? = nil, imageUrl: String? = nil, platform: String, platformOrderId: String? = nil, itemTitle: String? = nil, itemBrand: String? = nil, itemSku: String? = nil, detailsPending: Bool, salePrice: Double? = nil, platformFee: Double? = nil, shippingCost: Double? = nil, costOfGoods: Double? = nil, netProfit: Double? = nil, marginPct: Double? = nil, daysToSell: Double? = nil, detectedAt: Date) {
         self.saleId = saleId
+        self.inventoryItemId = inventoryItemId
+        self.listingId = listingId
+        self.platformListingId = platformListingId
+        self.imageUrl = imageUrl
         self.platform = platform
         self.platformOrderId = platformOrderId
         self.itemTitle = itemTitle
         self.itemBrand = itemBrand
         self.itemSku = itemSku
+        self.detailsPending = detailsPending
         self.salePrice = salePrice
         self.platformFee = platformFee
         self.shippingCost = shippingCost
@@ -46,11 +56,16 @@ public struct GetAnalyticItemResponseItems: Codable, JSONEncodable, Hashable {
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case saleId
+        case inventoryItemId
+        case listingId
+        case platformListingId
+        case imageUrl
         case platform
         case platformOrderId
         case itemTitle
         case itemBrand
         case itemSku
+        case detailsPending
         case salePrice
         case platformFee
         case shippingCost
@@ -66,17 +81,22 @@ public struct GetAnalyticItemResponseItems: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(saleId, forKey: .saleId)
+        try container.encodeIfPresent(inventoryItemId, forKey: .inventoryItemId)
+        try container.encodeIfPresent(listingId, forKey: .listingId)
+        try container.encodeIfPresent(platformListingId, forKey: .platformListingId)
+        try container.encodeIfPresent(imageUrl, forKey: .imageUrl)
         try container.encode(platform, forKey: .platform)
         try container.encodeIfPresent(platformOrderId, forKey: .platformOrderId)
         try container.encodeIfPresent(itemTitle, forKey: .itemTitle)
         try container.encodeIfPresent(itemBrand, forKey: .itemBrand)
         try container.encodeIfPresent(itemSku, forKey: .itemSku)
+        try container.encode(detailsPending, forKey: .detailsPending)
         try container.encodeIfPresent(salePrice, forKey: .salePrice)
         try container.encodeIfPresent(platformFee, forKey: .platformFee)
         try container.encodeIfPresent(shippingCost, forKey: .shippingCost)
         try container.encodeIfPresent(costOfGoods, forKey: .costOfGoods)
         try container.encodeIfPresent(netProfit, forKey: .netProfit)
-        try container.encode(marginPct, forKey: .marginPct)
+        try container.encodeIfPresent(marginPct, forKey: .marginPct)
         try container.encodeIfPresent(daysToSell, forKey: .daysToSell)
         try container.encode(detectedAt, forKey: .detectedAt)
     }

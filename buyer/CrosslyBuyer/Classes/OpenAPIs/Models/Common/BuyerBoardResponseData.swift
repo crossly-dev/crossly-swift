@@ -13,40 +13,40 @@ import AnyCodable
 public struct BuyerBoardResponseData: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var updatedAt: String
-    public var isPublic: Bool
-    public var description: String?
     public var title: String
-    public var items: [BuyerBoardResponseDataItems]
+    public var description: String?
+    public var isPublic: Bool
     public var shareToken: String?
     public var coverUrl: String?
-    public var mine: Bool
     public var ownerName: String
+    public var mine: Bool
+    public var items: [BuyerBoardResponseDataItems]
+    public var updatedAt: String
 
-    public init(id: String, updatedAt: String, isPublic: Bool, description: String? = nil, title: String, items: [BuyerBoardResponseDataItems], shareToken: String? = nil, coverUrl: String? = nil, mine: Bool, ownerName: String) {
+    public init(id: String, title: String, description: String? = nil, isPublic: Bool, shareToken: String? = nil, coverUrl: String? = nil, ownerName: String, mine: Bool, items: [BuyerBoardResponseDataItems], updatedAt: String) {
         self.id = id
-        self.updatedAt = updatedAt
-        self.isPublic = isPublic
-        self.description = description
         self.title = title
-        self.items = items
+        self.description = description
+        self.isPublic = isPublic
         self.shareToken = shareToken
         self.coverUrl = coverUrl
-        self.mine = mine
         self.ownerName = ownerName
+        self.mine = mine
+        self.items = items
+        self.updatedAt = updatedAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case updatedAt
-        case isPublic
-        case description
         case title
-        case items
+        case description
+        case isPublic
         case shareToken
         case coverUrl
-        case mine
         case ownerName
+        case mine
+        case items
+        case updatedAt
     }
 
     // Encodable protocol methods
@@ -54,15 +54,15 @@ public struct BuyerBoardResponseData: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(updatedAt, forKey: .updatedAt)
-        try container.encode(isPublic, forKey: .isPublic)
-        try container.encodeIfPresent(description, forKey: .description)
         try container.encode(title, forKey: .title)
-        try container.encode(items, forKey: .items)
+        try container.encodeIfPresent(description, forKey: .description)
+        try container.encode(isPublic, forKey: .isPublic)
         try container.encodeIfPresent(shareToken, forKey: .shareToken)
         try container.encodeIfPresent(coverUrl, forKey: .coverUrl)
-        try container.encode(mine, forKey: .mine)
         try container.encode(ownerName, forKey: .ownerName)
+        try container.encode(mine, forKey: .mine)
+        try container.encode(items, forKey: .items)
+        try container.encode(updatedAt, forKey: .updatedAt)
     }
 }
 

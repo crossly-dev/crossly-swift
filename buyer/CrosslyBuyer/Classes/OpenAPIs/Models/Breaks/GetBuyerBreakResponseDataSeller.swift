@@ -12,25 +12,25 @@ import AnyCodable
 
 public struct GetBuyerBreakResponseDataSeller: Codable, JSONEncodable, Hashable {
 
-    public var displayName: String?
     public var username: String?
+    public var displayName: String?
 
-    public init(displayName: String? = nil, username: String? = nil) {
-        self.displayName = displayName
+    public init(username: String? = nil, displayName: String? = nil) {
         self.username = username
+        self.displayName = displayName
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case displayName
         case username
+        case displayName
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(displayName, forKey: .displayName)
         try container.encodeIfPresent(username, forKey: .username)
+        try container.encodeIfPresent(displayName, forKey: .displayName)
     }
 }
 

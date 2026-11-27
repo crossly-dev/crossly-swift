@@ -14,30 +14,30 @@ public struct ListBuyerSubscriptionsItem: Codable, JSONEncodable, Hashable {
 
     public var id: String
     public var status: String
-    public var title: String?
-    public var slug: String?
-    public var nextRunAt: String
     public var intervalDays: Double
     public var discountBps: Double
+    public var nextRunAt: String
+    public var slug: String?
+    public var title: String?
 
-    public init(id: String, status: String, title: String? = nil, slug: String? = nil, nextRunAt: String, intervalDays: Double, discountBps: Double) {
+    public init(id: String, status: String, intervalDays: Double, discountBps: Double, nextRunAt: String, slug: String? = nil, title: String? = nil) {
         self.id = id
         self.status = status
-        self.title = title
-        self.slug = slug
-        self.nextRunAt = nextRunAt
         self.intervalDays = intervalDays
         self.discountBps = discountBps
+        self.nextRunAt = nextRunAt
+        self.slug = slug
+        self.title = title
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
         case status
-        case title
-        case slug
-        case nextRunAt
         case intervalDays
         case discountBps
+        case nextRunAt
+        case slug
+        case title
     }
 
     // Encodable protocol methods
@@ -46,11 +46,11 @@ public struct ListBuyerSubscriptionsItem: Codable, JSONEncodable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
         try container.encode(status, forKey: .status)
-        try container.encodeIfPresent(title, forKey: .title)
-        try container.encodeIfPresent(slug, forKey: .slug)
-        try container.encode(nextRunAt, forKey: .nextRunAt)
         try container.encode(intervalDays, forKey: .intervalDays)
         try container.encode(discountBps, forKey: .discountBps)
+        try container.encode(nextRunAt, forKey: .nextRunAt)
+        try container.encodeIfPresent(slug, forKey: .slug)
+        try container.encodeIfPresent(title, forKey: .title)
     }
 }
 

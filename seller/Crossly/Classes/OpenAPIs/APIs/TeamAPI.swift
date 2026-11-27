@@ -13,7 +13,7 @@ import AnyCodable
 open class TeamAPI {
 
     /**
-     Accept a pending team invitation by raw token.
+     Accept a team invitation by the raw token from its link.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
@@ -31,7 +31,7 @@ open class TeamAPI {
     }
 
     /**
-     Accept a pending team invitation by raw token.
+     Accept a team invitation by the raw token from its link.
      - POST /v1/team/accept
      - BASIC:
        - type: http
@@ -57,7 +57,7 @@ open class TeamAPI {
     }
 
     /**
-     Mint a team invitation; returns the one-time accept URL.
+     Issue a team invitation; returns the one-time accept URL (nothing is emailed).
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
@@ -75,7 +75,7 @@ open class TeamAPI {
     }
 
     /**
-     Mint a team invitation; returns the one-time accept URL.
+     Issue a team invitation; returns the one-time accept URL (nothing is emailed).
      - POST /v1/team/invite
      - BASIC:
        - type: http

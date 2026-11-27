@@ -13,34 +13,34 @@ import AnyCodable
 public struct GetBuyerCaseResponseDataReturnShipment: Codable, JSONEncodable, Hashable {
 
     public var trackingCode: String
-    public var updatedAt: String?
-    public var status: String?
     public var carrier: String?
-    public var deliveredAt: String?
-    public var labelUrl: String?
     public var trackingUrl: String?
+    public var labelUrl: String?
+    public var status: String?
     public var statusDetail: String?
+    public var updatedAt: String?
+    public var deliveredAt: String?
 
-    public init(trackingCode: String, updatedAt: String? = nil, status: String? = nil, carrier: String? = nil, deliveredAt: String? = nil, labelUrl: String? = nil, trackingUrl: String? = nil, statusDetail: String? = nil) {
+    public init(trackingCode: String, carrier: String? = nil, trackingUrl: String? = nil, labelUrl: String? = nil, status: String? = nil, statusDetail: String? = nil, updatedAt: String? = nil, deliveredAt: String? = nil) {
         self.trackingCode = trackingCode
-        self.updatedAt = updatedAt
-        self.status = status
         self.carrier = carrier
-        self.deliveredAt = deliveredAt
-        self.labelUrl = labelUrl
         self.trackingUrl = trackingUrl
+        self.labelUrl = labelUrl
+        self.status = status
         self.statusDetail = statusDetail
+        self.updatedAt = updatedAt
+        self.deliveredAt = deliveredAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case trackingCode
-        case updatedAt
-        case status
         case carrier
-        case deliveredAt
-        case labelUrl
         case trackingUrl
+        case labelUrl
+        case status
         case statusDetail
+        case updatedAt
+        case deliveredAt
     }
 
     // Encodable protocol methods
@@ -48,13 +48,13 @@ public struct GetBuyerCaseResponseDataReturnShipment: Codable, JSONEncodable, Ha
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(trackingCode, forKey: .trackingCode)
-        try container.encodeIfPresent(updatedAt, forKey: .updatedAt)
-        try container.encodeIfPresent(status, forKey: .status)
         try container.encodeIfPresent(carrier, forKey: .carrier)
-        try container.encodeIfPresent(deliveredAt, forKey: .deliveredAt)
-        try container.encodeIfPresent(labelUrl, forKey: .labelUrl)
         try container.encodeIfPresent(trackingUrl, forKey: .trackingUrl)
+        try container.encodeIfPresent(labelUrl, forKey: .labelUrl)
+        try container.encodeIfPresent(status, forKey: .status)
         try container.encodeIfPresent(statusDetail, forKey: .statusDetail)
+        try container.encodeIfPresent(updatedAt, forKey: .updatedAt)
+        try container.encodeIfPresent(deliveredAt, forKey: .deliveredAt)
     }
 }
 

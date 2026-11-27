@@ -28,9 +28,9 @@ public struct GetTaxonomyRequiredFieldResponse: Codable, JSONEncodable, Hashable
     }
     public var platform: Platform
     public var requiredFields: [GetTaxonomyRequiredFieldResponseRequiredFields]
-    public var inlineAspects: [GetTaxonomyCategoryAspectResponseAspects]
+    public var inlineAspects: [GetTaxonomyRequiredFieldResponseInlineAspects]
 
-    public init(platform: Platform, requiredFields: [GetTaxonomyRequiredFieldResponseRequiredFields], inlineAspects: [GetTaxonomyCategoryAspectResponseAspects]) {
+    public init(platform: Platform, requiredFields: [GetTaxonomyRequiredFieldResponseRequiredFields], inlineAspects: [GetTaxonomyRequiredFieldResponseInlineAspects]) {
         self.platform = platform
         self.requiredFields = requiredFields
         self.inlineAspects = inlineAspects

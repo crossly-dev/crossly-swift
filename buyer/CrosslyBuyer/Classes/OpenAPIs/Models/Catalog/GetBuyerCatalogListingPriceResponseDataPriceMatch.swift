@@ -12,25 +12,29 @@ import AnyCodable
 
 public struct GetBuyerCatalogListingPriceResponseDataPriceMatch: Codable, JSONEncodable, Hashable {
 
-    public var platform: String
     public var listPriceCents: Double
+    public var platform: String
+    public var platformName: String?
 
-    public init(platform: String, listPriceCents: Double) {
-        self.platform = platform
+    public init(listPriceCents: Double, platform: String, platformName: String? = nil) {
         self.listPriceCents = listPriceCents
+        self.platform = platform
+        self.platformName = platformName
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case platform
         case listPriceCents
+        case platform
+        case platformName
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(platform, forKey: .platform)
         try container.encode(listPriceCents, forKey: .listPriceCents)
+        try container.encode(platform, forKey: .platform)
+        try container.encodeIfPresent(platformName, forKey: .platformName)
     }
 }
 

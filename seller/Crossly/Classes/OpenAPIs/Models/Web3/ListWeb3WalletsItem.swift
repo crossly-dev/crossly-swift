@@ -13,8 +13,8 @@ import AnyCodable
 public struct ListWeb3WalletsItem: Codable, JSONEncodable, Hashable {
 
     public enum Family: String, Codable, CaseIterable {
-        case evm = "evm"
         case solana = "solana"
+        case evm = "evm"
     }
     public var id: String
     public var family: Family
@@ -22,15 +22,18 @@ public struct ListWeb3WalletsItem: Codable, JSONEncodable, Hashable {
     public var label: String?
     public var verifiedAt: Date?
     public var lastSyncedAt: Date?
+    /** A sync adds new NFTs to inventory (migration 0740); off, it only refreshes the ones already there. */
+    public var autoImport: Bool
     public var createdAt: Date
 
-    public init(id: String, family: Family, address: String, label: String? = nil, verifiedAt: Date? = nil, lastSyncedAt: Date? = nil, createdAt: Date) {
+    public init(id: String, family: Family, address: String, label: String? = nil, verifiedAt: Date? = nil, lastSyncedAt: Date? = nil, autoImport: Bool, createdAt: Date) {
         self.id = id
         self.family = family
         self.address = address
         self.label = label
         self.verifiedAt = verifiedAt
         self.lastSyncedAt = lastSyncedAt
+        self.autoImport = autoImport
         self.createdAt = createdAt
     }
 
@@ -41,6 +44,7 @@ public struct ListWeb3WalletsItem: Codable, JSONEncodable, Hashable {
         case label
         case verifiedAt
         case lastSyncedAt
+        case autoImport
         case createdAt
     }
 
@@ -54,6 +58,7 @@ public struct ListWeb3WalletsItem: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(label, forKey: .label)
         try container.encodeIfPresent(verifiedAt, forKey: .verifiedAt)
         try container.encodeIfPresent(lastSyncedAt, forKey: .lastSyncedAt)
+        try container.encode(autoImport, forKey: .autoImport)
         try container.encode(createdAt, forKey: .createdAt)
     }
 }

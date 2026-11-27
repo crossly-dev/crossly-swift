@@ -14,44 +14,44 @@ public struct CreateWorldSpaceEventResponseData: Codable, JSONEncodable, Hashabl
 
     public var id: String
     public var createdAt: Date
-    public var cancelledAt: Date?
     public var title: String
     public var endsAt: Date
+    public var cancelledAt: Date?
     public var kind: String
     public var startsAt: Date
-    public var remindedAt: Date?
     public var createdBy: String?
     public var about: String?
     public var spaceId: String
+    public var remindedAt: Date?
     public var clubOnly: Bool
 
-    public init(id: String, createdAt: Date, cancelledAt: Date? = nil, title: String, endsAt: Date, kind: String, startsAt: Date, remindedAt: Date? = nil, createdBy: String? = nil, about: String? = nil, spaceId: String, clubOnly: Bool) {
+    public init(id: String, createdAt: Date, title: String, endsAt: Date, cancelledAt: Date? = nil, kind: String, startsAt: Date, createdBy: String? = nil, about: String? = nil, spaceId: String, remindedAt: Date? = nil, clubOnly: Bool) {
         self.id = id
         self.createdAt = createdAt
-        self.cancelledAt = cancelledAt
         self.title = title
         self.endsAt = endsAt
+        self.cancelledAt = cancelledAt
         self.kind = kind
         self.startsAt = startsAt
-        self.remindedAt = remindedAt
         self.createdBy = createdBy
         self.about = about
         self.spaceId = spaceId
+        self.remindedAt = remindedAt
         self.clubOnly = clubOnly
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
         case createdAt
-        case cancelledAt
         case title
         case endsAt
+        case cancelledAt
         case kind
         case startsAt
-        case remindedAt
         case createdBy
         case about
         case spaceId
+        case remindedAt
         case clubOnly
     }
 
@@ -61,15 +61,15 @@ public struct CreateWorldSpaceEventResponseData: Codable, JSONEncodable, Hashabl
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
         try container.encode(createdAt, forKey: .createdAt)
-        try container.encodeIfPresent(cancelledAt, forKey: .cancelledAt)
         try container.encode(title, forKey: .title)
         try container.encode(endsAt, forKey: .endsAt)
+        try container.encodeIfPresent(cancelledAt, forKey: .cancelledAt)
         try container.encode(kind, forKey: .kind)
         try container.encode(startsAt, forKey: .startsAt)
-        try container.encodeIfPresent(remindedAt, forKey: .remindedAt)
         try container.encodeIfPresent(createdBy, forKey: .createdBy)
         try container.encodeIfPresent(about, forKey: .about)
         try container.encode(spaceId, forKey: .spaceId)
+        try container.encodeIfPresent(remindedAt, forKey: .remindedAt)
         try container.encode(clubOnly, forKey: .clubOnly)
     }
 }

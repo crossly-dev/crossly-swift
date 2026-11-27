@@ -12,26 +12,26 @@ import AnyCodable
 
 public struct CreateBuyerCartOptimizerResponseDataLinesPick: Codable, JSONEncodable, Hashable {
 
+    public var slug: String
     public var title: String
     public var sellerUserId: String
-    public var slug: String
     public var sellerName: String?
     public var unitCents: Double
     public var shipCents: Double
 
-    public init(title: String, sellerUserId: String, slug: String, sellerName: String? = nil, unitCents: Double, shipCents: Double) {
+    public init(slug: String, title: String, sellerUserId: String, sellerName: String? = nil, unitCents: Double, shipCents: Double) {
+        self.slug = slug
         self.title = title
         self.sellerUserId = sellerUserId
-        self.slug = slug
         self.sellerName = sellerName
         self.unitCents = unitCents
         self.shipCents = shipCents
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case slug
         case title
         case sellerUserId
-        case slug
         case sellerName
         case unitCents
         case shipCents
@@ -41,9 +41,9 @@ public struct CreateBuyerCartOptimizerResponseDataLinesPick: Codable, JSONEncoda
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(slug, forKey: .slug)
         try container.encode(title, forKey: .title)
         try container.encode(sellerUserId, forKey: .sellerUserId)
-        try container.encode(slug, forKey: .slug)
         try container.encodeIfPresent(sellerName, forKey: .sellerName)
         try container.encode(unitCents, forKey: .unitCents)
         try container.encode(shipCents, forKey: .shipCents)

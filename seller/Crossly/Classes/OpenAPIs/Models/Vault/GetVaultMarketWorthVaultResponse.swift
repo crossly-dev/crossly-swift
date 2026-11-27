@@ -22,10 +22,11 @@ public struct GetVaultMarketWorthVaultResponse: Codable, JSONEncodable, Hashable
     public var marks: GetVaultMarketPortfolioHistoryResponseNowMarks
     public var costCents: Double
     public var pnlCents: Double
+    public var today: GetVaultMarketWorthVaultResponseToday
     public var sellNow: GetVaultMarketWorthVaultResponseSellNow
     public var note: String
 
-    public init(asOf: String, valueCents: Double, vaultCents: Double, onLoanCents: Double, positionsCents: Double, units: Double, unitsOnLoan: Double, marks: GetVaultMarketPortfolioHistoryResponseNowMarks, costCents: Double, pnlCents: Double, sellNow: GetVaultMarketWorthVaultResponseSellNow, note: String) {
+    public init(asOf: String, valueCents: Double, vaultCents: Double, onLoanCents: Double, positionsCents: Double, units: Double, unitsOnLoan: Double, marks: GetVaultMarketPortfolioHistoryResponseNowMarks, costCents: Double, pnlCents: Double, today: GetVaultMarketWorthVaultResponseToday, sellNow: GetVaultMarketWorthVaultResponseSellNow, note: String) {
         self.asOf = asOf
         self.valueCents = valueCents
         self.vaultCents = vaultCents
@@ -36,6 +37,7 @@ public struct GetVaultMarketWorthVaultResponse: Codable, JSONEncodable, Hashable
         self.marks = marks
         self.costCents = costCents
         self.pnlCents = pnlCents
+        self.today = today
         self.sellNow = sellNow
         self.note = note
     }
@@ -51,6 +53,7 @@ public struct GetVaultMarketWorthVaultResponse: Codable, JSONEncodable, Hashable
         case marks
         case costCents
         case pnlCents
+        case today
         case sellNow
         case note
     }
@@ -69,6 +72,7 @@ public struct GetVaultMarketWorthVaultResponse: Codable, JSONEncodable, Hashable
         try container.encode(marks, forKey: .marks)
         try container.encode(costCents, forKey: .costCents)
         try container.encode(pnlCents, forKey: .pnlCents)
+        try container.encode(today, forKey: .today)
         try container.encode(sellNow, forKey: .sellNow)
         try container.encode(note, forKey: .note)
     }

@@ -13,30 +13,30 @@ import AnyCodable
 public struct ListBuyerPacksItem: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var status: String
-    public var description: String?
-    public var title: String
     public var slug: String
-    public var priceCents: Double
+    public var title: String
+    public var description: String?
     public var imageUrl: String?
-    public var tiers: [ListBuyerPacksItemTiers]
+    public var priceCents: Double
+    public var status: String
     public var buybackBps: Double
     public var buybackDays: Double
+    public var tiers: [ListBuyerPacksItemTiers]
     public var expectedValueCents: Double
     public var openable: Bool
     public var chase: [ListBuyerPacksItemChase]
 
-    public init(id: String, status: String, description: String? = nil, title: String, slug: String, priceCents: Double, imageUrl: String? = nil, tiers: [ListBuyerPacksItemTiers], buybackBps: Double, buybackDays: Double, expectedValueCents: Double, openable: Bool, chase: [ListBuyerPacksItemChase]) {
+    public init(id: String, slug: String, title: String, description: String? = nil, imageUrl: String? = nil, priceCents: Double, status: String, buybackBps: Double, buybackDays: Double, tiers: [ListBuyerPacksItemTiers], expectedValueCents: Double, openable: Bool, chase: [ListBuyerPacksItemChase]) {
         self.id = id
-        self.status = status
-        self.description = description
-        self.title = title
         self.slug = slug
-        self.priceCents = priceCents
+        self.title = title
+        self.description = description
         self.imageUrl = imageUrl
-        self.tiers = tiers
+        self.priceCents = priceCents
+        self.status = status
         self.buybackBps = buybackBps
         self.buybackDays = buybackDays
+        self.tiers = tiers
         self.expectedValueCents = expectedValueCents
         self.openable = openable
         self.chase = chase
@@ -44,15 +44,15 @@ public struct ListBuyerPacksItem: Codable, JSONEncodable, Hashable {
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case status
-        case description
-        case title
         case slug
-        case priceCents
+        case title
+        case description
         case imageUrl
-        case tiers
+        case priceCents
+        case status
         case buybackBps
         case buybackDays
+        case tiers
         case expectedValueCents
         case openable
         case chase
@@ -63,15 +63,15 @@ public struct ListBuyerPacksItem: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(status, forKey: .status)
-        try container.encodeIfPresent(description, forKey: .description)
-        try container.encode(title, forKey: .title)
         try container.encode(slug, forKey: .slug)
-        try container.encode(priceCents, forKey: .priceCents)
+        try container.encode(title, forKey: .title)
+        try container.encodeIfPresent(description, forKey: .description)
         try container.encodeIfPresent(imageUrl, forKey: .imageUrl)
-        try container.encode(tiers, forKey: .tiers)
+        try container.encode(priceCents, forKey: .priceCents)
+        try container.encode(status, forKey: .status)
         try container.encode(buybackBps, forKey: .buybackBps)
         try container.encode(buybackDays, forKey: .buybackDays)
+        try container.encode(tiers, forKey: .tiers)
         try container.encode(expectedValueCents, forKey: .expectedValueCents)
         try container.encode(openable, forKey: .openable)
         try container.encode(chase, forKey: .chase)

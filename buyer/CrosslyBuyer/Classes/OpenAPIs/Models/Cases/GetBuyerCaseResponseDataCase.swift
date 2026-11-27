@@ -13,13 +13,12 @@ import AnyCodable
 public struct GetBuyerCaseResponseDataCase: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var createdAt: String
-    public var updatedAt: String
+    public var purchaseId: String
+    public var sellerUserId: String
     public var reason: String
     public var state: String
-    public var sellerUserId: String
-    public var purchaseId: String
-    public var resolvedAt: String?
+    public var createdAt: String
+    public var updatedAt: String
     public var buyerNote: String?
     public var photoUrls: [String]?
     public var awaitingParty: String?
@@ -27,16 +26,16 @@ public struct GetBuyerCaseResponseDataCase: Codable, JSONEncodable, Hashable {
     public var offeredRefundCents: Double?
     public var resolvedRefundCents: Double?
     public var resolvedDecision: String?
+    public var resolvedAt: String?
 
-    public init(id: String, createdAt: String, updatedAt: String, reason: String, state: String, sellerUserId: String, purchaseId: String, resolvedAt: String? = nil, buyerNote: String? = nil, photoUrls: [String]? = nil, awaitingParty: String? = nil, escalateAfter: String? = nil, offeredRefundCents: Double? = nil, resolvedRefundCents: Double? = nil, resolvedDecision: String? = nil) {
+    public init(id: String, purchaseId: String, sellerUserId: String, reason: String, state: String, createdAt: String, updatedAt: String, buyerNote: String? = nil, photoUrls: [String]? = nil, awaitingParty: String? = nil, escalateAfter: String? = nil, offeredRefundCents: Double? = nil, resolvedRefundCents: Double? = nil, resolvedDecision: String? = nil, resolvedAt: String? = nil) {
         self.id = id
-        self.createdAt = createdAt
-        self.updatedAt = updatedAt
+        self.purchaseId = purchaseId
+        self.sellerUserId = sellerUserId
         self.reason = reason
         self.state = state
-        self.sellerUserId = sellerUserId
-        self.purchaseId = purchaseId
-        self.resolvedAt = resolvedAt
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
         self.buyerNote = buyerNote
         self.photoUrls = photoUrls
         self.awaitingParty = awaitingParty
@@ -44,17 +43,17 @@ public struct GetBuyerCaseResponseDataCase: Codable, JSONEncodable, Hashable {
         self.offeredRefundCents = offeredRefundCents
         self.resolvedRefundCents = resolvedRefundCents
         self.resolvedDecision = resolvedDecision
+        self.resolvedAt = resolvedAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case createdAt
-        case updatedAt
+        case purchaseId
+        case sellerUserId
         case reason
         case state
-        case sellerUserId
-        case purchaseId
-        case resolvedAt
+        case createdAt
+        case updatedAt
         case buyerNote
         case photoUrls
         case awaitingParty
@@ -62,6 +61,7 @@ public struct GetBuyerCaseResponseDataCase: Codable, JSONEncodable, Hashable {
         case offeredRefundCents
         case resolvedRefundCents
         case resolvedDecision
+        case resolvedAt
     }
 
     // Encodable protocol methods
@@ -69,13 +69,12 @@ public struct GetBuyerCaseResponseDataCase: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(createdAt, forKey: .createdAt)
-        try container.encode(updatedAt, forKey: .updatedAt)
+        try container.encode(purchaseId, forKey: .purchaseId)
+        try container.encode(sellerUserId, forKey: .sellerUserId)
         try container.encode(reason, forKey: .reason)
         try container.encode(state, forKey: .state)
-        try container.encode(sellerUserId, forKey: .sellerUserId)
-        try container.encode(purchaseId, forKey: .purchaseId)
-        try container.encodeIfPresent(resolvedAt, forKey: .resolvedAt)
+        try container.encode(createdAt, forKey: .createdAt)
+        try container.encode(updatedAt, forKey: .updatedAt)
         try container.encodeIfPresent(buyerNote, forKey: .buyerNote)
         try container.encodeIfPresent(photoUrls, forKey: .photoUrls)
         try container.encodeIfPresent(awaitingParty, forKey: .awaitingParty)
@@ -83,6 +82,7 @@ public struct GetBuyerCaseResponseDataCase: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(offeredRefundCents, forKey: .offeredRefundCents)
         try container.encodeIfPresent(resolvedRefundCents, forKey: .resolvedRefundCents)
         try container.encodeIfPresent(resolvedDecision, forKey: .resolvedDecision)
+        try container.encodeIfPresent(resolvedAt, forKey: .resolvedAt)
     }
 }
 

@@ -18,13 +18,15 @@ public struct GetMainStageResponseStream: Codable, JSONEncodable, Hashable {
     public var playbackUrl: String?
     public var coverImageUrl: String?
     public var host: String?
+    public var lot: GetMainStageResponseStreamLot?
 
-    public init(id: String, title: String, playbackUrl: String? = nil, coverImageUrl: String? = nil, host: String? = nil) {
+    public init(id: String, title: String, playbackUrl: String? = nil, coverImageUrl: String? = nil, host: String? = nil, lot: GetMainStageResponseStreamLot? = nil) {
         self.id = id
         self.title = title
         self.playbackUrl = playbackUrl
         self.coverImageUrl = coverImageUrl
         self.host = host
+        self.lot = lot
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -33,6 +35,7 @@ public struct GetMainStageResponseStream: Codable, JSONEncodable, Hashable {
         case playbackUrl
         case coverImageUrl
         case host
+        case lot
     }
 
     // Encodable protocol methods
@@ -44,6 +47,7 @@ public struct GetMainStageResponseStream: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(playbackUrl, forKey: .playbackUrl)
         try container.encodeIfPresent(coverImageUrl, forKey: .coverImageUrl)
         try container.encodeIfPresent(host, forKey: .host)
+        try container.encodeIfPresent(lot, forKey: .lot)
     }
 }
 

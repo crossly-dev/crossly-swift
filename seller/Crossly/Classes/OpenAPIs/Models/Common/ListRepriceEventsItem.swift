@@ -15,56 +15,56 @@ public struct ListRepriceEventsItem: Codable, JSONEncodable, Hashable {
     public var id: String
     public var createdAt: Date
     public var userId: String
-    public var reason: String
     public var platform: String?
     public var listingId: String?
     public var platformListingId: String?
-    public var decidedAt: Date?
+    public var reason: String
     public var ruleId: String?
-    public var floorCents: Double?
     public var strategy: String
     public var oldPriceCents: Double?
     public var newPriceCents: Double?
     public var changed: Bool
+    public var floorCents: Double?
     public var floorWasNet: Bool
     public var approval: String?
+    public var decidedAt: Date?
 
-    public init(id: String, createdAt: Date, userId: String, reason: String, platform: String? = nil, listingId: String? = nil, platformListingId: String? = nil, decidedAt: Date? = nil, ruleId: String? = nil, floorCents: Double? = nil, strategy: String, oldPriceCents: Double? = nil, newPriceCents: Double? = nil, changed: Bool, floorWasNet: Bool, approval: String? = nil) {
+    public init(id: String, createdAt: Date, userId: String, platform: String? = nil, listingId: String? = nil, platformListingId: String? = nil, reason: String, ruleId: String? = nil, strategy: String, oldPriceCents: Double? = nil, newPriceCents: Double? = nil, changed: Bool, floorCents: Double? = nil, floorWasNet: Bool, approval: String? = nil, decidedAt: Date? = nil) {
         self.id = id
         self.createdAt = createdAt
         self.userId = userId
-        self.reason = reason
         self.platform = platform
         self.listingId = listingId
         self.platformListingId = platformListingId
-        self.decidedAt = decidedAt
+        self.reason = reason
         self.ruleId = ruleId
-        self.floorCents = floorCents
         self.strategy = strategy
         self.oldPriceCents = oldPriceCents
         self.newPriceCents = newPriceCents
         self.changed = changed
+        self.floorCents = floorCents
         self.floorWasNet = floorWasNet
         self.approval = approval
+        self.decidedAt = decidedAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
         case createdAt
         case userId
-        case reason
         case platform
         case listingId
         case platformListingId
-        case decidedAt
+        case reason
         case ruleId
-        case floorCents
         case strategy
         case oldPriceCents
         case newPriceCents
         case changed
+        case floorCents
         case floorWasNet
         case approval
+        case decidedAt
     }
 
     // Encodable protocol methods
@@ -74,19 +74,19 @@ public struct ListRepriceEventsItem: Codable, JSONEncodable, Hashable {
         try container.encode(id, forKey: .id)
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(userId, forKey: .userId)
-        try container.encode(reason, forKey: .reason)
         try container.encodeIfPresent(platform, forKey: .platform)
         try container.encodeIfPresent(listingId, forKey: .listingId)
         try container.encodeIfPresent(platformListingId, forKey: .platformListingId)
-        try container.encodeIfPresent(decidedAt, forKey: .decidedAt)
+        try container.encode(reason, forKey: .reason)
         try container.encodeIfPresent(ruleId, forKey: .ruleId)
-        try container.encodeIfPresent(floorCents, forKey: .floorCents)
         try container.encode(strategy, forKey: .strategy)
         try container.encodeIfPresent(oldPriceCents, forKey: .oldPriceCents)
         try container.encodeIfPresent(newPriceCents, forKey: .newPriceCents)
         try container.encode(changed, forKey: .changed)
+        try container.encodeIfPresent(floorCents, forKey: .floorCents)
         try container.encode(floorWasNet, forKey: .floorWasNet)
         try container.encodeIfPresent(approval, forKey: .approval)
+        try container.encodeIfPresent(decidedAt, forKey: .decidedAt)
     }
 }
 

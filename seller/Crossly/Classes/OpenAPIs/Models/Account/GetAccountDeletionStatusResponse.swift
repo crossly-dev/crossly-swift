@@ -12,9 +12,9 @@ import AnyCodable
 
 public struct GetAccountDeletionStatusResponse: Codable, JSONEncodable, Hashable {
 
-    public var pending: GetAccountDeletionStatusResponsePending
+    public var pending: GetAccountDeletionStatusResponsePending?
 
-    public init(pending: GetAccountDeletionStatusResponsePending) {
+    public init(pending: GetAccountDeletionStatusResponsePending? = nil) {
         self.pending = pending
     }
 
@@ -26,7 +26,7 @@ public struct GetAccountDeletionStatusResponse: Codable, JSONEncodable, Hashable
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(pending, forKey: .pending)
+        try container.encodeIfPresent(pending, forKey: .pending)
     }
 }
 

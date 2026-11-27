@@ -16,16 +16,16 @@ public struct GetAnalyticDashboardResponseTop5ItemsByRevenue: Codable, JSONEncod
     public var platform: String
     public var salePrice: Double?
     public var netProfit: Double?
-    public var detectedAt: Date
+    public var revenue: Double
     public var itemTitle: String?
-    public var itemImage: String
+    public var itemImage: String?
 
-    public init(saleId: String, platform: String, salePrice: Double? = nil, netProfit: Double? = nil, detectedAt: Date, itemTitle: String? = nil, itemImage: String) {
+    public init(saleId: String, platform: String, salePrice: Double? = nil, netProfit: Double? = nil, revenue: Double, itemTitle: String? = nil, itemImage: String? = nil) {
         self.saleId = saleId
         self.platform = platform
         self.salePrice = salePrice
         self.netProfit = netProfit
-        self.detectedAt = detectedAt
+        self.revenue = revenue
         self.itemTitle = itemTitle
         self.itemImage = itemImage
     }
@@ -35,7 +35,7 @@ public struct GetAnalyticDashboardResponseTop5ItemsByRevenue: Codable, JSONEncod
         case platform
         case salePrice
         case netProfit
-        case detectedAt
+        case revenue
         case itemTitle
         case itemImage
     }
@@ -48,9 +48,9 @@ public struct GetAnalyticDashboardResponseTop5ItemsByRevenue: Codable, JSONEncod
         try container.encode(platform, forKey: .platform)
         try container.encodeIfPresent(salePrice, forKey: .salePrice)
         try container.encodeIfPresent(netProfit, forKey: .netProfit)
-        try container.encode(detectedAt, forKey: .detectedAt)
+        try container.encode(revenue, forKey: .revenue)
         try container.encodeIfPresent(itemTitle, forKey: .itemTitle)
-        try container.encode(itemImage, forKey: .itemImage)
+        try container.encodeIfPresent(itemImage, forKey: .itemImage)
     }
 }
 

@@ -14,14 +14,16 @@ public struct GetWorldCapabilityCatalogueResponseDataKinds: Codable, JSONEncodab
 
     public enum Review: String, Codable, CaseIterable {
         case always = "always"
-        case asset = "asset"
         case never = "never"
+        case asset = "asset"
     }
     public enum Kind: String, Codable, CaseIterable {
         case portal = "portal"
-        case display = "display"
+        case interactive = "interactive"
         case place = "place"
+        case display = "display"
         case badge = "badge"
+        case perk = "perk"
         case wear = "wear"
         case emote = "emote"
         case roomTheme = "room_theme"
@@ -29,8 +31,6 @@ public struct GetWorldCapabilityCatalogueResponseDataKinds: Codable, JSONEncodab
         case gate = "gate"
         case quest = "quest"
         case gamePass = "game_pass"
-        case perk = "perk"
-        case interactive = "interactive"
     }
     /** One line, for the collection page and \"what does my NFT do\". */
     public var summary: String

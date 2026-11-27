@@ -14,11 +14,11 @@ public struct ListWorldConventionMineItem: Codable, JSONEncodable, Hashable {
 
     public enum Role: String, Codable, CaseIterable {
         case host = "host"
-        case applied = "applied"
-        case invited = "invited"
-        case withdrawn = "withdrawn"
         case accepted = "accepted"
         case declined = "declined"
+        case applied = "applied"
+        case withdrawn = "withdrawn"
+        case invited = "invited"
     }
     /** 'host' when I am running it, otherwise my exhibitor status. */
     public var role: Role
@@ -41,8 +41,15 @@ public struct ListWorldConventionMineItem: Codable, JSONEncodable, Hashable {
     public var exhibitorCount: Double
     /** The room it is held in, so a card can link straight into it. */
     public var publicSlug: String?
+    /** A full-page convention (a rented hall, booth tiers; spec WD4): sellers book a tier on its booth page. */
+    public var tiered: Bool
+    /** When the doors open for visitors: the start (or when the host takes it live, if sooner). */
+    public var doorsOpenAt: Date
+    /** For a signed-in viewer (doors.ts): when THEIR doors open (earlier with live_early_entry), and whether they are. */
+    public var yourDoorsOpenAt: String?
+    public var doorsOpen: Bool?
 
-    public init(role: Role, tableIndex: Double? = nil, agreedEntryFeeCents: Double? = nil, agreedRevenueShareBps: Double? = nil, id: String, title: String, categorySlug: String? = nil, startsAt: Date, endsAt: Date, status: String, entryModel: String, entryFeeCents: Double? = nil, revenueShareBps: Double? = nil, tableCount: Double, exhibitorCount: Double, publicSlug: String? = nil) {
+    public init(role: Role, tableIndex: Double? = nil, agreedEntryFeeCents: Double? = nil, agreedRevenueShareBps: Double? = nil, id: String, title: String, categorySlug: String? = nil, startsAt: Date, endsAt: Date, status: String, entryModel: String, entryFeeCents: Double? = nil, revenueShareBps: Double? = nil, tableCount: Double, exhibitorCount: Double, publicSlug: String? = nil, tiered: Bool, doorsOpenAt: Date, yourDoorsOpenAt: String? = nil, doorsOpen: Bool? = nil) {
         self.role = role
         self.tableIndex = tableIndex
         self.agreedEntryFeeCents = agreedEntryFeeCents
@@ -59,6 +66,10 @@ public struct ListWorldConventionMineItem: Codable, JSONEncodable, Hashable {
         self.tableCount = tableCount
         self.exhibitorCount = exhibitorCount
         self.publicSlug = publicSlug
+        self.tiered = tiered
+        self.doorsOpenAt = doorsOpenAt
+        self.yourDoorsOpenAt = yourDoorsOpenAt
+        self.doorsOpen = doorsOpen
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -78,6 +89,10 @@ public struct ListWorldConventionMineItem: Codable, JSONEncodable, Hashable {
         case tableCount
         case exhibitorCount
         case publicSlug
+        case tiered
+        case doorsOpenAt
+        case yourDoorsOpenAt
+        case doorsOpen
     }
 
     // Encodable protocol methods
@@ -100,6 +115,10 @@ public struct ListWorldConventionMineItem: Codable, JSONEncodable, Hashable {
         try container.encode(tableCount, forKey: .tableCount)
         try container.encode(exhibitorCount, forKey: .exhibitorCount)
         try container.encodeIfPresent(publicSlug, forKey: .publicSlug)
+        try container.encode(tiered, forKey: .tiered)
+        try container.encode(doorsOpenAt, forKey: .doorsOpenAt)
+        try container.encodeIfPresent(yourDoorsOpenAt, forKey: .yourDoorsOpenAt)
+        try container.encodeIfPresent(doorsOpen, forKey: .doorsOpen)
     }
 }
 

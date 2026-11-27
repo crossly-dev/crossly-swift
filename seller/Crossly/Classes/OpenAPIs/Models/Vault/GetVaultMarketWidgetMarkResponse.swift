@@ -18,13 +18,13 @@ public struct GetVaultMarketWidgetMarkResponse: Codable, JSONEncodable, Hashable
     public var imageUrl: String?
     public var condition: String
     public var gradeKey: String?
-    public var mark: ListVaultMarketFeedItemMark
+    public var mark: ListVaultMarketOpeningItemMark
     public var trades30d: Double
     public var insufficient: Bool
     public var points: [GetVaultMarketWidgetMarkResponsePoints]
     public var href: String
 
-    public init(bookKey: String, name: String? = nil, label: String? = nil, imageUrl: String? = nil, condition: String, gradeKey: String? = nil, mark: ListVaultMarketFeedItemMark, trades30d: Double, insufficient: Bool, points: [GetVaultMarketWidgetMarkResponsePoints], href: String) {
+    public init(bookKey: String, name: String? = nil, label: String? = nil, imageUrl: String? = nil, condition: String, gradeKey: String? = nil, mark: ListVaultMarketOpeningItemMark, trades30d: Double, insufficient: Bool, points: [GetVaultMarketWidgetMarkResponsePoints], href: String) {
         self.bookKey = bookKey
         self.name = name
         self.label = label

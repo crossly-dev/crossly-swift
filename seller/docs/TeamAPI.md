@@ -4,8 +4,8 @@ All URIs are relative to *https://crossly.net/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**createTeamAccept**](TeamAPI.md#createteamaccept) | **POST** /v1/team/accept | Accept a pending team invitation by raw token.
-[**createTeamInvite**](TeamAPI.md#createteaminvite) | **POST** /v1/team/invite | Mint a team invitation; returns the one-time accept URL.
+[**createTeamAccept**](TeamAPI.md#createteamaccept) | **POST** /v1/team/accept | Accept a team invitation by the raw token from its link.
+[**createTeamInvite**](TeamAPI.md#createteaminvite) | **POST** /v1/team/invite | Issue a team invitation; returns the one-time accept URL (nothing is emailed).
 [**createTeamLeave**](TeamAPI.md#createteamleave) | **POST** /v1/team/leave | Leave every team this user is currently a member of.
 [**createTeamRevoke**](TeamAPI.md#createteamrevoke) | **POST** /v1/team/revoke | Revoke a pending invite OR an active team member.
 [**getTeam**](TeamAPI.md#getteam) | **GET** /v1/team | List pending team invitations + active members.
@@ -17,7 +17,7 @@ Method | HTTP request | Description
     open class func createTeamAccept(completion: @escaping (_ data: CreateTeamAcceptResponse?, _ error: Error?) -> Void)
 ```
 
-Accept a pending team invitation by raw token.
+Accept a team invitation by the raw token from its link.
 
 ### Example
 ```swift
@@ -25,7 +25,7 @@ Accept a pending team invitation by raw token.
 import Crossly
 
 
-// Accept a pending team invitation by raw token.
+// Accept a team invitation by the raw token from its link.
 TeamAPI.createTeamAccept() { (response, error) in
     guard error == nil else {
         print(error)
@@ -61,7 +61,7 @@ This endpoint does not need any parameter.
     open class func createTeamInvite(completion: @escaping (_ data: CreateTeamInviteResponse?, _ error: Error?) -> Void)
 ```
 
-Mint a team invitation; returns the one-time accept URL.
+Issue a team invitation; returns the one-time accept URL (nothing is emailed).
 
 ### Example
 ```swift
@@ -69,7 +69,7 @@ Mint a team invitation; returns the one-time accept URL.
 import Crossly
 
 
-// Mint a team invitation; returns the one-time accept URL.
+// Issue a team invitation; returns the one-time accept URL (nothing is emailed).
 TeamAPI.createTeamInvite() { (response, error) in
     guard error == nil else {
         print(error)

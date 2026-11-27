@@ -15,21 +15,21 @@ public struct CreateProductionDesignSpecResponsePrefs: Codable, JSONEncodable, H
     public var id: String
     public var createdAt: Date
     public var updatedAt: Date
+    public var cosmeticId: String
     public var merchantId: String
     public var creatorSubjectId: String
-    public var cosmeticId: String
     public var spec: CreateProductionDesignSpecResponsePrefsSpec?
     public var physicalOptOut: Bool
     public var brief: CreateProductionDesignSpecResponsePrefsBrief?
     public var physicalLineAt: Date?
 
-    public init(id: String, createdAt: Date, updatedAt: Date, merchantId: String, creatorSubjectId: String, cosmeticId: String, spec: CreateProductionDesignSpecResponsePrefsSpec? = nil, physicalOptOut: Bool, brief: CreateProductionDesignSpecResponsePrefsBrief? = nil, physicalLineAt: Date? = nil) {
+    public init(id: String, createdAt: Date, updatedAt: Date, cosmeticId: String, merchantId: String, creatorSubjectId: String, spec: CreateProductionDesignSpecResponsePrefsSpec? = nil, physicalOptOut: Bool, brief: CreateProductionDesignSpecResponsePrefsBrief? = nil, physicalLineAt: Date? = nil) {
         self.id = id
         self.createdAt = createdAt
         self.updatedAt = updatedAt
+        self.cosmeticId = cosmeticId
         self.merchantId = merchantId
         self.creatorSubjectId = creatorSubjectId
-        self.cosmeticId = cosmeticId
         self.spec = spec
         self.physicalOptOut = physicalOptOut
         self.brief = brief
@@ -40,9 +40,9 @@ public struct CreateProductionDesignSpecResponsePrefs: Codable, JSONEncodable, H
         case id
         case createdAt
         case updatedAt
+        case cosmeticId
         case merchantId
         case creatorSubjectId
-        case cosmeticId
         case spec
         case physicalOptOut
         case brief
@@ -56,9 +56,9 @@ public struct CreateProductionDesignSpecResponsePrefs: Codable, JSONEncodable, H
         try container.encode(id, forKey: .id)
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(updatedAt, forKey: .updatedAt)
+        try container.encode(cosmeticId, forKey: .cosmeticId)
         try container.encode(merchantId, forKey: .merchantId)
         try container.encode(creatorSubjectId, forKey: .creatorSubjectId)
-        try container.encode(cosmeticId, forKey: .cosmeticId)
         try container.encodeIfPresent(spec, forKey: .spec)
         try container.encode(physicalOptOut, forKey: .physicalOptOut)
         try container.encodeIfPresent(brief, forKey: .brief)

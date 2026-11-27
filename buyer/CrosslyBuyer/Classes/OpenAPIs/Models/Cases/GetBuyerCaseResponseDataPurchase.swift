@@ -13,23 +13,23 @@ import AnyCodable
 public struct GetBuyerCaseResponseDataPurchase: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var status: String
     public var buyerPaidCents: Double
+    public var status: String
     public var refundStatus: String?
     public var refundAmountCents: Double?
 
-    public init(id: String, status: String, buyerPaidCents: Double, refundStatus: String? = nil, refundAmountCents: Double? = nil) {
+    public init(id: String, buyerPaidCents: Double, status: String, refundStatus: String? = nil, refundAmountCents: Double? = nil) {
         self.id = id
-        self.status = status
         self.buyerPaidCents = buyerPaidCents
+        self.status = status
         self.refundStatus = refundStatus
         self.refundAmountCents = refundAmountCents
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case status
         case buyerPaidCents
+        case status
         case refundStatus
         case refundAmountCents
     }
@@ -39,8 +39,8 @@ public struct GetBuyerCaseResponseDataPurchase: Codable, JSONEncodable, Hashable
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(status, forKey: .status)
         try container.encode(buyerPaidCents, forKey: .buyerPaidCents)
+        try container.encode(status, forKey: .status)
         try container.encodeIfPresent(refundStatus, forKey: .refundStatus)
         try container.encodeIfPresent(refundAmountCents, forKey: .refundAmountCents)
     }

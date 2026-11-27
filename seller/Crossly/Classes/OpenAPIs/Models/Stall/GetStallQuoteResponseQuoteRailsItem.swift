@@ -12,6 +12,6 @@ import AnyCodable
 
 public enum GetStallQuoteResponseQuoteRailsItem: String, Codable, CaseIterable {
     case card = "card"
-    case bucks = "bucks"
     case cbx = "cbx"
+    case bucks = "bucks"
 }

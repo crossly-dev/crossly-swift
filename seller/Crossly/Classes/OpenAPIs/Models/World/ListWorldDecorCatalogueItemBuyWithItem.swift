@@ -11,6 +11,6 @@ import AnyCodable
 #endif
 
 public enum ListWorldDecorCatalogueItemBuyWithItem: String, Codable, CaseIterable {
-    case cbx = "cbx"
     case cosm = "cosm"
+    case cbx = "cbx"
 }

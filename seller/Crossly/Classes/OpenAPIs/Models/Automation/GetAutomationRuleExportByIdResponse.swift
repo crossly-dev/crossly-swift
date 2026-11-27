@@ -12,54 +12,54 @@ import AnyCodable
 
 public struct GetAutomationRuleExportByIdResponse: Codable, JSONEncodable, Hashable {
 
-    public var name: String
-    public var action: GetAutomationRuleExportByIdResponseAction
     public var schemaVersion: Double
-    public var trigger: GetAutomationRuleExportByIdResponseAction
-    public var condition: GetAutomationRuleExportByIdResponseCondition?
-    public var metadata: GetAutomationRuleExportByIdResponseMetadata?
-    public var description: String?
-    public var platforms: [String]?
+    public var name: String
+    public var trigger: GetAutomationRuleExportByIdResponseTrigger
+    public var action: GetAutomationRuleExportByIdResponseTrigger
     /** Optional reference to the public schema URL — purely cosmetic. */
     public var schema: String?
+    public var description: String?
+    public var condition: GetAutomationRuleExportByIdResponseCondition?
+    public var platforms: [String]?
+    public var metadata: GetAutomationRuleExportByIdResponseMetadata?
 
-    public init(name: String, action: GetAutomationRuleExportByIdResponseAction, schemaVersion: Double, trigger: GetAutomationRuleExportByIdResponseAction, condition: GetAutomationRuleExportByIdResponseCondition? = nil, metadata: GetAutomationRuleExportByIdResponseMetadata? = nil, description: String? = nil, platforms: [String]? = nil, schema: String? = nil) {
-        self.name = name
-        self.action = action
+    public init(schemaVersion: Double, name: String, trigger: GetAutomationRuleExportByIdResponseTrigger, action: GetAutomationRuleExportByIdResponseTrigger, schema: String? = nil, description: String? = nil, condition: GetAutomationRuleExportByIdResponseCondition? = nil, platforms: [String]? = nil, metadata: GetAutomationRuleExportByIdResponseMetadata? = nil) {
         self.schemaVersion = schemaVersion
+        self.name = name
         self.trigger = trigger
-        self.condition = condition
-        self.metadata = metadata
-        self.description = description
-        self.platforms = platforms
+        self.action = action
         self.schema = schema
+        self.description = description
+        self.condition = condition
+        self.platforms = platforms
+        self.metadata = metadata
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case name
-        case action
         case schemaVersion
+        case name
         case trigger
-        case condition
-        case metadata
-        case description
-        case platforms
+        case action
         case schema = "$schema"
+        case description
+        case condition
+        case platforms
+        case metadata
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(name, forKey: .name)
-        try container.encode(action, forKey: .action)
         try container.encode(schemaVersion, forKey: .schemaVersion)
+        try container.encode(name, forKey: .name)
         try container.encode(trigger, forKey: .trigger)
-        try container.encodeIfPresent(condition, forKey: .condition)
-        try container.encodeIfPresent(metadata, forKey: .metadata)
-        try container.encodeIfPresent(description, forKey: .description)
-        try container.encodeIfPresent(platforms, forKey: .platforms)
+        try container.encode(action, forKey: .action)
         try container.encodeIfPresent(schema, forKey: .schema)
+        try container.encodeIfPresent(description, forKey: .description)
+        try container.encodeIfPresent(condition, forKey: .condition)
+        try container.encodeIfPresent(platforms, forKey: .platforms)
+        try container.encodeIfPresent(metadata, forKey: .metadata)
     }
 }
 

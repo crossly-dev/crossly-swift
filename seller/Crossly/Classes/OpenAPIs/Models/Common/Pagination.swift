@@ -21,12 +21,16 @@ public struct Pagination: Codable, JSONEncodable, Hashable {
     public var total: Int?
     /** Derived from total and limit. */
     public var totalPages: Int?
+    /** Deprecated alias of `totalPages`, sent only by GET /v1/inventory (its original name). Read `totalPages`. */
+    @available(*, deprecated, message: "This property is deprecated.")
+    public var pages: Int?
 
-    public init(page: Int, limit: Int, total: Int? = nil, totalPages: Int? = nil) {
+    public init(page: Int, limit: Int, total: Int? = nil, totalPages: Int? = nil, pages: Int? = nil) {
         self.page = page
         self.limit = limit
         self.total = total
         self.totalPages = totalPages
+        self.pages = pages
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -34,6 +38,7 @@ public struct Pagination: Codable, JSONEncodable, Hashable {
         case limit
         case total
         case totalPages
+        case pages
     }
 
     // Encodable protocol methods
@@ -44,6 +49,7 @@ public struct Pagination: Codable, JSONEncodable, Hashable {
         try container.encode(limit, forKey: .limit)
         try container.encodeIfPresent(total, forKey: .total)
         try container.encodeIfPresent(totalPages, forKey: .totalPages)
+        try container.encodeIfPresent(pages, forKey: .pages)
     }
 }
 

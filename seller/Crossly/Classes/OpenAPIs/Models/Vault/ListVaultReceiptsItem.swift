@@ -17,11 +17,11 @@ public struct ListVaultReceiptsItem: Codable, JSONEncodable, Hashable {
         case negotiable = "negotiable"
     }
     public enum Status: String, Codable, CaseIterable {
+        case void = "void"
         case pledged = "pledged"
         case issued = "issued"
         case transferred = "transferred"
         case surrendered = "surrendered"
-        case void = "void"
     }
     public var form: Form
     public var termsVersion: String

@@ -12,17 +12,20 @@ import AnyCodable
 
 public struct GetWeb3LaunchToolResponse: Codable, JSONEncodable, Hashable {
 
+    public var royalties: GetWeb3LaunchToolResponseRoyalties
     public var allowlist: GetWeb3LaunchToolResponseAllowlist
     public var art: GetWeb3LaunchToolResponseArt
     public var supply: GetWeb3LaunchToolResponseSupply
 
-    public init(allowlist: GetWeb3LaunchToolResponseAllowlist, art: GetWeb3LaunchToolResponseArt, supply: GetWeb3LaunchToolResponseSupply) {
+    public init(royalties: GetWeb3LaunchToolResponseRoyalties, allowlist: GetWeb3LaunchToolResponseAllowlist, art: GetWeb3LaunchToolResponseArt, supply: GetWeb3LaunchToolResponseSupply) {
+        self.royalties = royalties
         self.allowlist = allowlist
         self.art = art
         self.supply = supply
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case royalties
         case allowlist
         case art
         case supply
@@ -32,6 +35,7 @@ public struct GetWeb3LaunchToolResponse: Codable, JSONEncodable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(royalties, forKey: .royalties)
         try container.encode(allowlist, forKey: .allowlist)
         try container.encode(art, forKey: .art)
         try container.encode(supply, forKey: .supply)

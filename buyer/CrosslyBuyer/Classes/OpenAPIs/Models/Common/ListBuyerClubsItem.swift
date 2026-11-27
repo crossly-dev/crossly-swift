@@ -12,30 +12,30 @@ import AnyCodable
 
 public struct ListBuyerClubsItem: Codable, JSONEncodable, Hashable {
 
+    public var sellerUserId: String
     public var name: String
     public var description: String?
-    public var sellerUserId: String
-    public var member: CreateBuyerSellerClubJoinResponseDataMember?
     public var tiers: [CreateBuyerSellerClubJoinResponseDataTiers]
+    public var member: CreateBuyerSellerClubJoinResponseDataMember?
     public var sellerName: String
     public var sellerHandle: String?
 
-    public init(name: String, description: String? = nil, sellerUserId: String, member: CreateBuyerSellerClubJoinResponseDataMember? = nil, tiers: [CreateBuyerSellerClubJoinResponseDataTiers], sellerName: String, sellerHandle: String? = nil) {
+    public init(sellerUserId: String, name: String, description: String? = nil, tiers: [CreateBuyerSellerClubJoinResponseDataTiers], member: CreateBuyerSellerClubJoinResponseDataMember? = nil, sellerName: String, sellerHandle: String? = nil) {
+        self.sellerUserId = sellerUserId
         self.name = name
         self.description = description
-        self.sellerUserId = sellerUserId
-        self.member = member
         self.tiers = tiers
+        self.member = member
         self.sellerName = sellerName
         self.sellerHandle = sellerHandle
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case sellerUserId
         case name
         case description
-        case sellerUserId
-        case member
         case tiers
+        case member
         case sellerName
         case sellerHandle
     }
@@ -44,11 +44,11 @@ public struct ListBuyerClubsItem: Codable, JSONEncodable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(sellerUserId, forKey: .sellerUserId)
         try container.encode(name, forKey: .name)
         try container.encodeIfPresent(description, forKey: .description)
-        try container.encode(sellerUserId, forKey: .sellerUserId)
-        try container.encodeIfPresent(member, forKey: .member)
         try container.encode(tiers, forKey: .tiers)
+        try container.encodeIfPresent(member, forKey: .member)
         try container.encode(sellerName, forKey: .sellerName)
         try container.encodeIfPresent(sellerHandle, forKey: .sellerHandle)
     }

@@ -12,29 +12,29 @@ import AnyCodable
 
 public struct GetBuyerMarketPurchaseOptionResponseData: Codable, JSONEncodable, Hashable {
 
+    public var vaultStock: Bool
     public var fastShipCents: Double
     public var gradingRuns: [GetBuyerMarketPurchaseOptionResponseDataGradingRuns]
-    public var vaultStock: Bool
 
-    public init(fastShipCents: Double, gradingRuns: [GetBuyerMarketPurchaseOptionResponseDataGradingRuns], vaultStock: Bool) {
+    public init(vaultStock: Bool, fastShipCents: Double, gradingRuns: [GetBuyerMarketPurchaseOptionResponseDataGradingRuns]) {
+        self.vaultStock = vaultStock
         self.fastShipCents = fastShipCents
         self.gradingRuns = gradingRuns
-        self.vaultStock = vaultStock
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case vaultStock
         case fastShipCents
         case gradingRuns
-        case vaultStock
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(vaultStock, forKey: .vaultStock)
         try container.encode(fastShipCents, forKey: .fastShipCents)
         try container.encode(gradingRuns, forKey: .gradingRuns)
-        try container.encode(vaultStock, forKey: .vaultStock)
     }
 }
 

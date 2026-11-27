@@ -13,9 +13,9 @@ import AnyCodable
 public struct CreateAutomationRuleRunNowResponse: Codable, JSONEncodable, Hashable {
 
     public var success: Bool
-    public var jobId: String?
+    public var jobId: String
 
-    public init(success: Bool, jobId: String? = nil) {
+    public init(success: Bool, jobId: String) {
         self.success = success
         self.jobId = jobId
     }
@@ -30,7 +30,7 @@ public struct CreateAutomationRuleRunNowResponse: Codable, JSONEncodable, Hashab
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(success, forKey: .success)
-        try container.encodeIfPresent(jobId, forKey: .jobId)
+        try container.encode(jobId, forKey: .jobId)
     }
 }
 

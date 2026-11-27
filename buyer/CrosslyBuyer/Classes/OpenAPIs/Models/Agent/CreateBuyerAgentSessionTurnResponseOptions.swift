@@ -26,8 +26,11 @@ public struct CreateBuyerAgentSessionTurnResponseOptions: Codable, JSONEncodable
     public var facts: [String]
     public var reason: String
     public var priceCheck: CreateBuyerAgentSessionActResponseQuotePriceCheck?
+    /** The world object it stands as, and the seller's public shop room (world-picks.ts). */
+    public var model: String?
+    public var shopSlug: String?
 
-    public init(n: Double, slug: String, title: String, priceCents: Double, salePriceCents: Double? = nil, compareAtCents: Double? = nil, thumbnail: String? = nil, brand: String? = nil, condition: String? = nil, size: String? = nil, sellerDisplayName: String? = nil, facts: [String], reason: String, priceCheck: CreateBuyerAgentSessionActResponseQuotePriceCheck? = nil) {
+    public init(n: Double, slug: String, title: String, priceCents: Double, salePriceCents: Double? = nil, compareAtCents: Double? = nil, thumbnail: String? = nil, brand: String? = nil, condition: String? = nil, size: String? = nil, sellerDisplayName: String? = nil, facts: [String], reason: String, priceCheck: CreateBuyerAgentSessionActResponseQuotePriceCheck? = nil, model: String? = nil, shopSlug: String? = nil) {
         self.n = n
         self.slug = slug
         self.title = title
@@ -42,6 +45,8 @@ public struct CreateBuyerAgentSessionTurnResponseOptions: Codable, JSONEncodable
         self.facts = facts
         self.reason = reason
         self.priceCheck = priceCheck
+        self.model = model
+        self.shopSlug = shopSlug
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -59,6 +64,8 @@ public struct CreateBuyerAgentSessionTurnResponseOptions: Codable, JSONEncodable
         case facts
         case reason
         case priceCheck
+        case model
+        case shopSlug
     }
 
     // Encodable protocol methods
@@ -79,6 +86,8 @@ public struct CreateBuyerAgentSessionTurnResponseOptions: Codable, JSONEncodable
         try container.encode(facts, forKey: .facts)
         try container.encode(reason, forKey: .reason)
         try container.encodeIfPresent(priceCheck, forKey: .priceCheck)
+        try container.encodeIfPresent(model, forKey: .model)
+        try container.encodeIfPresent(shopSlug, forKey: .shopSlug)
     }
 }
 

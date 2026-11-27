@@ -13,19 +13,19 @@ import AnyCodable
 public struct CreateAutomationRuleValidateRecipeResponse: Codable, JSONEncodable, Hashable {
 
     public var valid: Bool
-    public var error: String
-    public var details: CreateAutomationRuleValidateRecipeResponseDetails
+    public var count: Double
+    public var results: [CreateAutomationRuleValidateRecipeResponseResults]
 
-    public init(valid: Bool, error: String, details: CreateAutomationRuleValidateRecipeResponseDetails) {
+    public init(valid: Bool, count: Double, results: [CreateAutomationRuleValidateRecipeResponseResults]) {
         self.valid = valid
-        self.error = error
-        self.details = details
+        self.count = count
+        self.results = results
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case valid
-        case error
-        case details
+        case count
+        case results
     }
 
     // Encodable protocol methods
@@ -33,8 +33,8 @@ public struct CreateAutomationRuleValidateRecipeResponse: Codable, JSONEncodable
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(valid, forKey: .valid)
-        try container.encode(error, forKey: .error)
-        try container.encode(details, forKey: .details)
+        try container.encode(count, forKey: .count)
+        try container.encode(results, forKey: .results)
     }
 }
 

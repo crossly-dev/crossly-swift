@@ -12,21 +12,21 @@ import AnyCodable
 
 public struct GetBuyerCheckoutUsdcResponseData: Codable, JSONEncodable, Hashable {
 
-    public var reason: String?
     public var available: Bool
+    public var reason: String?
     public var maxCents: Double
     public var networks: [String]
 
-    public init(reason: String? = nil, available: Bool, maxCents: Double, networks: [String]) {
-        self.reason = reason
+    public init(available: Bool, reason: String? = nil, maxCents: Double, networks: [String]) {
         self.available = available
+        self.reason = reason
         self.maxCents = maxCents
         self.networks = networks
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case reason
         case available
+        case reason
         case maxCents
         case networks
     }
@@ -35,8 +35,8 @@ public struct GetBuyerCheckoutUsdcResponseData: Codable, JSONEncodable, Hashable
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(reason, forKey: .reason)
         try container.encode(available, forKey: .available)
+        try container.encodeIfPresent(reason, forKey: .reason)
         try container.encode(maxCents, forKey: .maxCents)
         try container.encode(networks, forKey: .networks)
     }

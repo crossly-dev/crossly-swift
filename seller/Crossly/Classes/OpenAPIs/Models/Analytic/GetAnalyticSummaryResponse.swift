@@ -12,33 +12,53 @@ import AnyCodable
 
 public struct GetAnalyticSummaryResponse: Codable, JSONEncodable, Hashable {
 
+    public var days: Double
     public var sales: Double
     public var revenue: Double
     public var fees: Double
-    public var days: Double
+    public var pendingDetailsCount: Double
+    public var unitsSold: Double
+    public var netSalesCents: Double
+    public var feesCents: Double
+    public var netProfitCents: Double?
 
-    public init(sales: Double, revenue: Double, fees: Double, days: Double) {
+    public init(days: Double, sales: Double, revenue: Double, fees: Double, pendingDetailsCount: Double, unitsSold: Double, netSalesCents: Double, feesCents: Double, netProfitCents: Double? = nil) {
+        self.days = days
         self.sales = sales
         self.revenue = revenue
         self.fees = fees
-        self.days = days
+        self.pendingDetailsCount = pendingDetailsCount
+        self.unitsSold = unitsSold
+        self.netSalesCents = netSalesCents
+        self.feesCents = feesCents
+        self.netProfitCents = netProfitCents
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case days
         case sales
         case revenue
         case fees
-        case days
+        case pendingDetailsCount
+        case unitsSold
+        case netSalesCents
+        case feesCents
+        case netProfitCents
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(days, forKey: .days)
         try container.encode(sales, forKey: .sales)
         try container.encode(revenue, forKey: .revenue)
         try container.encode(fees, forKey: .fees)
-        try container.encode(days, forKey: .days)
+        try container.encode(pendingDetailsCount, forKey: .pendingDetailsCount)
+        try container.encode(unitsSold, forKey: .unitsSold)
+        try container.encode(netSalesCents, forKey: .netSalesCents)
+        try container.encode(feesCents, forKey: .feesCents)
+        try container.encodeIfPresent(netProfitCents, forKey: .netProfitCents)
     }
 }
 

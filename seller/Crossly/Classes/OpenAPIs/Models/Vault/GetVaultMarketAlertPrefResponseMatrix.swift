@@ -12,23 +12,31 @@ import AnyCodable
 
 public struct GetVaultMarketAlertPrefResponseMatrix: Codable, JSONEncodable, Hashable {
 
-    public var price: GetVaultMarketAlertPrefResponseMatrixPrice
-    public var auction: GetVaultMarketAlertPrefResponseMatrixPrice
-    public var fill: GetVaultMarketAlertPrefResponseMatrixPrice
-    public var account: GetVaultMarketAlertPrefResponseMatrixPrice
-    public var marginCall: GetVaultMarketAlertPrefResponseMatrixPrice
-    public var adl: GetVaultMarketAlertPrefResponseMatrixPrice
-    public var p2pLoan: GetVaultMarketAlertPrefResponseMatrixPrice
-    public var marketOpen: GetVaultMarketAlertPrefResponseMatrixPrice
-    public var receiptToken: GetVaultMarketAlertPrefResponseMatrixPrice
-    public var setGoal: GetVaultMarketAlertPrefResponseMatrixPrice
-    public var follow: GetVaultMarketAlertPrefResponseMatrixPrice
+    public var account: GetVaultMarketAlertPrefResponseMatrixAccount
+    public var price: GetVaultMarketAlertPrefResponseMatrixAccount
+    public var fill: GetVaultMarketAlertPrefResponseMatrixAccount
+    public var auction: GetVaultMarketAlertPrefResponseMatrixAccount
+    public var prediction: GetVaultMarketAlertPrefResponseMatrixAccount
+    public var optionExpiry: GetVaultMarketAlertPrefResponseMatrixAccount
+    public var marginCall: GetVaultMarketAlertPrefResponseMatrixAccount
+    public var adl: GetVaultMarketAlertPrefResponseMatrixAccount
+    public var p2pLoan: GetVaultMarketAlertPrefResponseMatrixAccount
+    public var marketOpen: GetVaultMarketAlertPrefResponseMatrixAccount
+    public var receiptToken: GetVaultMarketAlertPrefResponseMatrixAccount
+    public var setGoal: GetVaultMarketAlertPrefResponseMatrixAccount
+    public var follow: GetVaultMarketAlertPrefResponseMatrixAccount
+    public var shareOffering: GetVaultMarketAlertPrefResponseMatrixAccount
+    public var shareVote: GetVaultMarketAlertPrefResponseMatrixAccount
+    public var optionSettlement: GetVaultMarketAlertPrefResponseMatrixAccount
+    public var predictionOdds: GetVaultMarketAlertPrefResponseMatrixAccount
 
-    public init(price: GetVaultMarketAlertPrefResponseMatrixPrice, auction: GetVaultMarketAlertPrefResponseMatrixPrice, fill: GetVaultMarketAlertPrefResponseMatrixPrice, account: GetVaultMarketAlertPrefResponseMatrixPrice, marginCall: GetVaultMarketAlertPrefResponseMatrixPrice, adl: GetVaultMarketAlertPrefResponseMatrixPrice, p2pLoan: GetVaultMarketAlertPrefResponseMatrixPrice, marketOpen: GetVaultMarketAlertPrefResponseMatrixPrice, receiptToken: GetVaultMarketAlertPrefResponseMatrixPrice, setGoal: GetVaultMarketAlertPrefResponseMatrixPrice, follow: GetVaultMarketAlertPrefResponseMatrixPrice) {
-        self.price = price
-        self.auction = auction
-        self.fill = fill
+    public init(account: GetVaultMarketAlertPrefResponseMatrixAccount, price: GetVaultMarketAlertPrefResponseMatrixAccount, fill: GetVaultMarketAlertPrefResponseMatrixAccount, auction: GetVaultMarketAlertPrefResponseMatrixAccount, prediction: GetVaultMarketAlertPrefResponseMatrixAccount, optionExpiry: GetVaultMarketAlertPrefResponseMatrixAccount, marginCall: GetVaultMarketAlertPrefResponseMatrixAccount, adl: GetVaultMarketAlertPrefResponseMatrixAccount, p2pLoan: GetVaultMarketAlertPrefResponseMatrixAccount, marketOpen: GetVaultMarketAlertPrefResponseMatrixAccount, receiptToken: GetVaultMarketAlertPrefResponseMatrixAccount, setGoal: GetVaultMarketAlertPrefResponseMatrixAccount, follow: GetVaultMarketAlertPrefResponseMatrixAccount, shareOffering: GetVaultMarketAlertPrefResponseMatrixAccount, shareVote: GetVaultMarketAlertPrefResponseMatrixAccount, optionSettlement: GetVaultMarketAlertPrefResponseMatrixAccount, predictionOdds: GetVaultMarketAlertPrefResponseMatrixAccount) {
         self.account = account
+        self.price = price
+        self.fill = fill
+        self.auction = auction
+        self.prediction = prediction
+        self.optionExpiry = optionExpiry
         self.marginCall = marginCall
         self.adl = adl
         self.p2pLoan = p2pLoan
@@ -36,13 +44,19 @@ public struct GetVaultMarketAlertPrefResponseMatrix: Codable, JSONEncodable, Has
         self.receiptToken = receiptToken
         self.setGoal = setGoal
         self.follow = follow
+        self.shareOffering = shareOffering
+        self.shareVote = shareVote
+        self.optionSettlement = optionSettlement
+        self.predictionOdds = predictionOdds
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case price
-        case auction
-        case fill
         case account
+        case price
+        case fill
+        case auction
+        case prediction
+        case optionExpiry = "option_expiry"
         case marginCall = "margin_call"
         case adl
         case p2pLoan = "p2p_loan"
@@ -50,16 +64,22 @@ public struct GetVaultMarketAlertPrefResponseMatrix: Codable, JSONEncodable, Has
         case receiptToken = "receipt_token"
         case setGoal = "set_goal"
         case follow
+        case shareOffering = "share_offering"
+        case shareVote = "share_vote"
+        case optionSettlement = "option_settlement"
+        case predictionOdds = "prediction_odds"
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(price, forKey: .price)
-        try container.encode(auction, forKey: .auction)
-        try container.encode(fill, forKey: .fill)
         try container.encode(account, forKey: .account)
+        try container.encode(price, forKey: .price)
+        try container.encode(fill, forKey: .fill)
+        try container.encode(auction, forKey: .auction)
+        try container.encode(prediction, forKey: .prediction)
+        try container.encode(optionExpiry, forKey: .optionExpiry)
         try container.encode(marginCall, forKey: .marginCall)
         try container.encode(adl, forKey: .adl)
         try container.encode(p2pLoan, forKey: .p2pLoan)
@@ -67,6 +87,10 @@ public struct GetVaultMarketAlertPrefResponseMatrix: Codable, JSONEncodable, Has
         try container.encode(receiptToken, forKey: .receiptToken)
         try container.encode(setGoal, forKey: .setGoal)
         try container.encode(follow, forKey: .follow)
+        try container.encode(shareOffering, forKey: .shareOffering)
+        try container.encode(shareVote, forKey: .shareVote)
+        try container.encode(optionSettlement, forKey: .optionSettlement)
+        try container.encode(predictionOdds, forKey: .predictionOdds)
     }
 }
 

@@ -15,12 +15,12 @@ public struct UpdateProductionPoResponsePo: Codable, JSONEncodable, Hashable {
     public var id: String
     public var createdAt: Date
     public var updatedAt: Date
-    public var notes: String?
     public var status: String
+    public var notes: String?
+    public var supplierName: String?
+    public var trackingCode: String?
     public var merchantId: String
     public var candidateId: String
-    public var trackingCode: String?
-    public var supplierName: String?
     public var supplierContact: String?
     public var freightMode: String?
     public var estimateLandedCents: Double?
@@ -36,16 +36,16 @@ public struct UpdateProductionPoResponsePo: Codable, JSONEncodable, Hashable {
     public var qcStatus: String?
     public var qcNotes: String?
 
-    public init(id: String, createdAt: Date, updatedAt: Date, notes: String? = nil, status: String, merchantId: String, candidateId: String, trackingCode: String? = nil, supplierName: String? = nil, supplierContact: String? = nil, freightMode: String? = nil, estimateLandedCents: Double? = nil, actualUnitFobCents: Double? = nil, actualToolingCents: Double? = nil, actualSamplesCents: Double? = nil, actualFreightCents: Double? = nil, actualDutyCents: Double? = nil, actualQcCents: Double? = nil, actualThreeplCents: Double? = nil, actualLandedCents: Double? = nil, sampleRounds: Double, qcStatus: String? = nil, qcNotes: String? = nil) {
+    public init(id: String, createdAt: Date, updatedAt: Date, status: String, notes: String? = nil, supplierName: String? = nil, trackingCode: String? = nil, merchantId: String, candidateId: String, supplierContact: String? = nil, freightMode: String? = nil, estimateLandedCents: Double? = nil, actualUnitFobCents: Double? = nil, actualToolingCents: Double? = nil, actualSamplesCents: Double? = nil, actualFreightCents: Double? = nil, actualDutyCents: Double? = nil, actualQcCents: Double? = nil, actualThreeplCents: Double? = nil, actualLandedCents: Double? = nil, sampleRounds: Double, qcStatus: String? = nil, qcNotes: String? = nil) {
         self.id = id
         self.createdAt = createdAt
         self.updatedAt = updatedAt
-        self.notes = notes
         self.status = status
+        self.notes = notes
+        self.supplierName = supplierName
+        self.trackingCode = trackingCode
         self.merchantId = merchantId
         self.candidateId = candidateId
-        self.trackingCode = trackingCode
-        self.supplierName = supplierName
         self.supplierContact = supplierContact
         self.freightMode = freightMode
         self.estimateLandedCents = estimateLandedCents
@@ -66,12 +66,12 @@ public struct UpdateProductionPoResponsePo: Codable, JSONEncodable, Hashable {
         case id
         case createdAt
         case updatedAt
-        case notes
         case status
+        case notes
+        case supplierName
+        case trackingCode
         case merchantId
         case candidateId
-        case trackingCode
-        case supplierName
         case supplierContact
         case freightMode
         case estimateLandedCents
@@ -95,12 +95,12 @@ public struct UpdateProductionPoResponsePo: Codable, JSONEncodable, Hashable {
         try container.encode(id, forKey: .id)
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(updatedAt, forKey: .updatedAt)
-        try container.encodeIfPresent(notes, forKey: .notes)
         try container.encode(status, forKey: .status)
+        try container.encodeIfPresent(notes, forKey: .notes)
+        try container.encodeIfPresent(supplierName, forKey: .supplierName)
+        try container.encodeIfPresent(trackingCode, forKey: .trackingCode)
         try container.encode(merchantId, forKey: .merchantId)
         try container.encode(candidateId, forKey: .candidateId)
-        try container.encodeIfPresent(trackingCode, forKey: .trackingCode)
-        try container.encodeIfPresent(supplierName, forKey: .supplierName)
         try container.encodeIfPresent(supplierContact, forKey: .supplierContact)
         try container.encodeIfPresent(freightMode, forKey: .freightMode)
         try container.encodeIfPresent(estimateLandedCents, forKey: .estimateLandedCents)

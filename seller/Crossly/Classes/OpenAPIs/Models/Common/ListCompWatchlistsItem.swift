@@ -17,23 +17,23 @@ public struct ListCompWatchlistsItem: Codable, JSONEncodable, Hashable {
     public var name: String
     public var createdAt: Date
     public var userId: String
+    public var platform: String?
     public var condition: String?
     public var categoryMain: String?
-    public var platform: String?
     public var minPrice: String?
     public var maxPrice: String?
     public var lastMatchedAt: Date?
     public var lastScrapedAt: Date?
 
-    public init(id: String, brand: String? = nil, name: String, createdAt: Date, userId: String, condition: String? = nil, categoryMain: String? = nil, platform: String? = nil, minPrice: String? = nil, maxPrice: String? = nil, lastMatchedAt: Date? = nil, lastScrapedAt: Date? = nil) {
+    public init(id: String, brand: String? = nil, name: String, createdAt: Date, userId: String, platform: String? = nil, condition: String? = nil, categoryMain: String? = nil, minPrice: String? = nil, maxPrice: String? = nil, lastMatchedAt: Date? = nil, lastScrapedAt: Date? = nil) {
         self.id = id
         self.brand = brand
         self.name = name
         self.createdAt = createdAt
         self.userId = userId
+        self.platform = platform
         self.condition = condition
         self.categoryMain = categoryMain
-        self.platform = platform
         self.minPrice = minPrice
         self.maxPrice = maxPrice
         self.lastMatchedAt = lastMatchedAt
@@ -46,9 +46,9 @@ public struct ListCompWatchlistsItem: Codable, JSONEncodable, Hashable {
         case name
         case createdAt
         case userId
+        case platform
         case condition
         case categoryMain
-        case platform
         case minPrice
         case maxPrice
         case lastMatchedAt
@@ -64,9 +64,9 @@ public struct ListCompWatchlistsItem: Codable, JSONEncodable, Hashable {
         try container.encode(name, forKey: .name)
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(userId, forKey: .userId)
+        try container.encodeIfPresent(platform, forKey: .platform)
         try container.encodeIfPresent(condition, forKey: .condition)
         try container.encodeIfPresent(categoryMain, forKey: .categoryMain)
-        try container.encodeIfPresent(platform, forKey: .platform)
         try container.encodeIfPresent(minPrice, forKey: .minPrice)
         try container.encodeIfPresent(maxPrice, forKey: .maxPrice)
         try container.encodeIfPresent(lastMatchedAt, forKey: .lastMatchedAt)

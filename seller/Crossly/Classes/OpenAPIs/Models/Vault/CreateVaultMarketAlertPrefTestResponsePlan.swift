@@ -18,13 +18,13 @@ public struct CreateVaultMarketAlertPrefTestResponsePlan: Codable, JSONEncodable
         case send = "send"
         case quiet = "quiet"
     }
-    public enum Webhook: String, Codable, CaseIterable {
+    public enum Push: String, Codable, CaseIterable {
         case unavailable = "unavailable"
         case off = "off"
         case send = "send"
         case quiet = "quiet"
     }
-    public enum Push: String, Codable, CaseIterable {
+    public enum Webhook: String, Codable, CaseIterable {
         case unavailable = "unavailable"
         case off = "off"
         case send = "send"
@@ -43,23 +43,23 @@ public struct CreateVaultMarketAlertPrefTestResponsePlan: Codable, JSONEncodable
         case quiet = "quiet"
     }
     public var email: Email
-    public var webhook: Webhook
     public var push: Push
+    public var webhook: Webhook
     public var telegram: Telegram
     public var terminal: Terminal
 
-    public init(email: Email, webhook: Webhook, push: Push, telegram: Telegram, terminal: Terminal) {
+    public init(email: Email, push: Push, webhook: Webhook, telegram: Telegram, terminal: Terminal) {
         self.email = email
-        self.webhook = webhook
         self.push = push
+        self.webhook = webhook
         self.telegram = telegram
         self.terminal = terminal
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case email
-        case webhook
         case push
+        case webhook
         case telegram
         case terminal
     }
@@ -69,8 +69,8 @@ public struct CreateVaultMarketAlertPrefTestResponsePlan: Codable, JSONEncodable
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(email, forKey: .email)
-        try container.encode(webhook, forKey: .webhook)
         try container.encode(push, forKey: .push)
+        try container.encode(webhook, forKey: .webhook)
         try container.encode(telegram, forKey: .telegram)
         try container.encode(terminal, forKey: .terminal)
     }

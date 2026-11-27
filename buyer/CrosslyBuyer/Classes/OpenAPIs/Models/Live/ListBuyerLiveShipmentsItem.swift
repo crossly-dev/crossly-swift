@@ -13,40 +13,40 @@ import AnyCodable
 public struct ListBuyerLiveShipmentsItem: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var status: String
-    public var orders: [ListBuyerLiveShipmentsItemOrders]
-    public var carrier: String?
-    public var trackingNumber: String?
-    public var labelUrl: String?
     public var streamId: String
-    public var refundedPostageCents: Double
     public var streamTitle: String
+    public var status: String
     public var buyerName: String?
+    public var trackingNumber: String?
+    public var carrier: String?
+    public var labelUrl: String?
+    public var refundedPostageCents: Double
+    public var orders: [ListBuyerLiveShipmentsItemOrders]
 
-    public init(id: String, status: String, orders: [ListBuyerLiveShipmentsItemOrders], carrier: String? = nil, trackingNumber: String? = nil, labelUrl: String? = nil, streamId: String, refundedPostageCents: Double, streamTitle: String, buyerName: String? = nil) {
+    public init(id: String, streamId: String, streamTitle: String, status: String, buyerName: String? = nil, trackingNumber: String? = nil, carrier: String? = nil, labelUrl: String? = nil, refundedPostageCents: Double, orders: [ListBuyerLiveShipmentsItemOrders]) {
         self.id = id
-        self.status = status
-        self.orders = orders
-        self.carrier = carrier
-        self.trackingNumber = trackingNumber
-        self.labelUrl = labelUrl
         self.streamId = streamId
-        self.refundedPostageCents = refundedPostageCents
         self.streamTitle = streamTitle
+        self.status = status
         self.buyerName = buyerName
+        self.trackingNumber = trackingNumber
+        self.carrier = carrier
+        self.labelUrl = labelUrl
+        self.refundedPostageCents = refundedPostageCents
+        self.orders = orders
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case status
-        case orders
-        case carrier
-        case trackingNumber
-        case labelUrl
         case streamId
-        case refundedPostageCents
         case streamTitle
+        case status
         case buyerName
+        case trackingNumber
+        case carrier
+        case labelUrl
+        case refundedPostageCents
+        case orders
     }
 
     // Encodable protocol methods
@@ -54,15 +54,15 @@ public struct ListBuyerLiveShipmentsItem: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(status, forKey: .status)
-        try container.encode(orders, forKey: .orders)
-        try container.encodeIfPresent(carrier, forKey: .carrier)
-        try container.encodeIfPresent(trackingNumber, forKey: .trackingNumber)
-        try container.encodeIfPresent(labelUrl, forKey: .labelUrl)
         try container.encode(streamId, forKey: .streamId)
-        try container.encode(refundedPostageCents, forKey: .refundedPostageCents)
         try container.encode(streamTitle, forKey: .streamTitle)
+        try container.encode(status, forKey: .status)
         try container.encodeIfPresent(buyerName, forKey: .buyerName)
+        try container.encodeIfPresent(trackingNumber, forKey: .trackingNumber)
+        try container.encodeIfPresent(carrier, forKey: .carrier)
+        try container.encodeIfPresent(labelUrl, forKey: .labelUrl)
+        try container.encode(refundedPostageCents, forKey: .refundedPostageCents)
+        try container.encode(orders, forKey: .orders)
     }
 }
 

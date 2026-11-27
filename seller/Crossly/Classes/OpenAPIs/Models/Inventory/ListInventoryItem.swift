@@ -12,15 +12,24 @@ import AnyCodable
 
 public struct ListInventoryItem: Codable, JSONEncodable, Hashable {
 
+    public enum VaultSellFrom: String, Codable, CaseIterable {
+        case vaultFirst = "vault_first"
+        case warehouseFirst = "warehouse_first"
+        case cheapest = "cheapest"
+    }
     public var id: String
     public var brand: String?
     public var createdAt: Date
     public var updatedAt: Date
     public var userId: String
+    public var status: String
+    public var notes: String?
+    public var source: String
     public var sku: String?
     public var quantity: Double
     public var quantityAvailable: Double
     public var quantityReserved: Double
+    public var wholesaleReserve: Double
     public var quantitySold: Double
     public var originalPrice: String?
     public var condition: String?
@@ -39,7 +48,6 @@ public struct ListInventoryItem: Codable, JSONEncodable, Hashable {
     public var provenanceReceiptId: String?
     public var tags: [String]
     public var labels: [String]
-    public var notes: String?
     public var customLabel: String?
     public var warehouseLocation: String?
     public var storageBin: String?
@@ -47,10 +55,12 @@ public struct ListInventoryItem: Codable, JSONEncodable, Hashable {
     public var marketSkuId: String?
     public var marketVariantId: String?
     public var gradeKey: String?
-    public var grading: ListGradingSubmissionsItemGrading?
+    public var vaultSellFrom: VaultSellFrom?
+    public var grading: CreateBulkBatchItemResponseGrading?
     public var firstListedAt: Date?
     public var includeTaxInLanded: Bool
     public var costBasisCents: Double?
+    public var supplier: ListInventoryItemSupplier?
     public var priceFloorCents: Double?
     public var floorIsNet: Bool
     public var acquiredAt: Date?
@@ -60,20 +70,23 @@ public struct ListInventoryItem: Codable, JSONEncodable, Hashable {
     public var dimensionLIn: String?
     public var dimensionWIn: String?
     public var dimensionHIn: String?
-    public var status: String
-    public var source: String
+    public var allowanceAppId: String?
     public var category: MainSub?
 
-    public init(id: String, brand: String? = nil, createdAt: Date, updatedAt: Date, userId: String, sku: String? = nil, quantity: Double, quantityAvailable: Double, quantityReserved: Double, quantitySold: Double, originalPrice: String? = nil, condition: String? = nil, size: String? = nil, material: String? = nil, style: String? = nil, pattern: String? = nil, department: String? = nil, gender: String? = nil, itemType: String? = nil, sizeSystem: String? = nil, color: [String], defaultTitle: String, images: [String], videoUrl: String? = nil, provenanceReceiptId: String? = nil, tags: [String], labels: [String], notes: String? = nil, customLabel: String? = nil, warehouseLocation: String? = nil, storageBin: String? = nil, storageNote: String? = nil, marketSkuId: String? = nil, marketVariantId: String? = nil, gradeKey: String? = nil, grading: ListGradingSubmissionsItemGrading? = nil, firstListedAt: Date? = nil, includeTaxInLanded: Bool, costBasisCents: Double? = nil, priceFloorCents: Double? = nil, floorIsNet: Bool, acquiredAt: Date? = nil, acquiredSource: String? = nil, weightLb: String? = nil, weightOz: String? = nil, dimensionLIn: String? = nil, dimensionWIn: String? = nil, dimensionHIn: String? = nil, status: String, source: String, category: MainSub? = nil) {
+    public init(id: String, brand: String? = nil, createdAt: Date, updatedAt: Date, userId: String, status: String, notes: String? = nil, source: String, sku: String? = nil, quantity: Double, quantityAvailable: Double, quantityReserved: Double, wholesaleReserve: Double, quantitySold: Double, originalPrice: String? = nil, condition: String? = nil, size: String? = nil, material: String? = nil, style: String? = nil, pattern: String? = nil, department: String? = nil, gender: String? = nil, itemType: String? = nil, sizeSystem: String? = nil, color: [String], defaultTitle: String, images: [String], videoUrl: String? = nil, provenanceReceiptId: String? = nil, tags: [String], labels: [String], customLabel: String? = nil, warehouseLocation: String? = nil, storageBin: String? = nil, storageNote: String? = nil, marketSkuId: String? = nil, marketVariantId: String? = nil, gradeKey: String? = nil, vaultSellFrom: VaultSellFrom? = nil, grading: CreateBulkBatchItemResponseGrading? = nil, firstListedAt: Date? = nil, includeTaxInLanded: Bool, costBasisCents: Double? = nil, supplier: ListInventoryItemSupplier? = nil, priceFloorCents: Double? = nil, floorIsNet: Bool, acquiredAt: Date? = nil, acquiredSource: String? = nil, weightLb: String? = nil, weightOz: String? = nil, dimensionLIn: String? = nil, dimensionWIn: String? = nil, dimensionHIn: String? = nil, allowanceAppId: String? = nil, category: MainSub? = nil) {
         self.id = id
         self.brand = brand
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.userId = userId
+        self.status = status
+        self.notes = notes
+        self.source = source
         self.sku = sku
         self.quantity = quantity
         self.quantityAvailable = quantityAvailable
         self.quantityReserved = quantityReserved
+        self.wholesaleReserve = wholesaleReserve
         self.quantitySold = quantitySold
         self.originalPrice = originalPrice
         self.condition = condition
@@ -92,7 +105,6 @@ public struct ListInventoryItem: Codable, JSONEncodable, Hashable {
         self.provenanceReceiptId = provenanceReceiptId
         self.tags = tags
         self.labels = labels
-        self.notes = notes
         self.customLabel = customLabel
         self.warehouseLocation = warehouseLocation
         self.storageBin = storageBin
@@ -100,10 +112,12 @@ public struct ListInventoryItem: Codable, JSONEncodable, Hashable {
         self.marketSkuId = marketSkuId
         self.marketVariantId = marketVariantId
         self.gradeKey = gradeKey
+        self.vaultSellFrom = vaultSellFrom
         self.grading = grading
         self.firstListedAt = firstListedAt
         self.includeTaxInLanded = includeTaxInLanded
         self.costBasisCents = costBasisCents
+        self.supplier = supplier
         self.priceFloorCents = priceFloorCents
         self.floorIsNet = floorIsNet
         self.acquiredAt = acquiredAt
@@ -113,8 +127,7 @@ public struct ListInventoryItem: Codable, JSONEncodable, Hashable {
         self.dimensionLIn = dimensionLIn
         self.dimensionWIn = dimensionWIn
         self.dimensionHIn = dimensionHIn
-        self.status = status
-        self.source = source
+        self.allowanceAppId = allowanceAppId
         self.category = category
     }
 
@@ -124,10 +137,14 @@ public struct ListInventoryItem: Codable, JSONEncodable, Hashable {
         case createdAt
         case updatedAt
         case userId
+        case status
+        case notes
+        case source
         case sku
         case quantity
         case quantityAvailable
         case quantityReserved
+        case wholesaleReserve
         case quantitySold
         case originalPrice
         case condition
@@ -146,7 +163,6 @@ public struct ListInventoryItem: Codable, JSONEncodable, Hashable {
         case provenanceReceiptId
         case tags
         case labels
-        case notes
         case customLabel
         case warehouseLocation
         case storageBin
@@ -154,10 +170,12 @@ public struct ListInventoryItem: Codable, JSONEncodable, Hashable {
         case marketSkuId
         case marketVariantId
         case gradeKey
+        case vaultSellFrom
         case grading
         case firstListedAt
         case includeTaxInLanded
         case costBasisCents
+        case supplier
         case priceFloorCents
         case floorIsNet
         case acquiredAt
@@ -167,8 +185,7 @@ public struct ListInventoryItem: Codable, JSONEncodable, Hashable {
         case dimensionLIn
         case dimensionWIn
         case dimensionHIn
-        case status
-        case source
+        case allowanceAppId
         case category
     }
 
@@ -181,10 +198,14 @@ public struct ListInventoryItem: Codable, JSONEncodable, Hashable {
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(updatedAt, forKey: .updatedAt)
         try container.encode(userId, forKey: .userId)
+        try container.encode(status, forKey: .status)
+        try container.encodeIfPresent(notes, forKey: .notes)
+        try container.encode(source, forKey: .source)
         try container.encodeIfPresent(sku, forKey: .sku)
         try container.encode(quantity, forKey: .quantity)
         try container.encode(quantityAvailable, forKey: .quantityAvailable)
         try container.encode(quantityReserved, forKey: .quantityReserved)
+        try container.encode(wholesaleReserve, forKey: .wholesaleReserve)
         try container.encode(quantitySold, forKey: .quantitySold)
         try container.encodeIfPresent(originalPrice, forKey: .originalPrice)
         try container.encodeIfPresent(condition, forKey: .condition)
@@ -203,7 +224,6 @@ public struct ListInventoryItem: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(provenanceReceiptId, forKey: .provenanceReceiptId)
         try container.encode(tags, forKey: .tags)
         try container.encode(labels, forKey: .labels)
-        try container.encodeIfPresent(notes, forKey: .notes)
         try container.encodeIfPresent(customLabel, forKey: .customLabel)
         try container.encodeIfPresent(warehouseLocation, forKey: .warehouseLocation)
         try container.encodeIfPresent(storageBin, forKey: .storageBin)
@@ -211,10 +231,12 @@ public struct ListInventoryItem: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(marketSkuId, forKey: .marketSkuId)
         try container.encodeIfPresent(marketVariantId, forKey: .marketVariantId)
         try container.encodeIfPresent(gradeKey, forKey: .gradeKey)
+        try container.encodeIfPresent(vaultSellFrom, forKey: .vaultSellFrom)
         try container.encodeIfPresent(grading, forKey: .grading)
         try container.encodeIfPresent(firstListedAt, forKey: .firstListedAt)
         try container.encode(includeTaxInLanded, forKey: .includeTaxInLanded)
         try container.encodeIfPresent(costBasisCents, forKey: .costBasisCents)
+        try container.encodeIfPresent(supplier, forKey: .supplier)
         try container.encodeIfPresent(priceFloorCents, forKey: .priceFloorCents)
         try container.encode(floorIsNet, forKey: .floorIsNet)
         try container.encodeIfPresent(acquiredAt, forKey: .acquiredAt)
@@ -224,8 +246,7 @@ public struct ListInventoryItem: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(dimensionLIn, forKey: .dimensionLIn)
         try container.encodeIfPresent(dimensionWIn, forKey: .dimensionWIn)
         try container.encodeIfPresent(dimensionHIn, forKey: .dimensionHIn)
-        try container.encode(status, forKey: .status)
-        try container.encode(source, forKey: .source)
+        try container.encodeIfPresent(allowanceAppId, forKey: .allowanceAppId)
         try container.encodeIfPresent(category, forKey: .category)
     }
 }

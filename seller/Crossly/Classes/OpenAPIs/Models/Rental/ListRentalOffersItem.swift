@@ -19,18 +19,23 @@ public struct ListRentalOffersItem: Codable, JSONEncodable, Hashable {
     public var createdAt: String
     public var updatedAt: String
     public var active: Bool
+    public var quantity: Double
     public var platformListingId: String
+    public var storefrontId: String?
+    public var options: [String: AnyCodable]
     public var sellerUserId: String
     public var depositCents: Double
-    public var dailyCents: Double
-    public var weeklyCents: Double?
     public var minDays: Double
     public var maxDays: Double
+    public var dailyCents: Double
+    public var weeklyCents: Double?
     public var bufferDays: Double
     public var rentOnly: Bool
     public var requireApproval: Bool
+    public var blackoutRanges: [StartEnd]
+    public var returnPolicy: String?
 
-    public init(slug: String, listingId: String, title: String, imageUrl: String, createdAt: String, updatedAt: String, active: Bool, platformListingId: String, sellerUserId: String, depositCents: Double, dailyCents: Double, weeklyCents: Double? = nil, minDays: Double, maxDays: Double, bufferDays: Double, rentOnly: Bool, requireApproval: Bool) {
+    public init(slug: String, listingId: String, title: String, imageUrl: String, createdAt: String, updatedAt: String, active: Bool, quantity: Double, platformListingId: String, storefrontId: String? = nil, options: [String: AnyCodable], sellerUserId: String, depositCents: Double, minDays: Double, maxDays: Double, dailyCents: Double, weeklyCents: Double? = nil, bufferDays: Double, rentOnly: Bool, requireApproval: Bool, blackoutRanges: [StartEnd], returnPolicy: String? = nil) {
         self.slug = slug
         self.listingId = listingId
         self.title = title
@@ -38,16 +43,21 @@ public struct ListRentalOffersItem: Codable, JSONEncodable, Hashable {
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.active = active
+        self.quantity = quantity
         self.platformListingId = platformListingId
+        self.storefrontId = storefrontId
+        self.options = options
         self.sellerUserId = sellerUserId
         self.depositCents = depositCents
-        self.dailyCents = dailyCents
-        self.weeklyCents = weeklyCents
         self.minDays = minDays
         self.maxDays = maxDays
+        self.dailyCents = dailyCents
+        self.weeklyCents = weeklyCents
         self.bufferDays = bufferDays
         self.rentOnly = rentOnly
         self.requireApproval = requireApproval
+        self.blackoutRanges = blackoutRanges
+        self.returnPolicy = returnPolicy
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -58,16 +68,21 @@ public struct ListRentalOffersItem: Codable, JSONEncodable, Hashable {
         case createdAt
         case updatedAt
         case active
+        case quantity
         case platformListingId
+        case storefrontId
+        case options
         case sellerUserId
         case depositCents
-        case dailyCents
-        case weeklyCents
         case minDays
         case maxDays
+        case dailyCents
+        case weeklyCents
         case bufferDays
         case rentOnly
         case requireApproval
+        case blackoutRanges
+        case returnPolicy
     }
 
     // Encodable protocol methods
@@ -81,16 +96,21 @@ public struct ListRentalOffersItem: Codable, JSONEncodable, Hashable {
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(updatedAt, forKey: .updatedAt)
         try container.encode(active, forKey: .active)
+        try container.encode(quantity, forKey: .quantity)
         try container.encode(platformListingId, forKey: .platformListingId)
+        try container.encodeIfPresent(storefrontId, forKey: .storefrontId)
+        try container.encode(options, forKey: .options)
         try container.encode(sellerUserId, forKey: .sellerUserId)
         try container.encode(depositCents, forKey: .depositCents)
-        try container.encode(dailyCents, forKey: .dailyCents)
-        try container.encodeIfPresent(weeklyCents, forKey: .weeklyCents)
         try container.encode(minDays, forKey: .minDays)
         try container.encode(maxDays, forKey: .maxDays)
+        try container.encode(dailyCents, forKey: .dailyCents)
+        try container.encodeIfPresent(weeklyCents, forKey: .weeklyCents)
         try container.encode(bufferDays, forKey: .bufferDays)
         try container.encode(rentOnly, forKey: .rentOnly)
         try container.encode(requireApproval, forKey: .requireApproval)
+        try container.encode(blackoutRanges, forKey: .blackoutRanges)
+        try container.encodeIfPresent(returnPolicy, forKey: .returnPolicy)
     }
 }
 

@@ -12,17 +12,17 @@ import AnyCodable
 
 public struct GetBuyerCollectionSetResponseDataGroup: Codable, JSONEncodable, Hashable {
 
-    public var brand: String
     public var category: String
+    public var brand: String
     public var model: String
     public var brandSlug: String
     public var modelSlug: String
     public var total: Double
     public var owned: Double
 
-    public init(brand: String, category: String, model: String, brandSlug: String, modelSlug: String, total: Double, owned: Double) {
-        self.brand = brand
+    public init(category: String, brand: String, model: String, brandSlug: String, modelSlug: String, total: Double, owned: Double) {
         self.category = category
+        self.brand = brand
         self.model = model
         self.brandSlug = brandSlug
         self.modelSlug = modelSlug
@@ -31,8 +31,8 @@ public struct GetBuyerCollectionSetResponseDataGroup: Codable, JSONEncodable, Ha
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case brand
         case category
+        case brand
         case model
         case brandSlug
         case modelSlug
@@ -44,8 +44,8 @@ public struct GetBuyerCollectionSetResponseDataGroup: Codable, JSONEncodable, Ha
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(brand, forKey: .brand)
         try container.encode(category, forKey: .category)
+        try container.encode(brand, forKey: .brand)
         try container.encode(model, forKey: .model)
         try container.encode(brandSlug, forKey: .brandSlug)
         try container.encode(modelSlug, forKey: .modelSlug)

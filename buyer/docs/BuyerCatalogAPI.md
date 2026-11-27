@@ -596,12 +596,12 @@ Name | Type | Description  | Notes
 
 # **getBuyerCatalogListingShipping**
 ```swift
-    open class func getBuyerCatalogListingShipping(slug: String, zip: String? = nil, country: String? = nil, quantity: Int? = nil, completion: @escaping (_ data: GetBuyerCatalogListingShippingResponse?, _ error: Error?) -> Void)
+    open class func getBuyerCatalogListingShipping(slug: String, zip: String? = nil, state: String? = nil, country: String? = nil, quantity: Int? = nil, completion: @escaping (_ data: GetBuyerCatalogListingShippingResponse?, _ error: Error?) -> Void)
 ```
 
 Shipping services and prices to a destination.
 
-Lists every shipping service the seller offers to `country` (default: the seller’s own country) with its price for `quantity` units and its delivery window in business days (handling included). `zip` is required for a domestic quote. `shipsToCountry: false` means the seller does not ship there. Pass a service `id` as `shippingServiceId` to POST /api/v1/buyer/checkout, or in `shippingServiceBySeller` to POST /api/v1/buyer/cart/quote.
+Lists every shipping service the seller offers to `country` (default: the seller’s own country) with its price for `quantity` units and its delivery window in business days (handling included). `zip` is required for a domestic quote; `state` is optional. `shipsToCountry: false` means the seller does not ship there (`noShipMessage` says why); `partial: true` means a ZIP or postcode could change the answer. Pass a service `id` as `shippingServiceId` to POST /api/v1/buyer/checkout, or in `shippingServiceBySeller` to POST /api/v1/buyer/cart/quote. A seller on \"buyer pays: calculated\" prices each allowed carrier service from the live label rate for this parcel plus their handling fee (rates cached 15 minutes): those services carry `carrier` and `carrierService`, and `calculatedAtCheckout: true` means a ZIP is needed first.
 
 ### Example
 ```swift
@@ -610,11 +610,12 @@ import CrosslyBuyer
 
 let slug = "slug_example" // String | 
 let zip = "zip_example" // String |  (optional)
+let state = "state_example" // String |  (optional)
 let country = "country_example" // String |  (optional)
 let quantity = 987 // Int |  (optional)
 
 // Shipping services and prices to a destination.
-BuyerCatalogAPI.getBuyerCatalogListingShipping(slug: slug, zip: zip, country: country, quantity: quantity) { (response, error) in
+BuyerCatalogAPI.getBuyerCatalogListingShipping(slug: slug, zip: zip, state: state, country: country, quantity: quantity) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -632,6 +633,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **slug** | **String** |  | 
  **zip** | **String** |  | [optional] 
+ **state** | **String** |  | [optional] 
  **country** | **String** |  | [optional] 
  **quantity** | **Int** |  | [optional] 
 

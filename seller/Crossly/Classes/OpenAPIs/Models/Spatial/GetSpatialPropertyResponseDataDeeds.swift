@@ -14,11 +14,12 @@ public struct GetSpatialPropertyResponseDataDeeds: Codable, JSONEncodable, Hasha
 
     public enum Status: String, Codable, CaseIterable {
         case active = "active"
-        case foreclosed = "foreclosed"
         case grace = "grace"
         case delinquent = "delinquent"
+        case foreclosed = "foreclosed"
     }
     public var id: String
+    public var plotId: String
     public var address: String
     public var label: String
     public var priceCents: Double
@@ -29,8 +30,9 @@ public struct GetSpatialPropertyResponseDataDeeds: Codable, JSONEncodable, Hasha
     public var lease: GetSpatialPropertyResponseDataDeedsLease?
     public var listing: GetSpatialPropertyResponseDataDeedsListing?
 
-    public init(id: String, address: String, label: String, priceCents: Double, maintenanceWeeklyCents: Double, paidThrough: String, status: Status, occupied: Bool, lease: GetSpatialPropertyResponseDataDeedsLease? = nil, listing: GetSpatialPropertyResponseDataDeedsListing? = nil) {
+    public init(id: String, plotId: String, address: String, label: String, priceCents: Double, maintenanceWeeklyCents: Double, paidThrough: String, status: Status, occupied: Bool, lease: GetSpatialPropertyResponseDataDeedsLease? = nil, listing: GetSpatialPropertyResponseDataDeedsListing? = nil) {
         self.id = id
+        self.plotId = plotId
         self.address = address
         self.label = label
         self.priceCents = priceCents
@@ -44,6 +46,7 @@ public struct GetSpatialPropertyResponseDataDeeds: Codable, JSONEncodable, Hasha
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
+        case plotId
         case address
         case label
         case priceCents
@@ -60,6 +63,7 @@ public struct GetSpatialPropertyResponseDataDeeds: Codable, JSONEncodable, Hasha
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
+        try container.encode(plotId, forKey: .plotId)
         try container.encode(address, forKey: .address)
         try container.encode(label, forKey: .label)
         try container.encode(priceCents, forKey: .priceCents)

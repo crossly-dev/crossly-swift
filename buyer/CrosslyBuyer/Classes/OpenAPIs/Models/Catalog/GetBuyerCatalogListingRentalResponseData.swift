@@ -14,16 +14,19 @@ public struct GetBuyerCatalogListingRentalResponseData: Codable, JSONEncodable, 
 
     public var dailyCents: Double
     public var weeklyCents: Double?
-    public var depositCents: Double
+    public var depositCents: Double?
     public var minDays: Double
     public var maxDays: Double
     public var bufferDays: Double
     public var rentOnly: Bool
     public var requireApproval: Bool
     public var available: Bool
+    public var returnPolicy: String?
     public var booked: [GetBuyerCatalogListingRentalResponseDataBooked]
+    public var options: GetBuyerCatalogListingRentalResponseDataOptions
+    public var unitsFree: [String: AnyCodable]
 
-    public init(dailyCents: Double, weeklyCents: Double? = nil, depositCents: Double, minDays: Double, maxDays: Double, bufferDays: Double, rentOnly: Bool, requireApproval: Bool, available: Bool, booked: [GetBuyerCatalogListingRentalResponseDataBooked]) {
+    public init(dailyCents: Double, weeklyCents: Double? = nil, depositCents: Double? = nil, minDays: Double, maxDays: Double, bufferDays: Double, rentOnly: Bool, requireApproval: Bool, available: Bool, returnPolicy: String? = nil, booked: [GetBuyerCatalogListingRentalResponseDataBooked], options: GetBuyerCatalogListingRentalResponseDataOptions, unitsFree: [String: AnyCodable]) {
         self.dailyCents = dailyCents
         self.weeklyCents = weeklyCents
         self.depositCents = depositCents
@@ -33,7 +36,10 @@ public struct GetBuyerCatalogListingRentalResponseData: Codable, JSONEncodable, 
         self.rentOnly = rentOnly
         self.requireApproval = requireApproval
         self.available = available
+        self.returnPolicy = returnPolicy
         self.booked = booked
+        self.options = options
+        self.unitsFree = unitsFree
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -46,7 +52,10 @@ public struct GetBuyerCatalogListingRentalResponseData: Codable, JSONEncodable, 
         case rentOnly
         case requireApproval
         case available
+        case returnPolicy
         case booked
+        case options
+        case unitsFree
     }
 
     // Encodable protocol methods
@@ -55,14 +64,17 @@ public struct GetBuyerCatalogListingRentalResponseData: Codable, JSONEncodable, 
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(dailyCents, forKey: .dailyCents)
         try container.encodeIfPresent(weeklyCents, forKey: .weeklyCents)
-        try container.encode(depositCents, forKey: .depositCents)
+        try container.encodeIfPresent(depositCents, forKey: .depositCents)
         try container.encode(minDays, forKey: .minDays)
         try container.encode(maxDays, forKey: .maxDays)
         try container.encode(bufferDays, forKey: .bufferDays)
         try container.encode(rentOnly, forKey: .rentOnly)
         try container.encode(requireApproval, forKey: .requireApproval)
         try container.encode(available, forKey: .available)
+        try container.encodeIfPresent(returnPolicy, forKey: .returnPolicy)
         try container.encode(booked, forKey: .booked)
+        try container.encode(options, forKey: .options)
+        try container.encode(unitsFree, forKey: .unitsFree)
     }
 }
 

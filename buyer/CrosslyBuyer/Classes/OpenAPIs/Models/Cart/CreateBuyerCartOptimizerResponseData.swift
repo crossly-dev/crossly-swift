@@ -12,28 +12,28 @@ import AnyCodable
 
 public struct CreateBuyerCartOptimizerResponseData: Codable, JSONEncodable, Hashable {
 
+    public var lines: [CreateBuyerCartOptimizerResponseDataLines]
+    public var itemsCents: Double
     public var shippingCents: Double
     public var totalCents: Double
-    public var lines: [CreateBuyerCartOptimizerResponseDataLines]
     public var sellers: Double
-    public var itemsCents: Double
     public var unmatched: [String]
 
-    public init(shippingCents: Double, totalCents: Double, lines: [CreateBuyerCartOptimizerResponseDataLines], sellers: Double, itemsCents: Double, unmatched: [String]) {
+    public init(lines: [CreateBuyerCartOptimizerResponseDataLines], itemsCents: Double, shippingCents: Double, totalCents: Double, sellers: Double, unmatched: [String]) {
+        self.lines = lines
+        self.itemsCents = itemsCents
         self.shippingCents = shippingCents
         self.totalCents = totalCents
-        self.lines = lines
         self.sellers = sellers
-        self.itemsCents = itemsCents
         self.unmatched = unmatched
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case lines
+        case itemsCents
         case shippingCents
         case totalCents
-        case lines
         case sellers
-        case itemsCents
         case unmatched
     }
 
@@ -41,11 +41,11 @@ public struct CreateBuyerCartOptimizerResponseData: Codable, JSONEncodable, Hash
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(lines, forKey: .lines)
+        try container.encode(itemsCents, forKey: .itemsCents)
         try container.encode(shippingCents, forKey: .shippingCents)
         try container.encode(totalCents, forKey: .totalCents)
-        try container.encode(lines, forKey: .lines)
         try container.encode(sellers, forKey: .sellers)
-        try container.encode(itemsCents, forKey: .itemsCents)
         try container.encode(unmatched, forKey: .unmatched)
     }
 }

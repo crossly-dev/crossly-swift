@@ -12,9 +12,9 @@ import AnyCodable
 
 public struct GetAnalyticTodayResponseInbox: Codable, JSONEncodable, Hashable {
 
-    /** Conversations not yet opened (hidden threads excluded). */
+    /** Unread conversations + unopened offers — the Unread tab's rows (services/inbox/attention.ts). */
     public var unread: Double
-    /** Open threads whose newest message is the buyer's. */
+    /** Threads and offers waiting on the seller — the Needs reply tab's rows. */
     public var awaitingReply: Double
     /** Median hours from a buyer's question to the seller's reply, last 90 days; null below MIN_ANSWERED. */
     public var medianResponseHours: Double?

@@ -13,37 +13,37 @@ import AnyCodable
 public struct GetBuyerCollectionSetResponseData: Codable, JSONEncodable, Hashable {
 
     public var group: GetBuyerCollectionSetResponseDataGroup
-    public var leaderboard: [GetBuyerCollectionSetResponseDataLeaderboard]
-    public var missing: Double
-    public var pieces: [GetBuyerCollectionSetResponseDataPieces]
-    public var leaderboardOptIn: Bool
     public var pct: Double
+    public var pieces: [GetBuyerCollectionSetResponseDataPieces]
+    public var missing: Double
     public var missingCostCents: Double
     public var missingUnpriced: Double
+    public var leaderboard: [GetBuyerCollectionSetResponseDataLeaderboard]
     public var myRank: Double?
+    public var leaderboardOptIn: Bool
 
-    public init(group: GetBuyerCollectionSetResponseDataGroup, leaderboard: [GetBuyerCollectionSetResponseDataLeaderboard], missing: Double, pieces: [GetBuyerCollectionSetResponseDataPieces], leaderboardOptIn: Bool, pct: Double, missingCostCents: Double, missingUnpriced: Double, myRank: Double? = nil) {
+    public init(group: GetBuyerCollectionSetResponseDataGroup, pct: Double, pieces: [GetBuyerCollectionSetResponseDataPieces], missing: Double, missingCostCents: Double, missingUnpriced: Double, leaderboard: [GetBuyerCollectionSetResponseDataLeaderboard], myRank: Double? = nil, leaderboardOptIn: Bool) {
         self.group = group
-        self.leaderboard = leaderboard
-        self.missing = missing
-        self.pieces = pieces
-        self.leaderboardOptIn = leaderboardOptIn
         self.pct = pct
+        self.pieces = pieces
+        self.missing = missing
         self.missingCostCents = missingCostCents
         self.missingUnpriced = missingUnpriced
+        self.leaderboard = leaderboard
         self.myRank = myRank
+        self.leaderboardOptIn = leaderboardOptIn
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case group
-        case leaderboard
-        case missing
-        case pieces
-        case leaderboardOptIn
         case pct
+        case pieces
+        case missing
         case missingCostCents
         case missingUnpriced
+        case leaderboard
         case myRank
+        case leaderboardOptIn
     }
 
     // Encodable protocol methods
@@ -51,14 +51,14 @@ public struct GetBuyerCollectionSetResponseData: Codable, JSONEncodable, Hashabl
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(group, forKey: .group)
-        try container.encode(leaderboard, forKey: .leaderboard)
-        try container.encode(missing, forKey: .missing)
-        try container.encode(pieces, forKey: .pieces)
-        try container.encode(leaderboardOptIn, forKey: .leaderboardOptIn)
         try container.encode(pct, forKey: .pct)
+        try container.encode(pieces, forKey: .pieces)
+        try container.encode(missing, forKey: .missing)
         try container.encode(missingCostCents, forKey: .missingCostCents)
         try container.encode(missingUnpriced, forKey: .missingUnpriced)
+        try container.encode(leaderboard, forKey: .leaderboard)
         try container.encodeIfPresent(myRank, forKey: .myRank)
+        try container.encode(leaderboardOptIn, forKey: .leaderboardOptIn)
     }
 }
 

@@ -14,16 +14,16 @@ public struct CreateVaultMarketDealerPoolPreviewResponse: Codable, JSONEncodable
 
     public enum BidLimit: String, Codable, CaseIterable {
         case floor = "floor"
+        case ceiling = "ceiling"
         case noUnits = "no_units"
         case noCash = "no_cash"
-        case ceiling = "ceiling"
         case curveEnd = "curve_end"
     }
     public enum AskLimit: String, Codable, CaseIterable {
         case floor = "floor"
+        case ceiling = "ceiling"
         case noUnits = "no_units"
         case noCash = "no_cash"
-        case ceiling = "ceiling"
         case curveEnd = "curve_end"
     }
     public var buyerFeeBps: Double

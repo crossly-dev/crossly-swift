@@ -17,14 +17,16 @@ public struct GetVaultMarketTcaResponse: Codable, JSONEncodable, Hashable {
     public var to: String
     public var summary: GetVaultMarketTcaResponseSummary
     public var items: [GetVaultMarketTcaResponseItems]
+    public var options: GetVaultMarketTcaResponseOptions
     public var note: String
 
-    public init(account: AccountIdLabel, from: String, to: String, summary: GetVaultMarketTcaResponseSummary, items: [GetVaultMarketTcaResponseItems], note: String) {
+    public init(account: AccountIdLabel, from: String, to: String, summary: GetVaultMarketTcaResponseSummary, items: [GetVaultMarketTcaResponseItems], options: GetVaultMarketTcaResponseOptions, note: String) {
         self.account = account
         self.from = from
         self.to = to
         self.summary = summary
         self.items = items
+        self.options = options
         self.note = note
     }
 
@@ -34,6 +36,7 @@ public struct GetVaultMarketTcaResponse: Codable, JSONEncodable, Hashable {
         case to
         case summary
         case items
+        case options
         case note
     }
 
@@ -46,6 +49,7 @@ public struct GetVaultMarketTcaResponse: Codable, JSONEncodable, Hashable {
         try container.encode(to, forKey: .to)
         try container.encode(summary, forKey: .summary)
         try container.encode(items, forKey: .items)
+        try container.encode(options, forKey: .options)
         try container.encode(note, forKey: .note)
     }
 }

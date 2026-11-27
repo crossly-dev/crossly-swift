@@ -19,12 +19,12 @@ public struct GetWeb3CreatorResponse: Codable, JSONEncodable, Hashable {
     public var royaltyBps: Double?
     public var royaltyEstimateWei: String
     public var sales: GetWeb3CreatorResponseSales
-    public var daily: [GetWeb3CreatorResponseDaily]
-    public var recent: [GetWeb3CreatorResponseRecent]
+    public var daily: [GetCreatorCollectionResponseDataDashboardDaily]
+    public var recent: [GetCreatorCollectionResponseDataDashboardRecent]
     public var holders: GetWeb3CreatorResponseHolders?
-    public var mint: GetWeb3CreatorResponseMint?
+    public var mint: GetCreatorCollectionResponseDataDashboardMint?
 
-    public init(chain: String, contract: String, name: String? = nil, currency: String, royaltyBps: Double? = nil, royaltyEstimateWei: String, sales: GetWeb3CreatorResponseSales, daily: [GetWeb3CreatorResponseDaily], recent: [GetWeb3CreatorResponseRecent], holders: GetWeb3CreatorResponseHolders? = nil, mint: GetWeb3CreatorResponseMint? = nil) {
+    public init(chain: String, contract: String, name: String? = nil, currency: String, royaltyBps: Double? = nil, royaltyEstimateWei: String, sales: GetWeb3CreatorResponseSales, daily: [GetCreatorCollectionResponseDataDashboardDaily], recent: [GetCreatorCollectionResponseDataDashboardRecent], holders: GetWeb3CreatorResponseHolders? = nil, mint: GetCreatorCollectionResponseDataDashboardMint? = nil) {
         self.chain = chain
         self.contract = contract
         self.name = name

@@ -14,13 +14,13 @@ public struct GetVaultMarketTaxLossSuggestionResponseSuggestions: Codable, JSONE
 
     public enum MarkQuality: String, Codable, CaseIterable {
         case _none = "none"
+        case c = "C"
         case a = "A"
         case b = "B"
-        case c = "C"
     }
     public enum Term: String, Codable, CaseIterable {
-        case long = "long"
         case short = "short"
+        case long = "long"
     }
     public var vaultItemId: String
     public var title: String?

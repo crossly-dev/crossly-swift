@@ -1578,6 +1578,50 @@ open class Web3API {
     }
 
     /**
+     After your wallet’s Tensor transaction confirms: `action` place, cancel or accept, with its `signature` and the `wallet` that signed. Checked on chain, then recorded in your Activity. Accept needs listings:write; place and cancel need buyer:offers:write.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createWeb3SolanaTensorBidConfirm(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateWeb3SolanaTensorBidConfirmResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createWeb3SolanaTensorBidConfirmWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     After your wallet’s Tensor transaction confirms: `action` place, cancel or accept, with its `signature` and the `wallet` that signed. Checked on chain, then recorded in your Activity. Accept needs listings:write; place and cancel need buyer:offers:write.
+     - POST /v1/web3/solana/tensor-bids/confirm
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateWeb3SolanaTensorBidConfirmResponse> 
+     */
+    open class func createWeb3SolanaTensorBidConfirmWithRequestBuilder() -> RequestBuilder<CreateWeb3SolanaTensorBidConfirmResponse> {
+        let localVariablePath = "/v1/web3/solana/tensor-bids/confirm"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateWeb3SolanaTensorBidConfirmResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Build a Tensor collection bid (or trait bid with `trait`) for your Solana wallet to sign. Price in lamports.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -1617,6 +1661,324 @@ open class Web3API {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<CreateWeb3SolanaTensorBidPlaceTxResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Lock earned CBX (`baseUnits`, a string) into the best tier it reaches. 409 while a stake or unstake is in progress.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createWeb3StakingStake(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateWeb3StakingStakeResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createWeb3StakingStakeWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Lock earned CBX (`baseUnits`, a string) into the best tier it reaches. 409 while a stake or unstake is in progress.
+     - POST /v1/web3/staking/stake
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateWeb3StakingStakeResponse> 
+     */
+    open class func createWeb3StakingStakeWithRequestBuilder() -> RequestBuilder<CreateWeb3StakingStakeResponse> {
+        let localVariablePath = "/v1/web3/staking/stake"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateWeb3StakingStakeResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Start unstaking: the earn boost stops now, the tokens release when the tier’s cooldown ends. Returns `{ unlocksAt, cooldownDays }`.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createWeb3StakingUnstake(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateWeb3StakingUnstakeResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createWeb3StakingUnstakeWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Start unstaking: the earn boost stops now, the tokens release when the tier’s cooldown ends. Returns `{ unlocksAt, cooldownDays }`.
+     - POST /v1/web3/staking/unstake
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateWeb3StakingUnstakeResponse> 
+     */
+    open class func createWeb3StakingUnstakeWithRequestBuilder() -> RequestBuilder<CreateWeb3StakingUnstakeResponse> {
+        let localVariablePath = "/v1/web3/staking/unstake"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateWeb3StakingUnstakeResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Link one of your verified wallets to the store so it sells NFTs from it and is paid into it.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createWeb3StoreWallet(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateWeb3StoreWalletResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createWeb3StoreWalletWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Link one of your verified wallets to the store so it sells NFTs from it and is paid into it.
+     - POST /v1/web3/store-wallets
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateWeb3StoreWalletResponse> 
+     */
+    open class func createWeb3StoreWalletWithRequestBuilder() -> RequestBuilder<CreateWeb3StoreWalletResponse> {
+        let localVariablePath = "/v1/web3/store-wallets"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateWeb3StoreWalletResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Start adding a selling wallet to the store: the message the wallet signs.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createWeb3StoreWalletChallenge(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateWeb3WalletChallengeResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createWeb3StoreWalletChallengeWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Start adding a selling wallet to the store: the message the wallet signs.
+     - POST /v1/web3/store-wallets/challenge
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateWeb3WalletChallengeResponse> 
+     */
+    open class func createWeb3StoreWalletChallengeWithRequestBuilder() -> RequestBuilder<CreateWeb3WalletChallengeResponse> {
+        let localVariablePath = "/v1/web3/store-wallets/challenge"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateWeb3WalletChallengeResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Add picked NFTs (`tokens: [{ chain, contract, tokenId }]`) from a store wallet to inventory.
+     
+     - parameter walletId: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createWeb3StoreWalletImport(walletId: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateWeb3WalletImportResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createWeb3StoreWalletImportWithRequestBuilder(walletId: walletId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Add picked NFTs (`tokens: [{ chain, contract, tokenId }]`) from a store wallet to inventory.
+     - POST /v1/web3/store-wallets/{walletId}/import
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter walletId: (path)  
+     - returns: RequestBuilder<CreateWeb3WalletImportResponse> 
+     */
+    open class func createWeb3StoreWalletImportWithRequestBuilder(walletId: UUID) -> RequestBuilder<CreateWeb3WalletImportResponse> {
+        var localVariablePath = "/v1/web3/store-wallets/{walletId}/import"
+        let walletIdPreEscape = "\(APIHelper.mapValueToPathItem(walletId))"
+        let walletIdPostEscape = walletIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{walletId}", with: walletIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateWeb3WalletImportResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Sync a store wallet: refresh its NFTs in inventory; new ones are added when the store's link auto-imports.
+     
+     - parameter walletId: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createWeb3StoreWalletSync(walletId: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateWeb3StoreWalletSyncResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createWeb3StoreWalletSyncWithRequestBuilder(walletId: walletId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Sync a store wallet: refresh its NFTs in inventory; new ones are added when the store's link auto-imports.
+     - POST /v1/web3/store-wallets/{walletId}/sync
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter walletId: (path)  
+     - returns: RequestBuilder<CreateWeb3StoreWalletSyncResponse> 
+     */
+    open class func createWeb3StoreWalletSyncWithRequestBuilder(walletId: UUID) -> RequestBuilder<CreateWeb3StoreWalletSyncResponse> {
+        var localVariablePath = "/v1/web3/store-wallets/{walletId}/sync"
+        let walletIdPreEscape = "\(APIHelper.mapValueToPathItem(walletId))"
+        let walletIdPostEscape = walletIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{walletId}", with: walletIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateWeb3StoreWalletSyncResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Finish adding a selling wallet: verify its signature and link it to the store.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createWeb3StoreWalletVerify(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateWeb3StoreWalletResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createWeb3StoreWalletVerifyWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Finish adding a selling wallet: verify its signature and link it to the store.
+     - POST /v1/web3/store-wallets/verify
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateWeb3StoreWalletResponse> 
+     */
+    open class func createWeb3StoreWalletVerifyWithRequestBuilder() -> RequestBuilder<CreateWeb3StoreWalletResponse> {
+        let localVariablePath = "/v1/web3/store-wallets/verify"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateWeb3StoreWalletResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -1769,6 +2131,55 @@ open class Web3API {
     }
 
     /**
+     Add picked NFTs (`tokens`: chain, contract, tokenId; up to 200) from a linked wallet to inventory. Tokens the wallet does not hold are counted in `notInWallet`, never added.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createWeb3WalletImport(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateWeb3WalletImportResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createWeb3WalletImportWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Add picked NFTs (`tokens`: chain, contract, tokenId; up to 200) from a linked wallet to inventory. Tokens the wallet does not hold are counted in `notInWallet`, never added.
+     - POST /v1/web3/wallets/{id}/import
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateWeb3WalletImportResponse> 
+     */
+    open class func createWeb3WalletImportWithRequestBuilder(id: String) -> RequestBuilder<CreateWeb3WalletImportResponse> {
+        var localVariablePath = "/v1/web3/wallets/{id}/import"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateWeb3WalletImportResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Import a linked wallet's NFTs into inventory; archives ones that have left the wallet.
      
      - parameter id: (path)  
@@ -1911,12 +2322,13 @@ open class Web3API {
     }
 
     /**
-     Remove a holder perk. Returns `{ ok }`.
+     DEPRECATED: use /api/v1/discounts/holders/:id. Remove a Collection holders deal. Returns `{ ok }`.
      
      - parameter id: (path)  
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @discardableResult
     open class func deleteWeb3HolderPerk(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: OkResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return deleteWeb3HolderPerkWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
@@ -1930,7 +2342,7 @@ open class Web3API {
     }
 
     /**
-     Remove a holder perk. Returns `{ ok }`.
+     DEPRECATED: use /api/v1/discounts/holders/:id. Remove a Collection holders deal. Returns `{ ok }`.
      - DELETE /v1/web3/holder-perks/{id}
      - BASIC:
        - type: http
@@ -1938,6 +2350,7 @@ open class Web3API {
      - parameter id: (path)  
      - returns: RequestBuilder<OkResponse> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     open class func deleteWeb3HolderPerkWithRequestBuilder(id: String) -> RequestBuilder<OkResponse> {
         var localVariablePath = "/v1/web3/holder-perks/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -2058,6 +2471,55 @@ open class Web3API {
     }
 
     /**
+     Remove every collection perk of a launch. Returns `{ ok }`.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func deleteWeb3LaunchPerk(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: OkResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return deleteWeb3LaunchPerkWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Remove every collection perk of a launch. Returns `{ ok }`.
+     - DELETE /v1/web3/launches/{id}/perks
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<OkResponse> 
+     */
+    open class func deleteWeb3LaunchPerkWithRequestBuilder(id: UUID) -> RequestBuilder<OkResponse> {
+        var localVariablePath = "/v1/web3/launches/{id}/perks"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<OkResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      * enum for parameter marketplace
      */
     public enum Marketplace_deleteWeb3MarketplaceKey: String, CaseIterable {
@@ -2100,6 +2562,55 @@ open class Web3API {
         let marketplacePreEscape = "\(marketplace.rawValue)"
         let marketplacePostEscape = marketplacePreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{marketplace}", with: marketplacePostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<Void>.Type = CrosslyAPI.requestBuilderFactory.getNonDecodableBuilder()
+
+        return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Stop the store selling from a wallet (the wallet and its other stores are unaffected).
+     
+     - parameter walletId: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func deleteWeb3StoreWallet(walletId: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) -> RequestTask {
+        return deleteWeb3StoreWalletWithRequestBuilder(walletId: walletId).execute(apiResponseQueue) { result in
+            switch result {
+            case .success:
+                completion((), nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Stop the store selling from a wallet (the wallet and its other stores are unaffected).
+     - DELETE /v1/web3/store-wallets/{walletId}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter walletId: (path)  
+     - returns: RequestBuilder<Void> 
+     */
+    open class func deleteWeb3StoreWalletWithRequestBuilder(walletId: UUID) -> RequestBuilder<Void> {
+        var localVariablePath = "/v1/web3/store-wallets/{walletId}"
+        let walletIdPreEscape = "\(APIHelper.mapValueToPathItem(walletId))"
+        let walletIdPostEscape = walletIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{walletId}", with: walletIdPostEscape, options: .literal, range: nil)
         let localVariableURLString = CrosslyAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
@@ -2220,6 +2731,51 @@ open class Web3API {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<GetWeb3AuctionResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Every CBX you have, in one read, with the three balances kept apart.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getWeb3Balance(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetWeb3BalanceResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getWeb3BalanceWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Every CBX you have, in one read, with the three balances kept apart.
+     - GET /v1/web3/balances
+     - `credit`: EARNED (withdrawable once matured; `withdrawableBaseUnits` is earned minus anything staked) and GRANTED (in-platform spend only, never withdrawable). `connected`: headroom on your connected-wallet delegation, a ceiling on what Crossly may pull, never a balance. `wallets`: each linked wallet with its own on-chain CBX (`status` read / not_solana / not_live / unavailable). `totals.allBaseUnits` is credit + wallets and never adds the delegation headroom. Amounts are base-unit strings (`decimals`).
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetWeb3BalanceResponse> 
+     */
+    open class func getWeb3BalanceWithRequestBuilder() -> RequestBuilder<GetWeb3BalanceResponse> {
+        let localVariablePath = "/v1/web3/balances"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetWeb3BalanceResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -2926,6 +3482,55 @@ open class Web3API {
     }
 
     /**
+     A launch’s phase timeline, mint progress, proceeds (gross, Crossly’s cut, yours; airdrops excluded), allowlist and art counts, and recent mints.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getWeb3LaunchStat(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetWeb3LaunchStatResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getWeb3LaunchStatWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A launch’s phase timeline, mint progress, proceeds (gross, Crossly’s cut, yours; airdrops excluded), allowlist and art counts, and recent mints.
+     - GET /v1/web3/launches/{id}/stats
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetWeb3LaunchStatResponse> 
+     */
+    open class func getWeb3LaunchStatWithRequestBuilder(id: String) -> RequestBuilder<GetWeb3LaunchStatResponse> {
+        var localVariablePath = "/v1/web3/launches/{id}/stats"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetWeb3LaunchStatResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      A launch’s creator tools: allowlist size and root (and whether the contract has it yet), uploaded art and reveal, supply minted.
      
      - parameter id: (path)  
@@ -3372,6 +3977,144 @@ open class Web3API {
     }
 
     /**
+     Your CBX stake: what is locked, its tier, the tier ladder and your past positions.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getWeb3Staking(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetWeb3StakingResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getWeb3StakingWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your CBX stake: what is locked, its tier, the tier ladder and your past positions.
+     - GET /v1/web3/staking
+     - A stake locks EARNED CBX; it moves nothing and pays no yield. Each tier buys a withdrawal-fee discount and an earn-rate boost on future purchases, and has a cooldown before an unstake releases.
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetWeb3StakingResponse> 
+     */
+    open class func getWeb3StakingWithRequestBuilder() -> RequestBuilder<GetWeb3StakingResponse> {
+        let localVariablePath = "/v1/web3/staking"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetWeb3StakingResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     What a store wallet holds (chain + contract + token id), each marked in-inventory or not.
+     
+     - parameter walletId: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getWeb3StoreWalletHolding(walletId: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetWeb3WalletHoldingResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getWeb3StoreWalletHoldingWithRequestBuilder(walletId: walletId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     What a store wallet holds (chain + contract + token id), each marked in-inventory or not.
+     - GET /v1/web3/store-wallets/{walletId}/holdings
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter walletId: (path)  
+     - returns: RequestBuilder<GetWeb3WalletHoldingResponse> 
+     */
+    open class func getWeb3StoreWalletHoldingWithRequestBuilder(walletId: UUID) -> RequestBuilder<GetWeb3WalletHoldingResponse> {
+        var localVariablePath = "/v1/web3/store-wallets/{walletId}/holdings"
+        let walletIdPreEscape = "\(APIHelper.mapValueToPathItem(walletId))"
+        let walletIdPostEscape = walletIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{walletId}", with: walletIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetWeb3WalletHoldingResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The store's Crossly NFTs: plots (deeds and leases), streets its owner founded and vault receipt tokens in its wallets, with the wallets a plot purchase and a receipt export use.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getWeb3StoreWalletNft(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetWeb3StoreWalletNftResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getWeb3StoreWalletNftWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The store's Crossly NFTs: plots (deeds and leases), streets its owner founded and vault receipt tokens in its wallets, with the wallets a plot purchase and a receipt export use.
+     - GET /v1/web3/store-wallets/nfts
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetWeb3StoreWalletNftResponse> 
+     */
+    open class func getWeb3StoreWalletNftWithRequestBuilder() -> RequestBuilder<GetWeb3StoreWalletNftResponse> {
+        let localVariablePath = "/v1/web3/store-wallets/nfts"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetWeb3StoreWalletNftResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      One NFT: metadata, traits, owner, open listings and offers, activity.
      
      - parameter chain: (path)  
@@ -3426,6 +4169,55 @@ open class Web3API {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<GetWeb3TokenResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     What a linked wallet holds right now, each NFT marked `inInventory` or not. Reads the chain; writes nothing.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getWeb3WalletHolding(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetWeb3WalletHoldingResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getWeb3WalletHoldingWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     What a linked wallet holds right now, each NFT marked `inInventory` or not. Reads the chain; writes nothing.
+     - GET /v1/web3/wallets/{id}/holdings
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetWeb3WalletHoldingResponse> 
+     */
+    open class func getWeb3WalletHoldingWithRequestBuilder(id: String) -> RequestBuilder<GetWeb3WalletHoldingResponse> {
+        var localVariablePath = "/v1/web3/wallets/{id}/holdings"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetWeb3WalletHoldingResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -3925,11 +4717,12 @@ open class Web3API {
     }
 
     /**
-     Your holder perks: percent off your Crossly shop for holders of an NFT collection, best first.
+     DEPRECATED: use /api/v1/discounts/holders. Your Collection holders deals in the old holder-perk shape, best first.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @discardableResult
     open class func listWeb3HolderPerks(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListWeb3HolderPerksResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return listWeb3HolderPerksWithRequestBuilder().execute(apiResponseQueue) { result in
@@ -3943,13 +4736,14 @@ open class Web3API {
     }
 
     /**
-     Your holder perks: percent off your Crossly shop for holders of an NFT collection, best first.
+     DEPRECATED: use /api/v1/discounts/holders. Your Collection holders deals in the old holder-perk shape, best first.
      - GET /v1/web3/holder-perks
      - BASIC:
        - type: http
        - name: PersonalAccessToken
      - returns: RequestBuilder<ListWeb3HolderPerksResponse> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     open class func listWeb3HolderPerksWithRequestBuilder() -> RequestBuilder<ListWeb3HolderPerksResponse> {
         let localVariablePath = "/v1/web3/holder-perks"
         let localVariableURLString = CrosslyAPI.basePath + localVariablePath
@@ -3964,6 +4758,55 @@ open class Web3API {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<ListWeb3HolderPerksResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The perks holders of this launch’s collection get (percent off your shop, early drop access, a World item, a loyalty tier, live early entry, an event ticket).
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listWeb3LaunchPerks(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListWeb3LaunchPerksResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listWeb3LaunchPerksWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The perks holders of this launch’s collection get (percent off your shop, early drop access, a World item, a loyalty tier, live early entry, an event ticket).
+     - GET /v1/web3/launches/{id}/perks
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<ListWeb3LaunchPerksResponse> 
+     */
+    open class func listWeb3LaunchPerksWithRequestBuilder(id: UUID) -> RequestBuilder<ListWeb3LaunchPerksResponse> {
+        var localVariablePath = "/v1/web3/launches/{id}/perks"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListWeb3LaunchPerksResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -4171,7 +5014,7 @@ open class Web3API {
     }
 
     /**
-     Your orders in the Crossly book (listings and offers), any status.
+     Your orders in the Crossly book (listings and offers), any status. With X-Storefront-Id: that store's listings (offers always).
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
@@ -4189,7 +5032,7 @@ open class Web3API {
     }
 
     /**
-     Your orders in the Crossly book (listings and offers), any status.
+     Your orders in the Crossly book (listings and offers), any status. With X-Storefront-Id: that store's listings (offers always).
      - GET /v1/web3/orders
      - BASIC:
        - type: http
@@ -4479,6 +5322,94 @@ open class Web3API {
     }
 
     /**
+     The native-coin balance (SOL, ETH, POL, …) of each of the store's selling wallets, read on chain.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listWeb3StoreWalletBalances(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListWeb3StoreWalletBalancesResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listWeb3StoreWalletBalancesWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The native-coin balance (SOL, ETH, POL, …) of each of the store's selling wallets, read on chain.
+     - GET /v1/web3/store-wallets/balances
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListWeb3StoreWalletBalancesResponse> 
+     */
+    open class func listWeb3StoreWalletBalancesWithRequestBuilder() -> RequestBuilder<ListWeb3StoreWalletBalancesResponse> {
+        let localVariablePath = "/v1/web3/store-wallets/balances"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListWeb3StoreWalletBalancesResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     List the store's selling wallets (X-Storefront-Id; default store when omitted).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listWeb3StoreWallets(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListWeb3StoreWalletsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listWeb3StoreWalletsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     List the store's selling wallets (X-Storefront-Id; default store when omitted).
+     - GET /v1/web3/store-wallets
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListWeb3StoreWalletsResponse> 
+     */
+    open class func listWeb3StoreWalletsWithRequestBuilder() -> RequestBuilder<ListWeb3StoreWalletsResponse> {
+        let localVariablePath = "/v1/web3/store-wallets"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListWeb3StoreWalletsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      List your verified, linked wallets (EVM and Solana).
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -4567,13 +5498,14 @@ open class Web3API {
     }
 
     /**
-     Set the percent off (100–5000 bps) holders of a collection get across your Crossly shop; one perk per collection.
+     DEPRECATED: use /api/v1/discounts/holders. Set the percent off (100–5000 bps) holders of a collection get in your store (the key’s store, else the default); one per collection.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @discardableResult
-    open class func updateWeb3HolderPerk(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListWeb3HolderPerksItem?, _ error: Error?) -> Void)) -> RequestTask {
+    open class func updateWeb3HolderPerk(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: UpdateWeb3HolderPerkResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return updateWeb3HolderPerkWithRequestBuilder().execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
@@ -4585,14 +5517,15 @@ open class Web3API {
     }
 
     /**
-     Set the percent off (100–5000 bps) holders of a collection get across your Crossly shop; one perk per collection.
+     DEPRECATED: use /api/v1/discounts/holders. Set the percent off (100–5000 bps) holders of a collection get in your store (the key’s store, else the default); one per collection.
      - PUT /v1/web3/holder-perks
      - BASIC:
        - type: http
        - name: PersonalAccessToken
-     - returns: RequestBuilder<ListWeb3HolderPerksItem> 
+     - returns: RequestBuilder<UpdateWeb3HolderPerkResponse> 
      */
-    open class func updateWeb3HolderPerkWithRequestBuilder() -> RequestBuilder<ListWeb3HolderPerksItem> {
+    @available(*, deprecated, message: "This operation is deprecated.")
+    open class func updateWeb3HolderPerkWithRequestBuilder() -> RequestBuilder<UpdateWeb3HolderPerkResponse> {
         let localVariablePath = "/v1/web3/holder-perks"
         let localVariableURLString = CrosslyAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -4605,9 +5538,58 @@ open class Web3API {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ListWeb3HolderPerksItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UpdateWeb3HolderPerkResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Edit a launch draft (or a failed deploy) before it deploys: any creation field except chain and owner. The schedule is re-checked; 409 once live.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateWeb3Launch(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: UpdateWeb3LaunchResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateWeb3LaunchWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Edit a launch draft (or a failed deploy) before it deploys: any creation field except chain and owner. The schedule is re-checked; 409 once live.
+     - PATCH /v1/web3/launches/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<UpdateWeb3LaunchResponse> 
+     */
+    open class func updateWeb3LaunchWithRequestBuilder(id: String) -> RequestBuilder<UpdateWeb3LaunchResponse> {
+        var localVariablePath = "/v1/web3/launches/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<UpdateWeb3LaunchResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
 
     /**
@@ -4655,6 +5637,55 @@ open class Web3API {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<UpdateWeb3LaunchAllowlistResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Replace a launch’s collection perks: `{ perks: [{ config: { type, ... }, active }] }`, one per type; a type left out is removed.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateWeb3LaunchPerk(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListWeb3LaunchPerksResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateWeb3LaunchPerkWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Replace a launch’s collection perks: `{ perks: [{ config: { type, ... }, active }] }`, one per type; a type left out is removed.
+     - PUT /v1/web3/launches/{id}/perks
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<ListWeb3LaunchPerksResponse> 
+     */
+    open class func updateWeb3LaunchPerkWithRequestBuilder(id: UUID) -> RequestBuilder<ListWeb3LaunchPerksResponse> {
+        var localVariablePath = "/v1/web3/launches/{id}/perks"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListWeb3LaunchPerksResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -4716,5 +5747,152 @@ open class Web3API {
         let localVariableRequestBuilder: RequestBuilder<ListWeb3MarketplaceKeysItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Turn on or off whether syncing this store wallet adds new NFTs to the store’s inventory (X-Storefront-Id).
+     
+     - parameter walletId: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateWeb3StoreWallet(walletId: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: UpdateWeb3StoreWalletResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateWeb3StoreWalletWithRequestBuilder(walletId: walletId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Turn on or off whether syncing this store wallet adds new NFTs to the store’s inventory (X-Storefront-Id).
+     - PATCH /v1/web3/store-wallets/{walletId}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter walletId: (path)  
+     - returns: RequestBuilder<UpdateWeb3StoreWalletResponse> 
+     */
+    open class func updateWeb3StoreWalletWithRequestBuilder(walletId: UUID) -> RequestBuilder<UpdateWeb3StoreWalletResponse> {
+        var localVariablePath = "/v1/web3/store-wallets/{walletId}"
+        let walletIdPreEscape = "\(APIHelper.mapValueToPathItem(walletId))"
+        let walletIdPostEscape = walletIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{walletId}", with: walletIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<UpdateWeb3StoreWalletResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Make a linked wallet the store's default selling wallet on its network (EVM or Solana).
+     
+     - parameter walletId: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateWeb3StoreWalletDefault(walletId: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListWeb3StoreWalletsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateWeb3StoreWalletDefaultWithRequestBuilder(walletId: walletId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Make a linked wallet the store's default selling wallet on its network (EVM or Solana).
+     - PUT /v1/web3/store-wallets/{walletId}/default
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter walletId: (path)  
+     - returns: RequestBuilder<ListWeb3StoreWalletsResponse> 
+     */
+    open class func updateWeb3StoreWalletDefaultWithRequestBuilder(walletId: UUID) -> RequestBuilder<ListWeb3StoreWalletsResponse> {
+        var localVariablePath = "/v1/web3/store-wallets/{walletId}/default"
+        let walletIdPreEscape = "\(APIHelper.mapValueToPathItem(walletId))"
+        let walletIdPostEscape = walletIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{walletId}", with: walletIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListWeb3StoreWalletsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Change a linked wallet: `autoImport` (a sync adds new NFTs to inventory; off, it only refreshes the ones there) and `label`.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateWeb3Wallet(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: UpdateWeb3WalletResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateWeb3WalletWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Change a linked wallet: `autoImport` (a sync adds new NFTs to inventory; off, it only refreshes the ones there) and `label`.
+     - PATCH /v1/web3/wallets/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<UpdateWeb3WalletResponse> 
+     */
+    open class func updateWeb3WalletWithRequestBuilder(id: String) -> RequestBuilder<UpdateWeb3WalletResponse> {
+        var localVariablePath = "/v1/web3/wallets/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<UpdateWeb3WalletResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
 }

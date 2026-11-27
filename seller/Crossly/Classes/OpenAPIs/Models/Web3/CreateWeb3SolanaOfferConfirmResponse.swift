@@ -13,8 +13,8 @@ import AnyCodable
 public struct CreateWeb3SolanaOfferConfirmResponse: Codable, JSONEncodable, Hashable {
 
     public enum Status: String, Codable, CaseIterable {
-        case filled = "filled"
         case cancelled = "cancelled"
+        case filled = "filled"
     }
     public var status: Status
 

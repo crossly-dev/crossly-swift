@@ -13,8 +13,8 @@ import AnyCodable
 public struct CreateBuyerLockonConfirmResponseIdentifier: Codable, JSONEncodable, Hashable {
 
     public enum Ns: String, Codable, CaseIterable {
-        case styleCode = "style_code"
         case gtin = "gtin"
+        case styleCode = "style_code"
         case legoSet = "lego_set"
         case tcgplayer = "tcgplayer"
         case discogs = "discogs"

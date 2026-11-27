@@ -13,8 +13,8 @@ import AnyCodable
 public struct GetVaultMarketHealthResponseConcentrationByCategory: Codable, JSONEncodable, Hashable {
 
     public enum Band: String, Codable, CaseIterable {
-        case spread = "spread"
         case moderate = "moderate"
+        case spread = "spread"
         case empty = "empty"
         case concentrated = "concentrated"
     }

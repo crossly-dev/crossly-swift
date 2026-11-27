@@ -13,23 +13,23 @@ import AnyCodable
 public struct GetWorldCapabilityWearResponseDataPicks: Codable, JSONEncodable, Hashable {
 
     public var body: String?
-    public var legs: String?
     public var head: String?
+    public var legs: String?
     public var feet: String?
     public var back: String?
 
-    public init(body: String? = nil, legs: String? = nil, head: String? = nil, feet: String? = nil, back: String? = nil) {
+    public init(body: String? = nil, head: String? = nil, legs: String? = nil, feet: String? = nil, back: String? = nil) {
         self.body = body
-        self.legs = legs
         self.head = head
+        self.legs = legs
         self.feet = feet
         self.back = back
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case body
-        case legs
         case head
+        case legs
         case feet
         case back
     }
@@ -39,8 +39,8 @@ public struct GetWorldCapabilityWearResponseDataPicks: Codable, JSONEncodable, H
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(body, forKey: .body)
-        try container.encodeIfPresent(legs, forKey: .legs)
         try container.encodeIfPresent(head, forKey: .head)
+        try container.encodeIfPresent(legs, forKey: .legs)
         try container.encodeIfPresent(feet, forKey: .feet)
         try container.encodeIfPresent(back, forKey: .back)
     }

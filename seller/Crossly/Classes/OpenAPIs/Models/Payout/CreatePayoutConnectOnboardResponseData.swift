@@ -19,14 +19,15 @@ public struct CreatePayoutConnectOnboardResponseData: Codable, JSONEncodable, Ha
     public var url: String
     public var country: String
     public var agreement: Agreement
-    /** False when Stripe offers no way for Crossly to pay this account (see connect.ts). */
     public var payoutsSupported: Bool
+    public var accountSource: String
 
-    public init(url: String, country: String, agreement: Agreement, payoutsSupported: Bool) {
+    public init(url: String, country: String, agreement: Agreement, payoutsSupported: Bool, accountSource: String) {
         self.url = url
         self.country = country
         self.agreement = agreement
         self.payoutsSupported = payoutsSupported
+        self.accountSource = accountSource
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -34,6 +35,7 @@ public struct CreatePayoutConnectOnboardResponseData: Codable, JSONEncodable, Ha
         case country
         case agreement
         case payoutsSupported
+        case accountSource
     }
 
     // Encodable protocol methods
@@ -44,6 +46,7 @@ public struct CreatePayoutConnectOnboardResponseData: Codable, JSONEncodable, Ha
         try container.encode(country, forKey: .country)
         try container.encode(agreement, forKey: .agreement)
         try container.encode(payoutsSupported, forKey: .payoutsSupported)
+        try container.encode(accountSource, forKey: .accountSource)
     }
 }
 

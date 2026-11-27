@@ -13,9 +13,9 @@ import AnyCodable
 public struct CreateBuyerLockonConfirmResponseHudFacts: Codable, JSONEncodable, Hashable {
 
     public enum Tone: String, Codable, CaseIterable {
-        case good = "good"
-        case warn = "warn"
         case neutral = "neutral"
+        case warn = "warn"
+        case good = "good"
     }
     public var label: String
     public var value: String

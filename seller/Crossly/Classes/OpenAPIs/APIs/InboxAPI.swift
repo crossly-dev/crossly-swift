@@ -57,7 +57,7 @@ open class InboxAPI {
     }
 
     /**
-     Create a canned response.
+     Create a canned response (added to the end of the list).
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
@@ -75,7 +75,7 @@ open class InboxAPI {
     }
 
     /**
-     Create a canned response.
+     Create a canned response (added to the end of the list).
      - POST /v1/inbox/canned-responses
      - BASIC:
        - type: http
@@ -385,6 +385,57 @@ open class InboxAPI {
     }
 
     /**
+     Make the buyer an offer inside a conversation (seller → buyer). Only where the conversation's canSendOffer is true (Grailed today). `amount` is in the listing's currency, above 0 and below the listing price (whole dollars on Grailed). The offer is in the thread at once as a message with offerAmount + offerStatus, deliveryStatus 'sending' until the platform confirms.
+     
+     - parameter id: (path)  
+     - parameter createInboxSendOfferRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createInboxSendOffer(id: UUID, createInboxSendOfferRequest: CreateInboxSendOfferRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateInboxSendOfferResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createInboxSendOfferWithRequestBuilder(id: id, createInboxSendOfferRequest: createInboxSendOfferRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Make the buyer an offer inside a conversation (seller → buyer). Only where the conversation's canSendOffer is true (Grailed today). `amount` is in the listing's currency, above 0 and below the listing price (whole dollars on Grailed). The offer is in the thread at once as a message with offerAmount + offerStatus, deliveryStatus 'sending' until the platform confirms.
+     - POST /v1/inbox/{id}/send-offer
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - parameter createInboxSendOfferRequest: (body)  
+     - returns: RequestBuilder<CreateInboxSendOfferResponse> 
+     */
+    open class func createInboxSendOfferWithRequestBuilder(id: UUID, createInboxSendOfferRequest: CreateInboxSendOfferRequest) -> RequestBuilder<CreateInboxSendOfferResponse> {
+        var localVariablePath = "/v1/inbox/{id}/send-offer"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createInboxSendOfferRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateInboxSendOfferResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Answer a video request with a clip you uploaded (POST /v1/video-requests/upload-url, then PUT the file to uploadUrl). The buyer is notified and the clip shows on the listing.
      
      - parameter id: (path)  
@@ -534,11 +585,11 @@ open class InboxAPI {
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func deleteInboxCannedResponse(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateOrderDisputeResponse?, _ error: Error?) -> Void)) -> RequestTask {
+    open class func deleteInboxCannedResponse(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) -> RequestTask {
         return deleteInboxCannedResponseWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
             switch result {
-            case let .success(response):
-                completion(response.body, nil)
+            case .success:
+                completion((), nil)
             case let .failure(error):
                 completion(nil, error)
             }
@@ -552,9 +603,9 @@ open class InboxAPI {
        - type: http
        - name: PersonalAccessToken
      - parameter id: (path)  
-     - returns: RequestBuilder<CreateOrderDisputeResponse> 
+     - returns: RequestBuilder<Void> 
      */
-    open class func deleteInboxCannedResponseWithRequestBuilder(id: UUID) -> RequestBuilder<CreateOrderDisputeResponse> {
+    open class func deleteInboxCannedResponseWithRequestBuilder(id: UUID) -> RequestBuilder<Void> {
         var localVariablePath = "/v1/inbox/canned-responses/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -570,13 +621,13 @@ open class InboxAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<CreateOrderDisputeResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<Void>.Type = CrosslyAPI.requestBuilderFactory.getNonDecodableBuilder()
 
         return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
 
     /**
-     Get one conversation with its messages.
+     Get one conversation with its messages and the item it is about (itemTitle, itemThumbnail, itemPrice, itemCurrency, itemUrl on the platform, listingId in Crossly, crosslyListingSlug, canSendOffer). An offer made in the thread is a message with offerAmount + offerStatus.
      
      - parameter id: (path)  
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -595,7 +646,7 @@ open class InboxAPI {
     }
 
     /**
-     Get one conversation with its messages.
+     Get one conversation with its messages and the item it is about (itemTitle, itemThumbnail, itemPrice, itemCurrency, itemUrl on the platform, listingId in Crossly, crosslyListingSlug, canSendOffer). An offer made in the thread is a message with offerAmount + offerStatus.
      - GET /v1/inbox/{id}
      - BASIC:
        - type: http
@@ -625,7 +676,7 @@ open class InboxAPI {
     }
 
     /**
-     List canned responses.
+     List canned responses in the seller's order.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
@@ -643,7 +694,7 @@ open class InboxAPI {
     }
 
     /**
-     List canned responses.
+     List canned responses in the seller's order.
      - GET /v1/inbox/canned-responses
      - BASIC:
        - type: http
@@ -718,7 +769,7 @@ open class InboxAPI {
     }
 
     /**
-     Sidebar badge: unread conversation count.
+     Unread conversation count (threads only; /v1/inbox/counts adds offers).
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
@@ -736,7 +787,7 @@ open class InboxAPI {
     }
 
     /**
-     Sidebar badge: unread conversation count.
+     Unread conversation count (threads only; /v1/inbox/counts adds offers).
      - GET /v1/inbox/conversations/unread-count
      - BASIC:
        - type: http
@@ -762,16 +813,14 @@ open class InboxAPI {
     }
 
     /**
-     List conversations.
+     Inbox badges: unread and needs-reply, split into conversations and offers.
      
-     - parameter page: (query)  (optional, default to 1)
-     - parameter limit: (query)  (optional, default to 25)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func listInbox(page: Int? = nil, limit: Int? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListInboxResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return listInboxWithRequestBuilder(page: page, limit: limit).execute(apiResponseQueue) { result in
+    open class func getInboxCount(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetInboxCountResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getInboxCountWithRequestBuilder().execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -782,16 +831,72 @@ open class InboxAPI {
     }
 
     /**
-     List conversations.
+     Inbox badges: unread and needs-reply, split into conversations and offers.
+     - GET /v1/inbox/counts
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetInboxCountResponse> 
+     */
+    open class func getInboxCountWithRequestBuilder() -> RequestBuilder<GetInboxCountResponse> {
+        let localVariablePath = "/v1/inbox/counts"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetInboxCountResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     * enum for parameter filter
+     */
+    public enum Filter_listInbox: String, CaseIterable {
+        case unread = "unread"
+        case needsReply = "needs_reply"
+    }
+
+    /**
+     List conversations. `filter` narrows to the rows GET /v1/inbox/counts counts.
+     
+     - parameter page: (query)  (optional, default to 1)
+     - parameter limit: (query)  (optional, default to 25)
+     - parameter filter: (query) unread | needs_reply (services/inbox/attention.ts). Omit for all. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listInbox(page: Int? = nil, limit: Int? = nil, filter: Filter_listInbox? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListInboxResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listInboxWithRequestBuilder(page: page, limit: limit, filter: filter).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     List conversations. `filter` narrows to the rows GET /v1/inbox/counts counts.
      - GET /v1/inbox
      - BASIC:
        - type: http
        - name: PersonalAccessToken
      - parameter page: (query)  (optional, default to 1)
      - parameter limit: (query)  (optional, default to 25)
+     - parameter filter: (query) unread | needs_reply (services/inbox/attention.ts). Omit for all. (optional)
      - returns: RequestBuilder<ListInboxResponse> 
      */
-    open class func listInboxWithRequestBuilder(page: Int? = nil, limit: Int? = nil) -> RequestBuilder<ListInboxResponse> {
+    open class func listInboxWithRequestBuilder(page: Int? = nil, limit: Int? = nil, filter: Filter_listInbox? = nil) -> RequestBuilder<ListInboxResponse> {
         let localVariablePath = "/v1/inbox"
         let localVariableURLString = CrosslyAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -800,6 +905,7 @@ open class InboxAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "page": page?.encodeToJSON(),
             "limit": limit?.encodeToJSON(),
+            "filter": filter?.encodeToJSON(),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -902,6 +1008,53 @@ open class InboxAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<CreateInboxCannedResponseResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Reorder canned responses.
+     
+     - parameter updateInboxCannedResponseOrderRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateInboxCannedResponseOrder(updateInboxCannedResponseOrderRequest: UpdateInboxCannedResponseOrderRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetInboxCannedResponseResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateInboxCannedResponseOrderWithRequestBuilder(updateInboxCannedResponseOrderRequest: updateInboxCannedResponseOrderRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Reorder canned responses.
+     - PUT /v1/inbox/canned-responses/order
+     - Pass EVERY canned response id in the new order (first = top of the picker). A list with an unknown, missing or repeated id is refused with a validation error and nothing changes.
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter updateInboxCannedResponseOrderRequest: (body)  
+     - returns: RequestBuilder<GetInboxCannedResponseResponse> 
+     */
+    open class func updateInboxCannedResponseOrderWithRequestBuilder(updateInboxCannedResponseOrderRequest: UpdateInboxCannedResponseOrderRequest) -> RequestBuilder<GetInboxCannedResponseResponse> {
+        let localVariablePath = "/v1/inbox/canned-responses/order"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: updateInboxCannedResponseOrderRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetInboxCannedResponseResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }

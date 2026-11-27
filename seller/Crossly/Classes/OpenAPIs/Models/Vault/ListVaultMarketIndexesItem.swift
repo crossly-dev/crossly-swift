@@ -16,9 +16,9 @@ public struct ListVaultMarketIndexesItem: Codable, JSONEncodable, Hashable {
         case custom = "custom"
         case brand = "brand"
         case category = "category"
+        case segment = "segment"
         case curated = "curated"
         case composite = "composite"
-        case segment = "segment"
     }
     public enum Weighting: String, Codable, CaseIterable {
         case mark = "mark"

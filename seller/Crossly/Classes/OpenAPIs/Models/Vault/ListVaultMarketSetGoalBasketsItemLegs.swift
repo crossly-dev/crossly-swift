@@ -14,9 +14,9 @@ public struct ListVaultMarketSetGoalBasketsItemLegs: Codable, JSONEncodable, Has
 
     public enum Status: String, Codable, CaseIterable {
         case pending = "pending"
-        case filled = "filled"
         case cancelled = "cancelled"
         case rejected = "rejected"
+        case filled = "filled"
         case working = "working"
     }
     public var id: String

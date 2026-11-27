@@ -13,17 +13,20 @@ import AnyCodable
 public struct GetVaultMarketPortfolioResponse: Codable, JSONEncodable, Hashable {
 
     public var holdings: [GetVaultMarketPortfolioResponseHoldings]
+    public var shares: GetVaultMarketPortfolioResponseShares
     public var onLoan: [GetVaultMarketPortfolioResponseOnLoan]
     public var totals: GetVaultMarketPortfolioResponseTotals
 
-    public init(holdings: [GetVaultMarketPortfolioResponseHoldings], onLoan: [GetVaultMarketPortfolioResponseOnLoan], totals: GetVaultMarketPortfolioResponseTotals) {
+    public init(holdings: [GetVaultMarketPortfolioResponseHoldings], shares: GetVaultMarketPortfolioResponseShares, onLoan: [GetVaultMarketPortfolioResponseOnLoan], totals: GetVaultMarketPortfolioResponseTotals) {
         self.holdings = holdings
+        self.shares = shares
         self.onLoan = onLoan
         self.totals = totals
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case holdings
+        case shares
         case onLoan
         case totals
     }
@@ -33,6 +36,7 @@ public struct GetVaultMarketPortfolioResponse: Codable, JSONEncodable, Hashable 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(holdings, forKey: .holdings)
+        try container.encode(shares, forKey: .shares)
         try container.encode(onLoan, forKey: .onLoan)
         try container.encode(totals, forKey: .totals)
     }

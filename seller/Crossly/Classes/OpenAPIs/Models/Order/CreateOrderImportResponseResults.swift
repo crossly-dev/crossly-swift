@@ -13,9 +13,9 @@ import AnyCodable
 public struct CreateOrderImportResponseResults: Codable, JSONEncodable, Hashable {
 
     public enum Reason: String, Codable, CaseIterable {
-        case unsupportedPlatform = "unsupported_platform"
         case notConnected = "not_connected"
         case unknownPlatform = "unknown_platform"
+        case unsupportedPlatform = "unsupported_platform"
     }
     public var platform: String
     public var ok: Bool

@@ -15,14 +15,14 @@ public struct GetVaultMarketPositionResponseLoans: Codable, JSONEncodable, Hasha
     public var id: String
     public var status: String
     public var closedAt: Date?
+    public var openedAt: Date
     public var vaultItemId: String
     public var holderAccountId: String?
-    public var openedAt: Date
+    public var positionId: String
     public var bookKey: String
     public var feesPaidCents: Double
     public var latePenaltyPaidCents: Double
     public var lenderUserId: String
-    public var positionId: String
     public var aprBps: Double
     public var markCentsAtOpen: Double
     public var feesAccruedCents: String
@@ -32,18 +32,18 @@ public struct GetVaultMarketPositionResponseLoans: Codable, JSONEncodable, Hasha
     public var returnedVaultItemId: String?
     public var latePenaltyAccruedCents: String
 
-    public init(id: String, status: String, closedAt: Date? = nil, vaultItemId: String, holderAccountId: String? = nil, openedAt: Date, bookKey: String, feesPaidCents: Double, latePenaltyPaidCents: Double, lenderUserId: String, positionId: String, aprBps: Double, markCentsAtOpen: Double, feesAccruedCents: String, lenderStorageCents: Double, recalledAt: Date? = nil, recallDueAt: Date? = nil, returnedVaultItemId: String? = nil, latePenaltyAccruedCents: String) {
+    public init(id: String, status: String, closedAt: Date? = nil, openedAt: Date, vaultItemId: String, holderAccountId: String? = nil, positionId: String, bookKey: String, feesPaidCents: Double, latePenaltyPaidCents: Double, lenderUserId: String, aprBps: Double, markCentsAtOpen: Double, feesAccruedCents: String, lenderStorageCents: Double, recalledAt: Date? = nil, recallDueAt: Date? = nil, returnedVaultItemId: String? = nil, latePenaltyAccruedCents: String) {
         self.id = id
         self.status = status
         self.closedAt = closedAt
+        self.openedAt = openedAt
         self.vaultItemId = vaultItemId
         self.holderAccountId = holderAccountId
-        self.openedAt = openedAt
+        self.positionId = positionId
         self.bookKey = bookKey
         self.feesPaidCents = feesPaidCents
         self.latePenaltyPaidCents = latePenaltyPaidCents
         self.lenderUserId = lenderUserId
-        self.positionId = positionId
         self.aprBps = aprBps
         self.markCentsAtOpen = markCentsAtOpen
         self.feesAccruedCents = feesAccruedCents
@@ -58,14 +58,14 @@ public struct GetVaultMarketPositionResponseLoans: Codable, JSONEncodable, Hasha
         case id
         case status
         case closedAt
+        case openedAt
         case vaultItemId
         case holderAccountId
-        case openedAt
+        case positionId
         case bookKey
         case feesPaidCents
         case latePenaltyPaidCents
         case lenderUserId
-        case positionId
         case aprBps
         case markCentsAtOpen
         case feesAccruedCents
@@ -83,14 +83,14 @@ public struct GetVaultMarketPositionResponseLoans: Codable, JSONEncodable, Hasha
         try container.encode(id, forKey: .id)
         try container.encode(status, forKey: .status)
         try container.encodeIfPresent(closedAt, forKey: .closedAt)
+        try container.encode(openedAt, forKey: .openedAt)
         try container.encode(vaultItemId, forKey: .vaultItemId)
         try container.encodeIfPresent(holderAccountId, forKey: .holderAccountId)
-        try container.encode(openedAt, forKey: .openedAt)
+        try container.encode(positionId, forKey: .positionId)
         try container.encode(bookKey, forKey: .bookKey)
         try container.encode(feesPaidCents, forKey: .feesPaidCents)
         try container.encode(latePenaltyPaidCents, forKey: .latePenaltyPaidCents)
         try container.encode(lenderUserId, forKey: .lenderUserId)
-        try container.encode(positionId, forKey: .positionId)
         try container.encode(aprBps, forKey: .aprBps)
         try container.encode(markCentsAtOpen, forKey: .markCentsAtOpen)
         try container.encode(feesAccruedCents, forKey: .feesAccruedCents)

@@ -15,17 +15,20 @@ public struct CreateAccountRequestDeletionResponse: Codable, JSONEncodable, Hash
     public var id: String
     public var scheduledFor: Date
     public var graceDays: Double
+    public var subscriptionsEnding: Double
 
-    public init(id: String, scheduledFor: Date, graceDays: Double) {
+    public init(id: String, scheduledFor: Date, graceDays: Double, subscriptionsEnding: Double) {
         self.id = id
         self.scheduledFor = scheduledFor
         self.graceDays = graceDays
+        self.subscriptionsEnding = subscriptionsEnding
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
         case scheduledFor
         case graceDays
+        case subscriptionsEnding
     }
 
     // Encodable protocol methods
@@ -35,6 +38,7 @@ public struct CreateAccountRequestDeletionResponse: Codable, JSONEncodable, Hash
         try container.encode(id, forKey: .id)
         try container.encode(scheduledFor, forKey: .scheduledFor)
         try container.encode(graceDays, forKey: .graceDays)
+        try container.encode(subscriptionsEnding, forKey: .subscriptionsEnding)
     }
 }
 

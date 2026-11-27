@@ -18,22 +18,22 @@ public struct ListOrderScanFormsItem: Codable, JSONEncodable, Hashable {
     public var status: String
     public var carrier: String
     public var orderIds: [String]
-    public var documentUrl: String?
-    public var shippoManifestId: String
-    public var shipDate: String
     public var warnings: [String]
+    public var shipDate: String
+    public var shippoManifestId: String
+    public var documentUrl: String?
 
-    public init(id: String, createdAt: Date, userId: String, status: String, carrier: String, orderIds: [String], documentUrl: String? = nil, shippoManifestId: String, shipDate: String, warnings: [String]) {
+    public init(id: String, createdAt: Date, userId: String, status: String, carrier: String, orderIds: [String], warnings: [String], shipDate: String, shippoManifestId: String, documentUrl: String? = nil) {
         self.id = id
         self.createdAt = createdAt
         self.userId = userId
         self.status = status
         self.carrier = carrier
         self.orderIds = orderIds
-        self.documentUrl = documentUrl
-        self.shippoManifestId = shippoManifestId
-        self.shipDate = shipDate
         self.warnings = warnings
+        self.shipDate = shipDate
+        self.shippoManifestId = shippoManifestId
+        self.documentUrl = documentUrl
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -43,10 +43,10 @@ public struct ListOrderScanFormsItem: Codable, JSONEncodable, Hashable {
         case status
         case carrier
         case orderIds
-        case documentUrl
-        case shippoManifestId
-        case shipDate
         case warnings
+        case shipDate
+        case shippoManifestId
+        case documentUrl
     }
 
     // Encodable protocol methods
@@ -59,10 +59,10 @@ public struct ListOrderScanFormsItem: Codable, JSONEncodable, Hashable {
         try container.encode(status, forKey: .status)
         try container.encode(carrier, forKey: .carrier)
         try container.encode(orderIds, forKey: .orderIds)
-        try container.encodeIfPresent(documentUrl, forKey: .documentUrl)
-        try container.encode(shippoManifestId, forKey: .shippoManifestId)
-        try container.encode(shipDate, forKey: .shipDate)
         try container.encode(warnings, forKey: .warnings)
+        try container.encode(shipDate, forKey: .shipDate)
+        try container.encode(shippoManifestId, forKey: .shippoManifestId)
+        try container.encodeIfPresent(documentUrl, forKey: .documentUrl)
     }
 }
 

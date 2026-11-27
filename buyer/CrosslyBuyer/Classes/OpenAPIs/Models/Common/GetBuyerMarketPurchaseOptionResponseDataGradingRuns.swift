@@ -13,25 +13,25 @@ import AnyCodable
 public struct GetBuyerMarketPurchaseOptionResponseDataGradingRuns: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var priceCents: Double
-    public var tierName: String
-    public var cutoffAt: String
     public var graderName: String
+    public var tierName: String
+    public var priceCents: Double
+    public var cutoffAt: String
 
-    public init(id: String, priceCents: Double, tierName: String, cutoffAt: String, graderName: String) {
+    public init(id: String, graderName: String, tierName: String, priceCents: Double, cutoffAt: String) {
         self.id = id
-        self.priceCents = priceCents
-        self.tierName = tierName
-        self.cutoffAt = cutoffAt
         self.graderName = graderName
+        self.tierName = tierName
+        self.priceCents = priceCents
+        self.cutoffAt = cutoffAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case priceCents
-        case tierName
-        case cutoffAt
         case graderName
+        case tierName
+        case priceCents
+        case cutoffAt
     }
 
     // Encodable protocol methods
@@ -39,10 +39,10 @@ public struct GetBuyerMarketPurchaseOptionResponseDataGradingRuns: Codable, JSON
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(priceCents, forKey: .priceCents)
-        try container.encode(tierName, forKey: .tierName)
-        try container.encode(cutoffAt, forKey: .cutoffAt)
         try container.encode(graderName, forKey: .graderName)
+        try container.encode(tierName, forKey: .tierName)
+        try container.encode(priceCents, forKey: .priceCents)
+        try container.encode(cutoffAt, forKey: .cutoffAt)
     }
 }
 

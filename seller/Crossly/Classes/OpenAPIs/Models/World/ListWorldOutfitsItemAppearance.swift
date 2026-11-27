@@ -23,8 +23,9 @@ public struct ListWorldOutfitsItemAppearance: Codable, JSONEncodable, Hashable {
     public var mouth: String?
     /** A body shape (BODY_SHAPES). Optional, like the face presets. */
     public var shape: String?
+    public var outfit: ListWorldOutfitsItemAppearanceOutfit?
 
-    public init(skin: String, hair: String, hairColour: String, eyes: String, build: String, brows: String? = nil, mouth: String? = nil, shape: String? = nil) {
+    public init(skin: String, hair: String, hairColour: String, eyes: String, build: String, brows: String? = nil, mouth: String? = nil, shape: String? = nil, outfit: ListWorldOutfitsItemAppearanceOutfit? = nil) {
         self.skin = skin
         self.hair = hair
         self.hairColour = hairColour
@@ -33,6 +34,7 @@ public struct ListWorldOutfitsItemAppearance: Codable, JSONEncodable, Hashable {
         self.brows = brows
         self.mouth = mouth
         self.shape = shape
+        self.outfit = outfit
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -44,6 +46,7 @@ public struct ListWorldOutfitsItemAppearance: Codable, JSONEncodable, Hashable {
         case brows
         case mouth
         case shape
+        case outfit
     }
 
     // Encodable protocol methods
@@ -58,6 +61,7 @@ public struct ListWorldOutfitsItemAppearance: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(brows, forKey: .brows)
         try container.encodeIfPresent(mouth, forKey: .mouth)
         try container.encodeIfPresent(shape, forKey: .shape)
+        try container.encodeIfPresent(outfit, forKey: .outfit)
     }
 }
 

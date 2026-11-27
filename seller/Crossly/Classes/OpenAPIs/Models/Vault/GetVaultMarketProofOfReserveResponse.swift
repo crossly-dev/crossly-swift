@@ -13,11 +13,11 @@ import AnyCodable
 public struct GetVaultMarketProofOfReserveResponse: Codable, JSONEncodable, Hashable {
 
     public var latest: GetVaultMarketProofOfReserveResponseLatest?
-    public var history: [GetVaultMarketProofOfReserveByDayResponse]
+    public var history: [GetVaultMarketProofOfReserveResponseHistory]
     public var anchoring: GetVaultMarketProofOfReserveResponseAnchoring
     public var method: GetVaultMarketProofOfReserveResponseMethod
 
-    public init(latest: GetVaultMarketProofOfReserveResponseLatest? = nil, history: [GetVaultMarketProofOfReserveByDayResponse], anchoring: GetVaultMarketProofOfReserveResponseAnchoring, method: GetVaultMarketProofOfReserveResponseMethod) {
+    public init(latest: GetVaultMarketProofOfReserveResponseLatest? = nil, history: [GetVaultMarketProofOfReserveResponseHistory], anchoring: GetVaultMarketProofOfReserveResponseAnchoring, method: GetVaultMarketProofOfReserveResponseMethod) {
         self.latest = latest
         self.history = history
         self.anchoring = anchoring

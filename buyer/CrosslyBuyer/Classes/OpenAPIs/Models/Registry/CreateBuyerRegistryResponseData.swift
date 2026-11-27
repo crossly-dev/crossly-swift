@@ -15,23 +15,23 @@ public struct CreateBuyerRegistryResponseData: Codable, JSONEncodable, Hashable 
     public var id: String
     public var createdAt: Date
     public var updatedAt: Date
-    public var token: String
+    public var ownerUserId: String
     public var kind: String
     public var message: String?
-    public var ownerUserId: String
     public var wishlistId: String
+    public var token: String
     public var eventDate: String?
     public var shipAddressId: String?
 
-    public init(id: String, createdAt: Date, updatedAt: Date, token: String, kind: String, message: String? = nil, ownerUserId: String, wishlistId: String, eventDate: String? = nil, shipAddressId: String? = nil) {
+    public init(id: String, createdAt: Date, updatedAt: Date, ownerUserId: String, kind: String, message: String? = nil, wishlistId: String, token: String, eventDate: String? = nil, shipAddressId: String? = nil) {
         self.id = id
         self.createdAt = createdAt
         self.updatedAt = updatedAt
-        self.token = token
+        self.ownerUserId = ownerUserId
         self.kind = kind
         self.message = message
-        self.ownerUserId = ownerUserId
         self.wishlistId = wishlistId
+        self.token = token
         self.eventDate = eventDate
         self.shipAddressId = shipAddressId
     }
@@ -40,11 +40,11 @@ public struct CreateBuyerRegistryResponseData: Codable, JSONEncodable, Hashable 
         case id
         case createdAt
         case updatedAt
-        case token
+        case ownerUserId
         case kind
         case message
-        case ownerUserId
         case wishlistId
+        case token
         case eventDate
         case shipAddressId
     }
@@ -56,11 +56,11 @@ public struct CreateBuyerRegistryResponseData: Codable, JSONEncodable, Hashable 
         try container.encode(id, forKey: .id)
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(updatedAt, forKey: .updatedAt)
-        try container.encode(token, forKey: .token)
+        try container.encode(ownerUserId, forKey: .ownerUserId)
         try container.encode(kind, forKey: .kind)
         try container.encodeIfPresent(message, forKey: .message)
-        try container.encode(ownerUserId, forKey: .ownerUserId)
         try container.encode(wishlistId, forKey: .wishlistId)
+        try container.encode(token, forKey: .token)
         try container.encodeIfPresent(eventDate, forKey: .eventDate)
         try container.encodeIfPresent(shipAddressId, forKey: .shipAddressId)
     }

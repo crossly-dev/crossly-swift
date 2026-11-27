@@ -14,30 +14,30 @@ public struct ListBuyerFeedbackPendingItem: Codable, JSONEncodable, Hashable {
 
     public var purchaseId: String
     public var itemTitle: String
-    public var shippedAt: String?
-    public var deliveredAt: String?
     public var imageUrl: String?
-    public var sellerName: String?
+    public var deliveredAt: String?
+    public var shippedAt: String?
     public var orderedAt: String?
+    public var sellerName: String?
 
-    public init(purchaseId: String, itemTitle: String, shippedAt: String? = nil, deliveredAt: String? = nil, imageUrl: String? = nil, sellerName: String? = nil, orderedAt: String? = nil) {
+    public init(purchaseId: String, itemTitle: String, imageUrl: String? = nil, deliveredAt: String? = nil, shippedAt: String? = nil, orderedAt: String? = nil, sellerName: String? = nil) {
         self.purchaseId = purchaseId
         self.itemTitle = itemTitle
-        self.shippedAt = shippedAt
-        self.deliveredAt = deliveredAt
         self.imageUrl = imageUrl
-        self.sellerName = sellerName
+        self.deliveredAt = deliveredAt
+        self.shippedAt = shippedAt
         self.orderedAt = orderedAt
+        self.sellerName = sellerName
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case purchaseId
         case itemTitle
-        case shippedAt
-        case deliveredAt
         case imageUrl
-        case sellerName
+        case deliveredAt
+        case shippedAt
         case orderedAt
+        case sellerName
     }
 
     // Encodable protocol methods
@@ -46,11 +46,11 @@ public struct ListBuyerFeedbackPendingItem: Codable, JSONEncodable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(purchaseId, forKey: .purchaseId)
         try container.encode(itemTitle, forKey: .itemTitle)
-        try container.encodeIfPresent(shippedAt, forKey: .shippedAt)
-        try container.encodeIfPresent(deliveredAt, forKey: .deliveredAt)
         try container.encodeIfPresent(imageUrl, forKey: .imageUrl)
-        try container.encodeIfPresent(sellerName, forKey: .sellerName)
+        try container.encodeIfPresent(deliveredAt, forKey: .deliveredAt)
+        try container.encodeIfPresent(shippedAt, forKey: .shippedAt)
         try container.encodeIfPresent(orderedAt, forKey: .orderedAt)
+        try container.encodeIfPresent(sellerName, forKey: .sellerName)
     }
 }
 

@@ -15,29 +15,29 @@ public struct GetBuyerListingResaleValueResponseData: Codable, JSONEncodable, Ha
     public var brand: String
     public var category: String
     public var medianCents: Double
-    public var buybackDays: Double
-    public var buybackCents: Double?
     public var comps: Double
     public var keepsPct: Double?
+    public var buybackCents: Double?
+    public var buybackDays: Double
 
-    public init(brand: String, category: String, medianCents: Double, buybackDays: Double, buybackCents: Double? = nil, comps: Double, keepsPct: Double? = nil) {
+    public init(brand: String, category: String, medianCents: Double, comps: Double, keepsPct: Double? = nil, buybackCents: Double? = nil, buybackDays: Double) {
         self.brand = brand
         self.category = category
         self.medianCents = medianCents
-        self.buybackDays = buybackDays
-        self.buybackCents = buybackCents
         self.comps = comps
         self.keepsPct = keepsPct
+        self.buybackCents = buybackCents
+        self.buybackDays = buybackDays
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case brand
         case category
         case medianCents
-        case buybackDays
-        case buybackCents
         case comps
         case keepsPct
+        case buybackCents
+        case buybackDays
     }
 
     // Encodable protocol methods
@@ -47,10 +47,10 @@ public struct GetBuyerListingResaleValueResponseData: Codable, JSONEncodable, Ha
         try container.encode(brand, forKey: .brand)
         try container.encode(category, forKey: .category)
         try container.encode(medianCents, forKey: .medianCents)
-        try container.encode(buybackDays, forKey: .buybackDays)
-        try container.encodeIfPresent(buybackCents, forKey: .buybackCents)
         try container.encode(comps, forKey: .comps)
         try container.encodeIfPresent(keepsPct, forKey: .keepsPct)
+        try container.encodeIfPresent(buybackCents, forKey: .buybackCents)
+        try container.encode(buybackDays, forKey: .buybackDays)
     }
 }
 

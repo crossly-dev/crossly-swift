@@ -17,19 +17,19 @@ public struct ListVaultMarketPositionsRiskItem: Codable, JSONEncodable, Hashable
         case below = "at_or_below"
     }
     public enum Kind: String, Codable, CaseIterable {
-        case long = "long"
         case short = "short"
+        case long = "long"
     }
     public enum Tier: String, Codable, CaseIterable {
-        case standard = "standard"
         case closed = "closed"
+        case standard = "standard"
         case deep = "deep"
         case thin = "thin"
     }
     public enum MarginState: String, Codable, CaseIterable {
-        case buyIn = "buy_in"
         case healthy = "healthy"
         case call = "call"
+        case buyIn = "buy_in"
     }
     /** Signed move from the mark to the liquidation mark (a short's is up, a long's down). */
     public var distanceToLiquidationBps: Double?

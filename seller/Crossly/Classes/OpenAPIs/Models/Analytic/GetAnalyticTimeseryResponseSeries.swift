@@ -15,17 +15,23 @@ public struct GetAnalyticTimeseryResponseSeries: Codable, JSONEncodable, Hashabl
     public var day: String
     public var sales: Double
     public var revenue: Double
+    public var netSalesCents: Double
+    public var netProfitCents: Double
 
-    public init(day: String, sales: Double, revenue: Double) {
+    public init(day: String, sales: Double, revenue: Double, netSalesCents: Double, netProfitCents: Double) {
         self.day = day
         self.sales = sales
         self.revenue = revenue
+        self.netSalesCents = netSalesCents
+        self.netProfitCents = netProfitCents
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case day
         case sales
         case revenue
+        case netSalesCents
+        case netProfitCents
     }
 
     // Encodable protocol methods
@@ -35,6 +41,8 @@ public struct GetAnalyticTimeseryResponseSeries: Codable, JSONEncodable, Hashabl
         try container.encode(day, forKey: .day)
         try container.encode(sales, forKey: .sales)
         try container.encode(revenue, forKey: .revenue)
+        try container.encode(netSalesCents, forKey: .netSalesCents)
+        try container.encode(netProfitCents, forKey: .netProfitCents)
     }
 }
 

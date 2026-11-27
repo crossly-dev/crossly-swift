@@ -17,8 +17,8 @@ public struct ListPayoutCompareItem: Codable, JSONEncodable, Hashable {
         case estimated = "estimated"
     }
     public enum ShippingSource: String, Codable, CaseIterable {
-        case _none = "none"
         case unknown = "unknown"
+        case _none = "none"
         case quoted = "quoted"
         case platformLabel = "platform_label"
         case buyerPaid = "buyer_paid"

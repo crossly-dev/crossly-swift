@@ -13,37 +13,56 @@ import AnyCodable
 public struct SpatialSceneResponseData: Codable, JSONEncodable, Hashable {
 
     public var id: String
+    public var userId: String
+    /** 'collection' | 'warehouse'  Same renderer, opposite contracts. A collection may be arranged for beauty; a warehouse must match the physical room or it is worse than no warehouse, because someone will walk to the wrong shelf. */
+    public var kind: String
+    /** NULL for warehouses and for the generic catch-all room. */
+    public var categorySlug: String?
+    public var name: String
+    /** Public share handle. NULL until someone chooses to share. */
+    public var publicSlug: String?
+    /** 'private' | 'unlisted' | 'public'  Defaults CLOSED. A collection is the one surface in this product that routinely contains things which are not for sale and were never meant to be seen by anybody — that is most of what makes it a collection. */
+    public var visibility: String
+    public var settings: SpatialSceneResponseDataSettings
+    /** kind='shop': the store this showroom belongs to (0830). NULL = a legacy row of the default store. */
+    public var storefrontId: String?
+    /** 1147 kind='shop': a store's showrooms in order; 0 = its primary (one per store, the unique index below). */
+    public var showroomPosition: Double
+    /** 1147 kind='shop': opt-in, stand every live item automatically. Off = only what is pinned shows. */
+    public var autoIncludeInventory: Bool
     public var createdAt: Date
     public var updatedAt: Date
-    public var inventoryItemId: String
-    public var sceneId: String
-    public var inventoryUnitId: String?
-    public var nodeId: String
-    public var slotIndex: Double
-    public var pinned: Bool
 
-    public init(id: String, createdAt: Date, updatedAt: Date, inventoryItemId: String, sceneId: String, inventoryUnitId: String? = nil, nodeId: String, slotIndex: Double, pinned: Bool) {
+    public init(id: String, userId: String, kind: String, categorySlug: String? = nil, name: String, publicSlug: String? = nil, visibility: String, settings: SpatialSceneResponseDataSettings, storefrontId: String? = nil, showroomPosition: Double, autoIncludeInventory: Bool, createdAt: Date, updatedAt: Date) {
         self.id = id
+        self.userId = userId
+        self.kind = kind
+        self.categorySlug = categorySlug
+        self.name = name
+        self.publicSlug = publicSlug
+        self.visibility = visibility
+        self.settings = settings
+        self.storefrontId = storefrontId
+        self.showroomPosition = showroomPosition
+        self.autoIncludeInventory = autoIncludeInventory
         self.createdAt = createdAt
         self.updatedAt = updatedAt
-        self.inventoryItemId = inventoryItemId
-        self.sceneId = sceneId
-        self.inventoryUnitId = inventoryUnitId
-        self.nodeId = nodeId
-        self.slotIndex = slotIndex
-        self.pinned = pinned
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
+        case userId
+        case kind
+        case categorySlug
+        case name
+        case publicSlug
+        case visibility
+        case settings
+        case storefrontId
+        case showroomPosition
+        case autoIncludeInventory
         case createdAt
         case updatedAt
-        case inventoryItemId
-        case sceneId
-        case inventoryUnitId
-        case nodeId
-        case slotIndex
-        case pinned
     }
 
     // Encodable protocol methods
@@ -51,14 +70,18 @@ public struct SpatialSceneResponseData: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
+        try container.encode(userId, forKey: .userId)
+        try container.encode(kind, forKey: .kind)
+        try container.encodeIfPresent(categorySlug, forKey: .categorySlug)
+        try container.encode(name, forKey: .name)
+        try container.encodeIfPresent(publicSlug, forKey: .publicSlug)
+        try container.encode(visibility, forKey: .visibility)
+        try container.encode(settings, forKey: .settings)
+        try container.encodeIfPresent(storefrontId, forKey: .storefrontId)
+        try container.encode(showroomPosition, forKey: .showroomPosition)
+        try container.encode(autoIncludeInventory, forKey: .autoIncludeInventory)
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(updatedAt, forKey: .updatedAt)
-        try container.encode(inventoryItemId, forKey: .inventoryItemId)
-        try container.encode(sceneId, forKey: .sceneId)
-        try container.encodeIfPresent(inventoryUnitId, forKey: .inventoryUnitId)
-        try container.encode(nodeId, forKey: .nodeId)
-        try container.encode(slotIndex, forKey: .slotIndex)
-        try container.encode(pinned, forKey: .pinned)
     }
 }
 

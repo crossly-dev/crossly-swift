@@ -13,8 +13,8 @@ import AnyCodable
 public struct ListVaultMarketValuationStatementsItem: Codable, JSONEncodable, Hashable {
 
     public enum Purpose: String, Codable, CaseIterable {
-        case insurance = "insurance"
         case appraisal = "appraisal"
+        case insurance = "insurance"
     }
     public var id: String
     public var purpose: Purpose

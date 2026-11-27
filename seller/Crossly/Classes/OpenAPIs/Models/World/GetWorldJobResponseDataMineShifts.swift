@@ -17,12 +17,12 @@ public struct GetWorldJobResponseDataMineShifts: Codable, JSONEncodable, Hashabl
         case hubHelper = "hub_helper"
     }
     public enum Rail: String, Codable, CaseIterable {
-        case bucks = "bucks"
         case cbx = "cbx"
+        case bucks = "bucks"
     }
     public enum Status: String, Codable, CaseIterable {
-        case _open = "open"
         case cancelled = "cancelled"
+        case _open = "open"
         case paid = "paid"
         case claimed = "claimed"
         case worked = "worked"

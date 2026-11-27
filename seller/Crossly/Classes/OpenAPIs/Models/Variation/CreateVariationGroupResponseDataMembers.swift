@@ -14,6 +14,8 @@ public struct CreateVariationGroupResponseDataMembers: Codable, JSONEncodable, H
 
     public var listingId: String
     public var axisValue: String?
+    /** The member's value on every axis of a multi-axis group; null on a single-axis member. */
+    public var options: [String: AnyCodable]?
     public var sortKey: Double
     public var title: String?
     public var price: String?
@@ -22,9 +24,10 @@ public struct CreateVariationGroupResponseDataMembers: Codable, JSONEncodable, H
     public var sku: String?
     public var quantityAvailable: Double
 
-    public init(listingId: String, axisValue: String? = nil, sortKey: Double, title: String? = nil, price: String? = nil, images: [String]? = nil, status: String, sku: String? = nil, quantityAvailable: Double) {
+    public init(listingId: String, axisValue: String? = nil, options: [String: AnyCodable]? = nil, sortKey: Double, title: String? = nil, price: String? = nil, images: [String]? = nil, status: String, sku: String? = nil, quantityAvailable: Double) {
         self.listingId = listingId
         self.axisValue = axisValue
+        self.options = options
         self.sortKey = sortKey
         self.title = title
         self.price = price
@@ -37,6 +40,7 @@ public struct CreateVariationGroupResponseDataMembers: Codable, JSONEncodable, H
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case listingId
         case axisValue
+        case options
         case sortKey
         case title
         case price
@@ -52,6 +56,7 @@ public struct CreateVariationGroupResponseDataMembers: Codable, JSONEncodable, H
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(listingId, forKey: .listingId)
         try container.encodeIfPresent(axisValue, forKey: .axisValue)
+        try container.encodeIfPresent(options, forKey: .options)
         try container.encode(sortKey, forKey: .sortKey)
         try container.encodeIfPresent(title, forKey: .title)
         try container.encodeIfPresent(price, forKey: .price)

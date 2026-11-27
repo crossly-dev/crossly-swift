@@ -12,15 +12,18 @@ import AnyCodable
 
 public struct ListVaultMarketFollowCopyWatchItem: Codable, JSONEncodable, Hashable {
 
+    public var person: ListVaultMarketFollowCopyWatchItemPerson
     public var since: String
     public var active: Bool
 
-    public init(since: String, active: Bool) {
+    public init(person: ListVaultMarketFollowCopyWatchItemPerson, since: String, active: Bool) {
+        self.person = person
         self.since = since
         self.active = active
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case person
         case since
         case active
     }
@@ -29,6 +32,7 @@ public struct ListVaultMarketFollowCopyWatchItem: Codable, JSONEncodable, Hashab
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(person, forKey: .person)
         try container.encode(since, forKey: .since)
         try container.encode(active, forKey: .active)
     }

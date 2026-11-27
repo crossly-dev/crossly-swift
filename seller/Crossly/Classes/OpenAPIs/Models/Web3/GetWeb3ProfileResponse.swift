@@ -13,8 +13,8 @@ import AnyCodable
 public struct GetWeb3ProfileResponse: Codable, JSONEncodable, Hashable {
 
     public enum Family: String, Codable, CaseIterable {
-        case evm = "evm"
         case solana = "solana"
+        case evm = "evm"
     }
     public var address: String
     public var family: Family

@@ -17,21 +17,21 @@ public struct ListVaultMarketProEventsItem: Codable, JSONEncodable, Hashable {
     public var quantity: Double?
     public var orderId: String
     public var kind: String
-    public var seq: Double
-    public var detail: [String: AnyCodable]?
     public var priceCents: Double?
     public var tradeId: String?
+    public var detail: [String: AnyCodable]?
+    public var seq: Double
 
-    public init(createdAt: Date, userId: String, quantity: Double? = nil, orderId: String, kind: String, seq: Double, detail: [String: AnyCodable]? = nil, priceCents: Double? = nil, tradeId: String? = nil) {
+    public init(createdAt: Date, userId: String, quantity: Double? = nil, orderId: String, kind: String, priceCents: Double? = nil, tradeId: String? = nil, detail: [String: AnyCodable]? = nil, seq: Double) {
         self.createdAt = createdAt
         self.userId = userId
         self.quantity = quantity
         self.orderId = orderId
         self.kind = kind
-        self.seq = seq
-        self.detail = detail
         self.priceCents = priceCents
         self.tradeId = tradeId
+        self.detail = detail
+        self.seq = seq
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -40,10 +40,10 @@ public struct ListVaultMarketProEventsItem: Codable, JSONEncodable, Hashable {
         case quantity
         case orderId
         case kind
-        case seq
-        case detail
         case priceCents
         case tradeId
+        case detail
+        case seq
     }
 
     // Encodable protocol methods
@@ -55,10 +55,10 @@ public struct ListVaultMarketProEventsItem: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(quantity, forKey: .quantity)
         try container.encode(orderId, forKey: .orderId)
         try container.encode(kind, forKey: .kind)
-        try container.encode(seq, forKey: .seq)
-        try container.encodeIfPresent(detail, forKey: .detail)
         try container.encodeIfPresent(priceCents, forKey: .priceCents)
         try container.encodeIfPresent(tradeId, forKey: .tradeId)
+        try container.encodeIfPresent(detail, forKey: .detail)
+        try container.encode(seq, forKey: .seq)
     }
 }
 

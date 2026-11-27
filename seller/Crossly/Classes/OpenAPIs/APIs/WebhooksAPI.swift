@@ -57,7 +57,61 @@ open class WebhooksAPI {
     }
 
     /**
-     Fire a synthetic test.ping delivery to one webhook.
+     Redeliver one past delivery: a new delivery (new Crossly-Delivery-Id) of the same event id and payload.
+     
+     - parameter id: (path)  
+     - parameter deliveryId: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createWebhookDeliveryRedeliver(id: UUID, deliveryId: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateWebhookDeliveryRedeliverResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createWebhookDeliveryRedeliverWithRequestBuilder(id: id, deliveryId: deliveryId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Redeliver one past delivery: a new delivery (new Crossly-Delivery-Id) of the same event id and payload.
+     - POST /v1/webhooks/{id}/deliveries/{deliveryId}/redeliver
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - parameter deliveryId: (path)  
+     - returns: RequestBuilder<CreateWebhookDeliveryRedeliverResponse> 
+     */
+    open class func createWebhookDeliveryRedeliverWithRequestBuilder(id: UUID, deliveryId: UUID) -> RequestBuilder<CreateWebhookDeliveryRedeliverResponse> {
+        var localVariablePath = "/v1/webhooks/{id}/deliveries/{deliveryId}/redeliver"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let deliveryIdPreEscape = "\(APIHelper.mapValueToPathItem(deliveryId))"
+        let deliveryIdPostEscape = deliveryIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{deliveryId}", with: deliveryIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateWebhookDeliveryRedeliverResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Fire a test delivery to one webhook: test.ping, or a sample of any event (body {\"event\":\"order.created\"}, payload marked test: true).
      
      - parameter id: (path)  
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -76,7 +130,7 @@ open class WebhooksAPI {
     }
 
     /**
-     Fire a synthetic test.ping delivery to one webhook.
+     Fire a test delivery to one webhook: test.ping, or a sample of any event (body {\"event\":\"order.created\"}, payload marked test: true).
      - POST /v1/webhooks/{id}/test
      - BASIC:
        - type: http
@@ -195,6 +249,72 @@ open class WebhooksAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<String>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     * enum for parameter status
+     */
+    public enum Status_listWebhookDeliveries: String, CaseIterable {
+        case pending = "pending"
+        case succeeded = "succeeded"
+        case failed = "failed"
+    }
+
+    /**
+     List deliveries to one webhook (30 days, newest first): event, status, attempts, last HTTP status and error, payload.
+     
+     - parameter id: (path)  
+     - parameter status: (query)  (optional)
+     - parameter limit: (query)  (optional, default to 25)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listWebhookDeliveries(id: UUID, status: Status_listWebhookDeliveries? = nil, limit: Int? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListWebhookDeliveriesResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listWebhookDeliveriesWithRequestBuilder(id: id, status: status, limit: limit).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     List deliveries to one webhook (30 days, newest first): event, status, attempts, last HTTP status and error, payload.
+     - GET /v1/webhooks/{id}/deliveries
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - parameter status: (query)  (optional)
+     - parameter limit: (query)  (optional, default to 25)
+     - returns: RequestBuilder<ListWebhookDeliveriesResponse> 
+     */
+    open class func listWebhookDeliveriesWithRequestBuilder(id: UUID, status: Status_listWebhookDeliveries? = nil, limit: Int? = nil) -> RequestBuilder<ListWebhookDeliveriesResponse> {
+        var localVariablePath = "/v1/webhooks/{id}/deliveries"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "status": status?.encodeToJSON(),
+            "limit": limit?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListWebhookDeliveriesResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }

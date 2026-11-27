@@ -13,72 +13,72 @@ import AnyCodable
 public struct ListBuyerOffersItem: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var createdAt: String
-    public var status: String
-    public var expiresAt: String
-    public var isBundle: Bool
     public var platformListingId: String
     public var sellerUserId: String
     /** The offer amount for the whole set, in cents. */
     public var amountCents: Double
-    public var expired: Bool
+    public var status: String
+    public var expiresAt: String
+    public var createdAt: String
     public var items: [ListBuyerOffersItemItems]
-    /** A seller counter waiting on YOU: accept, decline or counter back. */
-    public var awaitingBuyer: Bool
+    public var isBundle: Bool
     /** Accepted, unpaid, unexpired and every item still live — pay for it now. */
     public var redeemable: Bool
-    public var decidedAt: String?
-    public var message: String?
-    public var parentOfferId: String?
+    public var expired: Bool
+    /** A seller counter waiting on YOU: accept, decline or counter back. */
+    public var awaitingBuyer: Bool
     public var platformListingIds: [String]?
-    public var consumedAt: String?
     /** Asking-price total when the offer was made, in cents. */
     public var listedTotalCents: Double?
+    public var message: String?
+    public var parentOfferId: String?
     /** null = you made it; seller_counter / buyer_counter / second_chance / seller_offer (to watchers) / live_auction otherwise. */
     public var origin: String?
+    public var decidedAt: String?
+    public var consumedAt: String?
 
-    public init(id: String, createdAt: String, status: String, expiresAt: String, isBundle: Bool, platformListingId: String, sellerUserId: String, amountCents: Double, expired: Bool, items: [ListBuyerOffersItemItems], awaitingBuyer: Bool, redeemable: Bool, decidedAt: String? = nil, message: String? = nil, parentOfferId: String? = nil, platformListingIds: [String]? = nil, consumedAt: String? = nil, listedTotalCents: Double? = nil, origin: String? = nil) {
+    public init(id: String, platformListingId: String, sellerUserId: String, amountCents: Double, status: String, expiresAt: String, createdAt: String, items: [ListBuyerOffersItemItems], isBundle: Bool, redeemable: Bool, expired: Bool, awaitingBuyer: Bool, platformListingIds: [String]? = nil, listedTotalCents: Double? = nil, message: String? = nil, parentOfferId: String? = nil, origin: String? = nil, decidedAt: String? = nil, consumedAt: String? = nil) {
         self.id = id
-        self.createdAt = createdAt
-        self.status = status
-        self.expiresAt = expiresAt
-        self.isBundle = isBundle
         self.platformListingId = platformListingId
         self.sellerUserId = sellerUserId
         self.amountCents = amountCents
-        self.expired = expired
+        self.status = status
+        self.expiresAt = expiresAt
+        self.createdAt = createdAt
         self.items = items
-        self.awaitingBuyer = awaitingBuyer
+        self.isBundle = isBundle
         self.redeemable = redeemable
-        self.decidedAt = decidedAt
+        self.expired = expired
+        self.awaitingBuyer = awaitingBuyer
+        self.platformListingIds = platformListingIds
+        self.listedTotalCents = listedTotalCents
         self.message = message
         self.parentOfferId = parentOfferId
-        self.platformListingIds = platformListingIds
-        self.consumedAt = consumedAt
-        self.listedTotalCents = listedTotalCents
         self.origin = origin
+        self.decidedAt = decidedAt
+        self.consumedAt = consumedAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case createdAt
-        case status
-        case expiresAt
-        case isBundle
         case platformListingId
         case sellerUserId
         case amountCents
-        case expired
+        case status
+        case expiresAt
+        case createdAt
         case items
-        case awaitingBuyer
+        case isBundle
         case redeemable
-        case decidedAt
+        case expired
+        case awaitingBuyer
+        case platformListingIds
+        case listedTotalCents
         case message
         case parentOfferId
-        case platformListingIds
-        case consumedAt
-        case listedTotalCents
         case origin
+        case decidedAt
+        case consumedAt
     }
 
     // Encodable protocol methods
@@ -86,24 +86,24 @@ public struct ListBuyerOffersItem: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(createdAt, forKey: .createdAt)
-        try container.encode(status, forKey: .status)
-        try container.encode(expiresAt, forKey: .expiresAt)
-        try container.encode(isBundle, forKey: .isBundle)
         try container.encode(platformListingId, forKey: .platformListingId)
         try container.encode(sellerUserId, forKey: .sellerUserId)
         try container.encode(amountCents, forKey: .amountCents)
-        try container.encode(expired, forKey: .expired)
+        try container.encode(status, forKey: .status)
+        try container.encode(expiresAt, forKey: .expiresAt)
+        try container.encode(createdAt, forKey: .createdAt)
         try container.encode(items, forKey: .items)
-        try container.encode(awaitingBuyer, forKey: .awaitingBuyer)
+        try container.encode(isBundle, forKey: .isBundle)
         try container.encode(redeemable, forKey: .redeemable)
-        try container.encodeIfPresent(decidedAt, forKey: .decidedAt)
+        try container.encode(expired, forKey: .expired)
+        try container.encode(awaitingBuyer, forKey: .awaitingBuyer)
+        try container.encodeIfPresent(platformListingIds, forKey: .platformListingIds)
+        try container.encodeIfPresent(listedTotalCents, forKey: .listedTotalCents)
         try container.encodeIfPresent(message, forKey: .message)
         try container.encodeIfPresent(parentOfferId, forKey: .parentOfferId)
-        try container.encodeIfPresent(platformListingIds, forKey: .platformListingIds)
-        try container.encodeIfPresent(consumedAt, forKey: .consumedAt)
-        try container.encodeIfPresent(listedTotalCents, forKey: .listedTotalCents)
         try container.encodeIfPresent(origin, forKey: .origin)
+        try container.encodeIfPresent(decidedAt, forKey: .decidedAt)
+        try container.encodeIfPresent(consumedAt, forKey: .consumedAt)
     }
 }
 

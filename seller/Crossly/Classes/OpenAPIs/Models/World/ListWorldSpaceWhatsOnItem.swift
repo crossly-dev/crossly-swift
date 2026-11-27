@@ -13,10 +13,10 @@ import AnyCodable
 public struct ListWorldSpaceWhatsOnItem: Codable, JSONEncodable, Hashable {
 
     public enum Place: String, Codable, CaseIterable {
+        case stage = "stage"
         case street = "street"
         case festival = "festival"
         case space = "space"
-        case stage = "stage"
     }
     public var id: String
     public var title: String

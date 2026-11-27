@@ -21,9 +21,9 @@ public struct CreateTeamInviteResponse: Codable, JSONEncodable, Hashable {
     public var role: Role
     public var scopes: [String]
     public var expiresAt: String
-    public var acceptUrl: String
+    public var acceptUrl: String?
 
-    public init(id: String, inviteeEmail: String, role: Role, scopes: [String], expiresAt: String, acceptUrl: String) {
+    public init(id: String, inviteeEmail: String, role: Role, scopes: [String], expiresAt: String, acceptUrl: String? = nil) {
         self.id = id
         self.inviteeEmail = inviteeEmail
         self.role = role
@@ -50,7 +50,7 @@ public struct CreateTeamInviteResponse: Codable, JSONEncodable, Hashable {
         try container.encode(role, forKey: .role)
         try container.encode(scopes, forKey: .scopes)
         try container.encode(expiresAt, forKey: .expiresAt)
-        try container.encode(acceptUrl, forKey: .acceptUrl)
+        try container.encodeIfPresent(acceptUrl, forKey: .acceptUrl)
     }
 }
 

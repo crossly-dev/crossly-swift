@@ -13,8 +13,8 @@ import AnyCodable
 public struct CreateCbxWalletPaymentConfirmResponseData: Codable, JSONEncodable, Hashable {
 
     public enum ReleaseDecision: String, Codable, CaseIterable {
-        case review = "review"
         case release = "release"
+        case review = "review"
         case refuse = "refuse"
     }
     public var paymentId: String

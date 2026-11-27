@@ -13,9 +13,9 @@ import AnyCodable
 public struct UpdateSpatialSceneShopLayoutResponseDataShell: Codable, JSONEncodable, Hashable {
 
     public enum Size: String, Codable, CaseIterable {
+        case auto = "auto"
         case standard = "standard"
         case large = "large"
-        case auto = "auto"
         case compact = "compact"
         case flagship = "flagship"
     }

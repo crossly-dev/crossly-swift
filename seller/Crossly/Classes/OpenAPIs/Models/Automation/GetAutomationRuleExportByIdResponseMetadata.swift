@@ -13,29 +13,29 @@ import AnyCodable
 /** Community-library metadata. Server ignores; UI may render. */
 public struct GetAutomationRuleExportByIdResponseMetadata: Codable, JSONEncodable, Hashable {
 
-    public var tags: [String]?
-    public var sourceUrl: String?
     public var author: String?
+    public var sourceUrl: String?
+    public var tags: [String]?
 
-    public init(tags: [String]? = nil, sourceUrl: String? = nil, author: String? = nil) {
-        self.tags = tags
-        self.sourceUrl = sourceUrl
+    public init(author: String? = nil, sourceUrl: String? = nil, tags: [String]? = nil) {
         self.author = author
+        self.sourceUrl = sourceUrl
+        self.tags = tags
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case tags
-        case sourceUrl
         case author
+        case sourceUrl
+        case tags
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(tags, forKey: .tags)
-        try container.encodeIfPresent(sourceUrl, forKey: .sourceUrl)
         try container.encodeIfPresent(author, forKey: .author)
+        try container.encodeIfPresent(sourceUrl, forKey: .sourceUrl)
+        try container.encodeIfPresent(tags, forKey: .tags)
     }
 }
 

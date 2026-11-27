@@ -12,19 +12,19 @@ import AnyCodable
 
 public struct GetBuyerFitVocabularyResponseDataKinds: Codable, JSONEncodable, Hashable {
 
-    public var label: String
     public var key: String
+    public var label: String
     public var measures: [[String: AnyCodable]]
 
-    public init(label: String, key: String, measures: [[String: AnyCodable]]) {
-        self.label = label
+    public init(key: String, label: String, measures: [[String: AnyCodable]]) {
         self.key = key
+        self.label = label
         self.measures = measures
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case label
         case key
+        case label
         case measures
     }
 
@@ -32,8 +32,8 @@ public struct GetBuyerFitVocabularyResponseDataKinds: Codable, JSONEncodable, Ha
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(label, forKey: .label)
         try container.encode(key, forKey: .key)
+        try container.encode(label, forKey: .label)
         try container.encode(measures, forKey: .measures)
     }
 }

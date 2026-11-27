@@ -13,8 +13,8 @@ import AnyCodable
 public struct CreateMagicScanResponsePhotoIdentifierIdentifier: Codable, JSONEncodable, Hashable {
 
     public enum Namespace: String, Codable, CaseIterable {
-        case styleCode = "style_code"
         case gtin = "gtin"
+        case styleCode = "style_code"
         case legoSet = "lego_set"
         case tcgplayer = "tcgplayer"
         case discogs = "discogs"

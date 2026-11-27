@@ -21,8 +21,9 @@ public struct GetSpatialStreetPlotQuoteResponseData: Codable, JSONEncodable, Has
     public var vacant: Bool
     public var buyable: Bool
     public var enabled: Bool
+    public var claim: GetSpatialStreetPlotQuoteResponseDataClaim?
 
-    public init(address: String, label: String, priceCents: Double, maintenanceWeeklyCents: Double, includedWeeks: Double, owned: Bool, vacant: Bool, buyable: Bool, enabled: Bool) {
+    public init(address: String, label: String, priceCents: Double, maintenanceWeeklyCents: Double, includedWeeks: Double, owned: Bool, vacant: Bool, buyable: Bool, enabled: Bool, claim: GetSpatialStreetPlotQuoteResponseDataClaim? = nil) {
         self.address = address
         self.label = label
         self.priceCents = priceCents
@@ -32,6 +33,7 @@ public struct GetSpatialStreetPlotQuoteResponseData: Codable, JSONEncodable, Has
         self.vacant = vacant
         self.buyable = buyable
         self.enabled = enabled
+        self.claim = claim
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -44,6 +46,7 @@ public struct GetSpatialStreetPlotQuoteResponseData: Codable, JSONEncodable, Has
         case vacant
         case buyable
         case enabled
+        case claim
     }
 
     // Encodable protocol methods
@@ -59,6 +62,7 @@ public struct GetSpatialStreetPlotQuoteResponseData: Codable, JSONEncodable, Has
         try container.encode(vacant, forKey: .vacant)
         try container.encode(buyable, forKey: .buyable)
         try container.encode(enabled, forKey: .enabled)
+        try container.encodeIfPresent(claim, forKey: .claim)
     }
 }
 

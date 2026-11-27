@@ -13,11 +13,11 @@ import AnyCodable
 public struct ListWorldDecorCatalogueItem: Codable, JSONEncodable, Hashable {
 
     public enum Surface: String, Codable, CaseIterable {
-        case shop = "shop"
         case home = "home"
         case street = "street"
-        case stall = "stall"
+        case shop = "shop"
         case avatar = "avatar"
+        case stall = "stall"
     }
     public var id: String
     public var sku: String

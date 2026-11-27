@@ -287,7 +287,7 @@ open class InventoryAPI {
     }
 
     /**
-     Set / add / subtract stock across many items, syncing live listings.
+     Set / add / subtract stock across many items, or set a stock per item; syncs live listings.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
@@ -305,8 +305,9 @@ open class InventoryAPI {
     }
 
     /**
-     Set / add / subtract stock across many items, syncing live listings.
+     Set / add / subtract stock across many items, or set a stock per item; syncs live listings.
      - POST /v1/inventory/bulk-quantity
+     - Two bodies. {ids, mode: \"set\"|\"increase\"|\"decrease\", value, syncMarketplaces?} applies one value to every id. {mode: \"set\", items: [{id, quantity}], syncMarketplaces?} sets each item to its own quantity (1-5000 items, each id once; a repeated id, more than 5000 items, or a body mixing items with ids/value is a 400 naming both shapes). The value is the AVAILABLE stock (reserved units of open orders are kept). Stock changes at once; live listings are pushed in the background against the returned bulkJobId (anything dropping to 0 is delisted). Response: {affected, skipped, bulkJobId?}: skipped = ids that did not move (already at that number, or not yours). Send an Idempotency-Key to retry safely.
      - BASIC:
        - type: http
        - name: PersonalAccessToken
@@ -326,6 +327,50 @@ open class InventoryAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<CreateInventoryBulkQuantityResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Restore archived inventory items (status returns to active, or sold_out when no stock).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createInventoryBulkRestore(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateInventoryBulkRestoreResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createInventoryBulkRestoreWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Restore archived inventory items (status returns to active, or sold_out when no stock).
+     - POST /v1/inventory/bulk-restore
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateInventoryBulkRestoreResponse> 
+     */
+    open class func createInventoryBulkRestoreWithRequestBuilder() -> RequestBuilder<CreateInventoryBulkRestoreResponse> {
+        let localVariablePath = "/v1/inventory/bulk-restore"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateInventoryBulkRestoreResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -474,7 +519,7 @@ open class InventoryAPI {
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func createInventoryLabelRename(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateInventoryLabelRenameResponse?, _ error: Error?) -> Void)) -> RequestTask {
+    open class func createInventoryLabelRename(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: UpdatedResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return createInventoryLabelRenameWithRequestBuilder().execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
@@ -491,9 +536,9 @@ open class InventoryAPI {
      - BASIC:
        - type: http
        - name: PersonalAccessToken
-     - returns: RequestBuilder<CreateInventoryLabelRenameResponse> 
+     - returns: RequestBuilder<UpdatedResponse> 
      */
-    open class func createInventoryLabelRenameWithRequestBuilder() -> RequestBuilder<CreateInventoryLabelRenameResponse> {
+    open class func createInventoryLabelRenameWithRequestBuilder() -> RequestBuilder<UpdatedResponse> {
         let localVariablePath = "/v1/inventory/labels/rename"
         let localVariableURLString = CrosslyAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -506,7 +551,7 @@ open class InventoryAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<CreateInventoryLabelRenameResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UpdatedResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -808,7 +853,7 @@ open class InventoryAPI {
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func createSpatialPropertyLeaseAccept(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateSpatialPropertyLeaseAcceptResponse?, _ error: Error?) -> Void)) -> RequestTask {
+    open class func createSpatialPropertyLeaseAccept(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateWorldMarketPlotRentResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return createSpatialPropertyLeaseAcceptWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
@@ -827,9 +872,9 @@ open class InventoryAPI {
        - type: http
        - name: PersonalAccessToken
      - parameter id: (path)  
-     - returns: RequestBuilder<CreateSpatialPropertyLeaseAcceptResponse> 
+     - returns: RequestBuilder<CreateWorldMarketPlotRentResponse> 
      */
-    open class func createSpatialPropertyLeaseAcceptWithRequestBuilder(id: String) -> RequestBuilder<CreateSpatialPropertyLeaseAcceptResponse> {
+    open class func createSpatialPropertyLeaseAcceptWithRequestBuilder(id: String) -> RequestBuilder<CreateWorldMarketPlotRentResponse> {
         var localVariablePath = "/v1/spatial/property/leases/{id}/accept"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -845,7 +890,7 @@ open class InventoryAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<CreateSpatialPropertyLeaseAcceptResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<CreateWorldMarketPlotRentResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -872,7 +917,7 @@ open class InventoryAPI {
     /**
      End a lease (owner or tenant).
      - POST /v1/spatial/property/leases/{id}/end
-     - The tenant's shop gets a free Main Street address again.
+     - The tenant's showroom leaves the plot.
      - BASIC:
        - type: http
        - name: PersonalAccessToken
@@ -1450,6 +1495,218 @@ open class InventoryAPI {
     }
 
     /**
+     * enum for parameter range
+     */
+    public enum ModelRange_getAnalyticInventory: String, CaseIterable {
+        case _7d = "7d"
+        case _30d = "30d"
+        case _90d = "90d"
+        case _1y = "1y"
+        case ytd = "ytd"
+        case all = "all"
+        case custom = "custom"
+    }
+
+    /**
+     * enum for parameter compare
+     */
+    public enum Compare_getAnalyticInventory: String, CaseIterable {
+        case prev = "prev"
+        case yoy = "yoy"
+        case _none = "none"
+        case custom = "custom"
+    }
+
+    /**
+     * enum for parameter maturity
+     */
+    public enum Maturity_getAnalyticInventory: Int, CaseIterable {
+        case _30 = 30
+        case _60 = 60
+        case _90 = 90
+    }
+
+    /**
+     Unsold stock: aging buckets with cost, listed value and market value, the 20 listings most in need of attention, shelf value over time, cohort sell-through at the chosen maturity, listed vs sold velocity and data health.
+     
+     - parameter range: (query) Reporting window. Default 30d. custom needs from and to. (optional)
+     - parameter from: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter to: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter compare: (query) Comparison window for deltas: prev (same length just before), yoy, none, custom (cmpFrom/cmpTo). (optional)
+     - parameter cmpFrom: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter cmpTo: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter labels: (query) Comma-separated inventory labels (any of them). (optional)
+     - parameter platforms: (query) Comma-separated platform ids. (optional)
+     - parameter category: (query) Canonical main-category key. (optional)
+     - parameter brand: (query) Brand name. (optional)
+     - parameter tz: (query) IANA time zone for day boundaries. Default UTC. An invalid name is a 400. (optional)
+     - parameter maturity: (query) Days an item has to sell within to count as sold in the cohort. Default 30. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getAnalyticInventory(range: ModelRange_getAnalyticInventory? = nil, from: String? = nil, to: String? = nil, compare: Compare_getAnalyticInventory? = nil, cmpFrom: String? = nil, cmpTo: String? = nil, labels: String? = nil, platforms: String? = nil, category: String? = nil, brand: String? = nil, tz: String? = nil, maturity: Maturity_getAnalyticInventory? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetAnalyticInventoryResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getAnalyticInventoryWithRequestBuilder(range: range, from: from, to: to, compare: compare, cmpFrom: cmpFrom, cmpTo: cmpTo, labels: labels, platforms: platforms, category: category, brand: brand, tz: tz, maturity: maturity).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Unsold stock: aging buckets with cost, listed value and market value, the 20 listings most in need of attention, shelf value over time, cohort sell-through at the chosen maturity, listed vs sold velocity and data health.
+     - GET /v1/analytics/inventory
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter range: (query) Reporting window. Default 30d. custom needs from and to. (optional)
+     - parameter from: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter to: (query) YYYY-MM-DD, inclusive, in tz. Only with range&#x3D;custom. (optional)
+     - parameter compare: (query) Comparison window for deltas: prev (same length just before), yoy, none, custom (cmpFrom/cmpTo). (optional)
+     - parameter cmpFrom: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter cmpTo: (query) YYYY-MM-DD. Only with compare&#x3D;custom. (optional)
+     - parameter labels: (query) Comma-separated inventory labels (any of them). (optional)
+     - parameter platforms: (query) Comma-separated platform ids. (optional)
+     - parameter category: (query) Canonical main-category key. (optional)
+     - parameter brand: (query) Brand name. (optional)
+     - parameter tz: (query) IANA time zone for day boundaries. Default UTC. An invalid name is a 400. (optional)
+     - parameter maturity: (query) Days an item has to sell within to count as sold in the cohort. Default 30. (optional)
+     - returns: RequestBuilder<GetAnalyticInventoryResponse> 
+     */
+    open class func getAnalyticInventoryWithRequestBuilder(range: ModelRange_getAnalyticInventory? = nil, from: String? = nil, to: String? = nil, compare: Compare_getAnalyticInventory? = nil, cmpFrom: String? = nil, cmpTo: String? = nil, labels: String? = nil, platforms: String? = nil, category: String? = nil, brand: String? = nil, tz: String? = nil, maturity: Maturity_getAnalyticInventory? = nil) -> RequestBuilder<GetAnalyticInventoryResponse> {
+        let localVariablePath = "/v1/analytics/inventory"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "range": range?.encodeToJSON(),
+            "from": from?.encodeToJSON(),
+            "to": to?.encodeToJSON(),
+            "compare": compare?.encodeToJSON(),
+            "cmpFrom": cmpFrom?.encodeToJSON(),
+            "cmpTo": cmpTo?.encodeToJSON(),
+            "labels": labels?.encodeToJSON(),
+            "platforms": platforms?.encodeToJSON(),
+            "category": category?.encodeToJSON(),
+            "brand": brand?.encodeToJSON(),
+            "tz": tz?.encodeToJSON(),
+            "maturity": maturity?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetAnalyticInventoryResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The results of one of your metaverse events (a Branding event of type scavenger_hunt or pack_break): for a hunt -- status, place, coins and clues, players, finishers, winners (place, masked name, when) and the rewards paid or failed per kind; for a pack break -- status, whether it is live on the stage, spots, spots sold and hits revealed. 404 for an event that is not a World event of yours.
+     
+     - parameter eventId: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getGameEventSummary(eventId: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetGameEventSummaryResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getGameEventSummaryWithRequestBuilder(eventId: eventId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The results of one of your metaverse events (a Branding event of type scavenger_hunt or pack_break): for a hunt -- status, place, coins and clues, players, finishers, winners (place, masked name, when) and the rewards paid or failed per kind; for a pack break -- status, whether it is live on the stage, spots, spots sold and hits revealed. 404 for an event that is not a World event of yours.
+     - GET /v1/games/events/{eventId}/summary
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter eventId: (path)  
+     - returns: RequestBuilder<GetGameEventSummaryResponse> 
+     */
+    open class func getGameEventSummaryWithRequestBuilder(eventId: UUID) -> RequestBuilder<GetGameEventSummaryResponse> {
+        var localVariablePath = "/v1/games/events/{eventId}/summary"
+        let eventIdPreEscape = "\(APIHelper.mapValueToPathItem(eventId))"
+        let eventIdPostEscape = eventIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{eventId}", with: eventIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetGameEventSummaryResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     One of your scavenger hunts as the in-world builder sees it: place, rules (days, time limit, hints, winners, ordered), rewards, the build document (coins and clue signs with positions), what still blocks publishing, and buildLink -- the Worlds app link that opens the builder. Read-only: coins are placed in the World.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getGameHuntBuild(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetGameHuntBuildResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getGameHuntBuildWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One of your scavenger hunts as the in-world builder sees it: place, rules (days, time limit, hints, winners, ordered), rewards, the build document (coins and clue signs with positions), what still blocks publishing, and buildLink -- the Worlds app link that opens the builder. Read-only: coins are placed in the World.
+     - GET /v1/games/hunts/{id}/build
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetGameHuntBuildResponse> 
+     */
+    open class func getGameHuntBuildWithRequestBuilder(id: UUID) -> RequestBuilder<GetGameHuntBuildResponse> {
+        var localVariablePath = "/v1/games/hunts/{id}/build"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetGameHuntBuildResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Game leaderboards: for each of Price Guess (wins, then points), scavenger hunts (finished) and speed trades (won), the top ten this week (Monday 00:00 UTC on) under week and of all time under all -- rank, name, named, value and, for Price Guess, score. A name appears only for somebody who chose to be seen by name in Crossly World; everyone else is \"A player\" in their place.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -1636,7 +1893,7 @@ open class InventoryAPI {
     }
 
     /**
-     Unsold stock by age (0-7, 7-30, 30-90, 90+ days, unlisted), each bucket with a recommendation.
+     Unsold stock by days since first listed (unlisted, 0-7, 7-30, 30-90, 90+), each bucket with items, units, known cost (items without a cost counted separately) and listed value.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
@@ -1654,7 +1911,7 @@ open class InventoryAPI {
     }
 
     /**
-     Unsold stock by age (0-7, 7-30, 30-90, 90+ days, unlisted), each bucket with a recommendation.
+     Unsold stock by days since first listed (unlisted, 0-7, 7-30, 30-90, 90+), each bucket with items, units, known cost (items without a cost counted separately) and listed value.
      - GET /v1/inventory/aging
      - BASIC:
        - type: http
@@ -1861,7 +2118,7 @@ open class InventoryAPI {
     }
 
     /**
-     Cohort sell-through for a window (default: the 30 days ending 30 days ago) against the previous window of the same length.
+     Cohort sell-through: of the items first listed in the window (default 30-60 days ago), the share sold within 30 days of listing, with n, immature items left out, and the change vs the previous window in percentage points (pp).
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
@@ -1879,7 +2136,7 @@ open class InventoryAPI {
     }
 
     /**
-     Cohort sell-through for a window (default: the 30 days ending 30 days ago) against the previous window of the same length.
+     Cohort sell-through: of the items first listed in the window (default 30-60 days ago), the share sold within 30 days of listing, with n, immature items left out, and the change vs the previous window in percentage points (pp).
      - GET /v1/inventory/sell-through
      - BASIC:
        - type: http
@@ -1954,7 +2211,7 @@ open class InventoryAPI {
     }
 
     /**
-     Portfolio value of unsold stock over time, oldest first (one point per nightly snapshot).
+     Cost and listed value of unsold stock over time, oldest first (one point per nightly snapshot).
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
@@ -1972,7 +2229,7 @@ open class InventoryAPI {
     }
 
     /**
-     Portfolio value of unsold stock over time, oldest first (one point per nightly snapshot).
+     Cost and listed value of unsold stock over time, oldest first (one point per nightly snapshot).
      - GET /v1/inventory/value-history
      - BASIC:
        - type: http
@@ -2862,6 +3119,50 @@ open class InventoryAPI {
     }
 
     /**
+     Crossly World's pulse, aggregated with no people in it: the public world shops that made a sale today (slugs only -- never counts, amounts or buyers), the times the world's shops passed each sales milestone today (each fires a fireworks show), and what Crossly Cares took in this month against the Commons fountain's mark.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getWorldPulse(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetWorldPulseResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getWorldPulseWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Crossly World's pulse, aggregated with no people in it: the public world shops that made a sale today (slugs only -- never counts, amounts or buyers), the times the world's shops passed each sales milestone today (each fires a fireworks show), and what Crossly Cares took in this month against the Commons fountain's mark.
+     - GET /v1/world/pulse
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetWorldPulseResponse> 
+     */
+    open class func getWorldPulseWithRequestBuilder() -> RequestBuilder<GetWorldPulseResponse> {
+        let localVariablePath = "/v1/world/pulse"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetWorldPulseResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Your room's funnel over the last `days` (1-35, default 30): visitors (people, once a day), looks, items opened, checkouts started from the room, paid sales and revenueCents. Sales count only lines the room itself put in a cart.
      
      - parameter sceneId: (path)  
@@ -3154,6 +3455,50 @@ open class InventoryAPI {
     }
 
     /**
+     Your scavenger hunts (spec WD6: made from Branding events, built in Crossly World), newest first: title, place slug, the event it belongs to (eventId), your discount code if it rewards one, whether it is a draft (not yet built and published), live or ended, its coins, and how many people finished.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listGameHuntMine(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListGameHuntMineResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listGameHuntMineWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your scavenger hunts (spec WD6: made from Branding events, built in Crossly World), newest first: title, place slug, the event it belongs to (eventId), your discount code if it rewards one, whether it is a draft (not yet built and published), live or ended, its coins, and how many people finished.
+     - GET /v1/games/hunts/mine
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListGameHuntMineResponse> 
+     */
+    open class func listGameHuntMineWithRequestBuilder() -> RequestBuilder<ListGameHuntMineResponse> {
+        let localVariablePath = "/v1/games/hunts/mine"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListGameHuntMineResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Scavenger hunts running now in Crossly World shops and pop-up stalls, ending soonest first: title, shop (name and slug -- for a hunt at a stall, the street slug, with stall.bookingId set), how many tokens, what finishing unlocks (\"10% off\" -- never the code), when it ends and how many people have finished. Optional place filters to one shop or street slug.
      
      - parameter place: (query)  (optional)
@@ -3360,12 +3705,14 @@ open class InventoryAPI {
      - parameter kind: (query) Physical goods or Web3 assets (NFTs). Omit for both. (optional)
      - parameter platforms: (query) Comma-separated marketplaces, e.g. \&quot;ebay,vinted\&quot;. Items live (an active listing) on any of them. (optional)
      - parameter platformMode: (query) \&quot;not_listed\&quot; inverts &#x60;platforms&#x60;: items live on none of them. Default \&quot;listed\&quot;. (optional)
+     - parameter sku: (query) Exact SKU match: look up the row a supplier product maps to. (optional)
+     - parameter updatedSince: (query) Only rows created or changed at or after this time (ISO 8601), oldest change first. Poll with the updatedAt of the last row you saw. (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func listInventory(page: Int? = nil, limit: Int? = nil, search: String? = nil, status: String? = nil, kind: Kind_listInventory? = nil, platforms: String? = nil, platformMode: PlatformMode_listInventory? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListInventoryResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return listInventoryWithRequestBuilder(page: page, limit: limit, search: search, status: status, kind: kind, platforms: platforms, platformMode: platformMode).execute(apiResponseQueue) { result in
+    open class func listInventory(page: Int? = nil, limit: Int? = nil, search: String? = nil, status: String? = nil, kind: Kind_listInventory? = nil, platforms: String? = nil, platformMode: PlatformMode_listInventory? = nil, sku: String? = nil, updatedSince: Date? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListInventoryResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listInventoryWithRequestBuilder(page: page, limit: limit, search: search, status: status, kind: kind, platforms: platforms, platformMode: platformMode, sku: sku, updatedSince: updatedSince).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -3388,9 +3735,11 @@ open class InventoryAPI {
      - parameter kind: (query) Physical goods or Web3 assets (NFTs). Omit for both. (optional)
      - parameter platforms: (query) Comma-separated marketplaces, e.g. \&quot;ebay,vinted\&quot;. Items live (an active listing) on any of them. (optional)
      - parameter platformMode: (query) \&quot;not_listed\&quot; inverts &#x60;platforms&#x60;: items live on none of them. Default \&quot;listed\&quot;. (optional)
+     - parameter sku: (query) Exact SKU match: look up the row a supplier product maps to. (optional)
+     - parameter updatedSince: (query) Only rows created or changed at or after this time (ISO 8601), oldest change first. Poll with the updatedAt of the last row you saw. (optional)
      - returns: RequestBuilder<ListInventoryResponse> 
      */
-    open class func listInventoryWithRequestBuilder(page: Int? = nil, limit: Int? = nil, search: String? = nil, status: String? = nil, kind: Kind_listInventory? = nil, platforms: String? = nil, platformMode: PlatformMode_listInventory? = nil) -> RequestBuilder<ListInventoryResponse> {
+    open class func listInventoryWithRequestBuilder(page: Int? = nil, limit: Int? = nil, search: String? = nil, status: String? = nil, kind: Kind_listInventory? = nil, platforms: String? = nil, platformMode: PlatformMode_listInventory? = nil, sku: String? = nil, updatedSince: Date? = nil) -> RequestBuilder<ListInventoryResponse> {
         let localVariablePath = "/v1/inventory"
         let localVariableURLString = CrosslyAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -3404,6 +3753,8 @@ open class InventoryAPI {
             "kind": kind?.encodeToJSON(),
             "platforms": platforms?.encodeToJSON(),
             "platformMode": platformMode?.encodeToJSON(),
+            "sku": sku?.encodeToJSON(),
+            "updatedSince": updatedSince?.encodeToJSON(),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

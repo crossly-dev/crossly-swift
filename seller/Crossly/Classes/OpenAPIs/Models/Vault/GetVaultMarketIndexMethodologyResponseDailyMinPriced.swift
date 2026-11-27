@@ -15,26 +15,26 @@ public struct GetVaultMarketIndexMethodologyResponseDailyMinPriced: Codable, JSO
     public var custom: Double
     public var brand: Double
     public var category: Double
+    public var segment: Double
     public var curated: Double
     public var composite: Double
-    public var segment: Double
 
-    public init(custom: Double, brand: Double, category: Double, curated: Double, composite: Double, segment: Double) {
+    public init(custom: Double, brand: Double, category: Double, segment: Double, curated: Double, composite: Double) {
         self.custom = custom
         self.brand = brand
         self.category = category
+        self.segment = segment
         self.curated = curated
         self.composite = composite
-        self.segment = segment
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case custom
         case brand
         case category
+        case segment
         case curated
         case composite
-        case segment
     }
 
     // Encodable protocol methods
@@ -44,9 +44,9 @@ public struct GetVaultMarketIndexMethodologyResponseDailyMinPriced: Codable, JSO
         try container.encode(custom, forKey: .custom)
         try container.encode(brand, forKey: .brand)
         try container.encode(category, forKey: .category)
+        try container.encode(segment, forKey: .segment)
         try container.encode(curated, forKey: .curated)
         try container.encode(composite, forKey: .composite)
-        try container.encode(segment, forKey: .segment)
     }
 }
 

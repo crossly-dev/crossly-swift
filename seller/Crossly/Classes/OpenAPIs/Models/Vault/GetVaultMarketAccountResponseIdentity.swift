@@ -14,15 +14,18 @@ public struct GetVaultMarketAccountResponseIdentity: Codable, JSONEncodable, Has
 
     public var verified: Bool
     public var status: String?
+    public var retry: Bool
 
-    public init(verified: Bool, status: String? = nil) {
+    public init(verified: Bool, status: String? = nil, retry: Bool) {
         self.verified = verified
         self.status = status
+        self.retry = retry
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case verified
         case status
+        case retry
     }
 
     // Encodable protocol methods
@@ -31,6 +34,7 @@ public struct GetVaultMarketAccountResponseIdentity: Codable, JSONEncodable, Has
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(verified, forKey: .verified)
         try container.encodeIfPresent(status, forKey: .status)
+        try container.encode(retry, forKey: .retry)
     }
 }
 

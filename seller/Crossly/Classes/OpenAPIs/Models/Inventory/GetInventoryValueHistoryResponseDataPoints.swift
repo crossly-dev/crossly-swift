@@ -22,8 +22,11 @@ public struct GetInventoryValueHistoryResponseDataPoints: Codable, JSONEncodable
     public var retailCents: Double
     public var marketCents: Double?
     public var stuckCostCents: Double
+    public var over90CostCents: Double?
+    public var costKnownItems: Double?
+    public var reconstructed: Bool
 
-    public init(id: String, createdAt: Date, userId: String, snapshotDate: String, itemCount: Double, unitCount: Double, costCents: Double, retailCents: Double, marketCents: Double? = nil, stuckCostCents: Double) {
+    public init(id: String, createdAt: Date, userId: String, snapshotDate: String, itemCount: Double, unitCount: Double, costCents: Double, retailCents: Double, marketCents: Double? = nil, stuckCostCents: Double, over90CostCents: Double? = nil, costKnownItems: Double? = nil, reconstructed: Bool) {
         self.id = id
         self.createdAt = createdAt
         self.userId = userId
@@ -34,6 +37,9 @@ public struct GetInventoryValueHistoryResponseDataPoints: Codable, JSONEncodable
         self.retailCents = retailCents
         self.marketCents = marketCents
         self.stuckCostCents = stuckCostCents
+        self.over90CostCents = over90CostCents
+        self.costKnownItems = costKnownItems
+        self.reconstructed = reconstructed
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -47,6 +53,9 @@ public struct GetInventoryValueHistoryResponseDataPoints: Codable, JSONEncodable
         case retailCents
         case marketCents
         case stuckCostCents
+        case over90CostCents
+        case costKnownItems
+        case reconstructed
     }
 
     // Encodable protocol methods
@@ -63,6 +72,9 @@ public struct GetInventoryValueHistoryResponseDataPoints: Codable, JSONEncodable
         try container.encode(retailCents, forKey: .retailCents)
         try container.encodeIfPresent(marketCents, forKey: .marketCents)
         try container.encode(stuckCostCents, forKey: .stuckCostCents)
+        try container.encodeIfPresent(over90CostCents, forKey: .over90CostCents)
+        try container.encodeIfPresent(costKnownItems, forKey: .costKnownItems)
+        try container.encode(reconstructed, forKey: .reconstructed)
     }
 }
 

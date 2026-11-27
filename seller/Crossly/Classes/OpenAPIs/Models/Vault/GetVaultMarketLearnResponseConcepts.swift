@@ -20,6 +20,7 @@ public struct GetVaultMarketLearnResponseConcepts: Codable, JSONEncodable, Hasha
         case auctions = "auctions"
         case indexes = "indexes"
         case marks = "marks"
+        case vaultShares = "vault-shares"
     }
     public var slug: Slug
     public var title: String

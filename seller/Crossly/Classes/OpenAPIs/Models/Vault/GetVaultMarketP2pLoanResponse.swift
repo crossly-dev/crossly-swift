@@ -19,15 +19,15 @@ public struct GetVaultMarketP2pLoanResponse: Codable, JSONEncodable, Hashable {
     }
     public enum Status: String, Codable, CaseIterable {
         case active = "active"
-        case funding = "funding"
         case cancelled = "cancelled"
+        case funding = "funding"
         case auction = "auction"
+        case repaid = "repaid"
+        case foreclosed = "foreclosed"
         case repaying = "repaying"
         case refinancing = "refinancing"
         case refiPending = "refi_pending"
-        case repaid = "repaid"
         case refinanced = "refinanced"
-        case foreclosed = "foreclosed"
     }
     public var events: [GetVaultMarketP2pLoanResponseEvents]
     public var name: String?

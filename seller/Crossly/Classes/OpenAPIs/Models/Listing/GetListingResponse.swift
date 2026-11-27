@@ -26,6 +26,9 @@ public struct GetListingResponse: Codable, JSONEncodable, Hashable {
     public var createdAt: Date
     public var updatedAt: Date
     public var userId: String
+    public var description: String?
+    public var status: String
+    public var source: String
     public var sku: String?
     public var quantity: Double
     public var quantityAvailable: Double
@@ -43,7 +46,7 @@ public struct GetListingResponse: Codable, JSONEncodable, Hashable {
     public var videoUrl: String?
     public var tags: [String]
     public var gradeKey: String?
-    public var grading: ListGradingSubmissionsItemGrading?
+    public var grading: CreateBulkBatchItemResponseGrading?
     public var priceFloorCents: Double?
     public var floorIsNet: Bool
     public var weightLb: String?
@@ -51,9 +54,6 @@ public struct GetListingResponse: Codable, JSONEncodable, Hashable {
     public var dimensionLIn: String?
     public var dimensionWIn: String?
     public var dimensionHIn: String?
-    public var status: String
-    public var source: String
-    public var description: String?
     public var title: String?
     public var descriptionHtml: String?
     public var price: String?
@@ -71,6 +71,8 @@ public struct GetListingResponse: Codable, JSONEncodable, Hashable {
     public var automationBlockedRuleIds: [String]
     public var automationAssignedChainIds: [String]
     public var automationBlockedChainIds: [String]
+    public var workflowBlockedIds: [String]
+    public var workflowAssignedIds: [String]
     public var hsCode: String?
     public var countryOfOrigin: String?
     public var delistedAt: Date?
@@ -78,8 +80,11 @@ public struct GetListingResponse: Codable, JSONEncodable, Hashable {
     public var ebayAttributesEnrichedAt: Date?
     public var duplicateOfListingId: String?
     public var clientDraftId: String?
+    public var attributedOauthAppId: String?
+    public var attributedGrantId: String?
+    public var quotaBucket: String?
 
-    public init(aiMedia: Bool, aiMediaDetected: Bool, platformListings: [GetListingResponsePlatformListings], id: String, brand: String? = nil, name: String? = nil, createdAt: Date, updatedAt: Date, userId: String, sku: String? = nil, quantity: Double, quantityAvailable: Double, condition: String? = nil, size: String? = nil, material: String? = nil, style: String? = nil, pattern: String? = nil, department: String? = nil, gender: String? = nil, itemType: String? = nil, sizeSystem: String? = nil, color: [String], images: [String]? = nil, videoUrl: String? = nil, tags: [String], gradeKey: String? = nil, grading: ListGradingSubmissionsItemGrading? = nil, priceFloorCents: Double? = nil, floorIsNet: Bool, weightLb: String? = nil, weightOz: String? = nil, dimensionLIn: String? = nil, dimensionWIn: String? = nil, dimensionHIn: String? = nil, status: String, source: String, description: String? = nil, title: String? = nil, descriptionHtml: String? = nil, price: String? = nil, currency: String? = nil, aiMediaUrls: [String], aiMediaDeclared: Bool, aiMediaDetectedUrls: [String], isDigital: Bool, publishAt: Date? = nil, scheduledPlatforms: [String]? = nil, parentListingId: String? = nil, groupKind: GroupKind? = nil, isBundle: Bool, automationAssignedRuleIds: [String], automationBlockedRuleIds: [String], automationAssignedChainIds: [String], automationBlockedChainIds: [String], hsCode: String? = nil, countryOfOrigin: String? = nil, delistedAt: Date? = nil, soldAt: Date? = nil, ebayAttributesEnrichedAt: Date? = nil, duplicateOfListingId: String? = nil, clientDraftId: String? = nil) {
+    public init(aiMedia: Bool, aiMediaDetected: Bool, platformListings: [GetListingResponsePlatformListings], id: String, brand: String? = nil, name: String? = nil, createdAt: Date, updatedAt: Date, userId: String, description: String? = nil, status: String, source: String, sku: String? = nil, quantity: Double, quantityAvailable: Double, condition: String? = nil, size: String? = nil, material: String? = nil, style: String? = nil, pattern: String? = nil, department: String? = nil, gender: String? = nil, itemType: String? = nil, sizeSystem: String? = nil, color: [String], images: [String]? = nil, videoUrl: String? = nil, tags: [String], gradeKey: String? = nil, grading: CreateBulkBatchItemResponseGrading? = nil, priceFloorCents: Double? = nil, floorIsNet: Bool, weightLb: String? = nil, weightOz: String? = nil, dimensionLIn: String? = nil, dimensionWIn: String? = nil, dimensionHIn: String? = nil, title: String? = nil, descriptionHtml: String? = nil, price: String? = nil, currency: String? = nil, aiMediaUrls: [String], aiMediaDeclared: Bool, aiMediaDetectedUrls: [String], isDigital: Bool, publishAt: Date? = nil, scheduledPlatforms: [String]? = nil, parentListingId: String? = nil, groupKind: GroupKind? = nil, isBundle: Bool, automationAssignedRuleIds: [String], automationBlockedRuleIds: [String], automationAssignedChainIds: [String], automationBlockedChainIds: [String], workflowBlockedIds: [String], workflowAssignedIds: [String], hsCode: String? = nil, countryOfOrigin: String? = nil, delistedAt: Date? = nil, soldAt: Date? = nil, ebayAttributesEnrichedAt: Date? = nil, duplicateOfListingId: String? = nil, clientDraftId: String? = nil, attributedOauthAppId: String? = nil, attributedGrantId: String? = nil, quotaBucket: String? = nil) {
         self.aiMedia = aiMedia
         self.aiMediaDetected = aiMediaDetected
         self.platformListings = platformListings
@@ -89,6 +94,9 @@ public struct GetListingResponse: Codable, JSONEncodable, Hashable {
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.userId = userId
+        self.description = description
+        self.status = status
+        self.source = source
         self.sku = sku
         self.quantity = quantity
         self.quantityAvailable = quantityAvailable
@@ -114,9 +122,6 @@ public struct GetListingResponse: Codable, JSONEncodable, Hashable {
         self.dimensionLIn = dimensionLIn
         self.dimensionWIn = dimensionWIn
         self.dimensionHIn = dimensionHIn
-        self.status = status
-        self.source = source
-        self.description = description
         self.title = title
         self.descriptionHtml = descriptionHtml
         self.price = price
@@ -134,6 +139,8 @@ public struct GetListingResponse: Codable, JSONEncodable, Hashable {
         self.automationBlockedRuleIds = automationBlockedRuleIds
         self.automationAssignedChainIds = automationAssignedChainIds
         self.automationBlockedChainIds = automationBlockedChainIds
+        self.workflowBlockedIds = workflowBlockedIds
+        self.workflowAssignedIds = workflowAssignedIds
         self.hsCode = hsCode
         self.countryOfOrigin = countryOfOrigin
         self.delistedAt = delistedAt
@@ -141,6 +148,9 @@ public struct GetListingResponse: Codable, JSONEncodable, Hashable {
         self.ebayAttributesEnrichedAt = ebayAttributesEnrichedAt
         self.duplicateOfListingId = duplicateOfListingId
         self.clientDraftId = clientDraftId
+        self.attributedOauthAppId = attributedOauthAppId
+        self.attributedGrantId = attributedGrantId
+        self.quotaBucket = quotaBucket
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -153,6 +163,9 @@ public struct GetListingResponse: Codable, JSONEncodable, Hashable {
         case createdAt
         case updatedAt
         case userId
+        case description
+        case status
+        case source
         case sku
         case quantity
         case quantityAvailable
@@ -178,9 +191,6 @@ public struct GetListingResponse: Codable, JSONEncodable, Hashable {
         case dimensionLIn
         case dimensionWIn
         case dimensionHIn
-        case status
-        case source
-        case description
         case title
         case descriptionHtml
         case price
@@ -198,6 +208,8 @@ public struct GetListingResponse: Codable, JSONEncodable, Hashable {
         case automationBlockedRuleIds
         case automationAssignedChainIds
         case automationBlockedChainIds
+        case workflowBlockedIds
+        case workflowAssignedIds
         case hsCode
         case countryOfOrigin
         case delistedAt
@@ -205,6 +217,9 @@ public struct GetListingResponse: Codable, JSONEncodable, Hashable {
         case ebayAttributesEnrichedAt
         case duplicateOfListingId
         case clientDraftId
+        case attributedOauthAppId
+        case attributedGrantId
+        case quotaBucket
     }
 
     // Encodable protocol methods
@@ -220,6 +235,9 @@ public struct GetListingResponse: Codable, JSONEncodable, Hashable {
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(updatedAt, forKey: .updatedAt)
         try container.encode(userId, forKey: .userId)
+        try container.encodeIfPresent(description, forKey: .description)
+        try container.encode(status, forKey: .status)
+        try container.encode(source, forKey: .source)
         try container.encodeIfPresent(sku, forKey: .sku)
         try container.encode(quantity, forKey: .quantity)
         try container.encode(quantityAvailable, forKey: .quantityAvailable)
@@ -245,9 +263,6 @@ public struct GetListingResponse: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(dimensionLIn, forKey: .dimensionLIn)
         try container.encodeIfPresent(dimensionWIn, forKey: .dimensionWIn)
         try container.encodeIfPresent(dimensionHIn, forKey: .dimensionHIn)
-        try container.encode(status, forKey: .status)
-        try container.encode(source, forKey: .source)
-        try container.encodeIfPresent(description, forKey: .description)
         try container.encodeIfPresent(title, forKey: .title)
         try container.encodeIfPresent(descriptionHtml, forKey: .descriptionHtml)
         try container.encodeIfPresent(price, forKey: .price)
@@ -265,6 +280,8 @@ public struct GetListingResponse: Codable, JSONEncodable, Hashable {
         try container.encode(automationBlockedRuleIds, forKey: .automationBlockedRuleIds)
         try container.encode(automationAssignedChainIds, forKey: .automationAssignedChainIds)
         try container.encode(automationBlockedChainIds, forKey: .automationBlockedChainIds)
+        try container.encode(workflowBlockedIds, forKey: .workflowBlockedIds)
+        try container.encode(workflowAssignedIds, forKey: .workflowAssignedIds)
         try container.encodeIfPresent(hsCode, forKey: .hsCode)
         try container.encodeIfPresent(countryOfOrigin, forKey: .countryOfOrigin)
         try container.encodeIfPresent(delistedAt, forKey: .delistedAt)
@@ -272,6 +289,9 @@ public struct GetListingResponse: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(ebayAttributesEnrichedAt, forKey: .ebayAttributesEnrichedAt)
         try container.encodeIfPresent(duplicateOfListingId, forKey: .duplicateOfListingId)
         try container.encodeIfPresent(clientDraftId, forKey: .clientDraftId)
+        try container.encodeIfPresent(attributedOauthAppId, forKey: .attributedOauthAppId)
+        try container.encodeIfPresent(attributedGrantId, forKey: .attributedGrantId)
+        try container.encodeIfPresent(quotaBucket, forKey: .quotaBucket)
     }
 }
 

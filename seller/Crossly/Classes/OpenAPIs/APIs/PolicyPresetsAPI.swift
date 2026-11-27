@@ -13,13 +13,58 @@ import AnyCodable
 open class PolicyPresetsAPI {
 
     /**
+     Check whether a shipping policy ships to an address.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createGeoLocationCheck(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateGeoLocationCheckResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createGeoLocationCheckWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Check whether a shipping policy ships to an address.
+     - POST /v1/geo/location-check
+     - Pass an unsaved `policy` draft or a `presetId` (neither = your default shipping policy), an `address`, and optionally `consolidateVia` (a ship-together hub). Returns `ships`, and when it does not: `reason`, `stage` (buyer | hub), `message` and the deciding `rule`. `partial` means a fuller address (state, ZIP) could change the answer. A draft that is not a valid shipping policy is a 422; a presetId that is not yours is a 404.
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateGeoLocationCheckResponse> 
+     */
+    open class func createGeoLocationCheckWithRequestBuilder() -> RequestBuilder<CreateGeoLocationCheckResponse> {
+        let localVariablePath = "/v1/geo/location-check"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateGeoLocationCheckResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Create a return / shipping / payment policy preset.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func createPolicyPreset(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListPolicyPresetsItem?, _ error: Error?) -> Void)) -> RequestTask {
+    open class func createPolicyPreset(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreatePolicyPresetResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return createPolicyPresetWithRequestBuilder().execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
@@ -36,9 +81,9 @@ open class PolicyPresetsAPI {
      - BASIC:
        - type: http
        - name: PersonalAccessToken
-     - returns: RequestBuilder<ListPolicyPresetsItem> 
+     - returns: RequestBuilder<CreatePolicyPresetResponse> 
      */
-    open class func createPolicyPresetWithRequestBuilder() -> RequestBuilder<ListPolicyPresetsItem> {
+    open class func createPolicyPresetWithRequestBuilder() -> RequestBuilder<CreatePolicyPresetResponse> {
         let localVariablePath = "/v1/policy-presets"
         let localVariableURLString = CrosslyAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -51,20 +96,20 @@ open class PolicyPresetsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ListPolicyPresetsItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<CreatePolicyPresetResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
 
     /**
-     Delete a policy preset.
+     Delete a policy preset. Listings that used it switch to the default preset of its kind.
      
      - parameter id: (path)  
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func deletePolicyPreset(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: OkResponse?, _ error: Error?) -> Void)) -> RequestTask {
+    open class func deletePolicyPreset(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: DeletePolicyPresetResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return deletePolicyPresetWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
@@ -76,15 +121,15 @@ open class PolicyPresetsAPI {
     }
 
     /**
-     Delete a policy preset.
+     Delete a policy preset. Listings that used it switch to the default preset of its kind.
      - DELETE /v1/policy-presets/{id}
      - BASIC:
        - type: http
        - name: PersonalAccessToken
      - parameter id: (path)  
-     - returns: RequestBuilder<OkResponse> 
+     - returns: RequestBuilder<DeletePolicyPresetResponse> 
      */
-    open class func deletePolicyPresetWithRequestBuilder(id: UUID) -> RequestBuilder<OkResponse> {
+    open class func deletePolicyPresetWithRequestBuilder(id: UUID) -> RequestBuilder<DeletePolicyPresetResponse> {
         var localVariablePath = "/v1/policy-presets/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -100,9 +145,54 @@ open class PolicyPresetsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<OkResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<DeletePolicyPresetResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The seller's shipping / return / payment policy presets by kind, with each kind's default.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getPolicy(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetPolicyResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getPolicyWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The seller's shipping / return / payment policy presets by kind, with each kind's default.
+     - GET /v1/policies
+     - Pass a preset `id` as `policies.shippingPresetId` / `returnPresetId` / `paymentPresetId` on POST or PATCH /v1/listings (null = the marketplace's own default). A kind you omit uses `defaultPresetId`.
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetPolicyResponse> 
+     */
+    open class func getPolicyWithRequestBuilder() -> RequestBuilder<GetPolicyResponse> {
+        let localVariablePath = "/v1/policies"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetPolicyResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
 
     /**
@@ -115,7 +205,7 @@ open class PolicyPresetsAPI {
     }
 
     /**
-     List the seller's return / shipping / payment policy presets.
+     List the seller's return / shipping / payment policy presets. meta.migrationNotices lists defaults the policy migration demoted (kind still has no default).
      
      - parameter kind: (query)  (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -134,7 +224,7 @@ open class PolicyPresetsAPI {
     }
 
     /**
-     List the seller's return / shipping / payment policy presets.
+     List the seller's return / shipping / payment policy presets. meta.migrationNotices lists defaults the policy migration demoted (kind still has no default).
      - GET /v1/policy-presets
      - BASIC:
        - type: http
@@ -171,7 +261,7 @@ open class PolicyPresetsAPI {
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func updatePolicyPreset(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListPolicyPresetsItem?, _ error: Error?) -> Void)) -> RequestTask {
+    open class func updatePolicyPreset(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreatePolicyPresetResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return updatePolicyPresetWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
@@ -189,9 +279,9 @@ open class PolicyPresetsAPI {
        - type: http
        - name: PersonalAccessToken
      - parameter id: (path)  
-     - returns: RequestBuilder<ListPolicyPresetsItem> 
+     - returns: RequestBuilder<CreatePolicyPresetResponse> 
      */
-    open class func updatePolicyPresetWithRequestBuilder(id: UUID) -> RequestBuilder<ListPolicyPresetsItem> {
+    open class func updatePolicyPresetWithRequestBuilder(id: UUID) -> RequestBuilder<CreatePolicyPresetResponse> {
         var localVariablePath = "/v1/policy-presets/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -207,7 +297,7 @@ open class PolicyPresetsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ListPolicyPresetsItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<CreatePolicyPresetResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }

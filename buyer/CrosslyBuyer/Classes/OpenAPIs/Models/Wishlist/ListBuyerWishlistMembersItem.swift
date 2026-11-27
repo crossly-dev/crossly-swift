@@ -12,19 +12,19 @@ import AnyCodable
 
 public struct ListBuyerWishlistMembersItem: Codable, JSONEncodable, Hashable {
 
-    public var name: String
     public var userId: String
+    public var name: String
     public var joinedAt: String
 
-    public init(name: String, userId: String, joinedAt: String) {
-        self.name = name
+    public init(userId: String, name: String, joinedAt: String) {
         self.userId = userId
+        self.name = name
         self.joinedAt = joinedAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case name
         case userId
+        case name
         case joinedAt
     }
 
@@ -32,8 +32,8 @@ public struct ListBuyerWishlistMembersItem: Codable, JSONEncodable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(name, forKey: .name)
         try container.encode(userId, forKey: .userId)
+        try container.encode(name, forKey: .name)
         try container.encode(joinedAt, forKey: .joinedAt)
     }
 }

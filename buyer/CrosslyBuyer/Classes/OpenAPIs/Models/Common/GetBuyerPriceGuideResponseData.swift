@@ -12,27 +12,27 @@ import AnyCodable
 
 public struct GetBuyerPriceGuideResponseData: Codable, JSONEncodable, Hashable {
 
+    public var count: Double
     public var medianCents: Double?
     public var p25Cents: Double?
     public var p75Cents: Double?
-    public var count: Double
     public var byMonth: [[String: AnyCodable]]
     public var recent: [[String: AnyCodable]]
 
-    public init(medianCents: Double? = nil, p25Cents: Double? = nil, p75Cents: Double? = nil, count: Double, byMonth: [[String: AnyCodable]], recent: [[String: AnyCodable]]) {
+    public init(count: Double, medianCents: Double? = nil, p25Cents: Double? = nil, p75Cents: Double? = nil, byMonth: [[String: AnyCodable]], recent: [[String: AnyCodable]]) {
+        self.count = count
         self.medianCents = medianCents
         self.p25Cents = p25Cents
         self.p75Cents = p75Cents
-        self.count = count
         self.byMonth = byMonth
         self.recent = recent
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case count
         case medianCents
         case p25Cents
         case p75Cents
-        case count
         case byMonth
         case recent
     }
@@ -41,10 +41,10 @@ public struct GetBuyerPriceGuideResponseData: Codable, JSONEncodable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(count, forKey: .count)
         try container.encodeIfPresent(medianCents, forKey: .medianCents)
         try container.encodeIfPresent(p25Cents, forKey: .p25Cents)
         try container.encodeIfPresent(p75Cents, forKey: .p75Cents)
-        try container.encode(count, forKey: .count)
         try container.encode(byMonth, forKey: .byMonth)
         try container.encode(recent, forKey: .recent)
     }

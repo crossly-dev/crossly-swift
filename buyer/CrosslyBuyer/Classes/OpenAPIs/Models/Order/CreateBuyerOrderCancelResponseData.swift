@@ -12,26 +12,26 @@ import AnyCodable
 
 public struct CreateBuyerOrderCancelResponseData: Codable, JSONEncodable, Hashable {
 
+    public var ok: Bool
     /** false only for an order paid entirely with credit, which has no card charge to refund. */
     public var refunded: Bool
-    public var ok: Bool
 
-    public init(refunded: Bool, ok: Bool) {
-        self.refunded = refunded
+    public init(ok: Bool, refunded: Bool) {
         self.ok = ok
+        self.refunded = refunded
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case refunded
         case ok
+        case refunded
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(refunded, forKey: .refunded)
         try container.encode(ok, forKey: .ok)
+        try container.encode(refunded, forKey: .refunded)
     }
 }
 

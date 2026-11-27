@@ -19,9 +19,10 @@ public struct GetVaultMarketRiskReportResponse: Codable, JSONEncodable, Hashable
     public var lvar: GetVaultMarketRiskReportResponseLvar
     public var stress: GetVaultMarketRiskReportResponseStress
     public var concentration: GetVaultMarketRiskReportResponseConcentration
+    public var counterparty: GetVaultMarketRiskReportResponseCounterparty
     public var partnerDcm: GetVaultMarketRiskReportResponsePartnerDcm
 
-    public init(account: CreateVaultMarketPortfolioMarginEnrollResponseOneOfAccount, asOf: String, nav: GetVaultMarketNavResponseTotals, _var: GetVaultMarketRiskReportResponseVar, lvar: GetVaultMarketRiskReportResponseLvar, stress: GetVaultMarketRiskReportResponseStress, concentration: GetVaultMarketRiskReportResponseConcentration, partnerDcm: GetVaultMarketRiskReportResponsePartnerDcm) {
+    public init(account: CreateVaultMarketPortfolioMarginEnrollResponseOneOfAccount, asOf: String, nav: GetVaultMarketNavResponseTotals, _var: GetVaultMarketRiskReportResponseVar, lvar: GetVaultMarketRiskReportResponseLvar, stress: GetVaultMarketRiskReportResponseStress, concentration: GetVaultMarketRiskReportResponseConcentration, counterparty: GetVaultMarketRiskReportResponseCounterparty, partnerDcm: GetVaultMarketRiskReportResponsePartnerDcm) {
         self.account = account
         self.asOf = asOf
         self.nav = nav
@@ -29,6 +30,7 @@ public struct GetVaultMarketRiskReportResponse: Codable, JSONEncodable, Hashable
         self.lvar = lvar
         self.stress = stress
         self.concentration = concentration
+        self.counterparty = counterparty
         self.partnerDcm = partnerDcm
     }
 
@@ -40,6 +42,7 @@ public struct GetVaultMarketRiskReportResponse: Codable, JSONEncodable, Hashable
         case lvar
         case stress
         case concentration
+        case counterparty
         case partnerDcm
     }
 
@@ -54,6 +57,7 @@ public struct GetVaultMarketRiskReportResponse: Codable, JSONEncodable, Hashable
         try container.encode(lvar, forKey: .lvar)
         try container.encode(stress, forKey: .stress)
         try container.encode(concentration, forKey: .concentration)
+        try container.encode(counterparty, forKey: .counterparty)
         try container.encode(partnerDcm, forKey: .partnerDcm)
     }
 }

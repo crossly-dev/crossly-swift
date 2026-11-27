@@ -14,29 +14,29 @@ public struct ListBuyerAuctionsItem: Codable, JSONEncodable, Hashable {
 
     public var title: String
     public var bidCount: Double
-    public var paid: Bool
     public var leading: Bool
-    public var status: String?
-    public var endsAt: String?
+    public var paid: Bool
     public var slug: String?
+    public var thumbnail: String?
+    public var endsAt: String?
+    public var status: String?
     /** Current high bid, in cents. */
     public var currentCents: Double?
-    public var thumbnail: String?
     /** Your highest maximum (proxy) bid, in cents. */
     public var myMaxCents: Double?
     /** Hammer price once the auction closed, in cents. */
     public var winningCents: Double?
 
-    public init(title: String, bidCount: Double, paid: Bool, leading: Bool, status: String? = nil, endsAt: String? = nil, slug: String? = nil, currentCents: Double? = nil, thumbnail: String? = nil, myMaxCents: Double? = nil, winningCents: Double? = nil) {
+    public init(title: String, bidCount: Double, leading: Bool, paid: Bool, slug: String? = nil, thumbnail: String? = nil, endsAt: String? = nil, status: String? = nil, currentCents: Double? = nil, myMaxCents: Double? = nil, winningCents: Double? = nil) {
         self.title = title
         self.bidCount = bidCount
-        self.paid = paid
         self.leading = leading
-        self.status = status
-        self.endsAt = endsAt
+        self.paid = paid
         self.slug = slug
-        self.currentCents = currentCents
         self.thumbnail = thumbnail
+        self.endsAt = endsAt
+        self.status = status
+        self.currentCents = currentCents
         self.myMaxCents = myMaxCents
         self.winningCents = winningCents
     }
@@ -44,13 +44,13 @@ public struct ListBuyerAuctionsItem: Codable, JSONEncodable, Hashable {
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case title
         case bidCount
-        case paid
         case leading
-        case status
-        case endsAt
+        case paid
         case slug
-        case currentCents
         case thumbnail
+        case endsAt
+        case status
+        case currentCents
         case myMaxCents
         case winningCents
     }
@@ -61,13 +61,13 @@ public struct ListBuyerAuctionsItem: Codable, JSONEncodable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(title, forKey: .title)
         try container.encode(bidCount, forKey: .bidCount)
-        try container.encode(paid, forKey: .paid)
         try container.encode(leading, forKey: .leading)
-        try container.encodeIfPresent(status, forKey: .status)
-        try container.encodeIfPresent(endsAt, forKey: .endsAt)
+        try container.encode(paid, forKey: .paid)
         try container.encodeIfPresent(slug, forKey: .slug)
-        try container.encodeIfPresent(currentCents, forKey: .currentCents)
         try container.encodeIfPresent(thumbnail, forKey: .thumbnail)
+        try container.encodeIfPresent(endsAt, forKey: .endsAt)
+        try container.encodeIfPresent(status, forKey: .status)
+        try container.encodeIfPresent(currentCents, forKey: .currentCents)
         try container.encodeIfPresent(myMaxCents, forKey: .myMaxCents)
         try container.encodeIfPresent(winningCents, forKey: .winningCents)
     }

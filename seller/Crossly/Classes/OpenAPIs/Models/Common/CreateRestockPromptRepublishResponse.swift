@@ -16,9 +16,9 @@ public struct CreateRestockPromptRepublishResponse: Codable, JSONEncodable, Hash
     public var platforms: [String]
     public var remainingPlatforms: [String]
     public var jobIds: [String]
-    public var bulkJobId: String
+    public var bulkJobId: String?
 
-    public init(message: String, platforms: [String], remainingPlatforms: [String], jobIds: [String], bulkJobId: String) {
+    public init(message: String, platforms: [String], remainingPlatforms: [String], jobIds: [String], bulkJobId: String? = nil) {
         self.message = message
         self.platforms = platforms
         self.remainingPlatforms = remainingPlatforms
@@ -42,7 +42,7 @@ public struct CreateRestockPromptRepublishResponse: Codable, JSONEncodable, Hash
         try container.encode(platforms, forKey: .platforms)
         try container.encode(remainingPlatforms, forKey: .remainingPlatforms)
         try container.encode(jobIds, forKey: .jobIds)
-        try container.encode(bulkJobId, forKey: .bulkJobId)
+        try container.encodeIfPresent(bulkJobId, forKey: .bulkJobId)
     }
 }
 

@@ -566,6 +566,94 @@ open class VaultMarketsAPI {
     }
 
     /**
+     Pause Auto-buy with payouts: the budget and want list stay; no payouts are counted and nothing is bought.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketAutoBuyPause(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketAutoBuyPauseResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketAutoBuyPauseWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Pause Auto-buy with payouts: the budget and want list stay; no payouts are counted and nothing is bought.
+     - POST /v1/vault-markets/auto-buy/pause
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketAutoBuyPauseResponse> 
+     */
+    open class func createVaultMarketAutoBuyPauseWithRequestBuilder() -> RequestBuilder<CreateVaultMarketAutoBuyPauseResponse> {
+        let localVariablePath = "/v1/vault-markets/auto-buy/pause"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketAutoBuyPauseResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Resume Auto-buy with payouts: payouts released from now on count.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketAutoBuyResume(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketAutoBuyResumeResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketAutoBuyResumeWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Resume Auto-buy with payouts: payouts released from now on count.
+     - POST /v1/vault-markets/auto-buy/resume
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketAutoBuyResumeResponse> 
+     */
+    open class func createVaultMarketAutoBuyResumeWithRequestBuilder() -> RequestBuilder<CreateVaultMarketAutoBuyResumeResponse> {
+        let localVariablePath = "/v1/vault-markets/auto-buy/resume"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketAutoBuyResumeResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Place a block buy for an entity: one order booked to the first sub-account in `plan` (it pays from its custodian account), split across every sub-account in the plan at the average price, fees included, once it is done and the custodian confirmed each payment. Each share's cash moves between the entity's own custodian accounts; its units move only after that settles. Every sub-account must be one you may trade, and its share must fit its limits.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -4214,6 +4302,1210 @@ open class VaultMarketsAPI {
     }
 
     /**
+     Place a strategy: 2 to 4 legs on one underlying with ratios, a quantity (units, three decimals) and ONE signed net limit per unit (+ the most you pay, - the least credit you take). Margined on the combined scenario loss of all its legs; matched against the combo book, then the legs' own books; every leg fills at once or none does. Crossly venue only (409 combos_self_venue_only on the partner venue).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketOptionCombo(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketOptionComboResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketOptionComboWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Place a strategy: 2 to 4 legs on one underlying with ratios, a quantity (units, three decimals) and ONE signed net limit per unit (+ the most you pay, - the least credit you take). Margined on the combined scenario loss of all its legs; matched against the combo book, then the legs' own books; every leg fills at once or none does. Crossly venue only (409 combos_self_venue_only on the partner venue).
+     - POST /v1/vault-markets/options/combos
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketOptionComboResponse> 
+     */
+    open class func createVaultMarketOptionComboWithRequestBuilder() -> RequestBuilder<CreateVaultMarketOptionComboResponse> {
+        let localVariablePath = "/v1/vault-markets/options/combos"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketOptionComboResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Cancel a working strategy.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketOptionComboCancel(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketOptionCombosItem?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketOptionComboCancelWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Cancel a working strategy.
+     - POST /v1/vault-markets/options/combos/{id}/cancel
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<ListVaultMarketOptionCombosItem> 
+     */
+    open class func createVaultMarketOptionComboCancelWithRequestBuilder(id: String) -> RequestBuilder<ListVaultMarketOptionCombosItem> {
+        var localVariablePath = "/v1/vault-markets/options/combos/{id}/cancel"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketOptionCombosItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Ask makers for a firm net price on a whole strategy (legs, quantity, an optional limit that is never shown). Crossly venue only.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketOptionComboRfq(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketOptionComboRfqResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketOptionComboRfqWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Ask makers for a firm net price on a whole strategy (legs, quantity, an optional limit that is never shown). Crossly venue only.
+     - POST /v1/vault-markets/options/combos/rfq
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketOptionComboRfqResponse> 
+     */
+    open class func createVaultMarketOptionComboRfqWithRequestBuilder() -> RequestBuilder<CreateVaultMarketOptionComboRfqResponse> {
+        let localVariablePath = "/v1/vault-markets/options/combos/rfq"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketOptionComboRfqResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Take a live, firm answer: both strategies go through the normal path (margin, pre-trade risk), every leg at once.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketOptionComboRfqAccept(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketOptionComboRfqAcceptResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketOptionComboRfqAcceptWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Take a live, firm answer: both strategies go through the normal path (margin, pre-trade risk), every leg at once.
+     - POST /v1/vault-markets/options/combos/rfq/{id}/accept
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketOptionComboRfqAcceptResponse> 
+     */
+    open class func createVaultMarketOptionComboRfqAcceptWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketOptionComboRfqAcceptResponse> {
+        var localVariablePath = "/v1/vault-markets/options/combos/rfq/{id}/accept"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketOptionComboRfqAcceptResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Cancel your open strategy quote request.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketOptionComboRfqCancel(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: IdStatusResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketOptionComboRfqCancelWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Cancel your open strategy quote request.
+     - POST /v1/vault-markets/options/combos/rfq/{id}/cancel
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<IdStatusResponse> 
+     */
+    open class func createVaultMarketOptionComboRfqCancelWithRequestBuilder(id: String) -> RequestBuilder<IdStatusResponse> {
+        var localVariablePath = "/v1/vault-markets/options/combos/rfq/{id}/cancel"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<IdStatusResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Answer a strategy quote request with a firm net price per unit in the canonical terms, good for 60 seconds; a new answer replaces your last.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketOptionComboRfqRespond(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketOptionRfqRespondResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketOptionComboRfqRespondWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Answer a strategy quote request with a firm net price per unit in the canonical terms, good for 60 seconds; a new answer replaces your last.
+     - POST /v1/vault-markets/options/combos/rfq/{id}/respond
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketOptionRfqRespondResponse> 
+     */
+    open class func createVaultMarketOptionComboRfqRespondWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketOptionRfqRespondResponse> {
+        var localVariablePath = "/v1/vault-markets/options/combos/rfq/{id}/respond"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketOptionRfqRespondResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Withdraw your live answer to a strategy quote request.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketOptionComboRfqResponseWithdraw(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: IdStatusResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketOptionComboRfqResponseWithdrawWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Withdraw your live answer to a strategy quote request.
+     - POST /v1/vault-markets/options/combos/rfq/responses/{id}/withdraw
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<IdStatusResponse> 
+     */
+    open class func createVaultMarketOptionComboRfqResponseWithdrawWithRequestBuilder(id: String) -> RequestBuilder<IdStatusResponse> {
+        var localVariablePath = "/v1/vault-markets/options/combos/rfq/responses/{id}/withdraw"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<IdStatusResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Write a covered call: lock a stored vault unit (`vaultItemId`) as collateral and sell up to one call on its own key (`contractId`, `quantity` <= 1) at a price or an implied vol. The unit cannot be sold, moved, lent or withdrawn until the call is bought back or expires; if assigned you pay cash, or the unit sells at the vault auction to cover.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketOptionCoveredCall(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketOptionCoveredCallResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketOptionCoveredCallWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Write a covered call: lock a stored vault unit (`vaultItemId`) as collateral and sell up to one call on its own key (`contractId`, `quantity` <= 1) at a price or an implied vol. The unit cannot be sold, moved, lent or withdrawn until the call is bought back or expires; if assigned you pay cash, or the unit sells at the vault auction to cover.
+     - POST /v1/vault-markets/options/covered-calls
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketOptionCoveredCallResponse> 
+     */
+    open class func createVaultMarketOptionCoveredCallWithRequestBuilder() -> RequestBuilder<CreateVaultMarketOptionCoveredCallResponse> {
+        let localVariablePath = "/v1/vault-markets/options/covered-calls"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketOptionCoveredCallResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Free a covered call's vault unit once the call it covers is closed (or covered by other units).
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketOptionCoveredCallRelease(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketOptionCoveredCallReleaseResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketOptionCoveredCallReleaseWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Free a covered call's vault unit once the call it covers is closed (or covered by other units).
+     - POST /v1/vault-markets/options/covered-calls/{id}/release
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketOptionCoveredCallReleaseResponse> 
+     */
+    open class func createVaultMarketOptionCoveredCallReleaseWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketOptionCoveredCallReleaseResponse> {
+        var localVariablePath = "/v1/vault-markets/options/covered-calls/{id}/release"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketOptionCoveredCallReleaseResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Keep your option quotes alive (cancel-on-disconnect pulls them after 30 s without a heartbeat).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketOptionMmHeartbeat(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketOptionMmHeartbeatResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketOptionMmHeartbeatWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Keep your option quotes alive (cancel-on-disconnect pulls them after 30 s without a heartbeat).
+     - POST /v1/vault-markets/options/mm/heartbeat
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketOptionMmHeartbeatResponse> 
+     */
+    open class func createVaultMarketOptionMmHeartbeatWithRequestBuilder() -> RequestBuilder<CreateVaultMarketOptionMmHeartbeatResponse> {
+        let localVariablePath = "/v1/vault-markets/options/mm/heartbeat"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketOptionMmHeartbeatResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Set (replace) a two-sided quote on an option contract: `bid` and / or `ask` each { priceCents, quantity in contracts }, posted as post-only GTC orders on the Crossly venue. Market-maker protection counts their fills; a quote inside 20% of its mid earns liquidity rewards (CBX).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketOptionMmQuote(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketOptionMmQuoteResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketOptionMmQuoteWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Set (replace) a two-sided quote on an option contract: `bid` and / or `ask` each { priceCents, quantity in contracts }, posted as post-only GTC orders on the Crossly venue. Market-maker protection counts their fills; a quote inside 20% of its mid earns liquidity rewards (CBX).
+     - POST /v1/vault-markets/options/mm/quotes
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketOptionMmQuoteResponse> 
+     */
+    open class func createVaultMarketOptionMmQuoteWithRequestBuilder() -> RequestBuilder<CreateVaultMarketOptionMmQuoteResponse> {
+        let localVariablePath = "/v1/vault-markets/options/mm/quotes"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketOptionMmQuoteResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Pull your option quotes on one contract (`contractId`) or all of them.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketOptionMmQuotePull(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: DeleteVaultMarketProQuoteResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketOptionMmQuotePullWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Pull your option quotes on one contract (`contractId`) or all of them.
+     - POST /v1/vault-markets/options/mm/quotes/pull
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<DeleteVaultMarketProQuoteResponse> 
+     */
+    open class func createVaultMarketOptionMmQuotePullWithRequestBuilder() -> RequestBuilder<DeleteVaultMarketProQuoteResponse> {
+        let localVariablePath = "/v1/vault-markets/options/mm/quotes/pull"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<DeleteVaultMarketProQuoteResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Place an options order: `contractId`, `side`, `quantity` in contracts (three decimals), a `priceCents` or an `iv` (`quoteMode`), `tif` gtc / gtd (with `expiresAt`) / ioc, `postOnly`. Idempotent on `clientOrderId`. On the Crossly venue it matches price-time with self-trade prevention after a scenario-margin check; on the partner venue it routes to the partner (accept its `termsVersion`). `subaccountId` trades for a firm sub-account you may trade.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketOptionOrder(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketOptionOrderResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketOptionOrderWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Place an options order: `contractId`, `side`, `quantity` in contracts (three decimals), a `priceCents` or an `iv` (`quoteMode`), `tif` gtc / gtd (with `expiresAt`) / ioc, `postOnly`. Idempotent on `clientOrderId`. On the Crossly venue it matches price-time with self-trade prevention after a scenario-margin check; on the partner venue it routes to the partner (accept its `termsVersion`). `subaccountId` trades for a firm sub-account you may trade.
+     - POST /v1/vault-markets/options/orders
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketOptionOrderResponse> 
+     */
+    open class func createVaultMarketOptionOrderWithRequestBuilder() -> RequestBuilder<CreateVaultMarketOptionOrderResponse> {
+        let localVariablePath = "/v1/vault-markets/options/orders"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketOptionOrderResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Cancel a working options order (on the partner venue it is cancelled there first). A liquidation order cannot be cancelled.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketOptionOrderCancel(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketOptionOrderCancelResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketOptionOrderCancelWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Cancel a working options order (on the partner venue it is cancelled there first). A liquidation order cannot be cancelled.
+     - POST /v1/vault-markets/options/orders/{id}/cancel
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketOptionOrderCancelResponse> 
+     */
+    open class func createVaultMarketOptionOrderCancelWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketOptionOrderCancelResponse> {
+        var localVariablePath = "/v1/vault-markets/options/orders/{id}/cancel"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketOptionOrderCancelResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     A practice strategy (play money): the same ticket as a real one, filled at the practice maker's quotes when the net is inside the limit.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketOptionPracticeCombo(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketOptionPracticeComboResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketOptionPracticeComboWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A practice strategy (play money): the same ticket as a real one, filled at the practice maker's quotes when the net is inside the limit.
+     - POST /v1/vault-markets/options/practice/combos
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketOptionPracticeComboResponse> 
+     */
+    open class func createVaultMarketOptionPracticeComboWithRequestBuilder() -> RequestBuilder<CreateVaultMarketOptionPracticeComboResponse> {
+        let localVariablePath = "/v1/vault-markets/options/practice/combos"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketOptionPracticeComboResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Place a practice options order (the same ticket as a real one; fills against the practice maker at the reference vol). Play money only.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketOptionPracticeOrder(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketOptionPracticeOrderResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketOptionPracticeOrderWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Place a practice options order (the same ticket as a real one; fills against the practice maker at the reference vol). Play money only.
+     - POST /v1/vault-markets/options/practice/orders
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketOptionPracticeOrderResponse> 
+     */
+    open class func createVaultMarketOptionPracticeOrderWithRequestBuilder() -> RequestBuilder<CreateVaultMarketOptionPracticeOrderResponse> {
+        let localVariablePath = "/v1/vault-markets/options/practice/orders"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketOptionPracticeOrderResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Cancel a working practice options order.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketOptionPracticeOrderCancel(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketOptionPracticeOrdersItem?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketOptionPracticeOrderCancelWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Cancel a working practice options order.
+     - POST /v1/vault-markets/options/practice/orders/{id}/cancel
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<ListVaultMarketOptionPracticeOrdersItem> 
+     */
+    open class func createVaultMarketOptionPracticeOrderCancelWithRequestBuilder(id: String) -> RequestBuilder<ListVaultMarketOptionPracticeOrdersItem> {
+        var localVariablePath = "/v1/vault-markets/options/practice/orders/{id}/cancel"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketOptionPracticeOrdersItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Start the options practice account again with $10,000: positions and working orders are cleared.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketOptionPracticeReset(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketOptionPracticeResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketOptionPracticeResetWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Start the options practice account again with $10,000: positions and working orders are cleared.
+     - POST /v1/vault-markets/options/practice/reset
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketOptionPracticeResponse> 
+     */
+    open class func createVaultMarketOptionPracticeResetWithRequestBuilder() -> RequestBuilder<GetVaultMarketOptionPracticeResponse> {
+        let localVariablePath = "/v1/vault-markets/options/practice/reset"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketOptionPracticeResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Price a ticket without placing it: give a price per contract or an implied vol (`quoteMode`), get the other back, the premium and fee, the Greeks for your size, the payoff at expiry and the margin it would need on your account (authoritative on the Crossly venue, an estimate when the partner clears). A bad entry is reported, not thrown.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketOptionQuote(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketOptionQuoteResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketOptionQuoteWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Price a ticket without placing it: give a price per contract or an implied vol (`quoteMode`), get the other back, the premium and fee, the Greeks for your size, the payoff at expiry and the margin it would need on your account (authoritative on the Crossly venue, an estimate when the partner clears). A bad entry is reported, not thrown.
+     - POST /v1/vault-markets/options/quote
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketOptionQuoteResponse> 
+     */
+    open class func createVaultMarketOptionQuoteWithRequestBuilder() -> RequestBuilder<CreateVaultMarketOptionQuoteResponse> {
+        let localVariablePath = "/v1/vault-markets/options/quote"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketOptionQuoteResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Ask for a quote on an option contract: `side`, `quantity` in contracts, an optional `limitCents` (never shown). Makers quoting the series, the underlying's DMM and LPs and approved dealers are told anonymously; answers are firm for 60 s.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketOptionRfq(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketRfqResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketOptionRfqWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Ask for a quote on an option contract: `side`, `quantity` in contracts, an optional `limitCents` (never shown). Makers quoting the series, the underlying's DMM and LPs and approved dealers are told anonymously; answers are firm for 60 s.
+     - POST /v1/vault-markets/options/rfq
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketRfqResponse> 
+     */
+    open class func createVaultMarketOptionRfqWithRequestBuilder() -> RequestBuilder<CreateVaultMarketRfqResponse> {
+        let localVariablePath = "/v1/vault-markets/options/rfq"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketRfqResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Take a live answer (`responseId`) to your option quote request: it trades through the options book at that price or better, with margin and self-trade prevention.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketOptionRfqAccept(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketOptionRfqAcceptResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketOptionRfqAcceptWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Take a live answer (`responseId`) to your option quote request: it trades through the options book at that price or better, with margin and self-trade prevention.
+     - POST /v1/vault-markets/options/rfq/{id}/accept
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketOptionRfqAcceptResponse> 
+     */
+    open class func createVaultMarketOptionRfqAcceptWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketOptionRfqAcceptResponse> {
+        var localVariablePath = "/v1/vault-markets/options/rfq/{id}/accept"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketOptionRfqAcceptResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Cancel your open option quote request.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketOptionRfqCancel(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: IdStatusResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketOptionRfqCancelWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Cancel your open option quote request.
+     - POST /v1/vault-markets/options/rfq/{id}/cancel
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<IdStatusResponse> 
+     */
+    open class func createVaultMarketOptionRfqCancelWithRequestBuilder(id: String) -> RequestBuilder<IdStatusResponse> {
+        var localVariablePath = "/v1/vault-markets/options/rfq/{id}/cancel"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<IdStatusResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Answer an option quote request with a firm price per contract for its full size (good for 60 s; a new answer replaces your last).
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketOptionRfqRespond(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketOptionRfqRespondResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketOptionRfqRespondWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Answer an option quote request with a firm price per contract for its full size (good for 60 s; a new answer replaces your last).
+     - POST /v1/vault-markets/options/rfq/{id}/respond
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketOptionRfqRespondResponse> 
+     */
+    open class func createVaultMarketOptionRfqRespondWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketOptionRfqRespondResponse> {
+        var localVariablePath = "/v1/vault-markets/options/rfq/{id}/respond"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketOptionRfqRespondResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Withdraw your live answer to an option quote request.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketOptionRfqResponseWithdraw(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: IdStatusResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketOptionRfqResponseWithdrawWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Withdraw your live answer to an option quote request.
+     - POST /v1/vault-markets/options/rfq/responses/{id}/withdraw
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<IdStatusResponse> 
+     */
+    open class func createVaultMarketOptionRfqResponseWithdrawWithRequestBuilder(id: String) -> RequestBuilder<IdStatusResponse> {
+        var localVariablePath = "/v1/vault-markets/options/rfq/responses/{id}/withdraw"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<IdStatusResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Roll a position to another contract as one strategy order at one net price (+ you pay, - you receive): the close and the open fill together or not at all. `practice` rolls a practice position.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketOptionRoll(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketOptionRollResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketOptionRollWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Roll a position to another contract as one strategy order at one net price (+ you pay, - you receive): the close and the open fill together or not at all. `practice` rolls a practice position.
+     - POST /v1/vault-markets/options/roll
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketOptionRollResponse> 
+     */
+    open class func createVaultMarketOptionRollWithRequestBuilder() -> RequestBuilder<CreateVaultMarketOptionRollResponse> {
+        let localVariablePath = "/v1/vault-markets/options/roll"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketOptionRollResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Preview a strategy before placing it: by template (underlying, kind, direction, strikes, expiries) or by legs. Returns each leg at its bid / ask, the net per unit (+ debit, - credit), the payoff at the first expiry, max profit and max loss (null = unbounded), breakevens, net Greeks, and the scenario margin of the whole strategy next to its legs margined one by one.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketOptionStrategyPreview(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketOptionStrategyPreviewResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketOptionStrategyPreviewWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Preview a strategy before placing it: by template (underlying, kind, direction, strikes, expiries) or by legs. Returns each leg at its bid / ask, the net per unit (+ debit, - credit), the payoff at the first expiry, max profit and max loss (null = unbounded), breakevens, net Greeks, and the scenario margin of the whole strategy next to its legs margined one by one.
+     - POST /v1/vault-markets/options/strategies/preview
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketOptionStrategyPreviewResponse> 
+     */
+    open class func createVaultMarketOptionStrategyPreviewWithRequestBuilder() -> RequestBuilder<CreateVaultMarketOptionStrategyPreviewResponse> {
+        let localVariablePath = "/v1/vault-markets/options/strategies/preview"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketOptionStrategyPreviewResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Lender: call the loan (once it is a day old). A refinancing auction runs for about 30 hours, the rate a new lender gets climbing to the ceiling; repaid or refinanced, you are paid in full; neither by the end, the unit moves to your vault.
      
      - parameter id: (path)  
@@ -5340,6 +6632,1283 @@ open class VaultMarketsAPI {
     }
 
     /**
+     Open your account at the live prediction venue (the partner DCM, or your own segregated account at the settlement bank). Returns `{ venue, status, opened }`.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketPredictionAccount(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketPredictionAccountResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketPredictionAccountWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Open your account at the live prediction venue (the partner DCM, or your own segregated account at the settlement bank). Returns `{ venue, status, opened }`.
+     - POST /v1/vault-markets/predictions/account
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketPredictionAccountResponse> 
+     */
+    open class func createVaultMarketPredictionAccountWithRequestBuilder() -> RequestBuilder<CreateVaultMarketPredictionAccountResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/account"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketPredictionAccountResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Tell me when a market's probability crosses a level: `{ marketId, levelPercent, direction }`. Returns the alert.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketPredictionAlert(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketPredictionAlertResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketPredictionAlertWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Tell me when a market's probability crosses a level: `{ marketId, levelPercent, direction }`. Returns the alert.
+     - POST /v1/vault-markets/predictions/alerts
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketPredictionAlertResponse> 
+     */
+    open class func createVaultMarketPredictionAlertWithRequestBuilder() -> RequestBuilder<CreateVaultMarketPredictionAlertResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/alerts"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketPredictionAlertResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Make an \"I called it\" share card for a position of yours that settled in your favour (`showAmounts` to include what you paid and won). Returns the card with its public URL.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketPredictionCard(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketPredictionCardResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketPredictionCardWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Make an \"I called it\" share card for a position of yours that settled in your favour (`showAmounts` to include what you paid and won). Returns the card with its public URL.
+     - POST /v1/vault-markets/predictions/cards
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketPredictionCardResponse> 
+     */
+    open class func createVaultMarketPredictionCardWithRequestBuilder() -> RequestBuilder<CreateVaultMarketPredictionCardResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/cards"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketPredictionCardResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Ask makers for a price on a combo: 2 to 6 legs (a market and a side each) on different underlyings, a size, and an optional limit makers never see. Pays $1 a contract if every leg comes true. `venue` paper or live.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketPredictionComboRfq(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketPredictionComboRfqResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketPredictionComboRfqWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Ask makers for a price on a combo: 2 to 6 legs (a market and a side each) on different underlyings, a size, and an optional limit makers never see. Pays $1 a contract if every leg comes true. `venue` paper or live.
+     - POST /v1/vault-markets/predictions/combos/rfqs
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketPredictionComboRfqResponse> 
+     */
+    open class func createVaultMarketPredictionComboRfqWithRequestBuilder() -> RequestBuilder<CreateVaultMarketPredictionComboRfqResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/combos/rfqs"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketPredictionComboRfqResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Take one live, firm answer to your combo request (`quoteId`): both stakes are locked and the combo opens. Returns the combo.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketPredictionComboRfqAccept(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketPredictionCombosItem?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketPredictionComboRfqAcceptWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Take one live, firm answer to your combo request (`quoteId`): both stakes are locked and the combo opens. Returns the combo.
+     - POST /v1/vault-markets/predictions/combos/rfqs/{id}/accept
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<ListVaultMarketPredictionCombosItem> 
+     */
+    open class func createVaultMarketPredictionComboRfqAcceptWithRequestBuilder(id: String) -> RequestBuilder<ListVaultMarketPredictionCombosItem> {
+        var localVariablePath = "/v1/vault-markets/predictions/combos/rfqs/{id}/accept"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketPredictionCombosItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Withdraw your combo request; its answers are withdrawn too.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketPredictionComboRfqCancel(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketPredictionComboRfqsItem?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketPredictionComboRfqCancelWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Withdraw your combo request; its answers are withdrawn too.
+     - POST /v1/vault-markets/predictions/combos/rfqs/{id}/cancel
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<ListVaultMarketPredictionComboRfqsItem> 
+     */
+    open class func createVaultMarketPredictionComboRfqCancelWithRequestBuilder(id: String) -> RequestBuilder<ListVaultMarketPredictionComboRfqsItem> {
+        var localVariablePath = "/v1/vault-markets/predictions/combos/rfqs/{id}/cancel"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketPredictionComboRfqsItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Answer a combo request with a firm price a contract for the full size (good for 30 seconds; a new answer replaces yours). Real money needs an active prediction maker programme or approved dealer status.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketPredictionComboRfqQuote(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketPredictionComboRfqQuoteResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketPredictionComboRfqQuoteWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Answer a combo request with a firm price a contract for the full size (good for 30 seconds; a new answer replaces yours). Real money needs an active prediction maker programme or approved dealer status.
+     - POST /v1/vault-markets/predictions/combos/rfqs/{id}/quotes
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketPredictionComboRfqQuoteResponse> 
+     */
+    open class func createVaultMarketPredictionComboRfqQuoteWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketPredictionComboRfqQuoteResponse> {
+        var localVariablePath = "/v1/vault-markets/predictions/combos/rfqs/{id}/quotes"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketPredictionComboRfqQuoteResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Comment on a market or a series, or reply to a comment (`parentId`). Moderated like every comment on Crossly.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketPredictionComment(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketPredictionCommentResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketPredictionCommentWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Comment on a market or a series, or reply to a comment (`parentId`). Moderated like every comment on Crossly.
+     - POST /v1/vault-markets/predictions/comments
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketPredictionCommentResponse> 
+     */
+    open class func createVaultMarketPredictionCommentWithRequestBuilder() -> RequestBuilder<CreateVaultMarketPredictionCommentResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/comments"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketPredictionCommentResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Report a comment with a reason; enough reports hide it until ops look.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketPredictionCommentReport(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketPredictionCommentReportResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketPredictionCommentReportWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Report a comment with a reason; enough reports hide it until ops look.
+     - POST /v1/vault-markets/predictions/comments/{id}/report
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketPredictionCommentReportResponse> 
+     */
+    open class func createVaultMarketPredictionCommentReportWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketPredictionCommentReportResponse> {
+        var localVariablePath = "/v1/vault-markets/predictions/comments/{id}/report"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketPredictionCommentReportResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Split ($1 a set buys one Yes in every bucket of an expiry), merge (one Yes in every bucket gives back $1 a set before settlement) or convert (No in one bucket becomes Yes in every other) on a full bucket set. `venue` paper or live. Returns the conversion and the event after it.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketPredictionConversion(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketPredictionConversionResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketPredictionConversionWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Split ($1 a set buys one Yes in every bucket of an expiry), merge (one Yes in every bucket gives back $1 a set before settlement) or convert (No in one bucket becomes Yes in every other) on a full bucket set. `venue` paper or live. Returns the conversion and the event after it.
+     - POST /v1/vault-markets/predictions/conversions
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketPredictionConversionResponse> 
+     */
+    open class func createVaultMarketPredictionConversionWithRequestBuilder() -> RequestBuilder<CreateVaultMarketPredictionConversionResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/conversions"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketPredictionConversionResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Forecast a market: `probabilityPercent` 0 to 100. The one standing when trading closes is scored (Brier).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketPredictionForecast(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketPredictionForecastResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketPredictionForecastWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Forecast a market: `probabilityPercent` 0 to 100. The one standing when trading closes is scored (Brier).
+     - POST /v1/vault-markets/predictions/forecasts
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketPredictionForecastResponse> 
+     */
+    open class func createVaultMarketPredictionForecastWithRequestBuilder() -> RequestBuilder<CreateVaultMarketPredictionForecastResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/forecasts"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketPredictionForecastResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Follow a public forecaster: you are told when they open a position or forecast (copy-watch only; nothing is ever traded for you).
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketPredictionForecasterFollow(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketPredictionForecasterFollowResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketPredictionForecasterFollowWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Follow a public forecaster: you are told when they open a position or forecast (copy-watch only; nothing is ever traded for you).
+     - POST /v1/vault-markets/predictions/forecasters/{id}/follow
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketPredictionForecasterFollowResponse> 
+     */
+    open class func createVaultMarketPredictionForecasterFollowWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketPredictionForecasterFollowResponse> {
+        var localVariablePath = "/v1/vault-markets/predictions/forecasters/{id}/follow"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketPredictionForecasterFollowResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Apply to make markets in prediction ladders (one series, or all with `seriesId` null). Needs the ID check; ops approve. Returns the application.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketPredictionMaker(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketPredictionMakersItem?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketPredictionMakerWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Apply to make markets in prediction ladders (one series, or all with `seriesId` null). Needs the ID check; ops approve. Returns the application.
+     - POST /v1/vault-markets/predictions/makers
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketPredictionMakersItem> 
+     */
+    open class func createVaultMarketPredictionMakerWithRequestBuilder() -> RequestBuilder<ListVaultMarketPredictionMakersItem> {
+        let localVariablePath = "/v1/vault-markets/predictions/makers"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketPredictionMakersItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Mass quote: replace your resting maker quotes on up to 50 markets with one Yes bid and one Yes ask each (post-only; an ask rests as a No bid at 100 minus it). Live quotes need an active maker programme. Returns what rests.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketPredictionMakerQuote(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketPredictionMakerQuoteResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketPredictionMakerQuoteWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Mass quote: replace your resting maker quotes on up to 50 markets with one Yes bid and one Yes ask each (post-only; an ask rests as a No bid at 100 minus it). Live quotes need an active maker programme. Returns what rests.
+     - POST /v1/vault-markets/predictions/makers/quotes
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketPredictionMakerQuoteResponse> 
+     */
+    open class func createVaultMarketPredictionMakerQuoteWithRequestBuilder() -> RequestBuilder<CreateVaultMarketPredictionMakerQuoteResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/makers/quotes"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketPredictionMakerQuoteResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Place a prediction order: buy_yes, sell_yes, buy_no or sell_no; limit (priceCents 1-99 in the action's own terms) or market (IOC 10 cents through the best price); GTC, GTD (expiresAt) or IOC; post-only. Sells only what you hold. `venue` paper (practice) or live (503 until a venue is registered). Returns the order with its fills.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketPredictionOrder(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketPredictionOrderResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketPredictionOrderWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Place a prediction order: buy_yes, sell_yes, buy_no or sell_no; limit (priceCents 1-99 in the action's own terms) or market (IOC 10 cents through the best price); GTC, GTD (expiresAt) or IOC; post-only. Sells only what you hold. `venue` paper (practice) or live (503 until a venue is registered). Returns the order with its fills.
+     - POST /v1/vault-markets/predictions/orders
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketPredictionOrderResponse> 
+     */
+    open class func createVaultMarketPredictionOrderWithRequestBuilder() -> RequestBuilder<CreateVaultMarketPredictionOrderResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/orders"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketPredictionOrderResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Amend a resting order's price (in its own terms) and/or whole size. It keeps its place in the queue only when the size goes down at the same price; otherwise it is re-queued and may trade at once. Returns the order with `keptPriority`.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketPredictionOrderAmend(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketPredictionOrderAmendResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketPredictionOrderAmendWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Amend a resting order's price (in its own terms) and/or whole size. It keeps its place in the queue only when the size goes down at the same price; otherwise it is re-queued and may trade at once. Returns the order with `keptPriority`.
+     - POST /v1/vault-markets/predictions/orders/{id}/amend
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketPredictionOrderAmendResponse> 
+     */
+    open class func createVaultMarketPredictionOrderAmendWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketPredictionOrderAmendResponse> {
+        var localVariablePath = "/v1/vault-markets/predictions/orders/{id}/amend"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketPredictionOrderAmendResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Place up to 20 orders in one call; each answers on its own (`results[]`), one refused never stops the rest.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketPredictionOrderBatch(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketPredictionOrderBatchResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketPredictionOrderBatchWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Place up to 20 orders in one call; each answers on its own (`results[]`), one refused never stops the rest.
+     - POST /v1/vault-markets/predictions/orders/batch
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketPredictionOrderBatchResponse> 
+     */
+    open class func createVaultMarketPredictionOrderBatchWithRequestBuilder() -> RequestBuilder<CreateVaultMarketPredictionOrderBatchResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/orders/batch"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketPredictionOrderBatchResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Cancel up to 20 orders in one call; each answers on its own.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketPredictionOrderBatchCancel(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketPredictionOrderBatchCancelResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketPredictionOrderBatchCancelWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Cancel up to 20 orders in one call; each answers on its own.
+     - POST /v1/vault-markets/predictions/orders/batch-cancel
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketPredictionOrderBatchCancelResponse> 
+     */
+    open class func createVaultMarketPredictionOrderBatchCancelWithRequestBuilder() -> RequestBuilder<CreateVaultMarketPredictionOrderBatchCancelResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/orders/batch-cancel"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketPredictionOrderBatchCancelResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Cancel a working prediction order; the money (or practice money) it locked comes back. Returns the order.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketPredictionOrderCancel(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketPredictionOrderResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketPredictionOrderCancelWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Cancel a working prediction order; the money (or practice money) it locked comes back. Returns the order.
+     - POST /v1/vault-markets/predictions/orders/{id}/cancel
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketPredictionOrderResponse> 
+     */
+    open class func createVaultMarketPredictionOrderCancelWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketPredictionOrderResponse> {
+        var localVariablePath = "/v1/vault-markets/predictions/orders/{id}/cancel"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketPredictionOrderResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Cancel every working prediction order you have, or only those on one market (`marketId`). Returns `{ cancelled }`.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketPredictionOrderCancelAll(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketProOrderCancelAllResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketPredictionOrderCancelAllWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Cancel every working prediction order you have, or only those on one market (`marketId`). Returns `{ cancelled }`.
+     - POST /v1/vault-markets/predictions/orders/cancel-all
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketProOrderCancelAllResponse> 
+     */
+    open class func createVaultMarketPredictionOrderCancelAllWithRequestBuilder() -> RequestBuilder<CreateVaultMarketProOrderCancelAllResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/orders/cancel-all"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketProOrderCancelAllResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Reset your practice prediction account to $1,000 of play money: working practice orders cancelled, practice positions cleared. Once a day.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketPredictionPaperReset(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketPredictionPaperResetResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketPredictionPaperResetWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Reset your practice prediction account to $1,000 of play money: working practice orders cancelled, practice positions cleared. Once a day.
+     - POST /v1/vault-markets/predictions/paper/reset
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketPredictionPaperResetResponse> 
+     */
+    open class func createVaultMarketPredictionPaperResetWithRequestBuilder() -> RequestBuilder<CreateVaultMarketPredictionPaperResetResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/paper/reset"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketPredictionPaperResetResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Close a position: your resting sells on the market are cancelled and everything you hold is sold now (market, 10-cent band) or at `priceCents`. Returns the sell order.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketPredictionPositionClose(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketPredictionOrderResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketPredictionPositionCloseWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Close a position: your resting sells on the market are cancelled and everything you hold is sold now (market, 10-cent band) or at `priceCents`. Returns the sell order.
+     - POST /v1/vault-markets/predictions/positions/close
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketPredictionOrderResponse> 
+     */
+    open class func createVaultMarketPredictionPositionCloseWithRequestBuilder() -> RequestBuilder<CreateVaultMarketPredictionOrderResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/positions/close"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketPredictionOrderResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Sell all: close every open position on a venue, or only one event's (`eventId`). Each answers on its own.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketPredictionPositionCloseAll(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketPredictionPositionCloseAllResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketPredictionPositionCloseAllWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Sell all: close every open position on a venue, or only one event's (`eventId`). Each answers on its own.
+     - POST /v1/vault-markets/predictions/positions/close-all
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketPredictionPositionCloseAllResponse> 
+     */
+    open class func createVaultMarketPredictionPositionCloseAllWithRequestBuilder() -> RequestBuilder<CreateVaultMarketPredictionPositionCloseAllResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/positions/close-all"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketPredictionPositionCloseAllResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Propose a market: an index slug or a book key, a shape (close at or above / at or below, between, touch), its strike(s) and an expiry. Ops review it; once listed you earn the creator share of Crossly's take on its fees.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketPredictionProposal(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketPredictionProposalsItem?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketPredictionProposalWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Propose a market: an index slug or a book key, a shape (close at or above / at or below, between, touch), its strike(s) and an expiry. Ops review it; once listed you earn the creator share of Crossly's take on its fees.
+     - POST /v1/vault-markets/predictions/proposals
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketPredictionProposalsItem> 
+     */
+    open class func createVaultMarketPredictionProposalWithRequestBuilder() -> RequestBuilder<ListVaultMarketPredictionProposalsItem> {
+        let localVariablePath = "/v1/vault-markets/predictions/proposals"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketPredictionProposalsItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Check a market proposal without sending it: whether the underlying may carry markets (a built-in index or a tier A key), and what is wrong with the strike or expiry.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketPredictionProposalCheck(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketPredictionProposalCheckResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketPredictionProposalCheckWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Check a market proposal without sending it: whether the underlying may carry markets (a built-in index or a tier A key), and what is wrong with the strike or expiry.
+     - POST /v1/vault-markets/predictions/proposals/check
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketPredictionProposalCheckResponse> 
+     */
+    open class func createVaultMarketPredictionProposalCheckWithRequestBuilder() -> RequestBuilder<CreateVaultMarketPredictionProposalCheckResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/proposals/check"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketPredictionProposalCheckResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Withdraw a proposal still waiting for review.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketPredictionProposalWithdraw(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketPredictionProposalsItem?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketPredictionProposalWithdrawWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Withdraw a proposal still waiting for review.
+     - POST /v1/vault-markets/predictions/proposals/{id}/withdraw
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<ListVaultMarketPredictionProposalsItem> 
+     */
+    open class func createVaultMarketPredictionProposalWithdrawWithRequestBuilder(id: String) -> RequestBuilder<ListVaultMarketPredictionProposalsItem> {
+        var localVariablePath = "/v1/vault-markets/predictions/proposals/{id}/withdraw"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketPredictionProposalsItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Dispute a settlement inside its 24-hour review window (you must hold a position in the market). Payout waits for the venue's decision. Returns `{ settlementId, status }`.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketPredictionSettlementDispute(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketPredictionSettlementDisputeResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketPredictionSettlementDisputeWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Dispute a settlement inside its 24-hour review window (you must hold a position in the market). Payout waits for the venue's decision. Returns `{ settlementId, status }`.
+     - POST /v1/vault-markets/predictions/settlements/{id}/dispute
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketPredictionSettlementDisputeResponse> 
+     */
+    open class func createVaultMarketPredictionSettlementDisputeWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketPredictionSettlementDisputeResponse> {
+        var localVariablePath = "/v1/vault-markets/predictions/settlements/{id}/dispute"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketPredictionSettlementDisputeResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Accept the current prediction-market contract terms (PREDICTION_TERMS_VERSION), needed for every real-money order. Returns `{ termsVersion, venue }`.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketPredictionTerm(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketPredictionTermResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketPredictionTermWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Accept the current prediction-market contract terms (PREDICTION_TERMS_VERSION), needed for every real-money order. Returns `{ termsVersion, venue }`.
+     - POST /v1/vault-markets/predictions/terms
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketPredictionTermResponse> 
+     */
+    open class func createVaultMarketPredictionTermWithRequestBuilder() -> RequestBuilder<CreateVaultMarketPredictionTermResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/terms"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketPredictionTermResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Make a price widget for one vault market (`kind` mark + `bookKey`) or one public index (`kind` index + `indexSlug`): range, layout (compact or chart), theme (auto, light, dark), optionally your own affiliate code for the link back and the sites allowed to show it (empty = any). Returns the widget with its snippets.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -5801,7 +8370,7 @@ open class VaultMarketsAPI {
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func createVaultMarketProQuoteHeartbeat(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketProQuoteHeartbeatResponse?, _ error: Error?) -> Void)) -> RequestTask {
+    open class func createVaultMarketProQuoteHeartbeat(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketOptionMmHeartbeatResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return createVaultMarketProQuoteHeartbeatWithRequestBuilder().execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
@@ -5818,9 +8387,9 @@ open class VaultMarketsAPI {
      - BASIC:
        - type: http
        - name: PersonalAccessToken
-     - returns: RequestBuilder<CreateVaultMarketProQuoteHeartbeatResponse> 
+     - returns: RequestBuilder<CreateVaultMarketOptionMmHeartbeatResponse> 
      */
-    open class func createVaultMarketProQuoteHeartbeatWithRequestBuilder() -> RequestBuilder<CreateVaultMarketProQuoteHeartbeatResponse> {
+    open class func createVaultMarketProQuoteHeartbeatWithRequestBuilder() -> RequestBuilder<CreateVaultMarketOptionMmHeartbeatResponse> {
         let localVariablePath = "/v1/vault-markets/pro/quotes/heartbeat"
         let localVariableURLString = CrosslyAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -5833,7 +8402,7 @@ open class VaultMarketsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketProQuoteHeartbeatResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketOptionMmHeartbeatResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -6358,6 +8927,344 @@ open class VaultMarketsAPI {
     }
 
     /**
+     Start auto-invest: `amountCents` ($5-$10,000) `every` week or month into `seriesIds` (equal weights) or `targets` (seriesId + weightBps summing to 10,000) or a `basketId` (with `rebalance` to keep your own shares on its weights). Whole shares only; the rest rolls over. Offerings are subscribed at their price; trading books are bought at the best ask up to `maxPremiumBps` over the indicative value. `practice` runs it on paper.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketShareAutoInvest(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketShareAutoInvestItem?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketShareAutoInvestWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Start auto-invest: `amountCents` ($5-$10,000) `every` week or month into `seriesIds` (equal weights) or `targets` (seriesId + weightBps summing to 10,000) or a `basketId` (with `rebalance` to keep your own shares on its weights). Whole shares only; the rest rolls over. Offerings are subscribed at their price; trading books are bought at the best ask up to `maxPremiumBps` over the indicative value. `practice` runs it on paper.
+     - POST /v1/vault-markets/shares/auto-invest
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketShareAutoInvestItem> 
+     */
+    open class func createVaultMarketShareAutoInvestWithRequestBuilder() -> RequestBuilder<ListVaultMarketShareAutoInvestItem> {
+        let localVariablePath = "/v1/vault-markets/shares/auto-invest"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketShareAutoInvestItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Run a plan now (once a minute at most); the schedule does not move.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketShareAutoInvestRun(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketShareAutoInvestRunResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketShareAutoInvestRunWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Run a plan now (once a minute at most); the schedule does not move.
+     - POST /v1/vault-markets/shares/auto-invest/{id}/run
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketShareAutoInvestRunResponse> 
+     */
+    open class func createVaultMarketShareAutoInvestRunWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketShareAutoInvestRunResponse> {
+        var localVariablePath = "/v1/vault-markets/shares/auto-invest/{id}/run"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketShareAutoInvestRunResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Change a plan (amount, cadence, series or weights, cap, rebalance) or set its `status` active, paused or cancelled.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketShareAutoInvestUpdate(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketShareAutoInvestItem?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketShareAutoInvestUpdateWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Change a plan (amount, cadence, series or weights, cap, rebalance) or set its `status` active, paused or cancelled.
+     - POST /v1/vault-markets/shares/auto-invest/{id}/update
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<ListVaultMarketShareAutoInvestItem> 
+     */
+    open class func createVaultMarketShareAutoInvestUpdateWithRequestBuilder(id: String) -> RequestBuilder<ListVaultMarketShareAutoInvestItem> {
+        var localVariablePath = "/v1/vault-markets/shares/auto-invest/{id}/update"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketShareAutoInvestItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Buy a basket once: `amountCents` split by its live weights into whole shares of each series, in your own name (offerings subscribed, trading books at the best ask up to `maxPremiumBps`). `practice` buys on paper.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketShareBasketBuy(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketShareBasketBuyResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketShareBasketBuyWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Buy a basket once: `amountCents` split by its live weights into whole shares of each series, in your own name (offerings subscribed, trading books at the best ask up to `maxPremiumBps`). `practice` buys on paper.
+     - POST /v1/vault-markets/shares/baskets/{id}/buy
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketShareBasketBuyResponse> 
+     */
+    open class func createVaultMarketShareBasketBuyWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketShareBasketBuyResponse> {
+        var localVariablePath = "/v1/vault-markets/shares/baskets/{id}/buy"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketShareBasketBuyResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your whole-unit bid reached the reserve: fund the price through your investor account within 72 hours to buy the item from its holders (no vote).
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketShareBuyoutFund(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketShareBuyoutFundResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketShareBuyoutFundWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your whole-unit bid reached the reserve: fund the price through your investor account within 72 hours to buy the item from its holders (no vote).
+     - POST /v1/vault-markets/shares/buyouts/{id}/fund
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketShareBuyoutFundResponse> 
+     */
+    open class func createVaultMarketShareBuyoutFundWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketShareBuyoutFundResponse> {
+        var localVariablePath = "/v1/vault-markets/shares/buyouts/{id}/fund"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketShareBuyoutFundResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Vote `yes` or `no` on a buyout with the shares you held when the vote opened. You can change your vote while it is open.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketShareBuyoutVote(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketShareBuyoutFundResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketShareBuyoutVoteWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Vote `yes` or `no` on a buyout with the shares you held when the vote opened. You can change your vote while it is open.
+     - POST /v1/vault-markets/shares/buyouts/{id}/vote
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketShareBuyoutFundResponse> 
+     */
+    open class func createVaultMarketShareBuyoutVoteWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketShareBuyoutFundResponse> {
+        var localVariablePath = "/v1/vault-markets/shares/buyouts/{id}/vote"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketShareBuyoutFundResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Withdraw your buyout bid before its vote opens; the escrow is refunded.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketShareBuyoutWithdraw(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketShareBuyoutFundResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketShareBuyoutWithdrawWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Withdraw your buyout bid before its vote opens; the escrow is refunded.
+     - POST /v1/vault-markets/shares/buyouts/{id}/withdraw
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketShareBuyoutFundResponse> 
+     */
+    open class func createVaultMarketShareBuyoutWithdrawWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketShareBuyoutFundResponse> {
+        var localVariablePath = "/v1/vault-markets/shares/buyouts/{id}/withdraw"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketShareBuyoutFundResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Make a verified share card of a position, a vault unit, a public index or your portfolio (`kind`, `refId`). The % on it is the price move since your real fill; amounts stay hidden unless `showAmounts`.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -6397,6 +9304,1167 @@ open class VaultMarketsAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<ListVaultMarketShareCardsItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Accept a share gift. Needs your own verified Vault Shares investor account; the venue then moves the shares to you on the register.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketShareGiftAccept(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketShareGiftsItem?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketShareGiftAcceptWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Accept a share gift. Needs your own verified Vault Shares investor account; the venue then moves the shares to you on the register.
+     - POST /v1/vault-markets/shares/gifts/{id}/accept
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<ListVaultMarketShareGiftsItem> 
+     */
+    open class func createVaultMarketShareGiftAcceptWithRequestBuilder(id: String) -> RequestBuilder<ListVaultMarketShareGiftsItem> {
+        var localVariablePath = "/v1/vault-markets/shares/gifts/{id}/accept"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketShareGiftsItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Cancel a gift you offered, before it is accepted: the shares are free again.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketShareGiftCancel(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketShareGiftsItem?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketShareGiftCancelWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Cancel a gift you offered, before it is accepted: the shares are free again.
+     - POST /v1/vault-markets/shares/gifts/{id}/cancel
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<ListVaultMarketShareGiftsItem> 
+     */
+    open class func createVaultMarketShareGiftCancelWithRequestBuilder(id: String) -> RequestBuilder<ListVaultMarketShareGiftsItem> {
+        var localVariablePath = "/v1/vault-markets/shares/gifts/{id}/cancel"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketShareGiftsItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Decline a share gift offered to you.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketShareGiftDecline(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketShareGiftsItem?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketShareGiftDeclineWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Decline a share gift offered to you.
+     - POST /v1/vault-markets/shares/gifts/{id}/decline
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<ListVaultMarketShareGiftsItem> 
+     */
+    open class func createVaultMarketShareGiftDeclineWithRequestBuilder(id: String) -> RequestBuilder<ListVaultMarketShareGiftsItem> {
+        var localVariablePath = "/v1/vault-markets/shares/gifts/{id}/decline"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketShareGiftsItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Open or update your investor account at the venue: accept the current investor terms (`acceptTerms`), and state accredited status or your annual income and net worth for the Reg A+ limit. Needs a verified ID.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketShareInvestor(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketShareInvestorResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketShareInvestorWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Open or update your investor account at the venue: accept the current investor terms (`acceptTerms`), and state accredited status or your annual income and net worth for the Reg A+ limit. Needs a verified ID.
+     - POST /v1/vault-markets/shares/investor
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketShareInvestorResponse> 
+     */
+    open class func createVaultMarketShareInvestorWithRequestBuilder() -> RequestBuilder<GetVaultMarketShareInvestorResponse> {
+        let localVariablePath = "/v1/vault-markets/shares/investor"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketShareInvestorResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Cancel one of your open share-book orders.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketShareOrderCancel(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketShareOrdersItem?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketShareOrderCancelWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Cancel one of your open share-book orders.
+     - POST /v1/vault-markets/shares/orders/{id}/cancel
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<ListVaultMarketShareOrdersItem> 
+     */
+    open class func createVaultMarketShareOrderCancelWithRequestBuilder(id: String) -> RequestBuilder<ListVaultMarketShareOrdersItem> {
+        var localVariablePath = "/v1/vault-markets/shares/orders/{id}/cancel"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketShareOrdersItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Cancel an open practice order.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketSharePaperOrderCancel(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketSharePaperSeryOrderResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketSharePaperOrderCancelWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Cancel an open practice order.
+     - POST /v1/vault-markets/shares/paper/orders/{id}/cancel
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketSharePaperSeryOrderResponse> 
+     */
+    open class func createVaultMarketSharePaperOrderCancelWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketSharePaperSeryOrderResponse> {
+        var localVariablePath = "/v1/vault-markets/shares/paper/orders/{id}/cancel"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketSharePaperSeryOrderResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Start the practice account over with fresh play money (once a day).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketSharePaperReset(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketSharePaperResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketSharePaperResetWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Start the practice account over with fresh play money (once a day).
+     - POST /v1/vault-markets/shares/paper/reset
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketSharePaperResponse> 
+     */
+    open class func createVaultMarketSharePaperResetWithRequestBuilder() -> RequestBuilder<GetVaultMarketSharePaperResponse> {
+        let localVariablePath = "/v1/vault-markets/shares/paper/reset"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketSharePaperResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Place a practice order (play money) with the same rules as the real share book.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketSharePaperSeryOrder(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketSharePaperSeryOrderResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketSharePaperSeryOrderWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Place a practice order (play money) with the same rules as the real share book.
+     - POST /v1/vault-markets/shares/paper/series/{id}/orders
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketSharePaperSeryOrderResponse> 
+     */
+    open class func createVaultMarketSharePaperSeryOrderWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketSharePaperSeryOrderResponse> {
+        var localVariablePath = "/v1/vault-markets/shares/paper/series/{id}/orders"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketSharePaperSeryOrderResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Subscribe with play money to a practice series’ offering.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketSharePaperSerySubscribe(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketSharePaperResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketSharePaperSerySubscribeWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Subscribe with play money to a practice series’ offering.
+     - POST /v1/vault-markets/shares/paper/series/{id}/subscribe
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetVaultMarketSharePaperResponse> 
+     */
+    open class func createVaultMarketSharePaperSerySubscribeWithRequestBuilder(id: String) -> RequestBuilder<GetVaultMarketSharePaperResponse> {
+        var localVariablePath = "/v1/vault-markets/shares/paper/series/{id}/subscribe"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketSharePaperResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Take down one of your own holder-room posts (`reason`).
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketShareRoomHide(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketShareRoomHideResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketShareRoomHideWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Take down one of your own holder-room posts (`reason`).
+     - POST /v1/vault-markets/shares/room/{id}/hide
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketShareRoomHideResponse> 
+     */
+    open class func createVaultMarketShareRoomHideWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketShareRoomHideResponse> {
+        var localVariablePath = "/v1/vault-markets/shares/room/{id}/hide"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketShareRoomHideResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Propose a Vault Shares series for one of your units (`vaultItemId`), keeping `retainedShares` (0-50%), with an optional minimum raise, offering length (7-60 days) and reserve. Ops then qualify it, attach the offering circular and open the offering. With no venue it is a practice series. Pass `requestId` to make a retry safe.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketShareSery(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketShareSeriesItem?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketShareSeryWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Propose a Vault Shares series for one of your units (`vaultItemId`), keeping `retainedShares` (0-50%), with an optional minimum raise, offering length (7-60 days) and reserve. Ops then qualify it, attach the offering circular and open the offering. With no venue it is a practice series. Pass `requestId` to make a retry safe.
+     - POST /v1/vault-markets/shares/series
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketShareSeriesItem> 
+     */
+    open class func createVaultMarketShareSeryWithRequestBuilder() -> RequestBuilder<ListVaultMarketShareSeriesItem> {
+        let localVariablePath = "/v1/vault-markets/shares/series"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketShareSeriesItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Bid for the whole item (`offerCents`, at least the mark x 1.10). The bid is escrowed at the venue, then holders vote by shares: two-thirds yes accepts, a majority against rejects, 14 days with no majority against accepts. Accepted, the item is yours and the price is paid out pro rata after storage and insurance.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketShareSeryBuyout(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketShareBuyoutFundResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketShareSeryBuyoutWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Bid for the whole item (`offerCents`, at least the mark x 1.10). The bid is escrowed at the venue, then holders vote by shares: two-thirds yes accepts, a majority against rejects, 14 days with no majority against accepts. Accepted, the item is yours and the price is paid out pro rata after storage and insurance.
+     - POST /v1/vault-markets/shares/series/{id}/buyouts
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketShareBuyoutFundResponse> 
+     */
+    open class func createVaultMarketShareSeryBuyoutWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketShareBuyoutFundResponse> {
+        var localVariablePath = "/v1/vault-markets/shares/series/{id}/buyouts"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketShareBuyoutFundResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Give whole `shares` of a series to someone (`to`: their @handle, email or user id), with an optional `message`. The shares are set aside until they accept (14 days). On acceptance the broker-dealer or transfer agent verifies them and moves the shares on the register: no money moves, and your cost basis and holding date carry over.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketShareSeryGift(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketShareGiftsItem?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketShareSeryGiftWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Give whole `shares` of a series to someone (`to`: their @handle, email or user id), with an optional `message`. The shares are set aside until they accept (14 days). On acceptance the broker-dealer or transfer agent verifies them and moves the shares on the register: no money moves, and your cost basis and holding date carry over.
+     - POST /v1/vault-markets/shares/series/{id}/gifts
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<ListVaultMarketShareGiftsItem> 
+     */
+    open class func createVaultMarketShareSeryGiftWithRequestBuilder(id: String) -> RequestBuilder<ListVaultMarketShareGiftsItem> {
+        var localVariablePath = "/v1/vault-markets/shares/series/{id}/gifts"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketShareGiftsItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Place an order on a series’ share book: `side`, `type` limit or market (immediate-or-cancel inside a 10% band), `tif` gtc / gtd (`expiresAt`) / ioc, whole `shares` or a buy’s `amountCents` (turned into whole shares at the most it could pay), integer `limitCents` a share, `postOnly`. Fees: maker 0, taker 100 bps plus the broker-dealer pass-through. Self-trades are prevented. Pass `requestId` to make a retry safe.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketShareSeryOrder(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketShareOrdersItem?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketShareSeryOrderWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Place an order on a series’ share book: `side`, `type` limit or market (immediate-or-cancel inside a 10% band), `tif` gtc / gtd (`expiresAt`) / ioc, whole `shares` or a buy’s `amountCents` (turned into whole shares at the most it could pay), integer `limitCents` a share, `postOnly`. Fees: maker 0, taker 100 bps plus the broker-dealer pass-through. Self-trades are prevented. Pass `requestId` to make a retry safe.
+     - POST /v1/vault-markets/shares/series/{id}/orders
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<ListVaultMarketShareOrdersItem> 
+     */
+    open class func createVaultMarketShareSeryOrderWithRequestBuilder(id: String) -> RequestBuilder<ListVaultMarketShareOrdersItem> {
+        var localVariablePath = "/v1/vault-markets/shares/series/{id}/orders"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketShareOrdersItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     You hold every share: take the item back whole. With `withdraw`, it ships home at once (any receipt token is burned as it leaves). Storage and insurance the series owed stay with the unit.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketShareSeryRecombine(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketShareSeryRecombineResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketShareSeryRecombineWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     You hold every share: take the item back whole. With `withdraw`, it ships home at once (any receipt token is burned as it leaves). Storage and insurance the series owed stay with the unit.
+     - POST /v1/vault-markets/shares/series/{id}/recombine
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketShareSeryRecombineResponse> 
+     */
+    open class func createVaultMarketShareSeryRecombineWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketShareSeryRecombineResponse> {
+        var localVariablePath = "/v1/vault-markets/shares/series/{id}/recombine"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketShareSeryRecombineResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Post in the holder room (shareholders only), up to 1,000 characters.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketShareSeryRoom(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketShareSeryRoomResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketShareSeryRoomWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Post in the holder room (shareholders only), up to 1,000 characters.
+     - POST /v1/vault-markets/shares/series/{id}/room
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketShareSeryRoomResponse> 
+     */
+    open class func createVaultMarketShareSeryRoomWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketShareSeryRoomResponse> {
+        var localVariablePath = "/v1/vault-markets/shares/series/{id}/room"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketShareSeryRoomResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Subscribe for whole `shares` in an open offering at its fixed price. The money goes into the venue’s escrow in your own name and is refunded if the offering misses its minimum. Reg A+ limits apply. A joint vault member with trade rights may pass `jointVaultId`. Pass `requestId` to make a retry safe.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketShareSerySubscribe(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketShareSubscriptionsItem?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketShareSerySubscribeWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Subscribe for whole `shares` in an open offering at its fixed price. The money goes into the venue’s escrow in your own name and is refunded if the offering misses its minimum. Reg A+ limits apply. A joint vault member with trade rights may pass `jointVaultId`. Pass `requestId` to make a retry safe.
+     - POST /v1/vault-markets/shares/series/{id}/subscribe
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<ListVaultMarketShareSubscriptionsItem> 
+     */
+    open class func createVaultMarketShareSerySubscribeWithRequestBuilder(id: String) -> RequestBuilder<ListVaultMarketShareSubscriptionsItem> {
+        var localVariablePath = "/v1/vault-markets/shares/series/{id}/subscribe"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketShareSubscriptionsItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Stop being told about a drop (`kind` notify) or leave its waitlist (`kind` waitlist).
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketShareSeryUnwatch(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketShareSeryWatchResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketShareSeryUnwatchWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Stop being told about a drop (`kind` notify) or leave its waitlist (`kind` waitlist).
+     - POST /v1/vault-markets/shares/series/{id}/unwatch
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketShareSeryWatchResponse> 
+     */
+    open class func createVaultMarketShareSeryUnwatchWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketShareSeryWatchResponse> {
+        var localVariablePath = "/v1/vault-markets/shares/series/{id}/unwatch"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketShareSeryWatchResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Post an update on your own item’s series (you are its originator): `kind` story, provenance, condition, appraisal, exhibition or event, a `title`, a `body`, an optional https `mediaUrl`, `holdersOnly`. Holders are told.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketShareSeryUpdate(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: IdResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketShareSeryUpdateWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Post an update on your own item’s series (you are its originator): `kind` story, provenance, condition, appraisal, exhibition or event, a `title`, a `body`, an optional https `mediaUrl`, `holdersOnly`. Holders are told.
+     - POST /v1/vault-markets/shares/series/{id}/updates
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<IdResponse> 
+     */
+    open class func createVaultMarketShareSeryUpdateWithRequestBuilder(id: String) -> RequestBuilder<IdResponse> {
+        var localVariablePath = "/v1/vault-markets/shares/series/{id}/updates"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<IdResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Ask to be told about a drop (`kind` notify: when your early access opens and when it opens to everyone) or join the waitlist of a sold-out first-come offering (`kind` waitlist, with the `shares` you want).
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketShareSeryWatch(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketShareSeryWatchResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketShareSeryWatchWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Ask to be told about a drop (`kind` notify: when your early access opens and when it opens to everyone) or join the waitlist of a sold-out first-come offering (`kind` waitlist, with the `shares` you want).
+     - POST /v1/vault-markets/shares/series/{id}/watch
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketShareSeryWatchResponse> 
+     */
+    open class func createVaultMarketShareSeryWatchWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketShareSeryWatchResponse> {
+        var localVariablePath = "/v1/vault-markets/shares/series/{id}/watch"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketShareSeryWatchResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Withdraw your own proposal before its offering opens.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketShareSeryWithdrawProposal(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketShareSeriesItem?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketShareSeryWithdrawProposalWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Withdraw your own proposal before its offering opens.
+     - POST /v1/vault-markets/shares/series/{id}/withdraw-proposal
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<ListVaultMarketShareSeriesItem> 
+     */
+    open class func createVaultMarketShareSeryWithdrawProposalWithRequestBuilder(id: String) -> RequestBuilder<ListVaultMarketShareSeriesItem> {
+        var localVariablePath = "/v1/vault-markets/shares/series/{id}/withdraw-proposal"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketShareSeriesItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Cancel an escrowed subscription while its offering is still open: the escrow is refunded.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketShareSubscriptionCancel(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketShareSubscriptionsItem?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketShareSubscriptionCancelWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Cancel an escrowed subscription while its offering is still open: the escrow is refunded.
+     - POST /v1/vault-markets/shares/subscriptions/{id}/cancel
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<ListVaultMarketShareSubscriptionsItem> 
+     */
+    open class func createVaultMarketShareSubscriptionCancelWithRequestBuilder(id: String) -> RequestBuilder<ListVaultMarketShareSubscriptionsItem> {
+        var localVariablePath = "/v1/vault-markets/shares/subscriptions/{id}/cancel"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketShareSubscriptionsItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Book a place on a viewing day (shareholders only), with up to the day’s `guests`. Bookings close a day before; booking again changes your guests.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketShareViewingBook(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketShareViewingBookResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketShareViewingBookWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Book a place on a viewing day (shareholders only), with up to the day’s `guests`. Bookings close a day before; booking again changes your guests.
+     - POST /v1/vault-markets/shares/viewings/{id}/book
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketShareViewingBookResponse> 
+     */
+    open class func createVaultMarketShareViewingBookWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketShareViewingBookResponse> {
+        var localVariablePath = "/v1/vault-markets/shares/viewings/{id}/book"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketShareViewingBookResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Cancel your viewing-day booking.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketShareViewingBookingCancel(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketShareViewingBookingCancelResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketShareViewingBookingCancelWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Cancel your viewing-day booking.
+     - POST /v1/vault-markets/shares/viewing-bookings/{id}/cancel
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketShareViewingBookingCancelResponse> 
+     */
+    open class func createVaultMarketShareViewingBookingCancelWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketShareViewingBookingCancelResponse> {
+        var localVariablePath = "/v1/vault-markets/shares/viewing-bookings/{id}/cancel"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketShareViewingBookingCancelResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -6583,6 +10651,50 @@ open class VaultMarketsAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketSupplySendResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Send inventory items to the vault: `method: label` (one box on a prepaid label) or `dropoff` at a partner (`partnerId`, from the finder; you get a counter code). Each item can carry its declared value; `insured` insures the box for it.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createVaultMarketSupplySendIn(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketSupplySendInResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createVaultMarketSupplySendInWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Send inventory items to the vault: `method: label` (one box on a prepaid label) or `dropoff` at a partner (`partnerId`, from the finder; you get a counter code). Each item can carry its declared value; `insured` insures the box for it.
+     - POST /v1/vault-markets/supply/send-in
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateVaultMarketSupplySendInResponse> 
+     */
+    open class func createVaultMarketSupplySendInWithRequestBuilder() -> RequestBuilder<CreateVaultMarketSupplySendInResponse> {
+        let localVariablePath = "/v1/vault-markets/supply/send-in"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketSupplySendInResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -7479,6 +11591,50 @@ open class VaultMarketsAPI {
     }
 
     /**
+     Stop Auto-buy with payouts. The history stays.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func deleteVaultMarketAutoBuy(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: DeleteVaultMarketAutoBuyResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return deleteVaultMarketAutoBuyWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Stop Auto-buy with payouts. The history stays.
+     - DELETE /v1/vault-markets/auto-buy
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<DeleteVaultMarketAutoBuyResponse> 
+     */
+    open class func deleteVaultMarketAutoBuyWithRequestBuilder() -> RequestBuilder<DeleteVaultMarketAutoBuyResponse> {
+        let localVariablePath = "/v1/vault-markets/auto-buy"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<DeleteVaultMarketAutoBuyResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Stop a family-wide quote: every leg order comes off the book; what filled stays filled.
      
      - parameter id: (path)  
@@ -7866,6 +12022,202 @@ open class VaultMarketsAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<DeleteVaultMarketOpeningWaitlistResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Remove a probability alert. Returns `{ ok }`.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func deleteVaultMarketPredictionAlert(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: OkResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return deleteVaultMarketPredictionAlertWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Remove a probability alert. Returns `{ ok }`.
+     - DELETE /v1/vault-markets/predictions/alerts/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<OkResponse> 
+     */
+    open class func deleteVaultMarketPredictionAlertWithRequestBuilder(id: String) -> RequestBuilder<OkResponse> {
+        var localVariablePath = "/v1/vault-markets/predictions/alerts/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<OkResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Take an \"I called it\" card down; its link stops working. Returns `{ ok }`.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func deleteVaultMarketPredictionCard(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: OkResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return deleteVaultMarketPredictionCardWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Take an \"I called it\" card down; its link stops working. Returns `{ ok }`.
+     - DELETE /v1/vault-markets/predictions/cards/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<OkResponse> 
+     */
+    open class func deleteVaultMarketPredictionCardWithRequestBuilder(id: String) -> RequestBuilder<OkResponse> {
+        var localVariablePath = "/v1/vault-markets/predictions/cards/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<OkResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Delete your comment.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func deleteVaultMarketPredictionComment(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: OkResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return deleteVaultMarketPredictionCommentWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Delete your comment.
+     - DELETE /v1/vault-markets/predictions/comments/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<OkResponse> 
+     */
+    open class func deleteVaultMarketPredictionCommentWithRequestBuilder(id: String) -> RequestBuilder<OkResponse> {
+        var localVariablePath = "/v1/vault-markets/predictions/comments/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<OkResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Stop following a forecaster.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func deleteVaultMarketPredictionForecasterFollow(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketPredictionForecasterFollowResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return deleteVaultMarketPredictionForecasterFollowWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Stop following a forecaster.
+     - DELETE /v1/vault-markets/predictions/forecasters/{id}/follow
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketPredictionForecasterFollowResponse> 
+     */
+    open class func deleteVaultMarketPredictionForecasterFollowWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketPredictionForecasterFollowResponse> {
+        var localVariablePath = "/v1/vault-markets/predictions/forecasters/{id}/follow"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketPredictionForecasterFollowResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -8801,6 +13153,50 @@ open class VaultMarketsAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<GetVaultMarketAuctionMineResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Auto-buy with payouts: the share of each payout set aside as a vault buying budget, the budget, your want list with max prices, the purchase history and whether it is paused. `autoBuy` is null when it is not set up.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketAutoBuy(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketAutoBuyResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketAutoBuyWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Auto-buy with payouts: the share of each payout set aside as a vault buying budget, the budget, your want list with max prices, the purchase history and whether it is paused. `autoBuy` is null when it is not set up.
+     - GET /v1/vault-markets/auto-buy
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketAutoBuyResponse> 
+     */
+    open class func getVaultMarketAutoBuyWithRequestBuilder() -> RequestBuilder<GetVaultMarketAutoBuyResponse> {
+        let localVariablePath = "/v1/vault-markets/auto-buy"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketAutoBuyResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -10556,6 +14952,104 @@ open class VaultMarketsAPI {
     }
 
     /**
+     The inventory item a vault unit of yours came from (null for a unit bought on the book).
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketHoldingInventoryItem(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketHoldingInventoryItemResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketHoldingInventoryItemWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The inventory item a vault unit of yours came from (null for a unit bought on the book).
+     - GET /v1/vault-markets/holdings/{id}/inventory-item
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetVaultMarketHoldingInventoryItemResponse> 
+     */
+    open class func getVaultMarketHoldingInventoryItemWithRequestBuilder(id: String) -> RequestBuilder<GetVaultMarketHoldingInventoryItemResponse> {
+        var localVariablePath = "/v1/vault-markets/holdings/{id}/inventory-item"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketHoldingInventoryItemResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     What shipping one unit you own home would charge now, for `standard` and `expedited`: shipping, the storage it owes and the early-withdrawal fee (within 90 days of arriving), and the total. Read-only; ship it home with POST /api/v1/buyer/vault/:id/withdraw.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketHoldingWithdrawQuote(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketHoldingWithdrawQuoteResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketHoldingWithdrawQuoteWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     What shipping one unit you own home would charge now, for `standard` and `expedited`: shipping, the storage it owes and the early-withdrawal fee (within 90 days of arriving), and the total. Read-only; ship it home with POST /api/v1/buyer/vault/:id/withdraw.
+     - GET /v1/vault-markets/holdings/{id}/withdraw-quote
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetVaultMarketHoldingWithdrawQuoteResponse> 
+     */
+    open class func getVaultMarketHoldingWithdrawQuoteWithRequestBuilder(id: String) -> RequestBuilder<GetVaultMarketHoldingWithdrawQuoteResponse> {
+        var localVariablePath = "/v1/vault-markets/holdings/{id}/withdraw-quote"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketHoldingWithdrawQuoteResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      \"Show my vault\": the vault units you hold, the ones standing in your Crossly World home first. Each: vaultItemId, title, grade, imageUrl, bookKey (its market), inHome, visitors (visitors to your home see it). Also your home (slug, privacy, path), max units one home shows, shown, visitorsSee and a note on who sees what. Your home is made on first read. No prices.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -11065,6 +15559,55 @@ open class VaultMarketsAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<GetVaultMarketInstantExitResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Where one inventory item's units are: in your own stock (warehouse) and in the vault per location, each vault unit's status (in transit, received, authenticated, graded, listed, shipped out), its Sell from first choice and whether it can be sent to the vault now (with the reason when not).
+     
+     - parameter inventoryItemId: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketItemLocation(inventoryItemId: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketItemLocationResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketItemLocationWithRequestBuilder(inventoryItemId: inventoryItemId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Where one inventory item's units are: in your own stock (warehouse) and in the vault per location, each vault unit's status (in transit, received, authenticated, graded, listed, shipped out), its Sell from first choice and whether it can be sent to the vault now (with the reason when not).
+     - GET /v1/vault-markets/items/{inventoryItemId}/location
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter inventoryItemId: (path)  
+     - returns: RequestBuilder<GetVaultMarketItemLocationResponse> 
+     */
+    open class func getVaultMarketItemLocationWithRequestBuilder(inventoryItemId: String) -> RequestBuilder<GetVaultMarketItemLocationResponse> {
+        var localVariablePath = "/v1/vault-markets/items/{inventoryItemId}/location"
+        let inventoryItemIdPreEscape = "\(APIHelper.mapValueToPathItem(inventoryItemId))"
+        let inventoryItemIdPostEscape = inventoryItemIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{inventoryItemId}", with: inventoryItemIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketItemLocationResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -12088,6 +16631,794 @@ open class VaultMarketsAPI {
     }
 
     /**
+     Fractional options: the venue mode (self = Crossly is the venue and clearing house, partner = routed to the index DCM, paper = practice only) with the env each mode still needs, the active series and the rule book in force.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketOption(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketOptionResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketOptionWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Fractional options: the venue mode (self = Crossly is the venue and clearing house, partner = routed to the index DCM, paper = practice only) with the env each mode still needs, the active series and the rule book in force.
+     - GET /v1/vault-markets/options
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketOptionResponse> 
+     */
+    open class func getVaultMarketOptionWithRequestBuilder() -> RequestBuilder<GetVaultMarketOptionResponse> {
+        let localVariablePath = "/v1/vault-markets/options"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketOptionResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Options analytics on an underlying: the vol surface (expiry x moneyness) and one expiry's smile (`expiry`), IV rank and percentile against the series' own year, open interest and volume by strike and expiry, put/call ratios, the expected move to each expiry, and the historical vol of the underlying's own published series. Every implied vol is derived and display only.
+     
+     - parameter underlying: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketOptionAnalytic(underlying: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketOptionAnalyticResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketOptionAnalyticWithRequestBuilder(underlying: underlying).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Options analytics on an underlying: the vol surface (expiry x moneyness) and one expiry's smile (`expiry`), IV rank and percentile against the series' own year, open interest and volume by strike and expiry, put/call ratios, the expected move to each expiry, and the historical vol of the underlying's own published series. Every implied vol is derived and display only.
+     - GET /v1/vault-markets/options/analytics/{underlying}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter underlying: (path)  
+     - returns: RequestBuilder<GetVaultMarketOptionAnalyticResponse> 
+     */
+    open class func getVaultMarketOptionAnalyticWithRequestBuilder(underlying: String) -> RequestBuilder<GetVaultMarketOptionAnalyticResponse> {
+        var localVariablePath = "/v1/vault-markets/options/analytics/{underlying}"
+        let underlyingPreEscape = "\(APIHelper.mapValueToPathItem(underlying))"
+        let underlyingPostEscape = underlyingPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{underlying}", with: underlyingPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketOptionAnalyticResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your auto-close rule: close positions (or only in-the-money ones) a set time before expiry with a marketable limit.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketOptionAutoClose(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketOptionAutoCloseResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketOptionAutoCloseWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your auto-close rule: close positions (or only in-the-money ones) a set time before expiry with a marketable limit.
+     - GET /v1/vault-markets/options/auto-close
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketOptionAutoCloseResponse> 
+     */
+    open class func getVaultMarketOptionAutoCloseWithRequestBuilder() -> RequestBuilder<GetVaultMarketOptionAutoCloseResponse> {
+        let localVariablePath = "/v1/vault-markets/options/auto-close"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketOptionAutoCloseResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The option chain for an underlying (index slug or book key): its expiries, and for one expiry (`expiry`, default the nearest) each strike's call and put with best bid / ask, last, open interest, the theoretical price at the reference vol, the implied vol of the mid (display only, never a mark) and the Greeks. Prices are cents per contract.
+     
+     - parameter underlying: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketOptionChain(underlying: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketOptionChainResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketOptionChainWithRequestBuilder(underlying: underlying).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The option chain for an underlying (index slug or book key): its expiries, and for one expiry (`expiry`, default the nearest) each strike's call and put with best bid / ask, last, open interest, the theoretical price at the reference vol, the implied vol of the mid (display only, never a mark) and the Greeks. Prices are cents per contract.
+     - GET /v1/vault-markets/options/chain/{underlying}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter underlying: (path)  
+     - returns: RequestBuilder<GetVaultMarketOptionChainResponse> 
+     */
+    open class func getVaultMarketOptionChainWithRequestBuilder(underlying: String) -> RequestBuilder<GetVaultMarketOptionChainResponse> {
+        var localVariablePath = "/v1/vault-markets/options/chain/{underlying}"
+        let underlyingPreEscape = "\(APIHelper.mapValueToPathItem(underlying))"
+        let underlyingPostEscape = underlyingPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{underlying}", with: underlyingPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketOptionChainResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     One strategy's combo book by its canonical key (`key`, from the preview or an order): bids and asks by net price and recent strategy trades.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketOptionComboBook(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketOptionComboBookResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketOptionComboBookWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One strategy's combo book by its canonical key (`key`, from the preview or an order): bids and asks by net price and recent strategy trades.
+     - GET /v1/vault-markets/options/combos/book
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketOptionComboBookResponse> 
+     */
+    open class func getVaultMarketOptionComboBookWithRequestBuilder() -> RequestBuilder<GetVaultMarketOptionComboBookResponse> {
+        let localVariablePath = "/v1/vault-markets/options/combos/book"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketOptionComboBookResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     One strategy quote request and its answers (all of them to the requester, your own to a responder).
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketOptionComboRfq(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketOptionComboRfqResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketOptionComboRfqWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One strategy quote request and its answers (all of them to the requester, your own to a responder).
+     - GET /v1/vault-markets/options/combos/rfq/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetVaultMarketOptionComboRfqResponse> 
+     */
+    open class func getVaultMarketOptionComboRfqWithRequestBuilder(id: String) -> RequestBuilder<GetVaultMarketOptionComboRfqResponse> {
+        var localVariablePath = "/v1/vault-markets/options/combos/rfq/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketOptionComboRfqResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     One option contract: its terms, the self-venue book and tape, its published daily settlement prices and, once settled, its settlement (value, source, flagged, and the hash chained to the previous settlement).
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketOptionContract(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketOptionContractResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketOptionContractWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One option contract: its terms, the self-venue book and tape, its published daily settlement prices and, once settled, its settlement (value, source, flagged, and the hash chained to the previous settlement).
+     - GET /v1/vault-markets/options/contracts/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetVaultMarketOptionContractResponse> 
+     */
+    open class func getVaultMarketOptionContractWithRequestBuilder(id: String) -> RequestBuilder<GetVaultMarketOptionContractResponse> {
+        var localVariablePath = "/v1/vault-markets/options/contracts/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketOptionContractResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     A contract's order book on the Crossly venue (`levels`, default 20): bids and asks by price with milli-contract sizes, and the last 50 prints.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketOptionContractBook(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketOptionContractBookResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketOptionContractBookWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A contract's order book on the Crossly venue (`levels`, default 20): bids and asks by price with milli-contract sizes, and the last 50 prints.
+     - GET /v1/vault-markets/options/contracts/{id}/book
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetVaultMarketOptionContractBookResponse> 
+     */
+    open class func getVaultMarketOptionContractBookWithRequestBuilder(id: String) -> RequestBuilder<GetVaultMarketOptionContractBookResponse> {
+        var localVariablePath = "/v1/vault-markets/options/contracts/{id}/book"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketOptionContractBookResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     A settled contract's settlement: the value (cents per unit of the underlying), its source (the index's frozen 7-day TWAP, the item's expiry-day A/B mark, or the last reliable value, flagged), and the hash chained to the previous settlement. Null until it settles.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketOptionContractSettlement(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketOptionContractSettlementResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketOptionContractSettlementWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A settled contract's settlement: the value (cents per unit of the underlying), its source (the index's frozen 7-day TWAP, the item's expiry-day A/B mark, or the last reliable value, flagged), and the hash chained to the previous settlement. Null until it settles.
+     - GET /v1/vault-markets/options/contracts/{id}/settlement
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetVaultMarketOptionContractSettlementResponse> 
+     */
+    open class func getVaultMarketOptionContractSettlementWithRequestBuilder(id: String) -> RequestBuilder<GetVaultMarketOptionContractSettlementResponse> {
+        var localVariablePath = "/v1/vault-markets/options/contracts/{id}/settlement"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketOptionContractSettlementResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your hedges: long puts protecting vault units you hold (protective puts) and the vault units locked as collateral for calls you wrote (covered calls).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketOptionHedge(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketOptionHedgeResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketOptionHedgeWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your hedges: long puts protecting vault units you hold (protective puts) and the vault units locked as collateral for calls you wrote (covered calls).
+     - GET /v1/vault-markets/options/hedges
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketOptionHedgeResponse> 
+     */
+    open class func getVaultMarketOptionHedgeWithRequestBuilder() -> RequestBuilder<GetVaultMarketOptionHedgeResponse> {
+        let localVariablePath = "/v1/vault-markets/options/hedges"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketOptionHedgeResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The at-the-money implied volatility of the nearest expiry on an underlying, for display on its page: derived from the options book, quality C, never written as a mark.
+     
+     - parameter underlying: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketOptionIv(underlying: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketOptionIvResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketOptionIvWithRequestBuilder(underlying: underlying).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The at-the-money implied volatility of the nearest expiry on an underlying, for display on its page: derived from the options book, quality C, never written as a mark.
+     - GET /v1/vault-markets/options/iv/{underlying}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter underlying: (path)  
+     - returns: RequestBuilder<GetVaultMarketOptionIvResponse> 
+     */
+    open class func getVaultMarketOptionIvWithRequestBuilder(underlying: String) -> RequestBuilder<GetVaultMarketOptionIvResponse> {
+        var localVariablePath = "/v1/vault-markets/options/iv/{underlying}"
+        let underlyingPreEscape = "\(APIHelper.mapValueToPathItem(underlying))"
+        let underlyingPostEscape = underlyingPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{underlying}", with: underlyingPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketOptionIvResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your options margin: the scenario requirement (worst loss over a +/-40% price x +/-50% vol grid, with offsets from vault units and positions you hold), initial margin, equity and state (ok / call / liquidate) per underlying. Authoritative on the Crossly venue; on the partner venue the partner's figure decides and this is an estimate.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketOptionMargin(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketOptionMarginResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketOptionMarginWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your options margin: the scenario requirement (worst loss over a +/-40% price x +/-50% vol grid, with offsets from vault units and positions you hold), initial margin, equity and state (ok / call / liquidate) per underlying. Authoritative on the Crossly venue; on the partner venue the partner's figure decides and this is an estimate.
+     - GET /v1/vault-markets/options/margin
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketOptionMarginResponse> 
+     */
+    open class func getVaultMarketOptionMarginWithRequestBuilder() -> RequestBuilder<GetVaultMarketOptionMarginResponse> {
+        let localVariablePath = "/v1/vault-markets/options/margin"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketOptionMarginResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your whole options position on one `underlying` at expiry: the P&L curve over 50%..150% of spot, breakevens, and the maximum gain and loss (null when unbounded).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketOptionPayoff(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketOptionPayoffResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketOptionPayoffWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your whole options position on one `underlying` at expiry: the P&L curve over 50%..150% of spot, breakevens, and the maximum gain and loss (null when unbounded).
+     - GET /v1/vault-markets/options/payoff
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketOptionPayoffResponse> 
+     */
+    open class func getVaultMarketOptionPayoffWithRequestBuilder() -> RequestBuilder<GetVaultMarketOptionPayoffResponse> {
+        let localVariablePath = "/v1/vault-markets/options/payoff"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketOptionPayoffResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your options positions: signed milli-contracts, average open price, the price it is settled to (Crossly venue), the theoretical mark, unrealised and realised P&L in cents, the Greeks for your size, the protective-put flag and your auto-deleveraging queue lights. `status` open (default) / all, `subaccountId`.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketOptionPosition(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketOptionPositionResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketOptionPositionWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your options positions: signed milli-contracts, average open price, the price it is settled to (Crossly venue), the theoretical mark, unrealised and realised P&L in cents, the Greeks for your size, the protective-put flag and your auto-deleveraging queue lights. `status` open (default) / all, `subaccountId`.
+     - GET /v1/vault-markets/options/positions
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketOptionPositionResponse> 
+     */
+    open class func getVaultMarketOptionPositionWithRequestBuilder() -> RequestBuilder<GetVaultMarketOptionPositionResponse> {
+        let localVariablePath = "/v1/vault-markets/options/positions"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketOptionPositionResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your options practice account (play money only, $10,000 to start): cash, positions at the practice maker's price, equity and P&L.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketOptionPractice(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketOptionPracticeResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketOptionPracticeWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your options practice account (play money only, $10,000 to start): cash, positions at the practice maker's price, equity and P&L.
+     - GET /v1/vault-markets/options/practice
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketOptionPracticeResponse> 
+     */
+    open class func getVaultMarketOptionPracticeWithRequestBuilder() -> RequestBuilder<GetVaultMarketOptionPracticeResponse> {
+        let localVariablePath = "/v1/vault-markets/options/practice"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketOptionPracticeResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     One option quote request: yours with every answer, or one you were sent with your own answer.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketOptionRfq(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketOptionRfqResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketOptionRfqWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One option quote request: yours with every answer, or one you were sent with your own answer.
+     - GET /v1/vault-markets/options/rfq/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetVaultMarketOptionRfqResponse> 
+     */
+    open class func getVaultMarketOptionRfqWithRequestBuilder(id: String) -> RequestBuilder<GetVaultMarketOptionRfqResponse> {
+        var localVariablePath = "/v1/vault-markets/options/rfq/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketOptionRfqResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your options portfolio's Greeks (per underlying and total, with dollar delta and 1% gamma), a scenario's P&L (`priceShift`, `volShift`, `daysForward`), a price x vol P&L grid, and the beta-weighted delta against an index (`betaIndex`, default the deepest). `book` live (default) or practice.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketOptionRisk(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketOptionRiskResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketOptionRiskWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your options portfolio's Greeks (per underlying and total, with dollar delta and 1% gamma), a scenario's P&L (`priceShift`, `volShift`, `daysForward`), a price x vol P&L grid, and the beta-weighted delta against an index (`betaIndex`, default the deepest). `book` live (default) or practice.
+     - GET /v1/vault-markets/options/risk
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketOptionRiskResponse> 
+     */
+    open class func getVaultMarketOptionRiskWithRequestBuilder() -> RequestBuilder<GetVaultMarketOptionRiskResponse> {
+        let localVariablePath = "/v1/vault-markets/options/risk"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketOptionRiskResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Crossly as an oracle publisher (needs CROSSLY_ORACLE_PUBLISHER_KEY + CROSSLY_ORACLE_NETWORK): the network (pyth or switchboard), the ed25519 key every value is signed with, each published index feed with its latest attempt, and 24 h counts of published, skipped and failed. Only built-in indexes priced from A/B marks are published; Crossly never reads its own feed back.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -12406,7 +17737,7 @@ open class VaultMarketsAPI {
     }
 
     /**
-     Your Vault Drop-off Partnership (null when you never applied): status, partner code, fee share and cap, totals and batches.
+     Your Vault Drop-off Partnership (null when you never applied): status, partner code, fee share and cap, finder profile, totals and batches; and whether your one-time ID check is done.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
@@ -12424,7 +17755,7 @@ open class VaultMarketsAPI {
     }
 
     /**
-     Your Vault Drop-off Partnership (null when you never applied): status, partner code, fee share and cap, totals and batches.
+     Your Vault Drop-off Partnership (null when you never applied): status, partner code, fee share and cap, finder profile, totals and batches; and whether your one-time ID check is done.
      - GET /v1/vault-markets/partners/me
      - BASIC:
        - type: http
@@ -12817,6 +18148,1107 @@ open class VaultMarketsAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<ListVaultMarketPositionsRiskItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The prediction markets home: the busiest and soonest-expiring \"Will it hit?\" markets with their probability (each market's own price, display only), the underlyings with markets, which venue is live, and how many positions you hold.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketPrediction(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketPredictionResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketPredictionWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The prediction markets home: the busiest and soonest-expiring \"Will it hit?\" markets with their probability (each market's own price, display only), the underlyings with markets, which venue is live, and how many positions you hold.
+     - GET /v1/vault-markets/predictions
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketPredictionResponse> 
+     */
+    open class func getVaultMarketPredictionWithRequestBuilder() -> RequestBuilder<GetVaultMarketPredictionResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketPredictionResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your prediction-market account: the live venue, your account there and the terms you accepted, whether you may trade real money (region, age, self-exclusion) and why not, your self-set limits, and the practice account line.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketPredictionAccount(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketPredictionAccountResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketPredictionAccountWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your prediction-market account: the live venue, your account there and the terms you accepted, whether you may trade real money (region, age, self-exclusion) and why not, your self-set limits, and the practice account line.
+     - GET /v1/vault-markets/predictions/account
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketPredictionAccountResponse> 
+     */
+    open class func getVaultMarketPredictionAccountWithRequestBuilder() -> RequestBuilder<GetVaultMarketPredictionAccountResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/account"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketPredictionAccountResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The prediction board the Trading Floor and the Market Open plank show: the busiest open markets and their odds. Anonymous: never who holds what.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketPredictionBoard(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketPredictionBoardResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketPredictionBoardWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The prediction board the Trading Floor and the Market Open plank show: the busiest open markets and their odds. Anonymous: never who holds what.
+     - GET /v1/vault-markets/predictions/board
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketPredictionBoardResponse> 
+     */
+    open class func getVaultMarketPredictionBoardWithRequestBuilder() -> RequestBuilder<GetVaultMarketPredictionBoardResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/board"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketPredictionBoardResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     One of your combos.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketPredictionCombo(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketPredictionCombosItem?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketPredictionComboWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One of your combos.
+     - GET /v1/vault-markets/predictions/combos/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<ListVaultMarketPredictionCombosItem> 
+     */
+    open class func getVaultMarketPredictionComboWithRequestBuilder(id: String) -> RequestBuilder<ListVaultMarketPredictionCombosItem> {
+        var localVariablePath = "/v1/vault-markets/predictions/combos/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketPredictionCombosItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     One combo request: its legs and size, and the answers you can see (all of them if you asked; yours if you quoted).
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketPredictionComboRfq(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketPredictionComboRfqsItem?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketPredictionComboRfqWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One combo request: its legs and size, and the answers you can see (all of them if you asked; yours if you quoted).
+     - GET /v1/vault-markets/predictions/combos/rfqs/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<ListVaultMarketPredictionComboRfqsItem> 
+     */
+    open class func getVaultMarketPredictionComboRfqWithRequestBuilder(id: String) -> RequestBuilder<ListVaultMarketPredictionComboRfqsItem> {
+        var localVariablePath = "/v1/vault-markets/predictions/combos/rfqs/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketPredictionComboRfqsItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The published daily settlement price of every listed market for a day (default yesterday): the last hour's volume-weighted Yes price, else the book mid, else the prior day's, with volume and open interest.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketPredictionDailyPrice(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketPredictionDailyPriceResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketPredictionDailyPriceWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The published daily settlement price of every listed market for a day (default yesterday): the last hour's volume-weighted Yes price, else the book mid, else the prior day's, with volume and open interest.
+     - GET /v1/vault-markets/predictions/daily-prices
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketPredictionDailyPriceResponse> 
+     */
+    open class func getVaultMarketPredictionDailyPriceWithRequestBuilder() -> RequestBuilder<GetVaultMarketPredictionDailyPriceResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/daily-prices"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketPredictionDailyPriceResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     One expiry of a series (an event): its markets, what you hold in each, the real worst and best case of your holdings across them (what your limit counts), and, for a full bucket set, how many sets you could merge. `venue` paper or live.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketPredictionEvent(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketPredictionEventResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketPredictionEventWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One expiry of a series (an event): its markets, what you hold in each, the real worst and best case of your holdings across them (what your limit counts), and, for a full bucket set, how many sets you could merge. `venue` paper or live.
+     - GET /v1/vault-markets/predictions/events/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetVaultMarketPredictionEventResponse> 
+     */
+    open class func getVaultMarketPredictionEventWithRequestBuilder(id: String) -> RequestBuilder<GetVaultMarketPredictionEventResponse> {
+        var localVariablePath = "/v1/vault-markets/predictions/events/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketPredictionEventResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your forecaster profile: display name, whether it is public (opt-in) and since when, and your followers.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketPredictionForecaster(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketPredictionForecasterResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketPredictionForecasterWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your forecaster profile: display name, whether it is public (opt-in) and since when, and your followers.
+     - GET /v1/vault-markets/predictions/forecaster
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketPredictionForecasterResponse> 
+     */
+    open class func getVaultMarketPredictionForecasterWithRequestBuilder() -> RequestBuilder<GetVaultMarketPredictionForecasterResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/forecaster"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketPredictionForecasterResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     A public forecaster: scores (all time and this month), open sides (never sizes), recent settled calls, followers. 404 when private.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketPredictionForecasterById(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketPredictionForecasterByIdResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketPredictionForecasterByIdWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A public forecaster: scores (all time and this month), open sides (never sizes), recent settled calls, followers. 404 when private.
+     - GET /v1/vault-markets/predictions/forecasters/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetVaultMarketPredictionForecasterByIdResponse> 
+     */
+    open class func getVaultMarketPredictionForecasterByIdWithRequestBuilder(id: String) -> RequestBuilder<GetVaultMarketPredictionForecasterByIdResponse> {
+        var localVariablePath = "/v1/vault-markets/predictions/forecasters/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketPredictionForecasterByIdResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Opt-in forecaster leaderboards: `period` week, month or all; `metric` pnl, accuracy or brier; `venue` live or paper (practice has its own board).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketPredictionLeaderboard(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketPredictionLeaderboardResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketPredictionLeaderboardWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Opt-in forecaster leaderboards: `period` week, month or all; `metric` pnl, accuracy or brier; `venue` live or paper (practice has its own board).
+     - GET /v1/vault-markets/predictions/leaderboard
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketPredictionLeaderboardResponse> 
+     */
+    open class func getVaultMarketPredictionLeaderboardWithRequestBuilder() -> RequestBuilder<GetVaultMarketPredictionLeaderboardResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/leaderboard"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketPredictionLeaderboardResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your self-set prediction limits: daily loss limit, self-exclusion, a raise waiting its 24 hours, and any hold the venue placed.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketPredictionLimit(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketPredictionLimitResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketPredictionLimitWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your self-set prediction limits: daily loss limit, self-exclusion, a raise waiting its 24 hours, and any hold the venue placed.
+     - GET /v1/vault-markets/predictions/limits
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketPredictionLimitResponse> 
+     */
+    open class func getVaultMarketPredictionLimitWithRequestBuilder() -> RequestBuilder<GetVaultMarketPredictionLimitResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/limits"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketPredictionLimitResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     One prediction market: its terms, the Yes ladder of the live venue and of the practice book, recent trades, settlement history (outcome, value, hash, review), the series rules text and hash, and your positions in it.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketPredictionMarket(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketPredictionMarketResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketPredictionMarketWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One prediction market: its terms, the Yes ladder of the live venue and of the practice book, recent trades, settlement history (outcome, value, hash, review), the series rules text and hash, and your positions in it.
+     - GET /v1/vault-markets/predictions/markets/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetVaultMarketPredictionMarketResponse> 
+     */
+    open class func getVaultMarketPredictionMarketWithRequestBuilder(id: String) -> RequestBuilder<GetVaultMarketPredictionMarketResponse> {
+        var localVariablePath = "/v1/vault-markets/predictions/markets/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketPredictionMarketResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     How many people forecast a market and their median probability (no names).
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketPredictionMarketForecast(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketPredictionMarketForecastResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketPredictionMarketForecastWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     How many people forecast a market and their median probability (no names).
+     - GET /v1/vault-markets/predictions/markets/{id}/forecasts
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetVaultMarketPredictionMarketForecastResponse> 
+     */
+    open class func getVaultMarketPredictionMarketForecastWithRequestBuilder(id: String) -> RequestBuilder<GetVaultMarketPredictionMarketForecastResponse> {
+        var localVariablePath = "/v1/vault-markets/predictions/markets/{id}/forecasts"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketPredictionMarketForecastResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     A market's history: probability points (display only, never a mark), candles on the Yes price, volume and open interest over `range` 1d, 1w, 1m or all; `venue` live or paper.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketPredictionMarketHistory(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketPredictionMarketHistoryResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketPredictionMarketHistoryWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A market's history: probability points (display only, never a mark), candles on the Yes price, volume and open interest over `range` 1d, 1w, 1m or all; `venue` live or paper.
+     - GET /v1/vault-markets/predictions/markets/{id}/history
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetVaultMarketPredictionMarketHistoryResponse> 
+     */
+    open class func getVaultMarketPredictionMarketHistoryWithRequestBuilder(id: String) -> RequestBuilder<GetVaultMarketPredictionMarketHistoryResponse> {
+        var localVariablePath = "/v1/vault-markets/predictions/markets/{id}/history"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketPredictionMarketHistoryResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     A server-sent event stream for one prediction market: `snapshot` first, then `pm_depth`, `pm_trades`, `pm_probability`, `pm_status` and `pm_settlement` as they change.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketPredictionMarketStream(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: String?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketPredictionMarketStreamWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A server-sent event stream for one prediction market: `snapshot` first, then `pm_depth`, `pm_trades`, `pm_probability`, `pm_status` and `pm_settlement` as they change.
+     - GET /v1/vault-markets/predictions/markets/{id}/stream
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<String> 
+     */
+    open class func getVaultMarketPredictionMarketStreamWithRequestBuilder(id: String) -> RequestBuilder<String> {
+        var localVariablePath = "/v1/vault-markets/predictions/markets/{id}/stream"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<String>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The trade tape, newest first: Yes price, size, which side took, venue. Page with `before` (the last `seq`).
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketPredictionMarketTrade(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketPredictionMarketTradeResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketPredictionMarketTradeWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The trade tape, newest first: Yes price, size, which side took, venue. Page with `before` (the last `seq`).
+     - GET /v1/vault-markets/predictions/markets/{id}/trades
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetVaultMarketPredictionMarketTradeResponse> 
+     */
+    open class func getVaultMarketPredictionMarketTradeWithRequestBuilder(id: String) -> RequestBuilder<GetVaultMarketPredictionMarketTradeResponse> {
+        var localVariablePath = "/v1/vault-markets/predictions/markets/{id}/trades"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketPredictionMarketTradeResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     A server-sent event stream of your own prediction events: `pm_order` (placed, filled, amended, cancelled, expired), `pm_fill` (your side, price and fee), `pm_position`, `pm_combo` and `pm_conversion`.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketPredictionMeStream(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: String?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketPredictionMeStreamWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A server-sent event stream of your own prediction events: `pm_order` (placed, filled, amended, cancelled, expired), `pm_fill` (your side, price and fee), `pm_position`, `pm_combo` and `pm_conversion`.
+     - GET /v1/vault-markets/predictions/me/stream
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<String> 
+     */
+    open class func getVaultMarketPredictionMeStreamWithRequestBuilder() -> RequestBuilder<String> {
+        let localVariablePath = "/v1/vault-markets/predictions/me/stream"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<String>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The two \"Will it hit?\" practice missions (your first call; see one settle), whether the server saw each done, and the pin they lead to. Pins only.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketPredictionMission(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketPredictionMissionResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketPredictionMissionWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The two \"Will it hit?\" practice missions (your first call; see one settle), whether the server saw each done, and the pin they lead to. Pins only.
+     - GET /v1/vault-markets/predictions/missions
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketPredictionMissionResponse> 
+     */
+    open class func getVaultMarketPredictionMissionWithRequestBuilder() -> RequestBuilder<GetVaultMarketPredictionMissionResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/missions"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketPredictionMissionResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your practice prediction account (play money only, $1,000 to start, never real or convertible): cash, money locked by working orders, positions and working orders.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketPredictionPaper(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketPredictionPaperResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketPredictionPaperWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your practice prediction account (play money only, $1,000 to start, never real or convertible): cash, money locked by working orders, positions and working orders.
+     - GET /v1/vault-markets/predictions/paper
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketPredictionPaperResponse> 
+     */
+    open class func getVaultMarketPredictionPaperWithRequestBuilder() -> RequestBuilder<GetVaultMarketPredictionPaperResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/paper"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketPredictionPaperResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     What an order would do now without placing it: contracts fillable inside the limit (a market order uses the 10-cent band), average price, estimated fee (Kalshi's formula), the money it would lock, and the most it could pay out.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketPredictionQuote(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketPredictionQuoteResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketPredictionQuoteWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     What an order would do now without placing it: contracts fillable inside the limit (a market order uses the 10-cent band), average price, estimated fee (Kalshi's formula), the money it would lock, and the most it could pay out.
+     - GET /v1/vault-markets/predictions/quote
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketPredictionQuoteResponse> 
+     */
+    open class func getVaultMarketPredictionQuoteWithRequestBuilder() -> RequestBuilder<GetVaultMarketPredictionQuoteResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/quote"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketPredictionQuoteResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The prediction venue's rule book now and every version, each hashed and chained to the one before (`chainOk`).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketPredictionRulebook(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketPredictionRulebookResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketPredictionRulebookWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The prediction venue's rule book now and every version, each hashed and chained to the one before (`chainOk`).
+     - GET /v1/vault-markets/predictions/rulebook
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketPredictionRulebookResponse> 
+     */
+    open class func getVaultMarketPredictionRulebookWithRequestBuilder() -> RequestBuilder<GetVaultMarketPredictionRulebookResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/rulebook"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketPredictionRulebookResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     A server-sent event stream for up to 50 markets (`markets`=id,id): `ready`, then `pm_depth`, `pm_trades`, `pm_probability`, `pm_status` and `pm_settlement`, each carrying its marketId.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketPredictionStream(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: String?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketPredictionStreamWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A server-sent event stream for up to 50 markets (`markets`=id,id): `ready`, then `pm_depth`, `pm_trades`, `pm_probability`, `pm_status` and `pm_settlement`, each carrying its marketId.
+     - GET /v1/vault-markets/predictions/stream
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<String> 
+     */
+    open class func getVaultMarketPredictionStreamWithRequestBuilder() -> RequestBuilder<String> {
+        let localVariablePath = "/v1/vault-markets/predictions/stream"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<String>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Which prediction venue is live: self (Crossly as the DCM, money at the segregated settlement bank), partner (a partner DCM) or paper (practice only), who runs the book, where money sits, and the env each real mode still needs.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketPredictionVenue(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketPredictionVenueResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketPredictionVenueWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Which prediction venue is live: self (Crossly as the DCM, money at the segregated settlement bank), partner (a partner DCM) or paper (practice only), who runs the book, where money sits, and the env each real mode still needs.
+     - GET /v1/vault-markets/predictions/venue
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketPredictionVenueResponse> 
+     */
+    open class func getVaultMarketPredictionVenueWithRequestBuilder() -> RequestBuilder<GetVaultMarketPredictionVenueResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/venue"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketPredictionVenueResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The \"Will it hit?\" panel for a key (`bookKey`) or an index (`index` slug): its open markets grouped by expiry, each with its probability. `eligible` is false when nothing is listed on it.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketPredictionWillItHit(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketPredictionWillItHitResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketPredictionWillItHitWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The \"Will it hit?\" panel for a key (`bookKey`) or an index (`index` slug): its open markets grouped by expiry, each with its probability. `eligible` is false when nothing is listed on it.
+     - GET /v1/vault-markets/predictions/will-it-hit
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketPredictionWillItHitResponse> 
+     */
+    open class func getVaultMarketPredictionWillItHitWithRequestBuilder() -> RequestBuilder<GetVaultMarketPredictionWillItHitResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/will-it-hit"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketPredictionWillItHitResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -13698,6 +20130,143 @@ open class VaultMarketsAPI {
     }
 
     /**
+     Your vault defaults: Sell from first, new-inventory suggestions, the insurance rule and the default grading service.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketSetting(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketSettingResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketSettingWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your vault defaults: Sell from first, new-inventory suggestions, the insurance rule and the default grading service.
+     - GET /v1/vault-markets/settings
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketSettingResponse> 
+     */
+    open class func getVaultMarketSettingWithRequestBuilder() -> RequestBuilder<GetVaultMarketSettingResponse> {
+        let localVariablePath = "/v1/vault-markets/settings"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketSettingResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Vault Shares at a glance: the venue mode in force (self, partner or paper) and the env it still needs, the rules (about $5 a share, 100 to 100,000 shares, originator keeps 0-50%, 3% origination, maker 0 / taker 100 bps, 90-day lockup, buyouts at the mark x 1.10 with a two-thirds vote) and the disclosure.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketShare(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketShareResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketShareWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Vault Shares at a glance: the venue mode in force (self, partner or paper) and the env it still needs, the rules (about $5 a share, 100 to 100,000 shares, originator keeps 0-50%, 3% origination, maker 0 / taker 100 bps, 90-day lockup, buyouts at the mark x 1.10 with a two-thirds vote) and the disclosure.
+     - GET /v1/vault-markets/shares
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketShareResponse> 
+     */
+    open class func getVaultMarketShareWithRequestBuilder() -> RequestBuilder<GetVaultMarketShareResponse> {
+        let localVariablePath = "/v1/vault-markets/shares"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketShareResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     One theme basket (id or slug): its series, target and live weights, prices, and your own holdings against the weights.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketShareBasket(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketShareBasketResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketShareBasketWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One theme basket (id or slug): its series, target and live weights, prices, and your own holdings against the weights.
+     - GET /v1/vault-markets/shares/baskets/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetVaultMarketShareBasketResponse> 
+     */
+    open class func getVaultMarketShareBasketWithRequestBuilder(id: String) -> RequestBuilder<GetVaultMarketShareBasketResponse> {
+        var localVariablePath = "/v1/vault-markets/shares/baskets/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketShareBasketResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      One share card as the public sees it, with its image and link paths.
      
      - parameter id: (path)  
@@ -13742,6 +20311,476 @@ open class VaultMarketsAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<ListVaultMarketShareCardsItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your investor account at the venue in force: its status, the investor terms you accepted, and your Reg A+ limit for one offering (10% of the greater of income and net worth unless accredited).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketShareInvestor(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketShareInvestorResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketShareInvestorWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your investor account at the venue in force: its status, the investor terms you accepted, and your Reg A+ limit for one offering (10% of the greater of income and net worth unless accredited).
+     - GET /v1/vault-markets/shares/investor
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketShareInvestorResponse> 
+     */
+    open class func getVaultMarketShareInvestorWithRequestBuilder() -> RequestBuilder<GetVaultMarketShareInvestorResponse> {
+        let localVariablePath = "/v1/vault-markets/shares/investor"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketShareInvestorResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your Vault Shares: shares and percent of each item, cost, implied value at the last price, your subscriptions and the payouts you were sent.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketShareMe(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketShareMeResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketShareMeWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your Vault Shares: shares and percent of each item, cost, implied value at the last price, your subscriptions and the payouts you were sent.
+     - GET /v1/vault-markets/shares/me
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketShareMeResponse> 
+     */
+    open class func getVaultMarketShareMeWithRequestBuilder() -> RequestBuilder<GetVaultMarketShareMeResponse> {
+        let localVariablePath = "/v1/vault-markets/shares/me"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketShareMeResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your practice account for Vault Shares (play money only, never real, never convertible): cash, practice holdings, open practice orders, recent practice fills.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketSharePaper(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketSharePaperResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketSharePaperWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your practice account for Vault Shares (play money only, never real, never convertible): cash, practice holdings, open practice orders, recent practice fills.
+     - GET /v1/vault-markets/shares/paper
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketSharePaperResponse> 
+     */
+    open class func getVaultMarketSharePaperWithRequestBuilder() -> RequestBuilder<GetVaultMarketSharePaperResponse> {
+        let localVariablePath = "/v1/vault-markets/shares/paper"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketSharePaperResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     A series’ practice book: practice orders and the house quote 1% either side of the reference price.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketSharePaperSeryBook(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketSharePaperSeryBookResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketSharePaperSeryBookWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A series’ practice book: practice orders and the house quote 1% either side of the reference price.
+     - GET /v1/vault-markets/shares/paper/series/{id}/book
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetVaultMarketSharePaperSeryBookResponse> 
+     */
+    open class func getVaultMarketSharePaperSeryBookWithRequestBuilder(id: String) -> RequestBuilder<GetVaultMarketSharePaperSeryBookResponse> {
+        var localVariablePath = "/v1/vault-markets/shares/paper/series/{id}/book"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketSharePaperSeryBookResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Fractionalize instead: whether one of your vault units can become a Vault Shares series now (stored, tier A or B, reliable mark of $1,000 or more, declared and insured, free) and the offering terms it would get.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketSharePreview(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketSharePreviewResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketSharePreviewWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Fractionalize instead: whether one of your vault units can become a Vault Shares series now (stored, tier A or B, reliable mark of $1,000 or more, declared and insured, free) and the offering terms it would get.
+     - GET /v1/vault-markets/shares/preview
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketSharePreviewResponse> 
+     */
+    open class func getVaultMarketSharePreviewWithRequestBuilder() -> RequestBuilder<GetVaultMarketSharePreviewResponse> {
+        let localVariablePath = "/v1/vault-markets/shares/preview"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketSharePreviewResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     One series: the offering, the share book depth, the latest fills, holders as share percentages (nobody named), buyouts and your vote, your orders and subscriptions.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketShareSery(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketShareSeryResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketShareSeryWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One series: the offering, the share book depth, the latest fills, holders as share percentages (nobody named), buyouts and your vote, your orders and subscriptions.
+     - GET /v1/vault-markets/shares/series/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetVaultMarketShareSeryResponse> 
+     */
+    open class func getVaultMarketShareSeryWithRequestBuilder(id: String) -> RequestBuilder<GetVaultMarketShareSeryResponse> {
+        var localVariablePath = "/v1/vault-markets/shares/series/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketShareSeryResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     A share book’s depth: whole shares per price level (integer cents a share), best first.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketShareSeryBook(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketShareSeryBookResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketShareSeryBookWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A share book’s depth: whole shares per price level (integer cents a share), best first.
+     - GET /v1/vault-markets/shares/series/{id}/book
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetVaultMarketShareSeryBookResponse> 
+     */
+    open class func getVaultMarketShareSeryBookWithRequestBuilder(id: String) -> RequestBuilder<GetVaultMarketShareSeryBookResponse> {
+        var localVariablePath = "/v1/vault-markets/shares/series/{id}/book"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketShareSeryBookResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     A series’ full price history: OHLC candles of every share-book fill (`interval` 1h, 1d or 1w), the offering price, the change since the offering, and the appraisal history beside it. Share prices are display only, never a mark.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketShareSeryHistory(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketShareSeryHistoryResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketShareSeryHistoryWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A series’ full price history: OHLC candles of every share-book fill (`interval` 1h, 1d or 1w), the offering price, the change since the offering, and the appraisal history beside it. Share prices are display only, never a mark.
+     - GET /v1/vault-markets/shares/series/{id}/history
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetVaultMarketShareSeryHistoryResponse> 
+     */
+    open class func getVaultMarketShareSeryHistoryWithRequestBuilder(id: String) -> RequestBuilder<GetVaultMarketShareSeryHistoryResponse> {
+        var localVariablePath = "/v1/vault-markets/shares/series/{id}/history"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketShareSeryHistoryResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Holder perks on a series: whether you hold it, your holder badge, the links to visit the item in the world vault room and in AR, the viewing days with places left and your bookings.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketShareSeryPerk(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketShareSeryPerkResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketShareSeryPerkWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Holder perks on a series: whether you hold it, your holder badge, the links to visit the item in the world vault room and in AR, the viewing days with places left and your bookings.
+     - GET /v1/vault-markets/shares/series/{id}/perks
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetVaultMarketShareSeryPerkResponse> 
+     */
+    open class func getVaultMarketShareSeryPerkWithRequestBuilder(id: String) -> RequestBuilder<GetVaultMarketShareSeryPerkResponse> {
+        var localVariablePath = "/v1/vault-markets/shares/series/{id}/perks"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketShareSeryPerkResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The holder room for a series (shareholders only): posts newest first under per-series aliases, never account names. `before` pages back.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketShareSeryRoom(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketShareSeryRoomResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketShareSeryRoomWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The holder room for a series (shareholders only): posts newest first under per-series aliases, never account names. `before` pages back.
+     - GET /v1/vault-markets/shares/series/{id}/room
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetVaultMarketShareSeryRoomResponse> 
+     */
+    open class func getVaultMarketShareSeryRoomWithRequestBuilder(id: String) -> RequestBuilder<GetVaultMarketShareSeryRoomResponse> {
+        var localVariablePath = "/v1/vault-markets/shares/series/{id}/room"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketShareSeryRoomResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -14031,6 +21070,55 @@ open class VaultMarketsAPI {
     }
 
     /**
+     One shipment into the vault, with each unit and whether it was received.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketSupplyShipment(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketSupplyShipmentResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketSupplyShipmentWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One shipment into the vault, with each unit and whether it was received.
+     - GET /v1/vault-markets/supply/shipments/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetVaultMarketSupplyShipmentResponse> 
+     */
+    open class func getVaultMarketSupplyShipmentWithRequestBuilder(id: String) -> RequestBuilder<GetVaultMarketSupplyShipmentResponse> {
+        var localVariablePath = "/v1/vault-markets/supply/shipments/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketSupplyShipmentResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Your tax year on the vault markets: units bought and sold with cost, proceeds, gain and term; lending fees, staking interest (estimate), market-maker rewards; closed positions. Links to the CSV and PDF.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -14163,6 +21251,50 @@ open class VaultMarketsAPI {
     }
 
     /**
+     Your fractional options tax lots for a calendar year (`year`, default this year): FIFO disposals (closed or settled) with proceeds, cost, gain in cents and holding term, each flagged as a possible Section 1256 contract, the totals with the 60/40 split, and the positions open at year end. Real fills only; practice never appears. Not tax advice.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketTaxOption(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketTaxOptionResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketTaxOptionWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your fractional options tax lots for a calendar year (`year`, default this year): FIFO disposals (closed or settled) with proceeds, cost, gain in cents and holding term, each flagged as a possible Section 1256 contract, the totals with the 60/40 split, and the positions open at year end. Real fills only; practice never appears. Not tax advice.
+     - GET /v1/vault-markets/tax/options
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketTaxOptionResponse> 
+     */
+    open class func getVaultMarketTaxOptionWithRequestBuilder() -> RequestBuilder<GetVaultMarketTaxOptionResponse> {
+        let localVariablePath = "/v1/vault-markets/tax/options"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketTaxOptionResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      The tax year as a PDF summary.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -14202,6 +21334,94 @@ open class VaultMarketsAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<URL>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your prediction-market results for a calendar year (`year`), as the venue reports them: each settled or voided real-money position with its venue, cost, fees, payout, refund, closing-trade gains and net in cents, and the totals. Practice never appears. Not tax advice.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketTaxPrediction(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketTaxPredictionResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketTaxPredictionWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your prediction-market results for a calendar year (`year`), as the venue reports them: each settled or voided real-money position with its venue, cost, fees, payout, refund, closing-trade gains and net in cents, and the totals. Practice never appears. Not tax advice.
+     - GET /v1/vault-markets/tax/predictions
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketTaxPredictionResponse> 
+     */
+    open class func getVaultMarketTaxPredictionWithRequestBuilder() -> RequestBuilder<GetVaultMarketTaxPredictionResponse> {
+        let localVariablePath = "/v1/vault-markets/tax/predictions"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketTaxPredictionResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your Vault Shares tax lots for a calendar year (`year`): disposals (share-book sales, exit payouts) with holding periods, proceeds, cost and gain in cents, the open lots and the totals. The broker-dealer issues the 1099-B; not tax advice.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketTaxShare(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketTaxShareResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketTaxShareWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your Vault Shares tax lots for a calendar year (`year`): disposals (share-book sales, exit payouts) with holding periods, proceeds, cost and gain in cents, the open lots and the totals. The broker-dealer issues the 1099-B; not tax advice.
+     - GET /v1/vault-markets/tax/shares
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketTaxShareResponse> 
+     */
+    open class func getVaultMarketTaxShareWithRequestBuilder() -> RequestBuilder<GetVaultMarketTaxShareResponse> {
+        let localVariablePath = "/v1/vault-markets/tax/shares"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketTaxShareResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -15044,6 +22264,50 @@ open class VaultMarketsAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<GetVaultMarketWorldFloorResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The Trading Floor boards for the round-13 products: odds (the probability ladder: the busiest open \"Will it hit?\" markets with probabilityBps, the market’s own price as a probability, display only), heat (option-chain heat: per listed underlying, open interest and the last day’s volume in milli-contracts in strike buckets around the underlying, a 0..1 heat per bucket and the at-the-money implied vol, display only) and shares (Vault Shares tickers: last share price in cents, changeBps from the last fill before today, shares traded today and the implied item value, display only). quality is always C: none of these is ever a mark. It never shows who traded.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getVaultMarketWorldFloorBoard(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketWorldFloorBoardResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getVaultMarketWorldFloorBoardWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The Trading Floor boards for the round-13 products: odds (the probability ladder: the busiest open \"Will it hit?\" markets with probabilityBps, the market’s own price as a probability, display only), heat (option-chain heat: per listed underlying, open interest and the last day’s volume in milli-contracts in strike buckets around the underlying, a 0..1 heat per bucket and the at-the-money implied vol, display only) and shares (Vault Shares tickers: last share price in cents, changeBps from the last fill before today, shares traded today and the implied item value, display only). quality is always C: none of these is ever a mark. It never shows who traded.
+     - GET /v1/vault-markets/world/floor/boards
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketWorldFloorBoardResponse> 
+     */
+    open class func getVaultMarketWorldFloorBoardWithRequestBuilder() -> RequestBuilder<GetVaultMarketWorldFloorBoardResponse> {
+        let localVariablePath = "/v1/vault-markets/world/floor/boards"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketWorldFloorBoardResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -16937,6 +24201,50 @@ open class VaultMarketsAPI {
     }
 
     /**
+     Everything you own in the Crossly vault, newest activity first: each unit with its status (inbound, stored, listed, withdraw_requested…) and situation (lent, pledged, in_grading…), what it is worth (`valueCents` with `valueSource` mark | last_sale | declared | none), declared and insured value, storage owed, its open ask, the deposit toggles when you sent it in, and what you may do with it now (`actions`). Units sold or shipped home in the last 90 days have `past: true`. `meta` carries the totals (units, value, declared, insured, storage owed), your recent boxes and their labels, the ship-home prices and the lending gate.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketHoldings(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketHoldingsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketHoldingsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Everything you own in the Crossly vault, newest activity first: each unit with its status (inbound, stored, listed, withdraw_requested…) and situation (lent, pledged, in_grading…), what it is worth (`valueCents` with `valueSource` mark | last_sale | declared | none), declared and insured value, storage owed, its open ask, the deposit toggles when you sent it in, and what you may do with it now (`actions`). Units sold or shipped home in the last 90 days have `past: true`. `meta` carries the totals (units, value, declared, insured, storage owed), your recent boxes and their labels, the ship-home prices and the lending gate.
+     - GET /v1/vault-markets/holdings
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketHoldingsResponse> 
+     */
+    open class func listVaultMarketHoldingsWithRequestBuilder() -> RequestBuilder<ListVaultMarketHoldingsResponse> {
+        let localVariablePath = "/v1/vault-markets/holdings"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketHoldingsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Published Index Committee minutes, newest first: attendees (names and roles), quorum, agenda, minutes and decisions.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -18018,6 +25326,627 @@ open class VaultMarketsAPI {
     }
 
     /**
+     Your strategy quote requests, newest first.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketOptionComboRfq(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketOptionComboRfqResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketOptionComboRfqWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your strategy quote requests, newest first.
+     - GET /v1/vault-markets/options/combos/rfq
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketOptionComboRfqResponse> 
+     */
+    open class func listVaultMarketOptionComboRfqWithRequestBuilder() -> RequestBuilder<ListVaultMarketOptionComboRfqResponse> {
+        let localVariablePath = "/v1/vault-markets/options/combos/rfq"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketOptionComboRfqResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Open strategy quote requests you may answer (never your own; the requester stays anonymous).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketOptionComboRfqInbox(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketOptionComboRfqResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketOptionComboRfqInboxWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Open strategy quote requests you may answer (never your own; the requester stays anonymous).
+     - GET /v1/vault-markets/options/combos/rfq/inbox
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketOptionComboRfqResponse> 
+     */
+    open class func listVaultMarketOptionComboRfqInboxWithRequestBuilder() -> RequestBuilder<ListVaultMarketOptionComboRfqResponse> {
+        let localVariablePath = "/v1/vault-markets/options/combos/rfq/inbox"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketOptionComboRfqResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your strategies: `status` working (default), done or all, with their legs as you hold them, net per unit, filled size and status.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketOptionCombos(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketOptionCombosResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketOptionCombosWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your strategies: `status` working (default), done or all, with their legs as you hold them, net per unit, filled size and status.
+     - GET /v1/vault-markets/options/combos
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketOptionCombosResponse> 
+     */
+    open class func listVaultMarketOptionCombosWithRequestBuilder() -> RequestBuilder<ListVaultMarketOptionCombosResponse> {
+        let localVariablePath = "/v1/vault-markets/options/combos"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketOptionCombosResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     A contract's published daily settlement prices, newest first (`days`, default 30): the price, how it was set (volume-weighted fills, the mid, or Black-Scholes at the reference vol), its implied vol, the underlying, open interest and volume, and each row's chain hash.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketOptionContractDaily(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketOptionContractDailyResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketOptionContractDailyWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A contract's published daily settlement prices, newest first (`days`, default 30): the price, how it was set (volume-weighted fills, the mid, or Black-Scholes at the reference vol), its implied vol, the underlying, open interest and volume, and each row's chain hash.
+     - GET /v1/vault-markets/options/contracts/{id}/daily
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<ListVaultMarketOptionContractDailyResponse> 
+     */
+    open class func listVaultMarketOptionContractDailyWithRequestBuilder(id: String) -> RequestBuilder<ListVaultMarketOptionContractDailyResponse> {
+        var localVariablePath = "/v1/vault-markets/options/contracts/{id}/daily"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketOptionContractDailyResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your two-sided option quotes: the contract, the bid and ask orders behind them, cancel-on-disconnect and the last heartbeat.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketOptionMmQuotes(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketOptionMmQuotesResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketOptionMmQuotesWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your two-sided option quotes: the contract, the bid and ask orders behind them, cancel-on-disconnect and the last heartbeat.
+     - GET /v1/vault-markets/options/mm/quotes
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketOptionMmQuotesResponse> 
+     */
+    open class func listVaultMarketOptionMmQuotesWithRequestBuilder() -> RequestBuilder<ListVaultMarketOptionMmQuotesResponse> {
+        let localVariablePath = "/v1/vault-markets/options/mm/quotes"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketOptionMmQuotesResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your options notices, newest first: expiry warnings, auto-closes, exercises (a long settled in the money), assignments (a short settled in the money), expiries worthless and rolls.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketOptionNotices(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketOptionNoticesResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketOptionNoticesWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your options notices, newest first: expiry warnings, auto-closes, exercises (a long settled in the money), assignments (a short settled in the money), expiries worthless and rolls.
+     - GET /v1/vault-markets/options/notices
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketOptionNoticesResponse> 
+     */
+    open class func listVaultMarketOptionNoticesWithRequestBuilder() -> RequestBuilder<ListVaultMarketOptionNoticesResponse> {
+        let localVariablePath = "/v1/vault-markets/options/notices"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketOptionNoticesResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your options orders, newest first: `status` working (default) / done / all, `limit`, `subaccountId`.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketOptionOrders(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketOptionOrdersResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketOptionOrdersWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your options orders, newest first: `status` working (default) / done / all, `limit`, `subaccountId`.
+     - GET /v1/vault-markets/options/orders
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketOptionOrdersResponse> 
+     */
+    open class func listVaultMarketOptionOrdersWithRequestBuilder() -> RequestBuilder<ListVaultMarketOptionOrdersResponse> {
+        let localVariablePath = "/v1/vault-markets/options/orders"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketOptionOrdersResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your practice strategies.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketOptionPracticeCombos(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketOptionCombosResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketOptionPracticeCombosWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your practice strategies.
+     - GET /v1/vault-markets/options/practice/combos
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketOptionCombosResponse> 
+     */
+    open class func listVaultMarketOptionPracticeCombosWithRequestBuilder() -> RequestBuilder<ListVaultMarketOptionCombosResponse> {
+        let localVariablePath = "/v1/vault-markets/options/practice/combos"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketOptionCombosResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your practice options fills, newest first (`limit`).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketOptionPracticeFills(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketOptionPracticeFillsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketOptionPracticeFillsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your practice options fills, newest first (`limit`).
+     - GET /v1/vault-markets/options/practice/fills
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketOptionPracticeFillsResponse> 
+     */
+    open class func listVaultMarketOptionPracticeFillsWithRequestBuilder() -> RequestBuilder<ListVaultMarketOptionPracticeFillsResponse> {
+        let localVariablePath = "/v1/vault-markets/options/practice/fills"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketOptionPracticeFillsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your practice options orders: `status` working (default) / done / all, `limit`.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketOptionPracticeOrders(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketOptionPracticeOrdersResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketOptionPracticeOrdersWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your practice options orders: `status` working (default) / done / all, `limit`.
+     - GET /v1/vault-markets/options/practice/orders
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketOptionPracticeOrdersResponse> 
+     */
+    open class func listVaultMarketOptionPracticeOrdersWithRequestBuilder() -> RequestBuilder<ListVaultMarketOptionPracticeOrdersResponse> {
+        let localVariablePath = "/v1/vault-markets/options/practice/orders"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketOptionPracticeOrdersResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your option quote requests, newest first.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketOptionRfq(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketOptionRfqResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketOptionRfqWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your option quote requests, newest first.
+     - GET /v1/vault-markets/options/rfq
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketOptionRfqResponse> 
+     */
+    open class func listVaultMarketOptionRfqWithRequestBuilder() -> RequestBuilder<ListVaultMarketOptionRfqResponse> {
+        let localVariablePath = "/v1/vault-markets/options/rfq"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketOptionRfqResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Open option quote requests you can answer.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketOptionRfqInbox(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketOptionRfqResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketOptionRfqInboxWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Open option quote requests you can answer.
+     - GET /v1/vault-markets/options/rfq/inbox
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketOptionRfqResponse> 
+     */
+    open class func listVaultMarketOptionRfqInboxWithRequestBuilder() -> RequestBuilder<ListVaultMarketOptionRfqResponse> {
+        let localVariablePath = "/v1/vault-markets/options/rfq/inbox"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketOptionRfqResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Every options series: its underlying (a Crossly index, or a tier A item key with 90 days of reliable marks), status and the eligibility snapshot it last passed. `status`: active (default) or all.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketOptionSeries(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketOptionSeriesResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketOptionSeriesWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Every options series: its underlying (a Crossly index, or a tier A item key with 90 days of reliable marks), status and the eligibility snapshot it last passed. `status`: active (default) or all.
+     - GET /v1/vault-markets/options/series
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketOptionSeriesResponse> 
+     */
+    open class func listVaultMarketOptionSeriesWithRequestBuilder() -> RequestBuilder<ListVaultMarketOptionSeriesResponse> {
+        let localVariablePath = "/v1/vault-markets/options/series"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketOptionSeriesResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The strategies the picker builds (vertical, calendar, diagonal, straddle, strangle, butterfly, iron condor, collar): how many strikes and expiries each takes, whether it needs calls or puts, and what it does in plain words.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketOptionStrategies(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketOptionStrategiesResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketOptionStrategiesWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The strategies the picker builds (vertical, calendar, diagonal, straddle, strangle, butterfly, iron condor, collar): how many strikes and expiries each takes, whether it needs calls or puts, and what it does in plain words.
+     - GET /v1/vault-markets/options/strategies
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketOptionStrategiesResponse> 
+     */
+    open class func listVaultMarketOptionStrategiesWithRequestBuilder() -> RequestBuilder<ListVaultMarketOptionStrategiesResponse> {
+        let localVariablePath = "/v1/vault-markets/options/strategies"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketOptionStrategiesResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Recent publish attempts for an index over 30 days, newest first: published, skipped (with the reason: too few items priced, stale marks, confidence too wide...) or failed (with the error). Filter with `status`, cap with `limit` (default 100).
      
      - parameter slug: (path)  
@@ -18507,6 +26436,50 @@ open class VaultMarketsAPI {
     }
 
     /**
+     Vault drop-off partners near a `postalCode`, optionally offering a `service`: address, hours and services.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketPartnerFinder(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketPartnerFinderResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketPartnerFinderWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Vault drop-off partners near a `postalCode`, optionally offering a `service`: address, hours and services.
+     - GET /v1/vault-markets/partners/finder
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketPartnerFinderResponse> 
+     */
+    open class func listVaultMarketPartnerFinderWithRequestBuilder() -> RequestBuilder<ListVaultMarketPartnerFinderResponse> {
+        let localVariablePath = "/v1/vault-markets/partners/finder"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketPartnerFinderResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Your stakes in the market pool and what each redeems for now.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -18727,6 +26700,622 @@ open class VaultMarketsAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<ListVaultMarketPositionsRiskResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your probability alerts: a market, a level (percent) and a direction; each fires once through the alerts hub (kind prediction_odds).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketPredictionAlerts(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketPredictionAlertsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketPredictionAlertsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your probability alerts: a market, a level (percent) and a direction; each fires once through the alerts hub (kind prediction_odds).
+     - GET /v1/vault-markets/predictions/alerts
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketPredictionAlertsResponse> 
+     */
+    open class func listVaultMarketPredictionAlertsWithRequestBuilder() -> RequestBuilder<ListVaultMarketPredictionAlertsResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/alerts"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketPredictionAlertsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your combo requests with every answer they got.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketPredictionComboMyRfqs(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketPredictionComboRfqsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketPredictionComboMyRfqsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your combo requests with every answer they got.
+     - GET /v1/vault-markets/predictions/combos/my-rfqs
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketPredictionComboRfqsResponse> 
+     */
+    open class func listVaultMarketPredictionComboMyRfqsWithRequestBuilder() -> RequestBuilder<ListVaultMarketPredictionComboRfqsResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/combos/my-rfqs"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketPredictionComboRfqsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Open combo requests makers can answer: legs, size and the legs' own combined price; never who asked. Your own answers are shown on them.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketPredictionComboRfqs(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketPredictionComboRfqsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketPredictionComboRfqsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Open combo requests makers can answer: legs, size and the legs' own combined price; never who asked. Your own answers are shown on them.
+     - GET /v1/vault-markets/predictions/combos/rfqs
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketPredictionComboRfqsResponse> 
+     */
+    open class func listVaultMarketPredictionComboRfqsWithRequestBuilder() -> RequestBuilder<ListVaultMarketPredictionComboRfqsResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/combos/rfqs"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketPredictionComboRfqsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your combos, as buyer or maker: legs and their outcomes, stakes, the pot, any reprice after a voided leg, and how each settled.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketPredictionCombos(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketPredictionCombosResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketPredictionCombosWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your combos, as buyer or maker: legs and their outcomes, stakes, the pot, any reprice after a voided leg, and how each settled.
+     - GET /v1/vault-markets/predictions/combos
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketPredictionCombosResponse> 
+     */
+    open class func listVaultMarketPredictionCombosWithRequestBuilder() -> RequestBuilder<ListVaultMarketPredictionCombosResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/combos"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketPredictionCombosResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     A discussion thread on a market (`marketId`) or a series (`seriesId`): comments newest first with their replies. A commenter's side shows only when their forecaster profile is public.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketPredictionComments(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketPredictionCommentsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketPredictionCommentsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A discussion thread on a market (`marketId`) or a series (`seriesId`): comments newest first with their replies. A commenter's side shows only when their forecaster profile is public.
+     - GET /v1/vault-markets/predictions/comments
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketPredictionCommentsResponse> 
+     */
+    open class func listVaultMarketPredictionCommentsWithRequestBuilder() -> RequestBuilder<ListVaultMarketPredictionCommentsResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/comments"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketPredictionCommentsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your bucket-set conversions (split, merge, convert), newest first.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketPredictionConversions(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketPredictionConversionsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketPredictionConversionsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your bucket-set conversions (split, merge, convert), newest first.
+     - GET /v1/vault-markets/predictions/conversions
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketPredictionConversionsResponse> 
+     */
+    open class func listVaultMarketPredictionConversionsWithRequestBuilder() -> RequestBuilder<ListVaultMarketPredictionConversionsResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/conversions"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketPredictionConversionsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The forecasters you follow.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketPredictionFollowing(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketPredictionFollowingResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketPredictionFollowingWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The forecasters you follow.
+     - GET /v1/vault-markets/predictions/following
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketPredictionFollowingResponse> 
+     */
+    open class func listVaultMarketPredictionFollowingWithRequestBuilder() -> RequestBuilder<ListVaultMarketPredictionFollowingResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/following"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketPredictionFollowingResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your forecasts (a probability you attached to a market, money or not) and how the markets came out.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketPredictionForecasts(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketPredictionForecastsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketPredictionForecastsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your forecasts (a probability you attached to a market, money or not) and how the markets came out.
+     - GET /v1/vault-markets/predictions/forecasts
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketPredictionForecastsResponse> 
+     */
+    open class func listVaultMarketPredictionForecastsWithRequestBuilder() -> RequestBuilder<ListVaultMarketPredictionForecastsResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/forecasts"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketPredictionForecastsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your prediction maker programme applications and their status (applied, active, suspended, revoked) and rebate.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketPredictionMakers(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketPredictionMakersResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketPredictionMakersWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your prediction maker programme applications and their status (applied, active, suspended, revoked) and rebate.
+     - GET /v1/vault-markets/predictions/makers
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketPredictionMakersResponse> 
+     */
+    open class func listVaultMarketPredictionMakersWithRequestBuilder() -> RequestBuilder<ListVaultMarketPredictionMakersResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/makers"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketPredictionMakersResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Prediction markets, filtered by a book key, an index slug, an underlying kind (index | book_key | category_pair), a status (open | closed | settled | all), an expiry day or text. Each with its strike, expiry, best Yes bid and ask, last price, volume, open interest and probability.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketPredictionMarkets(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketPredictionMarketsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketPredictionMarketsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Prediction markets, filtered by a book key, an index slug, an underlying kind (index | book_key | category_pair), a status (open | closed | settled | all), an expiry day or text. Each with its strike, expiry, best Yes bid and ask, last price, volume, open interest and probability.
+     - GET /v1/vault-markets/predictions/markets
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketPredictionMarketsResponse> 
+     */
+    open class func listVaultMarketPredictionMarketsWithRequestBuilder() -> RequestBuilder<ListVaultMarketPredictionMarketsResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/markets"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketPredictionMarketsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your prediction orders, newest first: working, done or all; practice, live or all.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketPredictionOrders(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketPredictionOrdersResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketPredictionOrdersWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your prediction orders, newest first: working, done or all; practice, live or all.
+     - GET /v1/vault-markets/predictions/orders
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketPredictionOrdersResponse> 
+     */
+    open class func listVaultMarketPredictionOrdersWithRequestBuilder() -> RequestBuilder<ListVaultMarketPredictionOrdersResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/orders"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketPredictionOrdersResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your prediction positions (practice, live or all; open, settled or all): side, contracts, cost, value at the last price, fees, realised P&L, payout or refund once settled, and the share card if you made one.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketPredictionPositions(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketPredictionPositionsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketPredictionPositionsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your prediction positions (practice, live or all; open, settled or all): side, contracts, cost, value at the last price, fees, realised P&L, payout or refund once settled, and the share card if you made one.
+     - GET /v1/vault-markets/predictions/positions
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketPredictionPositionsResponse> 
+     */
+    open class func listVaultMarketPredictionPositionsWithRequestBuilder() -> RequestBuilder<ListVaultMarketPredictionPositionsResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/positions"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketPredictionPositionsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The markets you proposed that are listed: volume, status and what the creator share has earned you.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketPredictionProposalListed(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketPredictionProposalListedResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketPredictionProposalListedWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The markets you proposed that are listed: volume, status and what the creator share has earned you.
+     - GET /v1/vault-markets/predictions/proposals/listed
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketPredictionProposalListedResponse> 
+     */
+    open class func listVaultMarketPredictionProposalListedWithRequestBuilder() -> RequestBuilder<ListVaultMarketPredictionProposalListedResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/proposals/listed"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketPredictionProposalListedResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your market proposals and where each stands (pending, listed, rejected, withdrawn).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketPredictionProposals(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketPredictionProposalsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketPredictionProposalsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your market proposals and where each stands (pending, listed, rejected, withdrawn).
+     - GET /v1/vault-markets/predictions/proposals
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketPredictionProposalsResponse> 
+     */
+    open class func listVaultMarketPredictionProposalsWithRequestBuilder() -> RequestBuilder<ListVaultMarketPredictionProposalsResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/proposals"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketPredictionProposalsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -19539,6 +28128,143 @@ open class VaultMarketsAPI {
     }
 
     /**
+     Your recurring auto-invest plans: amount, weekly or monthly, the series and weights or the basket, what rolled over (budget too small for a whole share; your money stays at the venue), the next run.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketShareAutoInvest(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketShareAutoInvestResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketShareAutoInvestWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your recurring auto-invest plans: amount, weekly or monthly, the series and weights or the basket, what rolled over (budget too small for a whole share; your money stays at the venue), the next run.
+     - GET /v1/vault-markets/shares/auto-invest
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketShareAutoInvestResponse> 
+     */
+    open class func listVaultMarketShareAutoInvestWithRequestBuilder() -> RequestBuilder<ListVaultMarketShareAutoInvestResponse> {
+        let localVariablePath = "/v1/vault-markets/shares/auto-invest"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketShareAutoInvestResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     A plan’s runs, newest first: the budget, what each series bought, what was spent and what rolled over; rebalances too.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketShareAutoInvestRuns(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketShareAutoInvestRunsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketShareAutoInvestRunsWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A plan’s runs, newest first: the budget, what each series bought, what was spent and what rolled over; rebalances too.
+     - GET /v1/vault-markets/shares/auto-invest/{id}/runs
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<ListVaultMarketShareAutoInvestRunsResponse> 
+     */
+    open class func listVaultMarketShareAutoInvestRunsWithRequestBuilder(id: String) -> RequestBuilder<ListVaultMarketShareAutoInvestRunsResponse> {
+        var localVariablePath = "/v1/vault-markets/shares/auto-invest/{id}/runs"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketShareAutoInvestRunsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Theme baskets: curated model portfolios of Vault Shares series with target weights. You buy and own every share directly in your own name; a basket is never a fund.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketShareBaskets(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketShareBasketsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketShareBasketsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Theme baskets: curated model portfolios of Vault Shares series with target weights. You buy and own every share directly in your own name; a basket is never a fund.
+     - GET /v1/vault-markets/shares/baskets
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketShareBasketsResponse> 
+     */
+    open class func listVaultMarketShareBasketsWithRequestBuilder() -> RequestBuilder<ListVaultMarketShareBasketsResponse> {
+        let localVariablePath = "/v1/vault-markets/shares/baskets"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketShareBasketsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Your share cards (not taken down), each as the public sees it.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -19578,6 +28304,461 @@ open class VaultMarketsAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<ListVaultMarketShareCardsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The Vault Shares drops calendar: announced and open offerings, soonest first, each with its phase (announced, early_access, requests, open), the countdown, the allocation (fcfs, pro_rata or lottery with a per-person cap), your Crossly One early-access time (it moves when you may ask, never the price) and whether you asked to be told.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketShareDrops(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketShareDropsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketShareDropsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The Vault Shares drops calendar: announced and open offerings, soonest first, each with its phase (announced, early_access, requests, open), the countdown, the allocation (fcfs, pro_rata or lottery with a per-person cap), your Crossly One early-access time (it moves when you may ask, never the price) and whether you asked to be told.
+     - GET /v1/vault-markets/shares/drops
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketShareDropsResponse> 
+     */
+    open class func listVaultMarketShareDropsWithRequestBuilder() -> RequestBuilder<ListVaultMarketShareDropsResponse> {
+        let localVariablePath = "/v1/vault-markets/shares/drops"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketShareDropsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your share gifts, sent and received, newest first, with where each stands (offered, instructed, settled, declined, cancelled, expired, rejected).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketShareGifts(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketShareGiftsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketShareGiftsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your share gifts, sent and received, newest first, with where each stands (offered, instructed, settled, declined, cancelled, expired, rejected).
+     - GET /v1/vault-markets/shares/gifts
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketShareGiftsResponse> 
+     */
+    open class func listVaultMarketShareGiftsWithRequestBuilder() -> RequestBuilder<ListVaultMarketShareGiftsResponse> {
+        let localVariablePath = "/v1/vault-markets/shares/gifts"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketShareGiftsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your share-book orders, newest first; `seriesId` and `open` narrow it.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketShareOrders(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketShareOrdersResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketShareOrdersWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your share-book orders, newest first; `seriesId` and `open` narrow it.
+     - GET /v1/vault-markets/shares/orders
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketShareOrdersResponse> 
+     */
+    open class func listVaultMarketShareOrdersWithRequestBuilder() -> RequestBuilder<ListVaultMarketShareOrdersResponse> {
+        let localVariablePath = "/v1/vault-markets/shares/orders"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketShareOrdersResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Vault Shares series: open offerings first, then trading, then the rest. `status` and `bookKey` narrow it. Each with its terms, progress, last share price and implied item value (display only, never a mark), and your holding.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketShareSeries(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketShareSeriesResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketShareSeriesWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Vault Shares series: open offerings first, then trading, then the rest. `status` and `bookKey` narrow it. Each with its terms, progress, last share price and implied item value (display only, never a mark), and your holding.
+     - GET /v1/vault-markets/shares/series
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketShareSeriesResponse> 
+     */
+    open class func listVaultMarketShareSeriesWithRequestBuilder() -> RequestBuilder<ListVaultMarketShareSeriesResponse> {
+        let localVariablePath = "/v1/vault-markets/shares/series"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketShareSeriesResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The item’s appraisal history: the offering valuation (sealed valuation statement), independent and insurance appraisals, and any buyout or exit price.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketShareSeryAppraisals(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketShareSeryAppraisalsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketShareSeryAppraisalsWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The item’s appraisal history: the offering valuation (sealed valuation statement), independent and insurance appraisals, and any buyout or exit price.
+     - GET /v1/vault-markets/shares/series/{id}/appraisals
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<ListVaultMarketShareSeryAppraisalsResponse> 
+     */
+    open class func listVaultMarketShareSeryAppraisalsWithRequestBuilder(id: String) -> RequestBuilder<ListVaultMarketShareSeryAppraisalsResponse> {
+        var localVariablePath = "/v1/vault-markets/shares/series/{id}/appraisals"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketShareSeryAppraisalsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The latest fills on a share book, newest first, with which side made the market.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketShareSeryTape(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketShareSeryTapeResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketShareSeryTapeWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The latest fills on a share book, newest first, with which side made the market.
+     - GET /v1/vault-markets/shares/series/{id}/tape
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<ListVaultMarketShareSeryTapeResponse> 
+     */
+    open class func listVaultMarketShareSeryTapeWithRequestBuilder(id: String) -> RequestBuilder<ListVaultMarketShareSeryTapeResponse> {
+        var localVariablePath = "/v1/vault-markets/shares/series/{id}/tape"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketShareSeryTapeResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The item’s story, provenance, condition reports, appraisals and exhibitions, newest first. Holders also see holders-only updates.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketShareSeryUpdates(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketShareSeryUpdatesResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketShareSeryUpdatesWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The item’s story, provenance, condition reports, appraisals and exhibitions, newest first. Holders also see holders-only updates.
+     - GET /v1/vault-markets/shares/series/{id}/updates
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<ListVaultMarketShareSeryUpdatesResponse> 
+     */
+    open class func listVaultMarketShareSeryUpdatesWithRequestBuilder(id: String) -> RequestBuilder<ListVaultMarketShareSeryUpdatesResponse> {
+        var localVariablePath = "/v1/vault-markets/shares/series/{id}/updates"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketShareSeryUpdatesResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your offering subscriptions, newest first, with where each stands (pending, escrowed, allocated, refunded).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketShareSubscriptions(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketShareSubscriptionsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketShareSubscriptionsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your offering subscriptions, newest first, with where each stands (pending, escrowed, allocated, refunded).
+     - GET /v1/vault-markets/shares/subscriptions
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketShareSubscriptionsResponse> 
+     */
+    open class func listVaultMarketShareSubscriptionsWithRequestBuilder() -> RequestBuilder<ListVaultMarketShareSubscriptionsResponse> {
+        let localVariablePath = "/v1/vault-markets/shares/subscriptions"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketShareSubscriptionsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The world vault home’s fractional tiles: each item you own a share of, with \"you own 3.2%\".
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketShareWorld(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketShareWorldResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketShareWorldWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The world vault home’s fractional tiles: each item you own a share of, with \"you own 3.2%\".
+     - GET /v1/vault-markets/shares/world
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketShareWorldResponse> 
+     */
+    open class func listVaultMarketShareWorldWithRequestBuilder() -> RequestBuilder<ListVaultMarketShareWorldResponse> {
+        let localVariablePath = "/v1/vault-markets/shares/world"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketShareWorldResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     What each item's declared value starts at, by your insurance rule (market, cost or price). `inventoryItemIds` comma-separated.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketSupplyDeclaredValues(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketSupplyDeclaredValuesResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketSupplyDeclaredValuesWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     What each item's declared value starts at, by your insurance rule (market, cost or price). `inventoryItemIds` comma-separated.
+     - GET /v1/vault-markets/supply/declared-values
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketSupplyDeclaredValuesResponse> 
+     */
+    open class func listVaultMarketSupplyDeclaredValuesWithRequestBuilder() -> RequestBuilder<ListVaultMarketSupplyDeclaredValuesResponse> {
+        let localVariablePath = "/v1/vault-markets/supply/declared-values"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketSupplyDeclaredValuesResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -19627,6 +28808,50 @@ open class VaultMarketsAPI {
     }
 
     /**
+     Can these inventory items (`inventoryItemIds`, comma-separated, or every item linked to `listingId`) be sent to the vault now? Each says why not.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketSupplyEligibility(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketSupplyEligibilityResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketSupplyEligibilityWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Can these inventory items (`inventoryItemIds`, comma-separated, or every item linked to `listingId`) be sent to the vault now? Each says why not.
+     - GET /v1/vault-markets/supply/eligibility
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketSupplyEligibilityResponse> 
+     */
+    open class func listVaultMarketSupplyEligibilityWithRequestBuilder() -> RequestBuilder<ListVaultMarketSupplyEligibilityResponse> {
+        let localVariablePath = "/v1/vault-markets/supply/eligibility"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketSupplyEligibilityResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Market Open invites to you as a dealer: keys Crossly is opening and asks you to quote.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -19666,6 +28891,50 @@ open class VaultMarketsAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<ListVaultMarketSupplyInvitesResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your shipments into the vault, newest first: method, label or drop-off code, tracking and how many units were received.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listVaultMarketSupplyShipments(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListVaultMarketSupplyShipmentsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listVaultMarketSupplyShipmentsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your shipments into the vault, newest first: method, label or drop-off code, tracking and how many units were received.
+     - GET /v1/vault-markets/supply/shipments
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListVaultMarketSupplyShipmentsResponse> 
+     */
+    open class func listVaultMarketSupplyShipmentsWithRequestBuilder() -> RequestBuilder<ListVaultMarketSupplyShipmentsResponse> {
+        let localVariablePath = "/v1/vault-markets/supply/shipments"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListVaultMarketSupplyShipmentsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -20194,6 +29463,50 @@ open class VaultMarketsAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<GetVaultMarketAlertPrefResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Set up or change Auto-buy with payouts: `shareBps` (1–50%) and the whole want list in order, each with an optional `maxPriceCents` (fee included).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateVaultMarketAutoBuy(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: UpdateVaultMarketAutoBuyResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateVaultMarketAutoBuyWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Set up or change Auto-buy with payouts: `shareBps` (1–50%) and the whole want list in order, each with an optional `maxPriceCents` (fee included).
+     - PUT /v1/vault-markets/auto-buy
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<UpdateVaultMarketAutoBuyResponse> 
+     */
+    open class func updateVaultMarketAutoBuyWithRequestBuilder() -> RequestBuilder<UpdateVaultMarketAutoBuyResponse> {
+        let localVariablePath = "/v1/vault-markets/auto-buy"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<UpdateVaultMarketAutoBuyResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -20728,6 +30041,55 @@ open class VaultMarketsAPI {
     }
 
     /**
+     Set which unit a sale of this item ships first: `vault_first`, `warehouse_first` or `cheapest` (to ship); null = your default. Quantities stay the same on every channel: only who ships changes.
+     
+     - parameter inventoryItemId: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateVaultMarketItemSellFrom(inventoryItemId: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketItemLocationResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateVaultMarketItemSellFromWithRequestBuilder(inventoryItemId: inventoryItemId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Set which unit a sale of this item ships first: `vault_first`, `warehouse_first` or `cheapest` (to ship); null = your default. Quantities stay the same on every channel: only who ships changes.
+     - PUT /v1/vault-markets/items/{inventoryItemId}/sell-from
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter inventoryItemId: (path)  
+     - returns: RequestBuilder<GetVaultMarketItemLocationResponse> 
+     */
+    open class func updateVaultMarketItemSellFromWithRequestBuilder(inventoryItemId: String) -> RequestBuilder<GetVaultMarketItemLocationResponse> {
+        var localVariablePath = "/v1/vault-markets/items/{inventoryItemId}/sell-from"
+        let inventoryItemIdPreEscape = "\(APIHelper.mapValueToPathItem(inventoryItemId))"
+        let inventoryItemIdPostEscape = inventoryItemIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{inventoryItemId}", with: inventoryItemIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketItemLocationResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Change your lender election (applies to loans opened after the change). Needs lending.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -20904,6 +30266,50 @@ open class VaultMarketsAPI {
     }
 
     /**
+     Set your auto-close rule: `enabled`, `minutesBefore` (30 to 10080), `onlyItm`, `maxSlippageBps` (0 to 2000).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateVaultMarketOptionAutoClose(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketOptionAutoCloseResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateVaultMarketOptionAutoCloseWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Set your auto-close rule: `enabled`, `minutesBefore` (30 to 10080), `onlyItm`, `maxSlippageBps` (0 to 2000).
+     - PUT /v1/vault-markets/options/auto-close
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketOptionAutoCloseResponse> 
+     */
+    open class func updateVaultMarketOptionAutoCloseWithRequestBuilder() -> RequestBuilder<GetVaultMarketOptionAutoCloseResponse> {
+        let localVariablePath = "/v1/vault-markets/options/auto-close"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketOptionAutoCloseResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Join or leave the weekly paper leaderboard. Joining needs a display name (2 to 24 letters, numbers, spaces, dots, dashes or underscores), never your real name. Returns `{ optIn, displayName }`.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -20945,6 +30351,50 @@ open class VaultMarketsAPI {
         let localVariableRequestBuilder: RequestBuilder<UpdateVaultMarketPaperLeaderboardResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your drop-off partnership's finder profile: postal code, opening hours, services and whether you are listed.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateVaultMarketPartnerMe(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: UpdateVaultMarketPartnerMeResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateVaultMarketPartnerMeWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your drop-off partnership's finder profile: postal code, opening hours, services and whether you are listed.
+     - PATCH /v1/vault-markets/partners/me
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<UpdateVaultMarketPartnerMeResponse> 
+     */
+    open class func updateVaultMarketPartnerMeWithRequestBuilder() -> RequestBuilder<UpdateVaultMarketPartnerMeResponse> {
+        let localVariablePath = "/v1/vault-markets/partners/me"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<UpdateVaultMarketPartnerMeResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
 
     /**
@@ -20992,6 +30442,143 @@ open class VaultMarketsAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<UpdateVaultMarketPositionExitResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Edit your comment.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateVaultMarketPredictionComment(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateVaultMarketPredictionCommentResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateVaultMarketPredictionCommentWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Edit your comment.
+     - PATCH /v1/vault-markets/predictions/comments/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateVaultMarketPredictionCommentResponse> 
+     */
+    open class func updateVaultMarketPredictionCommentWithRequestBuilder(id: String) -> RequestBuilder<CreateVaultMarketPredictionCommentResponse> {
+        var localVariablePath = "/v1/vault-markets/predictions/comments/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateVaultMarketPredictionCommentResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Go public under a display name (`public: true`), rename, or go private (`public: false`: nothing is shown again).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateVaultMarketPredictionForecaster(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketPredictionForecasterResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateVaultMarketPredictionForecasterWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Go public under a display name (`public: true`), rename, or go private (`public: false`: nothing is shown again).
+     - PUT /v1/vault-markets/predictions/forecaster
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketPredictionForecasterResponse> 
+     */
+    open class func updateVaultMarketPredictionForecasterWithRequestBuilder() -> RequestBuilder<GetVaultMarketPredictionForecasterResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/forecaster"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketPredictionForecasterResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Set your daily loss limit (`dailyLossLimitCents`, null = none) or exclude yourself (`excludeDays`, `excludedUntil` or \"forever\"). Tighter takes effect at once; looser waits 24 hours.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateVaultMarketPredictionLimit(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketPredictionLimitResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateVaultMarketPredictionLimitWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Set your daily loss limit (`dailyLossLimitCents`, null = none) or exclude yourself (`excludeDays`, `excludedUntil` or \"forever\"). Tighter takes effect at once; looser waits 24 hours.
+     - PUT /v1/vault-markets/predictions/limits
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketPredictionLimitResponse> 
+     */
+    open class func updateVaultMarketPredictionLimitWithRequestBuilder() -> RequestBuilder<GetVaultMarketPredictionLimitResponse> {
+        let localVariablePath = "/v1/vault-markets/predictions/limits"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketPredictionLimitResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -21185,6 +30772,50 @@ open class VaultMarketsAPI {
         let localVariableRequestBuilder: RequestBuilder<GetVaultMarketSetGoalResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Change your vault defaults; send only the fields you change.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateVaultMarketSetting(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetVaultMarketSettingResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateVaultMarketSettingWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Change your vault defaults; send only the fields you change.
+     - PUT /v1/vault-markets/settings
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetVaultMarketSettingResponse> 
+     */
+    open class func updateVaultMarketSettingWithRequestBuilder() -> RequestBuilder<GetVaultMarketSettingResponse> {
+        let localVariablePath = "/v1/vault-markets/settings"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetVaultMarketSettingResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
 
     /**

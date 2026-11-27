@@ -16,9 +16,9 @@ public struct GetVaultReceiptTokenByMintResponse: Codable, JSONEncodable, Hashab
         case pending = "pending"
         case live = "live"
         case expired = "expired"
+        case conflict = "conflict"
         case frozen = "frozen"
         case burned = "burned"
-        case conflict = "conflict"
     }
     public var mint: String
     public var receiptNo: String

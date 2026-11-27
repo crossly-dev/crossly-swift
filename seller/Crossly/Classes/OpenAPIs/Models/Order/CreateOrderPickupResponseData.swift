@@ -17,32 +17,32 @@ public struct CreateOrderPickupResponseData: Codable, JSONEncodable, Hashable {
     public var userId: String
     public var status: String
     public var carrier: String
-    public var orderIds: [String]
-    public var shippoPickupId: String
     public var confirmation: String?
-    public var pickupDate: String
+    public var orderIds: [String]
     public var minTime: String
     public var maxTime: String
+    public var instructions: String?
+    public var shippoPickupId: String
+    public var pickupDate: String
     public var confirmedStart: Date?
     public var confirmedEnd: Date?
-    public var instructions: String?
     public var warnings: [String]
 
-    public init(id: String, createdAt: Date, userId: String, status: String, carrier: String, orderIds: [String], shippoPickupId: String, confirmation: String? = nil, pickupDate: String, minTime: String, maxTime: String, confirmedStart: Date? = nil, confirmedEnd: Date? = nil, instructions: String? = nil, warnings: [String]) {
+    public init(id: String, createdAt: Date, userId: String, status: String, carrier: String, confirmation: String? = nil, orderIds: [String], minTime: String, maxTime: String, instructions: String? = nil, shippoPickupId: String, pickupDate: String, confirmedStart: Date? = nil, confirmedEnd: Date? = nil, warnings: [String]) {
         self.id = id
         self.createdAt = createdAt
         self.userId = userId
         self.status = status
         self.carrier = carrier
-        self.orderIds = orderIds
-        self.shippoPickupId = shippoPickupId
         self.confirmation = confirmation
-        self.pickupDate = pickupDate
+        self.orderIds = orderIds
         self.minTime = minTime
         self.maxTime = maxTime
+        self.instructions = instructions
+        self.shippoPickupId = shippoPickupId
+        self.pickupDate = pickupDate
         self.confirmedStart = confirmedStart
         self.confirmedEnd = confirmedEnd
-        self.instructions = instructions
         self.warnings = warnings
     }
 
@@ -52,15 +52,15 @@ public struct CreateOrderPickupResponseData: Codable, JSONEncodable, Hashable {
         case userId
         case status
         case carrier
-        case orderIds
-        case shippoPickupId
         case confirmation
-        case pickupDate
+        case orderIds
         case minTime
         case maxTime
+        case instructions
+        case shippoPickupId
+        case pickupDate
         case confirmedStart
         case confirmedEnd
-        case instructions
         case warnings
     }
 
@@ -73,15 +73,15 @@ public struct CreateOrderPickupResponseData: Codable, JSONEncodable, Hashable {
         try container.encode(userId, forKey: .userId)
         try container.encode(status, forKey: .status)
         try container.encode(carrier, forKey: .carrier)
-        try container.encode(orderIds, forKey: .orderIds)
-        try container.encode(shippoPickupId, forKey: .shippoPickupId)
         try container.encodeIfPresent(confirmation, forKey: .confirmation)
-        try container.encode(pickupDate, forKey: .pickupDate)
+        try container.encode(orderIds, forKey: .orderIds)
         try container.encode(minTime, forKey: .minTime)
         try container.encode(maxTime, forKey: .maxTime)
+        try container.encodeIfPresent(instructions, forKey: .instructions)
+        try container.encode(shippoPickupId, forKey: .shippoPickupId)
+        try container.encode(pickupDate, forKey: .pickupDate)
         try container.encodeIfPresent(confirmedStart, forKey: .confirmedStart)
         try container.encodeIfPresent(confirmedEnd, forKey: .confirmedEnd)
-        try container.encodeIfPresent(instructions, forKey: .instructions)
         try container.encode(warnings, forKey: .warnings)
     }
 }

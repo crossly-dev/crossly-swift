@@ -12,33 +12,41 @@ import AnyCodable
 
 public struct CreateVaultMarketSupplySendResponse: Codable, JSONEncodable, Hashable {
 
-    public var created: [CreateVaultMarketSupplySendResponseCreated]
-    public var skipped: [CreateVaultMarketSupplySendResponseSkipped]
-    public var label: CreateVaultMarketPartnerBatchResponseLabel?
-    public var labelError: String?
+    public var batchId: AnyCodable?
+    public var created: AnyCodable?
+    public var skipped: [InventoryItemIdReason]
+    public var label: AnyCodable?
+    public var labelError: AnyCodable?
+    public var storefrontId: String?
 
-    public init(created: [CreateVaultMarketSupplySendResponseCreated], skipped: [CreateVaultMarketSupplySendResponseSkipped], label: CreateVaultMarketPartnerBatchResponseLabel? = nil, labelError: String? = nil) {
+    public init(batchId: AnyCodable? = nil, created: AnyCodable?, skipped: [InventoryItemIdReason], label: AnyCodable? = nil, labelError: AnyCodable? = nil, storefrontId: String? = nil) {
+        self.batchId = batchId
         self.created = created
         self.skipped = skipped
         self.label = label
         self.labelError = labelError
+        self.storefrontId = storefrontId
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case batchId
         case created
         case skipped
         case label
         case labelError
+        case storefrontId
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(batchId, forKey: .batchId)
         try container.encode(created, forKey: .created)
         try container.encode(skipped, forKey: .skipped)
         try container.encodeIfPresent(label, forKey: .label)
         try container.encodeIfPresent(labelError, forKey: .labelError)
+        try container.encodeIfPresent(storefrontId, forKey: .storefrontId)
     }
 }
 

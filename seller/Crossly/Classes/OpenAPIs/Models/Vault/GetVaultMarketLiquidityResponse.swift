@@ -13,9 +13,9 @@ import AnyCodable
 public struct GetVaultMarketLiquidityResponse: Codable, JSONEncodable, Hashable {
 
     public enum Bucket: String, Codable, CaseIterable {
-        case high = "high"
         case mid = "mid"
         case low = "low"
+        case high = "high"
     }
     public enum PeerGroup: String, Codable, CaseIterable {
         case category = "category"

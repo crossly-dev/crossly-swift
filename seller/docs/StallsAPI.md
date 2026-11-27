@@ -6,7 +6,10 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**createStallBook**](StallsAPI.md#createstallbook) | **POST** /v1/stalls/book | Book and pay for a pop-up stall: { street, spotIndex, rail, unit: \&quot;day\&quot;, startDate, days } or { ..., unit: \&quot;event\&quot;, eventIds }, optional booth { canopy, pattern, lights, counter, piece } (premium values need holding; checked before paying). Paid up front; full-access token and Idempotency-Key required.
 [**createStallBookingCancel**](StallsAPI.md#createstallbookingcancel) | **POST** /v1/stalls/bookings/{id}/cancel | Cancel a stall before it opens: a full refund on the rail it was paid on. Final once it has opened.
+[**getStallBookingCounter**](StallsAPI.md#getstallbookingcounter) | **GET** /v1/stalls/bookings/{id}/counter | A stall counter: the listings you picked (in order), its booth kind and capacity.
 [**getStallQuote**](StallsAPI.md#getstallquote) | **GET** /v1/stalls/quote | Quote a stall: street, spot, and either unit&#x3D;day with start (YYYY-MM-DD) and days, or unit&#x3D;event with events (comma-separated event ids). Returns the line items in cents, the rails the spot accepts and whether it is bookable.
+[**getStallStreetAerial**](StallsAPI.md#getstallstreetaerial) | **GET** /v1/stalls/streets/{slug}/aerial | A street from above for booking: every spot with its owner, booth size, counter capacity and price, the street events, and who is booked on each date.
+[**listStallListingSearch**](StallsAPI.md#liststalllistingsearch) | **GET** /v1/stalls/listing-search | Search ANY of your live Crossly listings for a stall counter or convention booth: q, category, min, max (cents), street (marks what its terms allow), limit, offset.
 [**listStallMine**](StallsAPI.md#liststallmine) | **GET** /v1/stalls/mine | Your stall bookings, newest first, with visits, offers and sales while the stall was up.
 [**listStreetEvents**](StallsAPI.md#liststreetevents) | **GET** /v1/streets/{slug}/events | Current and upcoming street events (Night Market, Swap Meet) on a street, soonest first.
 [**listStreetStalls**](StallsAPI.md#liststreetstalls) | **GET** /v1/streets/{slug}/stalls | Today&#39;s pop-up stalls on a street (each with its live listings, awning, sign and seller), plus the spots still free today. meta carries the street, the phase (day / night_market / swap_meet) and the free spots.
@@ -105,6 +108,54 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **getStallBookingCounter**
+```swift
+    open class func getStallBookingCounter(id: String, completion: @escaping (_ data: GetStallBookingCounterResponse?, _ error: Error?) -> Void)
+```
+
+A stall counter: the listings you picked (in order), its booth kind and capacity.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// A stall counter: the listings you picked (in order), its booth kind and capacity.
+StallsAPI.getStallBookingCounter(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetStallBookingCounterResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **getStallQuote**
 ```swift
     open class func getStallQuote(street: String, spot: Int, unit: Unit_getStallQuote? = nil, start: String? = nil, days: Int? = nil, events: String? = nil, completion: @escaping (_ data: GetStallQuoteResponse?, _ error: Error?) -> Void)
@@ -151,6 +202,98 @@ Name | Type | Description  | Notes
 ### Return type
 
 **GetStallQuoteResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getStallStreetAerial**
+```swift
+    open class func getStallStreetAerial(slug: String, completion: @escaping (_ data: GetStallStreetAerialResponse?, _ error: Error?) -> Void)
+```
+
+A street from above for booking: every spot with its owner, booth size, counter capacity and price, the street events, and who is booked on each date.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let slug = "slug_example" // String | 
+
+// A street from above for booking: every spot with its owner, booth size, counter capacity and price, the street events, and who is booked on each date.
+StallsAPI.getStallStreetAerial(slug: slug) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **slug** | **String** |  | 
+
+### Return type
+
+**GetStallStreetAerialResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listStallListingSearch**
+```swift
+    open class func listStallListingSearch(completion: @escaping (_ data: ListStallListingSearchResponse?, _ error: Error?) -> Void)
+```
+
+Search ANY of your live Crossly listings for a stall counter or convention booth: q, category, min, max (cents), street (marks what its terms allow), limit, offset.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Search ANY of your live Crossly listings for a stall counter or convention booth: q, category, min, max (cents), street (marks what its terms allow), limit, offset.
+StallsAPI.listStallListingSearch() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListStallListingSearchResponse**
 
 ### Authorization
 

@@ -20,12 +20,12 @@ public struct GetVaultMarketProfileByHandleResponse: Codable, JSONEncodable, Has
     public var followers: Double
     public var following: Bool
     public var isMe: Bool
-    public var recentBuys: [ListVaultMarketFeedItem]
+    public var recentBuys: [GetVaultMarketProfileByHandleResponseOneOfRecentBuys]
     public var displayName: String
     public var avatarUrl: AnyCodable?
     public var profileUrl: AnyCodable?
 
-    public init(handle: String, moved: Bool, publicSince: String? = nil, markets: Double, holdings: [GetVaultMarketProfileByHandleResponseOneOfHoldings], followers: Double, following: Bool, isMe: Bool, recentBuys: [ListVaultMarketFeedItem], displayName: String, avatarUrl: AnyCodable? = nil, profileUrl: AnyCodable?) {
+    public init(handle: String, moved: Bool, publicSince: String? = nil, markets: Double, holdings: [GetVaultMarketProfileByHandleResponseOneOfHoldings], followers: Double, following: Bool, isMe: Bool, recentBuys: [GetVaultMarketProfileByHandleResponseOneOfRecentBuys], displayName: String, avatarUrl: AnyCodable? = nil, profileUrl: AnyCodable?) {
         self.handle = handle
         self.moved = moved
         self.publicSince = publicSince

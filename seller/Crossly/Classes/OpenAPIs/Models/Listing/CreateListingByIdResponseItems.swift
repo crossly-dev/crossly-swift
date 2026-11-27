@@ -51,7 +51,7 @@ public struct CreateListingByIdResponseItems: Codable, JSONEncodable, Hashable {
     public var condition: String?
     /** Third-party grading, when the item is slabbed. Migration 0277.  Separate from `condition` on purpose and never derived from it: a grade is a claim about what a GRADING COMPANY certified, and inferring \"PSA 10\" from a coarse condition would be a false authenticity claim. It is also never filled from our own AI estimate (`bulk_market_items.grade`), which carries an explicit \"not a professional grade\" disclaimer.  `gradeKey` is the canonical form from `gradeKey()` in shared/constants/graders.ts; `grading` holds the full GradingInfo including the cert number and whether a cert lookup verified it. */
     public var gradeKey: String?
-    public var grading: ListGradingSubmissionsItemGrading?
+    public var grading: CreateBulkBatchItemResponseGrading?
     public var brand: String?
     public var size: String?
     /** Migration 0179 — see the matching fields on inventory_items above. */
@@ -88,6 +88,9 @@ public struct CreateListingByIdResponseItems: Codable, JSONEncodable, Hashable {
     public var automationBlockedRuleIds: [String]
     public var automationAssignedChainIds: [String]
     public var automationBlockedChainIds: [String]
+    /** Per-listing workflow overrides (migration 1099, docs/WORKFLOWS.md §10): the automation_* rule/chain ids above map here on conversion; `find.listings` and listing action nodes honour them.   workflowBlockedIds  — workflows (workflows.id) this listing is exempt from  workflowAssignedIds — workflows this listing is force-included in */
+    public var workflowBlockedIds: [String]
+    public var workflowAssignedIds: [String]
     /** Harmonised System customs code — international shipping declarations. */
     public var hsCode: String?
     /** Customs country of origin. Distinct from the seller's location. */
@@ -106,10 +109,15 @@ public struct CreateListingByIdResponseItems: Codable, JSONEncodable, Hashable {
     public var duplicateOfListingId: String?
     /** UUID minted on a seller's machine for a draft written offline.  The idempotency key for desktop sync. The failure it guards is a POST that succeeds server-side whose reply is lost — the client cannot tell that from a failure, retries, and one item becomes two live listings against one piece of stock. Unique per user (partial index, migration 0268); null for every listing that did not come from an offline draft. */
     public var clientDraftId: String?
+    /** The third-party OAuth app that created this listing (via its access token), if any — the anchor for developer revenue-share: the app that created the item earns a cut of its sales. Stamped once at create time (first writer wins, never overwritten); null for the web app, a PAT, or anything first-party. `attributedGrantId` pins the specific install whose agreed terms apply. See services/developer-earnings/. */
+    public var attributedOauthAppId: String?
+    public var attributedGrantId: String?
+    /** Which quota this listing is counted in (migration 1064): 'app_allowance' = the attributed app's per-seller allowance (services/app-allowance/), 'plan' = the seller's plan, null = created before allowances / by no app (plan rules). Stays 'app_allowance' after an unlink (grandfathered, no longer counted). */
+    public var quotaBucket: String?
     public var createdAt: Date
     public var updatedAt: Date
 
-    public init(effectiveTitle: String, effectivePrice: String? = nil, effectiveDescription: String? = nil, effectiveImages: [String], effectiveBrand: String? = nil, effectiveCondition: String? = nil, effectiveSize: String? = nil, effectiveSku: String? = nil, effectiveColor: [String], effectiveTags: [String], platformListings: [[String: AnyCodable]], inventoryItemId: String? = nil, id: String, userId: String, name: String? = nil, title: String? = nil, description: String? = nil, descriptionHtml: String? = nil, price: String? = nil, currency: String? = nil, images: [String]? = nil, videoUrl: String? = nil, aiMediaUrls: [String], aiMediaDeclared: Bool, aiMediaDetectedUrls: [String], status: String, condition: String? = nil, gradeKey: String? = nil, grading: ListGradingSubmissionsItemGrading? = nil, brand: String? = nil, size: String? = nil, material: String? = nil, style: String? = nil, pattern: String? = nil, department: String? = nil, gender: String? = nil, itemType: String? = nil, sizeSystem: String? = nil, color: [String], tags: [String], sku: String? = nil, isDigital: Bool, quantity: Double, quantityAvailable: Double, weightLb: String? = nil, weightOz: String? = nil, dimensionLIn: String? = nil, dimensionWIn: String? = nil, dimensionHIn: String? = nil, publishAt: Date? = nil, scheduledPlatforms: [String]? = nil, parentListingId: String? = nil, groupKind: GroupKind? = nil, isBundle: Bool, automationAssignedRuleIds: [String], automationBlockedRuleIds: [String], automationAssignedChainIds: [String], automationBlockedChainIds: [String], hsCode: String? = nil, countryOfOrigin: String? = nil, priceFloorCents: Double? = nil, floorIsNet: Bool, delistedAt: Date? = nil, soldAt: Date? = nil, ebayAttributesEnrichedAt: Date? = nil, source: String, duplicateOfListingId: String? = nil, clientDraftId: String? = nil, createdAt: Date, updatedAt: Date) {
+    public init(effectiveTitle: String, effectivePrice: String? = nil, effectiveDescription: String? = nil, effectiveImages: [String], effectiveBrand: String? = nil, effectiveCondition: String? = nil, effectiveSize: String? = nil, effectiveSku: String? = nil, effectiveColor: [String], effectiveTags: [String], platformListings: [[String: AnyCodable]], inventoryItemId: String? = nil, id: String, userId: String, name: String? = nil, title: String? = nil, description: String? = nil, descriptionHtml: String? = nil, price: String? = nil, currency: String? = nil, images: [String]? = nil, videoUrl: String? = nil, aiMediaUrls: [String], aiMediaDeclared: Bool, aiMediaDetectedUrls: [String], status: String, condition: String? = nil, gradeKey: String? = nil, grading: CreateBulkBatchItemResponseGrading? = nil, brand: String? = nil, size: String? = nil, material: String? = nil, style: String? = nil, pattern: String? = nil, department: String? = nil, gender: String? = nil, itemType: String? = nil, sizeSystem: String? = nil, color: [String], tags: [String], sku: String? = nil, isDigital: Bool, quantity: Double, quantityAvailable: Double, weightLb: String? = nil, weightOz: String? = nil, dimensionLIn: String? = nil, dimensionWIn: String? = nil, dimensionHIn: String? = nil, publishAt: Date? = nil, scheduledPlatforms: [String]? = nil, parentListingId: String? = nil, groupKind: GroupKind? = nil, isBundle: Bool, automationAssignedRuleIds: [String], automationBlockedRuleIds: [String], automationAssignedChainIds: [String], automationBlockedChainIds: [String], workflowBlockedIds: [String], workflowAssignedIds: [String], hsCode: String? = nil, countryOfOrigin: String? = nil, priceFloorCents: Double? = nil, floorIsNet: Bool, delistedAt: Date? = nil, soldAt: Date? = nil, ebayAttributesEnrichedAt: Date? = nil, source: String, duplicateOfListingId: String? = nil, clientDraftId: String? = nil, attributedOauthAppId: String? = nil, attributedGrantId: String? = nil, quotaBucket: String? = nil, createdAt: Date, updatedAt: Date) {
         self.effectiveTitle = effectiveTitle
         self.effectivePrice = effectivePrice
         self.effectiveDescription = effectiveDescription
@@ -168,6 +176,8 @@ public struct CreateListingByIdResponseItems: Codable, JSONEncodable, Hashable {
         self.automationBlockedRuleIds = automationBlockedRuleIds
         self.automationAssignedChainIds = automationAssignedChainIds
         self.automationBlockedChainIds = automationBlockedChainIds
+        self.workflowBlockedIds = workflowBlockedIds
+        self.workflowAssignedIds = workflowAssignedIds
         self.hsCode = hsCode
         self.countryOfOrigin = countryOfOrigin
         self.priceFloorCents = priceFloorCents
@@ -178,6 +188,9 @@ public struct CreateListingByIdResponseItems: Codable, JSONEncodable, Hashable {
         self.source = source
         self.duplicateOfListingId = duplicateOfListingId
         self.clientDraftId = clientDraftId
+        self.attributedOauthAppId = attributedOauthAppId
+        self.attributedGrantId = attributedGrantId
+        self.quotaBucket = quotaBucket
         self.createdAt = createdAt
         self.updatedAt = updatedAt
     }
@@ -241,6 +254,8 @@ public struct CreateListingByIdResponseItems: Codable, JSONEncodable, Hashable {
         case automationBlockedRuleIds
         case automationAssignedChainIds
         case automationBlockedChainIds
+        case workflowBlockedIds
+        case workflowAssignedIds
         case hsCode
         case countryOfOrigin
         case priceFloorCents
@@ -251,6 +266,9 @@ public struct CreateListingByIdResponseItems: Codable, JSONEncodable, Hashable {
         case source
         case duplicateOfListingId
         case clientDraftId
+        case attributedOauthAppId
+        case attributedGrantId
+        case quotaBucket
         case createdAt
         case updatedAt
     }
@@ -317,6 +335,8 @@ public struct CreateListingByIdResponseItems: Codable, JSONEncodable, Hashable {
         try container.encode(automationBlockedRuleIds, forKey: .automationBlockedRuleIds)
         try container.encode(automationAssignedChainIds, forKey: .automationAssignedChainIds)
         try container.encode(automationBlockedChainIds, forKey: .automationBlockedChainIds)
+        try container.encode(workflowBlockedIds, forKey: .workflowBlockedIds)
+        try container.encode(workflowAssignedIds, forKey: .workflowAssignedIds)
         try container.encodeIfPresent(hsCode, forKey: .hsCode)
         try container.encodeIfPresent(countryOfOrigin, forKey: .countryOfOrigin)
         try container.encodeIfPresent(priceFloorCents, forKey: .priceFloorCents)
@@ -327,6 +347,9 @@ public struct CreateListingByIdResponseItems: Codable, JSONEncodable, Hashable {
         try container.encode(source, forKey: .source)
         try container.encodeIfPresent(duplicateOfListingId, forKey: .duplicateOfListingId)
         try container.encodeIfPresent(clientDraftId, forKey: .clientDraftId)
+        try container.encodeIfPresent(attributedOauthAppId, forKey: .attributedOauthAppId)
+        try container.encodeIfPresent(attributedGrantId, forKey: .attributedGrantId)
+        try container.encodeIfPresent(quotaBucket, forKey: .quotaBucket)
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(updatedAt, forKey: .updatedAt)
     }

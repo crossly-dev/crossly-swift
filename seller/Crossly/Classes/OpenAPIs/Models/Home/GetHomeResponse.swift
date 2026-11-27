@@ -14,15 +14,15 @@ public struct GetHomeResponse: Codable, JSONEncodable, Hashable {
 
     public enum Privacy: String, Codable, CaseIterable {
         case _open = "open"
-        case locked = "locked"
         case friends = "friends"
+        case locked = "locked"
     }
     public enum Theme: String, Codable, CaseIterable {
-        case storybook = "storybook"
         case studio = "studio"
         case noir = "noir"
         case daylight = "daylight"
         case vitrine = "vitrine"
+        case storybook = "storybook"
     }
     public var slug: String
     public var presenceSlug: String
@@ -37,6 +37,7 @@ public struct GetHomeResponse: Codable, JSONEncodable, Hashable {
     public var layout: [GetHomeResponseLayout]
     public var guestbook: [GetHomeResponseGuestbook]
     public var giftShelf: GetHomeResponseGiftShelf?
+    public var pullsShelf: GetHomeResponsePullsShelf?
     /** The owner's earned pins, rarest first, when a pin case stands here (pin-case.ts). */
     public var pinCase: [GetHomeResponsePinCase]?
     public var vaultWall: GetHomeResponseVaultWall?
@@ -45,7 +46,7 @@ public struct GetHomeResponse: Codable, JSONEncodable, Hashable {
     public var here: Double
     public var updatedAt: String
 
-    public init(slug: String, presenceSlug: String, owner: UserIdName, privacy: Privacy, theme: Theme, decor: GetHomeResponseDecor, isOwner: Bool, canBuild: Bool, room: GetHomeResponseRoom, layout: [GetHomeResponseLayout], guestbook: [GetHomeResponseGuestbook], giftShelf: GetHomeResponseGiftShelf? = nil, pinCase: [GetHomeResponsePinCase]? = nil, vaultWall: GetHomeResponseVaultWall? = nil, setWall: GetHomeResponseSetWall? = nil, here: Double, updatedAt: String) {
+    public init(slug: String, presenceSlug: String, owner: UserIdName, privacy: Privacy, theme: Theme, decor: GetHomeResponseDecor, isOwner: Bool, canBuild: Bool, room: GetHomeResponseRoom, layout: [GetHomeResponseLayout], guestbook: [GetHomeResponseGuestbook], giftShelf: GetHomeResponseGiftShelf? = nil, pullsShelf: GetHomeResponsePullsShelf? = nil, pinCase: [GetHomeResponsePinCase]? = nil, vaultWall: GetHomeResponseVaultWall? = nil, setWall: GetHomeResponseSetWall? = nil, here: Double, updatedAt: String) {
         self.slug = slug
         self.presenceSlug = presenceSlug
         self.owner = owner
@@ -58,6 +59,7 @@ public struct GetHomeResponse: Codable, JSONEncodable, Hashable {
         self.layout = layout
         self.guestbook = guestbook
         self.giftShelf = giftShelf
+        self.pullsShelf = pullsShelf
         self.pinCase = pinCase
         self.vaultWall = vaultWall
         self.setWall = setWall
@@ -78,6 +80,7 @@ public struct GetHomeResponse: Codable, JSONEncodable, Hashable {
         case layout
         case guestbook
         case giftShelf
+        case pullsShelf
         case pinCase
         case vaultWall
         case setWall
@@ -101,6 +104,7 @@ public struct GetHomeResponse: Codable, JSONEncodable, Hashable {
         try container.encode(layout, forKey: .layout)
         try container.encode(guestbook, forKey: .guestbook)
         try container.encodeIfPresent(giftShelf, forKey: .giftShelf)
+        try container.encodeIfPresent(pullsShelf, forKey: .pullsShelf)
         try container.encodeIfPresent(pinCase, forKey: .pinCase)
         try container.encodeIfPresent(vaultWall, forKey: .vaultWall)
         try container.encodeIfPresent(setWall, forKey: .setWall)

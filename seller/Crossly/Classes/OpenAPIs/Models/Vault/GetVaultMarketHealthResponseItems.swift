@@ -14,14 +14,14 @@ public struct GetVaultMarketHealthResponseItems: Codable, JSONEncodable, Hashabl
 
     public enum Quality: String, Codable, CaseIterable {
         case _none = "none"
+        case c = "C"
         case a = "A"
         case b = "B"
-        case c = "C"
     }
     public enum Tier: String, Codable, CaseIterable {
+        case c = "C"
         case a = "A"
         case b = "B"
-        case c = "C"
         case d = "D"
         case unclassified = "unclassified"
     }

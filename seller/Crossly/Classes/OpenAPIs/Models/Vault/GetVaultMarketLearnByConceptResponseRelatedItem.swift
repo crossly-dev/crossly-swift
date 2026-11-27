@@ -18,4 +18,5 @@ public enum GetVaultMarketLearnByConceptResponseRelatedItem: String, Codable, Ca
     case auctions = "auctions"
     case indexes = "indexes"
     case marks = "marks"
+    case vaultShares = "vault-shares"
 }

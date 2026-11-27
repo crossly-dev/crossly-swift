@@ -16,6 +16,16 @@ public struct GetHomeResponseLayout: Codable, JSONEncodable, Hashable {
         case display = "display"
         case prop = "prop"
     }
+    public enum Tint: String, Codable, CaseIterable {
+        case oat = "oat"
+        case sage = "sage"
+        case forest = "forest"
+        case navy = "navy"
+        case clay = "clay"
+        case mustard = "mustard"
+        case blush = "blush"
+        case charcoal = "charcoal"
+    }
     public var kind: Kind
     public var model: String
     public var ref: GetHomeResponseLayoutRef?
@@ -26,9 +36,11 @@ public struct GetHomeResponseLayout: Codable, JSONEncodable, Hashable {
     public var slot: Double?
     /** A set wall: which set it shows, \"category/brand/model\" (HOME_SET_KEY). Absent: the owner's most complete. */
     public var _set: String?
+    /** A furniture piece's colour (HOME_TINTS key): its fabric and finish take it. Absent: as made. */
+    public var tint: Tint?
     public var item: GetHomeResponseLayoutItem?
 
-    public init(kind: Kind, model: String, ref: GetHomeResponseLayoutRef? = nil, position: [Double], rotationY: Double, slot: Double? = nil, _set: String? = nil, item: GetHomeResponseLayoutItem? = nil) {
+    public init(kind: Kind, model: String, ref: GetHomeResponseLayoutRef? = nil, position: [Double], rotationY: Double, slot: Double? = nil, _set: String? = nil, tint: Tint? = nil, item: GetHomeResponseLayoutItem? = nil) {
         self.kind = kind
         self.model = model
         self.ref = ref
@@ -36,6 +48,7 @@ public struct GetHomeResponseLayout: Codable, JSONEncodable, Hashable {
         self.rotationY = rotationY
         self.slot = slot
         self._set = _set
+        self.tint = tint
         self.item = item
     }
 
@@ -47,6 +60,7 @@ public struct GetHomeResponseLayout: Codable, JSONEncodable, Hashable {
         case rotationY
         case slot
         case _set = "set"
+        case tint
         case item
     }
 
@@ -61,6 +75,7 @@ public struct GetHomeResponseLayout: Codable, JSONEncodable, Hashable {
         try container.encode(rotationY, forKey: .rotationY)
         try container.encodeIfPresent(slot, forKey: .slot)
         try container.encodeIfPresent(_set, forKey: ._set)
+        try container.encodeIfPresent(tint, forKey: .tint)
         try container.encodeIfPresent(item, forKey: .item)
     }
 }

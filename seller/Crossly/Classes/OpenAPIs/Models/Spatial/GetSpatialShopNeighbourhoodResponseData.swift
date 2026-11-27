@@ -21,16 +21,12 @@ public struct GetSpatialShopNeighbourhoodResponseData: Codable, JSONEncodable, H
     public var shop: AnyCodable?
     public var home: AnyCodable?
     public var suggested: Suggested?
-    public var canMove: Bool
-    public var move: AnyCodable?
     public var options: [ListNeighbourhoodsItem]
 
-    public init(shop: AnyCodable?, home: AnyCodable? = nil, suggested: Suggested? = nil, canMove: Bool, move: AnyCodable? = nil, options: [ListNeighbourhoodsItem]) {
+    public init(shop: AnyCodable?, home: AnyCodable? = nil, suggested: Suggested? = nil, options: [ListNeighbourhoodsItem]) {
         self.shop = shop
         self.home = home
         self.suggested = suggested
-        self.canMove = canMove
-        self.move = move
         self.options = options
     }
 
@@ -38,8 +34,6 @@ public struct GetSpatialShopNeighbourhoodResponseData: Codable, JSONEncodable, H
         case shop
         case home
         case suggested
-        case canMove
-        case move
         case options
     }
 
@@ -50,8 +44,6 @@ public struct GetSpatialShopNeighbourhoodResponseData: Codable, JSONEncodable, H
         try container.encode(shop, forKey: .shop)
         try container.encodeIfPresent(home, forKey: .home)
         try container.encodeIfPresent(suggested, forKey: .suggested)
-        try container.encode(canMove, forKey: .canMove)
-        try container.encodeIfPresent(move, forKey: .move)
         try container.encode(options, forKey: .options)
     }
 }

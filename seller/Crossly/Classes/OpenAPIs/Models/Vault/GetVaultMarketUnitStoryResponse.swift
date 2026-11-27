@@ -13,12 +13,12 @@ import AnyCodable
 public struct GetVaultMarketUnitStoryResponse: Codable, JSONEncodable, Hashable {
 
     public enum Viewer: String, Codable, CaseIterable {
-        case holder = "holder"
         case _public = "public"
+        case holder = "holder"
     }
     public var unit: GetVaultMarketUnitStoryResponseUnit
     public var holder: GetVaultMarketUnitStoryResponseHolder
-    public var mark: ListVaultMarketFeedItemMark
+    public var mark: ListVaultMarketOpeningItemMark
     /** 'holder' sees everything about their unit; 'public' is the share page. */
     public var viewer: Viewer
     /** Anyone with the link can read it (the holder's public vault profile is on). */
@@ -30,7 +30,7 @@ public struct GetVaultMarketUnitStoryResponse: Codable, JSONEncodable, Hashable 
     public var events: [GetVaultMarketUnitStoryResponseEvents]
     public var marketHref: String?
 
-    public init(unit: GetVaultMarketUnitStoryResponseUnit, holder: GetVaultMarketUnitStoryResponseHolder, mark: ListVaultMarketFeedItemMark, viewer: Viewer, shareable: Bool, shareUrl: String, badges: [GetVaultMarketUnitStoryResponseBadgesItem], chain: GetVaultMarketUnitStoryResponseChain? = nil, stats: GetVaultMarketUnitStoryResponseStats, events: [GetVaultMarketUnitStoryResponseEvents], marketHref: String? = nil) {
+    public init(unit: GetVaultMarketUnitStoryResponseUnit, holder: GetVaultMarketUnitStoryResponseHolder, mark: ListVaultMarketOpeningItemMark, viewer: Viewer, shareable: Bool, shareUrl: String, badges: [GetVaultMarketUnitStoryResponseBadgesItem], chain: GetVaultMarketUnitStoryResponseChain? = nil, stats: GetVaultMarketUnitStoryResponseStats, events: [GetVaultMarketUnitStoryResponseEvents], marketHref: String? = nil) {
         self.unit = unit
         self.holder = holder
         self.mark = mark

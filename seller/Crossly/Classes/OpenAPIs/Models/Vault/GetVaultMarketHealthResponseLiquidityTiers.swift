@@ -13,9 +13,9 @@ import AnyCodable
 public struct GetVaultMarketHealthResponseLiquidityTiers: Codable, JSONEncodable, Hashable {
 
     public enum Tier: String, Codable, CaseIterable {
+        case c = "C"
         case a = "A"
         case b = "B"
-        case c = "C"
         case d = "D"
         case unclassified = "unclassified"
     }

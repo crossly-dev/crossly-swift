@@ -13,25 +13,28 @@ import AnyCodable
 public struct ListGradingSubmissionsItem: Codable, JSONEncodable, Hashable {
 
     public enum Mode: String, Codable, CaseIterable {
-        case run = "run"
         case direct = "direct"
+        case order = "order"
+        case run = "run"
     }
     public enum Status: String, Codable, CaseIterable {
-        case graded = "graded"
-        case returned = "returned"
-        case released = "released"
         case refunded = "refunded"
-        case reserved = "reserved"
         case received = "received"
+        case released = "released"
+        case reserved = "reserved"
         case charged = "charged"
         case shippedToHub = "shipped_to_hub"
         case prescreenFailed = "prescreen_failed"
         case atGrader = "at_grader"
+        case graded = "graded"
         case returning = "returning"
+        case returned = "returned"
         case vaulted = "vaulted"
     }
     public var id: String
     public var mode: Mode
+    /** The grading order (submission through Crossly) this card is in. */
+    public var orderId: String?
     public var runId: String?
     public var runCutoffAt: String?
     public var runStatus: String?
@@ -51,14 +54,15 @@ public struct ListGradingSubmissionsItem: Codable, JSONEncodable, Hashable {
     public var inboundTracking: String?
     public var returnTracking: String?
     public var prescreenNote: String?
-    public var grading: ListGradingSubmissionsItemGrading?
+    public var grading: CreateBulkBatchItemResponseGrading?
     public var certVerified: Bool
     public var createdAt: String
     public var updatedAt: String
 
-    public init(id: String, mode: Mode, runId: String? = nil, runCutoffAt: String? = nil, runStatus: String? = nil, graderSlug: String, graderName: String, tierSlug: String? = nil, inventoryItemId: String? = nil, title: String, declaredValueCents: Double, prescreen: Bool, status: Status, missMode: String, returnMode: String, chargedCents: Double, refundedCents: Double, inboundLabelUrl: String? = nil, inboundTracking: String? = nil, returnTracking: String? = nil, prescreenNote: String? = nil, grading: ListGradingSubmissionsItemGrading? = nil, certVerified: Bool, createdAt: String, updatedAt: String) {
+    public init(id: String, mode: Mode, orderId: String? = nil, runId: String? = nil, runCutoffAt: String? = nil, runStatus: String? = nil, graderSlug: String, graderName: String, tierSlug: String? = nil, inventoryItemId: String? = nil, title: String, declaredValueCents: Double, prescreen: Bool, status: Status, missMode: String, returnMode: String, chargedCents: Double, refundedCents: Double, inboundLabelUrl: String? = nil, inboundTracking: String? = nil, returnTracking: String? = nil, prescreenNote: String? = nil, grading: CreateBulkBatchItemResponseGrading? = nil, certVerified: Bool, createdAt: String, updatedAt: String) {
         self.id = id
         self.mode = mode
+        self.orderId = orderId
         self.runId = runId
         self.runCutoffAt = runCutoffAt
         self.runStatus = runStatus
@@ -87,6 +91,7 @@ public struct ListGradingSubmissionsItem: Codable, JSONEncodable, Hashable {
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
         case mode
+        case orderId
         case runId
         case runCutoffAt
         case runStatus
@@ -118,6 +123,7 @@ public struct ListGradingSubmissionsItem: Codable, JSONEncodable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
         try container.encode(mode, forKey: .mode)
+        try container.encodeIfPresent(orderId, forKey: .orderId)
         try container.encodeIfPresent(runId, forKey: .runId)
         try container.encodeIfPresent(runCutoffAt, forKey: .runCutoffAt)
         try container.encodeIfPresent(runStatus, forKey: .runStatus)

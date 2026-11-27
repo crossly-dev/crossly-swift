@@ -12,9 +12,9 @@ import AnyCodable
 
 public struct GetPatScopeResponse: Codable, JSONEncodable, Hashable {
 
-    public var scopes: [GetPatScopeResponseScopes]
+    public var scopes: [ListAppsItemCapabilities]
 
-    public init(scopes: [GetPatScopeResponseScopes]) {
+    public init(scopes: [ListAppsItemCapabilities]) {
         self.scopes = scopes
     }
 

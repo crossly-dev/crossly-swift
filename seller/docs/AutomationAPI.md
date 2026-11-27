@@ -29,6 +29,8 @@ Method | HTTP request | Description
 
 Create an automation rule.
 
+Deprecated: automation rules are workflows now. Use /v1/workflows.
+
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
@@ -72,6 +74,8 @@ This endpoint does not need any parameter.
 ```
 
 Import one or more rules from recipe JSON (single or bundle).
+
+Deprecated: automation rules are workflows now. Use /v1/workflows.
 
 ### Example
 ```swift
@@ -121,6 +125,8 @@ Name | Type | Description  | Notes
 
 Fire an automation rule immediately.
 
+Deprecated: automation rules are workflows now. Use /v1/workflows.
+
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
@@ -164,10 +170,12 @@ Name | Type | Description  | Notes
 
 # **createAutomationRuleToggle**
 ```swift
-    open class func createAutomationRuleToggle(id: UUID, completion: @escaping (_ data: UpdateAutomationRuleResponse?, _ error: Error?) -> Void)
+    open class func createAutomationRuleToggle(id: UUID, completion: @escaping (_ data: GetAutomationRuleResponse?, _ error: Error?) -> Void)
 ```
 
 Flip an automation rule between active and inactive.
+
+Deprecated: automation rules are workflows now. Use /v1/workflows.
 
 ### Example
 ```swift
@@ -197,7 +205,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**UpdateAutomationRuleResponse**
+**GetAutomationRuleResponse**
 
 ### Authorization
 
@@ -216,6 +224,8 @@ Name | Type | Description  | Notes
 ```
 
 Dry-run validate one or more recipes against the live catalog.
+
+Deprecated: automation rules are workflows now. Use /v1/workflows.
 
 ### Example
 ```swift
@@ -357,6 +367,8 @@ Name | Type | Description  | Notes
 
 Delete an automation rule.
 
+Deprecated: automation rules are workflows now. Use /v1/workflows.
+
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
@@ -449,6 +461,8 @@ This endpoint does not need any parameter.
 
 Get a single automation rule.
 
+Deprecated: automation rules are workflows now. Use /v1/workflows.
+
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
@@ -497,6 +511,8 @@ Name | Type | Description  | Notes
 
 Export the user's full rule library as a portable recipe bundle.
 
+Deprecated: automation rules are workflows now. Use /v1/workflows.
+
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
@@ -540,6 +556,8 @@ This endpoint does not need any parameter.
 ```
 
 Export a single automation rule as a portable recipe.
+
+Deprecated: automation rules are workflows now. Use /v1/workflows.
 
 ### Example
 ```swift
@@ -589,6 +607,8 @@ Name | Type | Description  | Notes
 
 List automation rules.
 
+Deprecated: automation rules are workflows now. Use /v1/workflows.
+
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
@@ -632,6 +652,8 @@ This endpoint does not need any parameter.
 ```
 
 Per-fire history for automation rules and workflow chain runs.
+
+Deprecated: use /v1/workflow-runs.
 
 ### Example
 ```swift
@@ -724,10 +746,12 @@ This endpoint does not need any parameter.
 
 # **updateAutomationRule**
 ```swift
-    open class func updateAutomationRule(id: UUID, completion: @escaping (_ data: UpdateAutomationRuleResponse?, _ error: Error?) -> Void)
+    open class func updateAutomationRule(id: UUID, completion: @escaping (_ data: GetAutomationRuleResponse?, _ error: Error?) -> Void)
 ```
 
 Update an automation rule (full replace).
+
+Deprecated: automation rules are workflows now. Use /v1/workflows.
 
 ### Example
 ```swift
@@ -757,7 +781,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**UpdateAutomationRuleResponse**
+**GetAutomationRuleResponse**
 
 ### Authorization
 

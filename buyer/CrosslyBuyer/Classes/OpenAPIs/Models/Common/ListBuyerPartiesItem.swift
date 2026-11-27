@@ -13,28 +13,28 @@ import AnyCodable
 public struct ListBuyerPartiesItem: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var status: String
-    public var endsAt: String
     public var slug: String
-    public var startsAt: String
     public var theme: String
+    public var startsAt: String
+    public var endsAt: String
+    public var status: String
 
-    public init(id: String, status: String, endsAt: String, slug: String, startsAt: String, theme: String) {
+    public init(id: String, slug: String, theme: String, startsAt: String, endsAt: String, status: String) {
         self.id = id
-        self.status = status
-        self.endsAt = endsAt
         self.slug = slug
-        self.startsAt = startsAt
         self.theme = theme
+        self.startsAt = startsAt
+        self.endsAt = endsAt
+        self.status = status
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case status
-        case endsAt
         case slug
-        case startsAt
         case theme
+        case startsAt
+        case endsAt
+        case status
     }
 
     // Encodable protocol methods
@@ -42,11 +42,11 @@ public struct ListBuyerPartiesItem: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(status, forKey: .status)
-        try container.encode(endsAt, forKey: .endsAt)
         try container.encode(slug, forKey: .slug)
-        try container.encode(startsAt, forKey: .startsAt)
         try container.encode(theme, forKey: .theme)
+        try container.encode(startsAt, forKey: .startsAt)
+        try container.encode(endsAt, forKey: .endsAt)
+        try container.encode(status, forKey: .status)
     }
 }
 

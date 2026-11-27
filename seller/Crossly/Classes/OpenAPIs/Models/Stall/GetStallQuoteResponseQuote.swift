@@ -12,6 +12,11 @@ import AnyCodable
 
 public struct GetStallQuoteResponseQuote: Codable, JSONEncodable, Hashable {
 
+    public enum BoothKind: String, Codable, CaseIterable {
+        case booth = "booth"
+        case cart = "cart"
+        case pavilion = "pavilion"
+    }
     public var street: String
     public var spotIndex: Double
     public var owner: GetStallQuoteResponseQuoteOwner
@@ -19,10 +24,12 @@ public struct GetStallQuoteResponseQuote: Codable, JSONEncodable, Hashable {
     public var units: [GetStallQuoteResponseQuoteUnits]
     public var quote: CreateStallBookResponseBookingQuote
     public var rails: [GetStallQuoteResponseQuoteRailsItem]
+    public var boothKind: BoothKind
+    public var capacity: Double
     public var bookable: Bool
     public var unbookableReason: String?
 
-    public init(street: String, spotIndex: Double, owner: GetStallQuoteResponseQuoteOwner, _open: Bool, units: [GetStallQuoteResponseQuoteUnits], quote: CreateStallBookResponseBookingQuote, rails: [GetStallQuoteResponseQuoteRailsItem], bookable: Bool, unbookableReason: String? = nil) {
+    public init(street: String, spotIndex: Double, owner: GetStallQuoteResponseQuoteOwner, _open: Bool, units: [GetStallQuoteResponseQuoteUnits], quote: CreateStallBookResponseBookingQuote, rails: [GetStallQuoteResponseQuoteRailsItem], boothKind: BoothKind, capacity: Double, bookable: Bool, unbookableReason: String? = nil) {
         self.street = street
         self.spotIndex = spotIndex
         self.owner = owner
@@ -30,6 +37,8 @@ public struct GetStallQuoteResponseQuote: Codable, JSONEncodable, Hashable {
         self.units = units
         self.quote = quote
         self.rails = rails
+        self.boothKind = boothKind
+        self.capacity = capacity
         self.bookable = bookable
         self.unbookableReason = unbookableReason
     }
@@ -42,6 +51,8 @@ public struct GetStallQuoteResponseQuote: Codable, JSONEncodable, Hashable {
         case units
         case quote
         case rails
+        case boothKind
+        case capacity
         case bookable
         case unbookableReason
     }
@@ -57,6 +68,8 @@ public struct GetStallQuoteResponseQuote: Codable, JSONEncodable, Hashable {
         try container.encode(units, forKey: .units)
         try container.encode(quote, forKey: .quote)
         try container.encode(rails, forKey: .rails)
+        try container.encode(boothKind, forKey: .boothKind)
+        try container.encode(capacity, forKey: .capacity)
         try container.encode(bookable, forKey: .bookable)
         try container.encodeIfPresent(unbookableReason, forKey: .unbookableReason)
     }

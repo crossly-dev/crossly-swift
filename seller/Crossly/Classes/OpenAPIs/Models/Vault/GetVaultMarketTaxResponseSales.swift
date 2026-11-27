@@ -30,8 +30,8 @@ public struct GetVaultMarketTaxResponseSales: Codable, JSONEncodable, Hashable {
         case otherOut = "other_out"
     }
     public enum Term: String, Codable, CaseIterable {
-        case long = "long"
         case short = "short"
+        case long = "long"
     }
     public var vaultItemId: String
     public var title: String?

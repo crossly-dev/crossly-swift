@@ -25,23 +25,23 @@ public struct GetWorldContestMineResponseDataPrizes: Codable, JSONEncodable, Has
     public var createdAt: Date
     public var userId: String
     public var status: Status
+    public var amount: Double
     public var kind: String
     public var note: String?
     public var place: Double
     public var contestId: String
-    public var amount: Double
 
-    public init(id: String, ref: String? = nil, createdAt: Date, userId: String, status: Status, kind: String, note: String? = nil, place: Double, contestId: String, amount: Double) {
+    public init(id: String, ref: String? = nil, createdAt: Date, userId: String, status: Status, amount: Double, kind: String, note: String? = nil, place: Double, contestId: String) {
         self.id = id
         self.ref = ref
         self.createdAt = createdAt
         self.userId = userId
         self.status = status
+        self.amount = amount
         self.kind = kind
         self.note = note
         self.place = place
         self.contestId = contestId
-        self.amount = amount
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -50,11 +50,11 @@ public struct GetWorldContestMineResponseDataPrizes: Codable, JSONEncodable, Has
         case createdAt
         case userId
         case status
+        case amount
         case kind
         case note
         case place
         case contestId
-        case amount
     }
 
     // Encodable protocol methods
@@ -66,11 +66,11 @@ public struct GetWorldContestMineResponseDataPrizes: Codable, JSONEncodable, Has
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(userId, forKey: .userId)
         try container.encode(status, forKey: .status)
+        try container.encode(amount, forKey: .amount)
         try container.encode(kind, forKey: .kind)
         try container.encodeIfPresent(note, forKey: .note)
         try container.encode(place, forKey: .place)
         try container.encode(contestId, forKey: .contestId)
-        try container.encode(amount, forKey: .amount)
     }
 }
 

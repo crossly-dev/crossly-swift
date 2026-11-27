@@ -14,21 +14,21 @@ public struct CreateBuyerOfferRespondResponseData: Codable, JSONEncodable, Hasha
 
     /** accepted | declined | countered. */
     public var status: String
-    /** Countered: the id of YOUR new offer, now waiting on the seller. */
-    public var offerId: String?
     /** Accepted: you can now pay for it (48 hours). */
     public var redeemable: Bool?
+    /** Countered: the id of YOUR new offer, now waiting on the seller. */
+    public var offerId: String?
 
-    public init(status: String, offerId: String? = nil, redeemable: Bool? = nil) {
+    public init(status: String, redeemable: Bool? = nil, offerId: String? = nil) {
         self.status = status
-        self.offerId = offerId
         self.redeemable = redeemable
+        self.offerId = offerId
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case status
-        case offerId
         case redeemable
+        case offerId
     }
 
     // Encodable protocol methods
@@ -36,8 +36,8 @@ public struct CreateBuyerOfferRespondResponseData: Codable, JSONEncodable, Hasha
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(status, forKey: .status)
-        try container.encodeIfPresent(offerId, forKey: .offerId)
         try container.encodeIfPresent(redeemable, forKey: .redeemable)
+        try container.encodeIfPresent(offerId, forKey: .offerId)
     }
 }
 

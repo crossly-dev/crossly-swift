@@ -20,10 +20,10 @@ public struct ListBuyerSizeMemorySizesItem: Codable, JSONEncodable, Hashable {
         case tops = "tops"
     }
     public enum Department: String, Codable, CaseIterable {
+        case unisex = "unisex"
         case men = "men"
         case women = "women"
         case kids = "kids"
-        case unisex = "unisex"
     }
     public var domain: Domain
     public var department: Department?

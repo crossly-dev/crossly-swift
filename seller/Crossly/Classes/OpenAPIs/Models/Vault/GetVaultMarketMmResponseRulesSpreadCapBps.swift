@@ -12,22 +12,22 @@ import AnyCodable
 
 public struct GetVaultMarketMmResponseRulesSpreadCapBps: Codable, JSONEncodable, Hashable {
 
+    public var C: Double
     public var A: Double
     public var B: Double
-    public var C: Double
     public var D: Double
 
-    public init(A: Double, B: Double, C: Double, D: Double) {
+    public init(C: Double, A: Double, B: Double, D: Double) {
+        self.C = C
         self.A = A
         self.B = B
-        self.C = C
         self.D = D
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case C
         case A
         case B
-        case C
         case D
     }
 
@@ -35,9 +35,9 @@ public struct GetVaultMarketMmResponseRulesSpreadCapBps: Codable, JSONEncodable,
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(C, forKey: .C)
         try container.encode(A, forKey: .A)
         try container.encode(B, forKey: .B)
-        try container.encode(C, forKey: .C)
         try container.encode(D, forKey: .D)
     }
 }

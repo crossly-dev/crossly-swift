@@ -19,7 +19,7 @@ open class AccountAPI {
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func createAccountCancelDeletion(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: DeleteDropResponse?, _ error: Error?) -> Void)) -> RequestTask {
+    open class func createAccountCancelDeletion(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateAccountCancelDeletionResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return createAccountCancelDeletionWithRequestBuilder().execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
@@ -36,9 +36,9 @@ open class AccountAPI {
      - BASIC:
        - type: http
        - name: PersonalAccessToken
-     - returns: RequestBuilder<DeleteDropResponse> 
+     - returns: RequestBuilder<CreateAccountCancelDeletionResponse> 
      */
-    open class func createAccountCancelDeletionWithRequestBuilder() -> RequestBuilder<DeleteDropResponse> {
+    open class func createAccountCancelDeletionWithRequestBuilder() -> RequestBuilder<CreateAccountCancelDeletionResponse> {
         let localVariablePath = "/v1/account/cancel-deletion"
         let localVariableURLString = CrosslyAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -51,7 +51,54 @@ open class AccountAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<DeleteDropResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<CreateAccountCancelDeletionResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Start the identity check (photo ID + selfie). Returns a Stripe-hosted URL the person completes.
+     
+     - parameter createAccountIdentityVerificationStartRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createAccountIdentityVerificationStart(createAccountIdentityVerificationStartRequest: CreateAccountIdentityVerificationStartRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateWorldMatureVerifyResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createAccountIdentityVerificationStartWithRequestBuilder(createAccountIdentityVerificationStartRequest: createAccountIdentityVerificationStartRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Start the identity check (photo ID + selfie). Returns a Stripe-hosted URL the person completes.
+     - POST /v1/account/identity-verification/start
+     - alreadyVerified:true when there is nothing to do. Nothing is verified until a person completes the link.
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter createAccountIdentityVerificationStartRequest: (body)  
+     - returns: RequestBuilder<CreateWorldMatureVerifyResponse> 
+     */
+    open class func createAccountIdentityVerificationStartWithRequestBuilder(createAccountIdentityVerificationStartRequest: CreateAccountIdentityVerificationStartRequest) -> RequestBuilder<CreateWorldMatureVerifyResponse> {
+        let localVariablePath = "/v1/account/identity-verification/start"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createAccountIdentityVerificationStartRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateWorldMatureVerifyResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -101,7 +148,51 @@ open class AccountAPI {
     }
 
     /**
-     Schedule account deletion after a grace period.
+     Confirm again a deletion paused because the account was in use.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createAccountReconfirmDeletion(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateAccountReconfirmDeletionResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createAccountReconfirmDeletionWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Confirm again a deletion paused because the account was in use.
+     - POST /v1/account/reconfirm-deletion
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateAccountReconfirmDeletionResponse> 
+     */
+    open class func createAccountReconfirmDeletionWithRequestBuilder() -> RequestBuilder<CreateAccountReconfirmDeletionResponse> {
+        let localVariablePath = "/v1/account/reconfirm-deletion"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateAccountReconfirmDeletionResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Schedule account deletion after a grace period. Requires confirmEmail.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
@@ -119,7 +210,7 @@ open class AccountAPI {
     }
 
     /**
-     Schedule account deletion after a grace period.
+     Schedule account deletion after a grace period. Requires confirmEmail.
      - POST /v1/account/request-deletion
      - BASIC:
        - type: http
@@ -196,7 +287,7 @@ open class AccountAPI {
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func deleteAuthSessionBySessionId(sessionId: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: SuccessResponse?, _ error: Error?) -> Void)) -> RequestTask {
+    open class func deleteAuthSessionBySessionId(sessionId: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: SuccessResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return deleteAuthSessionBySessionIdWithRequestBuilder(sessionId: sessionId).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
@@ -216,7 +307,7 @@ open class AccountAPI {
      - parameter sessionId: (path)  
      - returns: RequestBuilder<SuccessResponse> 
      */
-    open class func deleteAuthSessionBySessionIdWithRequestBuilder(sessionId: UUID) -> RequestBuilder<SuccessResponse> {
+    open class func deleteAuthSessionBySessionIdWithRequestBuilder(sessionId: String) -> RequestBuilder<SuccessResponse> {
         var localVariablePath = "/v1/auth/sessions/{sessionId}"
         let sessionIdPreEscape = "\(APIHelper.mapValueToPathItem(sessionId))"
         let sessionIdPostEscape = sessionIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -287,6 +378,50 @@ open class AccountAPI {
     }
 
     /**
+     What closing the account will and will not do, before you request it.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getAccountClosureChecklist(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetAccountClosureChecklistResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getAccountClosureChecklistWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     What closing the account will and will not do, before you request it.
+     - GET /v1/account/closure-checklist
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetAccountClosureChecklistResponse> 
+     */
+    open class func getAccountClosureChecklistWithRequestBuilder() -> RequestBuilder<GetAccountClosureChecklistResponse> {
+        let localVariablePath = "/v1/account/closure-checklist"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetAccountClosureChecklistResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Get the currently-pending deletion request, if any.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -326,6 +461,51 @@ open class AccountAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<GetAccountDeletionStatusResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Your identity verification: one status for the whole account, read by every feature that needs ID.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getAccountIdentityVerification(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetAccountIdentityVerificationResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getAccountIdentityVerificationWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Your identity verification: one status for the whole account, read by every feature that needs ID.
+     - GET /v1/account/identity-verification
+     - status is unverified, requires_input, processing, verified or canceled. requires_input with a lastError { code, reason } is a failed try the person can redo on the same link (start returns it); processing is being reviewed; neither is a decline, only canceled is. attempts counts the failed tries. ageVerified passes the age-restricted checkout gate. message is the next step in words (null once verified).
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetAccountIdentityVerificationResponse> 
+     */
+    open class func getAccountIdentityVerificationWithRequestBuilder() -> RequestBuilder<GetAccountIdentityVerificationResponse> {
+        let localVariablePath = "/v1/account/identity-verification"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetAccountIdentityVerificationResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }

@@ -13,16 +13,16 @@ import AnyCodable
 public struct ListVaultMarketAdlEventsItem: Codable, JSONEncodable, Hashable {
 
     public enum Kind: String, Codable, CaseIterable {
-        case unit = "unit"
         case cash = "cash"
+        case unit = "unit"
     }
     public enum Role: String, Codable, CaseIterable {
         case bankrupt = "bankrupt"
         case counterparty = "counterparty"
     }
     public enum Side: String, Codable, CaseIterable {
-        case long = "long"
         case short = "short"
+        case long = "long"
     }
     public var id: String
     /** 'unit' = closed at the bankruptcy price against an opposite position; 'cash' = a settlement-time loss covered from a profit. */

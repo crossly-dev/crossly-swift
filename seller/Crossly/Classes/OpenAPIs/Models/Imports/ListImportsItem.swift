@@ -15,11 +15,10 @@ public struct ListImportsItem: Codable, JSONEncodable, Hashable {
     public var id: String
     public var createdAt: Date
     public var userId: String
-    public var status: String
     public var platform: String
+    public var status: String
     public var lastError: String?
     public var startedAt: Date?
-    public var batchId: String?
     public var finishedAt: Date?
     public var filters: ListImportsItemFilters?
     public var importMode: String
@@ -30,18 +29,18 @@ public struct ListImportsItem: Codable, JSONEncodable, Hashable {
     public var importedCount: Double
     public var skippedCount: Double
     public var errorCount: Double
+    public var batchId: String?
     public var listOnCrossly: Bool
     public var crosslyListedAt: Date?
 
-    public init(id: String, createdAt: Date, userId: String, status: String, platform: String, lastError: String? = nil, startedAt: Date? = nil, batchId: String? = nil, finishedAt: Date? = nil, filters: ListImportsItemFilters? = nil, importMode: String, includeInactive: Bool, mergeIntoExistingListing: Bool, mergeIntoExistingInventory: Bool, totalCount: Double, importedCount: Double, skippedCount: Double, errorCount: Double, listOnCrossly: Bool, crosslyListedAt: Date? = nil) {
+    public init(id: String, createdAt: Date, userId: String, platform: String, status: String, lastError: String? = nil, startedAt: Date? = nil, finishedAt: Date? = nil, filters: ListImportsItemFilters? = nil, importMode: String, includeInactive: Bool, mergeIntoExistingListing: Bool, mergeIntoExistingInventory: Bool, totalCount: Double, importedCount: Double, skippedCount: Double, errorCount: Double, batchId: String? = nil, listOnCrossly: Bool, crosslyListedAt: Date? = nil) {
         self.id = id
         self.createdAt = createdAt
         self.userId = userId
-        self.status = status
         self.platform = platform
+        self.status = status
         self.lastError = lastError
         self.startedAt = startedAt
-        self.batchId = batchId
         self.finishedAt = finishedAt
         self.filters = filters
         self.importMode = importMode
@@ -52,6 +51,7 @@ public struct ListImportsItem: Codable, JSONEncodable, Hashable {
         self.importedCount = importedCount
         self.skippedCount = skippedCount
         self.errorCount = errorCount
+        self.batchId = batchId
         self.listOnCrossly = listOnCrossly
         self.crosslyListedAt = crosslyListedAt
     }
@@ -60,11 +60,10 @@ public struct ListImportsItem: Codable, JSONEncodable, Hashable {
         case id
         case createdAt
         case userId
-        case status
         case platform
+        case status
         case lastError
         case startedAt
-        case batchId
         case finishedAt
         case filters
         case importMode
@@ -75,6 +74,7 @@ public struct ListImportsItem: Codable, JSONEncodable, Hashable {
         case importedCount
         case skippedCount
         case errorCount
+        case batchId
         case listOnCrossly
         case crosslyListedAt
     }
@@ -86,11 +86,10 @@ public struct ListImportsItem: Codable, JSONEncodable, Hashable {
         try container.encode(id, forKey: .id)
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(userId, forKey: .userId)
-        try container.encode(status, forKey: .status)
         try container.encode(platform, forKey: .platform)
+        try container.encode(status, forKey: .status)
         try container.encodeIfPresent(lastError, forKey: .lastError)
         try container.encodeIfPresent(startedAt, forKey: .startedAt)
-        try container.encodeIfPresent(batchId, forKey: .batchId)
         try container.encodeIfPresent(finishedAt, forKey: .finishedAt)
         try container.encodeIfPresent(filters, forKey: .filters)
         try container.encode(importMode, forKey: .importMode)
@@ -101,6 +100,7 @@ public struct ListImportsItem: Codable, JSONEncodable, Hashable {
         try container.encode(importedCount, forKey: .importedCount)
         try container.encode(skippedCount, forKey: .skippedCount)
         try container.encode(errorCount, forKey: .errorCount)
+        try container.encodeIfPresent(batchId, forKey: .batchId)
         try container.encode(listOnCrossly, forKey: .listOnCrossly)
         try container.encodeIfPresent(crosslyListedAt, forKey: .crosslyListedAt)
     }

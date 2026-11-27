@@ -17,12 +17,12 @@ public struct CreateBuyerCartQuoteResponseData: Codable, JSONEncodable, Hashable
         case included = "included"
         case unavailable = "unavailable"
     }
-    public var currency: String
     public var kind: String
-    public var taxCents: Double
-    public var shippingCents: Double
-    public var totalCents: Double
     public var itemsTotalCents: Double
+    public var shippingCents: Double
+    public var taxCents: Double
+    public var totalCents: Double
+    public var currency: String
     /** Lines being collected in person, so a summary can name what ships free. */
     public var pickupCartItemIds: [String]
     /** False means there is no saved delivery address, so `taxCents` is a floor rather than a final figure — not that tax is zero. */
@@ -38,13 +38,13 @@ public struct CreateBuyerCartQuoteResponseData: Codable, JSONEncodable, Hashable
     public var shippingServiceBySeller: [String: AnyCodable]?
     public var shippingDestinationCountry: String?
 
-    public init(currency: String, kind: String, taxCents: Double, shippingCents: Double, totalCents: Double, itemsTotalCents: Double, pickupCartItemIds: [String], taxComplete: Bool, dutiesCents: Double? = nil, dutiesStatus: DutiesStatus? = nil, dutiesNotice: String? = nil, shippingOptions: [String: AnyCodable]? = nil, shippingServiceBySeller: [String: AnyCodable]? = nil, shippingDestinationCountry: String? = nil) {
-        self.currency = currency
+    public init(kind: String, itemsTotalCents: Double, shippingCents: Double, taxCents: Double, totalCents: Double, currency: String, pickupCartItemIds: [String], taxComplete: Bool, dutiesCents: Double? = nil, dutiesStatus: DutiesStatus? = nil, dutiesNotice: String? = nil, shippingOptions: [String: AnyCodable]? = nil, shippingServiceBySeller: [String: AnyCodable]? = nil, shippingDestinationCountry: String? = nil) {
         self.kind = kind
-        self.taxCents = taxCents
-        self.shippingCents = shippingCents
-        self.totalCents = totalCents
         self.itemsTotalCents = itemsTotalCents
+        self.shippingCents = shippingCents
+        self.taxCents = taxCents
+        self.totalCents = totalCents
+        self.currency = currency
         self.pickupCartItemIds = pickupCartItemIds
         self.taxComplete = taxComplete
         self.dutiesCents = dutiesCents
@@ -56,12 +56,12 @@ public struct CreateBuyerCartQuoteResponseData: Codable, JSONEncodable, Hashable
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case currency
         case kind
-        case taxCents
-        case shippingCents
-        case totalCents
         case itemsTotalCents
+        case shippingCents
+        case taxCents
+        case totalCents
+        case currency
         case pickupCartItemIds
         case taxComplete
         case dutiesCents
@@ -76,12 +76,12 @@ public struct CreateBuyerCartQuoteResponseData: Codable, JSONEncodable, Hashable
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(currency, forKey: .currency)
         try container.encode(kind, forKey: .kind)
-        try container.encode(taxCents, forKey: .taxCents)
-        try container.encode(shippingCents, forKey: .shippingCents)
-        try container.encode(totalCents, forKey: .totalCents)
         try container.encode(itemsTotalCents, forKey: .itemsTotalCents)
+        try container.encode(shippingCents, forKey: .shippingCents)
+        try container.encode(taxCents, forKey: .taxCents)
+        try container.encode(totalCents, forKey: .totalCents)
+        try container.encode(currency, forKey: .currency)
         try container.encode(pickupCartItemIds, forKey: .pickupCartItemIds)
         try container.encode(taxComplete, forKey: .taxComplete)
         try container.encodeIfPresent(dutiesCents, forKey: .dutiesCents)

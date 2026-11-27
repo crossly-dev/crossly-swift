@@ -15,17 +15,20 @@ public struct GetAnalyticDashboardResponseRevenue: Codable, JSONEncodable, Hasha
     public var current: Double
     public var previous: Double
     public var pctChange: Double?
+    public var delta: GetAnalyticOverviewResponseDataKpisNetSalesDelta
 
-    public init(current: Double, previous: Double, pctChange: Double? = nil) {
+    public init(current: Double, previous: Double, pctChange: Double? = nil, delta: GetAnalyticOverviewResponseDataKpisNetSalesDelta) {
         self.current = current
         self.previous = previous
         self.pctChange = pctChange
+        self.delta = delta
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case current
         case previous
         case pctChange
+        case delta
     }
 
     // Encodable protocol methods
@@ -35,6 +38,7 @@ public struct GetAnalyticDashboardResponseRevenue: Codable, JSONEncodable, Hasha
         try container.encode(current, forKey: .current)
         try container.encode(previous, forKey: .previous)
         try container.encodeIfPresent(pctChange, forKey: .pctChange)
+        try container.encode(delta, forKey: .delta)
     }
 }
 

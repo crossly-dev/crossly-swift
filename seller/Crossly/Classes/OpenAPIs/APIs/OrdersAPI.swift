@@ -205,7 +205,7 @@ open class OrdersAPI {
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func createOrderBulkMarkDisputed(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateInventoryLabelRenameResponse?, _ error: Error?) -> Void)) -> RequestTask {
+    open class func createOrderBulkMarkDisputed(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: UpdatedResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return createOrderBulkMarkDisputedWithRequestBuilder().execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
@@ -222,9 +222,9 @@ open class OrdersAPI {
      - BASIC:
        - type: http
        - name: PersonalAccessToken
-     - returns: RequestBuilder<CreateInventoryLabelRenameResponse> 
+     - returns: RequestBuilder<UpdatedResponse> 
      */
-    open class func createOrderBulkMarkDisputedWithRequestBuilder() -> RequestBuilder<CreateInventoryLabelRenameResponse> {
+    open class func createOrderBulkMarkDisputedWithRequestBuilder() -> RequestBuilder<UpdatedResponse> {
         let localVariablePath = "/v1/orders/bulk-mark-disputed"
         let localVariableURLString = CrosslyAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -237,7 +237,7 @@ open class OrdersAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<CreateInventoryLabelRenameResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UpdatedResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -331,7 +331,7 @@ open class OrdersAPI {
     }
 
     /**
-     Cancel an order on its marketplace.
+     Cancel an order before it ships. Crossly-marketplace orders refund the buyer (also needs orders:refund) and restock; crossposted orders go to the marketplace, or fail not_supported_on_platform (recordOnly: true records a cancel made on the marketplace). Fires order.cancelled.
      
      - parameter id: (path)  
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -350,7 +350,7 @@ open class OrdersAPI {
     }
 
     /**
-     Cancel an order on its marketplace.
+     Cancel an order before it ships. Crossly-marketplace orders refund the buyer (also needs orders:refund) and restock; crossposted orders go to the marketplace, or fail not_supported_on_platform (recordOnly: true records a cancel made on the marketplace). Fires order.cancelled.
      - POST /v1/orders/{id}/cancel
      - BASIC:
        - type: http
@@ -375,6 +375,56 @@ open class OrdersAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<CreateOrderCancelResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Correct a wrong tracking number the marketplace already holds.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createOrderCorrectTracking(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateOrderCorrectTrackingResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createOrderCorrectTrackingWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Correct a wrong tracking number the marketplace already holds.
+     - POST /v1/orders/{id}/correct-tracking
+     - Replaces the order's tracking number with `trackingNumber`, on Crossly and on the marketplace, where the platform can change tracking it already has (its trackingCorrection capability): `correction` is replace (overwritten), remove_then_submit (the old number removed, then the new one sent) or submit (the platform held none). Refused with validation_error where the platform cannot change it (update it there), when the order has no tracking, its tracking came with a label (void the label instead), or it is closed or delivered; conflict while the previous tracking update is still in flight.
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateOrderCorrectTrackingResponse> 
+     */
+    open class func createOrderCorrectTrackingWithRequestBuilder(id: UUID) -> RequestBuilder<CreateOrderCorrectTrackingResponse> {
+        var localVariablePath = "/v1/orders/{id}/correct-tracking"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateOrderCorrectTrackingResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -473,7 +523,7 @@ open class OrdersAPI {
     }
 
     /**
-     Purchase EasyPost shipping label.
+     Purchase a Crossly Shipping label. An order that already has a label answers 409 label_exists unless allowSecondLabel is true.
      
      - parameter id: (path)  
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -492,7 +542,7 @@ open class OrdersAPI {
     }
 
     /**
-     Purchase EasyPost shipping label.
+     Purchase a Crossly Shipping label. An order that already has a label answers 409 label_exists unless allowSecondLabel is true.
      - POST /v1/orders/{id}/label
      - BASIC:
        - type: http
@@ -517,6 +567,106 @@ open class OrdersAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<CreateOrderLabelResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Void a Crossly Shipping label and refund it to the shipping wallet.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createOrderLabelVoid(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateOrderLabelVoidResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createOrderLabelVoidWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Void a Crossly Shipping label and refund it to the shipping wallet.
+     - POST /v1/orders/{id}/label/void
+     - Voids the order's unused label, owes the wallet charge back in full (markup included) and sets the order back to needs_fulfillment. The refund is held as pending (`refundPendingCents`; `refundedCents` stays 0) and is credited to the shipping wallet when Crossly releases held credits. Only while the carrier has not scanned the parcel and within 30 days of purchase. `tracking.outcome` says what happens to tracking already sent to the marketplace: not_submitted, removal_queued, replace_on_next_label, or update_manually (with `platformOrderUrl`). Repeating the call returns the same result with `alreadyVoided: true` and refunds nothing again.
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateOrderLabelVoidResponse> 
+     */
+    open class func createOrderLabelVoidWithRequestBuilder(id: UUID) -> RequestBuilder<CreateOrderLabelVoidResponse> {
+        var localVariablePath = "/v1/orders/{id}/label/void"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateOrderLabelVoidResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Link an unmatched sale to one of your listings (marks it sold, delists it elsewhere).
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createOrderLinkListing(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateOrderLinkListingResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createOrderLinkListingWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Link an unmatched sale to one of your listings (marks it sold, delists it elsewhere).
+     - POST /v1/orders/{id}/link-listing
+     - For an order whose listing is an auto-created external-sale stub. Body: { listingId, platformListingId? }. Moves the sale onto the listing's row on the order's platform (or moves the stub's row under the listing when it has none), decrements its stock like a detected sale, archives the stub, and delists the item from every other marketplace once no unit is left. 409 when the order is already linked.
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateOrderLinkListingResponse> 
+     */
+    open class func createOrderLinkListingWithRequestBuilder(id: UUID) -> RequestBuilder<CreateOrderLinkListingResponse> {
+        var localVariablePath = "/v1/orders/{id}/link-listing"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateOrderLinkListingResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -571,6 +721,57 @@ open class OrdersAPI {
     }
 
     /**
+     Send a message to the order's buyer chat on the marketplace. Mirrored into the Crossly inbox.
+     
+     - parameter id: (path)  
+     - parameter createOrderOrderChatRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createOrderOrderChat(id: UUID, createOrderOrderChatRequest: CreateOrderOrderChatRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: OkResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createOrderOrderChatWithRequestBuilder(id: id, createOrderOrderChatRequest: createOrderOrderChatRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Send a message to the order's buyer chat on the marketplace. Mirrored into the Crossly inbox.
+     - POST /v1/orders/{id}/order-chat
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - parameter createOrderOrderChatRequest: (body)  
+     - returns: RequestBuilder<OkResponse> 
+     */
+    open class func createOrderOrderChatWithRequestBuilder(id: UUID, createOrderOrderChatRequest: CreateOrderOrderChatRequest) -> RequestBuilder<OkResponse> {
+        var localVariablePath = "/v1/orders/{id}/order-chat"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createOrderOrderChatRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<OkResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Book a carrier pickup for labelled orders (one carrier per pickup; window at least an hour, up to 14 days ahead).
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -615,7 +816,7 @@ open class OrdersAPI {
     }
 
     /**
-     Buy the carrier label for a Crossly order the buyer collects from a pickup point (debits your shipping wallet). 402 when the wallet is short.
+     Buy the carrier label for a Crossly order the buyer collects from a pickup point (debits your shipping wallet). 402 when the wallet is short. An order that already has a label answers 409 label_exists unless allowSecondLabel is true.
      
      - parameter id: (path)  
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -634,7 +835,7 @@ open class OrdersAPI {
     }
 
     /**
-     Buy the carrier label for a Crossly order the buyer collects from a pickup point (debits your shipping wallet). 402 when the wallet is short.
+     Buy the carrier label for a Crossly order the buyer collects from a pickup point (debits your shipping wallet). 402 when the wallet is short. An order that already has a label answers 409 label_exists unless allowSecondLabel is true.
      - POST /v1/orders/{id}/pickup-label
      - BASIC:
        - type: http
@@ -659,6 +860,251 @@ open class OrdersAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<CreateOrderPickupLabelResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Save the package (weight oz, box inches) the marketplace prices the label from.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createOrderPlatformLabelPackage(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetOrderWhatnotShipmentResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createOrderPlatformLabelPackageWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Save the package (weight oz, box inches) the marketplace prices the label from.
+     - POST /v1/orders/{id}/platform-label/package
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetOrderWhatnotShipmentResponse> 
+     */
+    open class func createOrderPlatformLabelPackageWithRequestBuilder(id: UUID) -> RequestBuilder<GetOrderWhatnotShipmentResponse> {
+        var localVariablePath = "/v1/orders/{id}/platform-label/package"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetOrderWhatnotShipmentResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Quote what a change to the marketplace shipment's package costs (cents).
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createOrderPlatformLabelPackageQuote(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateOrderWhatnotPackageQuoteResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createOrderPlatformLabelPackageQuoteWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Quote what a change to the marketplace shipment's package costs (cents).
+     - POST /v1/orders/{id}/platform-label/package/quote
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateOrderWhatnotPackageQuoteResponse> 
+     */
+    open class func createOrderPlatformLabelPackageQuoteWithRequestBuilder(id: UUID) -> RequestBuilder<CreateOrderWhatnotPackageQuoteResponse> {
+        var localVariablePath = "/v1/orders/{id}/platform-label/package/quote"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateOrderWhatnotPackageQuoteResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Pull the marketplace's prepaid label into Crossly (every platform with a label descriptor).
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createOrderPlatformLabelPull(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateOrderPlatformLabelPullResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createOrderPlatformLabelPullWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Pull the marketplace's prepaid label into Crossly (every platform with a label descriptor).
+     - POST /v1/orders/{id}/platform-label/pull
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateOrderPlatformLabelPullResponse> 
+     */
+    open class func createOrderPlatformLabelPullWithRequestBuilder(id: UUID) -> RequestBuilder<CreateOrderPlatformLabelPullResponse> {
+        var localVariablePath = "/v1/orders/{id}/platform-label/pull"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateOrderPlatformLabelPullResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Buy a replacement / extra marketplace label, or have the marketplace generate it, and record it.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createOrderPlatformLabelPurchase(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateOrderPlatformLabelPurchaseResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createOrderPlatformLabelPurchaseWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Buy a replacement / extra marketplace label, or have the marketplace generate it, and record it.
+     - POST /v1/orders/{id}/platform-label/purchase
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateOrderPlatformLabelPurchaseResponse> 
+     */
+    open class func createOrderPlatformLabelPurchaseWithRequestBuilder(id: UUID) -> RequestBuilder<CreateOrderPlatformLabelPurchaseResponse> {
+        var localVariablePath = "/v1/orders/{id}/platform-label/purchase"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateOrderPlatformLabelPurchaseResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Quote what buying a marketplace label costs, before you are charged.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createOrderPlatformLabelQuote(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateOrderPlatformLabelQuoteResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createOrderPlatformLabelQuoteWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Quote what buying a marketplace label costs, before you are charged.
+     - POST /v1/orders/{id}/platform-label/quote
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateOrderPlatformLabelQuoteResponse> 
+     */
+    open class func createOrderPlatformLabelQuoteWithRequestBuilder(id: UUID) -> RequestBuilder<CreateOrderPlatformLabelQuoteResponse> {
+        var localVariablePath = "/v1/orders/{id}/platform-label/quote"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateOrderPlatformLabelQuoteResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -713,7 +1159,7 @@ open class OrdersAPI {
     }
 
     /**
-     EasyPost rate quote for an order.
+     Crossly Shipping rate quote for an order.
      
      - parameter id: (path)  
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -732,7 +1178,7 @@ open class OrdersAPI {
     }
 
     /**
-     EasyPost rate quote for an order.
+     Crossly Shipping rate quote for an order.
      - POST /v1/orders/{id}/rates
      - BASIC:
        - type: http
@@ -762,12 +1208,13 @@ open class OrdersAPI {
     }
 
     /**
-     Issue a full or partial refund on the platform.
+     DEPRECATED: use POST /v1/orders/{id}/refunds. Full or partial refund (amount in dollars). Same idempotency and cap as /refunds: the same request twice refunds once (Idempotency-Key, else the body), never past what the buyer paid.
      
      - parameter id: (path)  
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @discardableResult
     open class func createOrderRefund(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateOrderRefundResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return createOrderRefundWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
@@ -781,7 +1228,7 @@ open class OrdersAPI {
     }
 
     /**
-     Issue a full or partial refund on the platform.
+     DEPRECATED: use POST /v1/orders/{id}/refunds. Full or partial refund (amount in dollars). Same idempotency and cap as /refunds: the same request twice refunds once (Idempotency-Key, else the body), never past what the buyer paid.
      - POST /v1/orders/{id}/refund
      - BASIC:
        - type: http
@@ -789,6 +1236,7 @@ open class OrdersAPI {
      - parameter id: (path)  
      - returns: RequestBuilder<CreateOrderRefundResponse> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     open class func createOrderRefundWithRequestBuilder(id: UUID) -> RequestBuilder<CreateOrderRefundResponse> {
         var localVariablePath = "/v1/orders/{id}/refund"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -806,6 +1254,109 @@ open class OrdersAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<CreateOrderRefundResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Refund an order, in full or in part. `amount` is dollars; omit it for everything left (or the line items' value). Crossly-marketplace orders refund the buyer's card; crossposted orders refund through the marketplace, or fail not_supported_on_platform. Never refunds past the order (refund_exceeds_remaining). The same request twice refunds once: send an Idempotency-Key (without one, the body is the key). A partial refund keeps the order's status. What the platform takes (full/partial, its own reason keys, a comment) is GET /v1/orders/{id}/refund-options; a request outside it fails partial_refund_unsupported, invalid_refund_reason or refund_exceeds_item_amount. Fires order.refunded.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createOrderRefundById(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateOrderRefundByIdResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createOrderRefundByIdWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Refund an order, in full or in part. `amount` is dollars; omit it for everything left (or the line items' value). Crossly-marketplace orders refund the buyer's card; crossposted orders refund through the marketplace, or fail not_supported_on_platform. Never refunds past the order (refund_exceeds_remaining). The same request twice refunds once: send an Idempotency-Key (without one, the body is the key). A partial refund keeps the order's status. What the platform takes (full/partial, its own reason keys, a comment) is GET /v1/orders/{id}/refund-options; a request outside it fails partial_refund_unsupported, invalid_refund_reason or refund_exceeds_item_amount. Fires order.refunded.
+     - POST /v1/orders/{id}/refunds
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<CreateOrderRefundByIdResponse> 
+     */
+    open class func createOrderRefundByIdWithRequestBuilder(id: UUID) -> RequestBuilder<CreateOrderRefundByIdResponse> {
+        var localVariablePath = "/v1/orders/{id}/refunds"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateOrderRefundByIdResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Settle an `unverified` refund (one Crossly could not confirm with the marketplace after its request was interrupted) once you have checked the marketplace: succeeded (with the amount actually refunded, dollars) or failed (nothing moved; the same Idempotency-Key can then try again). Crossly-marketplace refunds are confirmed by support instead.
+     
+     - parameter id: (path)  
+     - parameter refundId: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createOrderRefundResolve(id: UUID, refundId: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListOrderRefundsItem?, _ error: Error?) -> Void)) -> RequestTask {
+        return createOrderRefundResolveWithRequestBuilder(id: id, refundId: refundId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Settle an `unverified` refund (one Crossly could not confirm with the marketplace after its request was interrupted) once you have checked the marketplace: succeeded (with the amount actually refunded, dollars) or failed (nothing moved; the same Idempotency-Key can then try again). Crossly-marketplace refunds are confirmed by support instead.
+     - POST /v1/orders/{id}/refunds/{refundId}/resolve
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - parameter refundId: (path)  
+     - returns: RequestBuilder<ListOrderRefundsItem> 
+     */
+    open class func createOrderRefundResolveWithRequestBuilder(id: UUID, refundId: UUID) -> RequestBuilder<ListOrderRefundsItem> {
+        var localVariablePath = "/v1/orders/{id}/refunds/{refundId}/resolve"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let refundIdPreEscape = "\(APIHelper.mapValueToPathItem(refundId))"
+        let refundIdPostEscape = refundIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{refundId}", with: refundIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListOrderRefundsItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -862,7 +1413,7 @@ open class OrdersAPI {
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func createOrderTracking(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateInboxOfferResponse?, _ error: Error?) -> Void)) -> RequestTask {
+    open class func createOrderTracking(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateOrderTrackingResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return createOrderTrackingWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
@@ -880,9 +1431,9 @@ open class OrdersAPI {
        - type: http
        - name: PersonalAccessToken
      - parameter id: (path)  
-     - returns: RequestBuilder<CreateInboxOfferResponse> 
+     - returns: RequestBuilder<CreateOrderTrackingResponse> 
      */
-    open class func createOrderTrackingWithRequestBuilder(id: UUID) -> RequestBuilder<CreateInboxOfferResponse> {
+    open class func createOrderTrackingWithRequestBuilder(id: UUID) -> RequestBuilder<CreateOrderTrackingResponse> {
         var localVariablePath = "/v1/orders/{id}/tracking"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -898,7 +1449,7 @@ open class OrdersAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<CreateInboxOfferResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<CreateOrderTrackingResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -960,7 +1511,7 @@ open class OrdersAPI {
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func createOrderWhatnotPackage(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateOrderWhatnotLabelResponse?, _ error: Error?) -> Void)) -> RequestTask {
+    open class func createOrderWhatnotPackage(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetOrderWhatnotShipmentResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return createOrderWhatnotPackageWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
@@ -978,9 +1529,9 @@ open class OrdersAPI {
        - type: http
        - name: PersonalAccessToken
      - parameter id: (path)  
-     - returns: RequestBuilder<CreateOrderWhatnotLabelResponse> 
+     - returns: RequestBuilder<GetOrderWhatnotShipmentResponse> 
      */
-    open class func createOrderWhatnotPackageWithRequestBuilder(id: UUID) -> RequestBuilder<CreateOrderWhatnotLabelResponse> {
+    open class func createOrderWhatnotPackageWithRequestBuilder(id: UUID) -> RequestBuilder<GetOrderWhatnotShipmentResponse> {
         var localVariablePath = "/v1/orders/{id}/whatnot/package"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -996,7 +1547,7 @@ open class OrdersAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<CreateOrderWhatnotLabelResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<GetOrderWhatnotShipmentResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -1247,6 +1798,158 @@ open class OrdersAPI {
     }
 
     /**
+     Mark a rental delivered to the renter.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createRentalDelivered(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: RentalResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createRentalDeliveredWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Mark a rental delivered to the renter.
+     - POST /v1/rentals/{id}/delivered
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<RentalResponse> 
+     */
+    open class func createRentalDeliveredWithRequestBuilder(id: String) -> RequestBuilder<RentalResponse> {
+        var localVariablePath = "/v1/rentals/{id}/delivered"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<RentalResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Approve or decline a renter’s request for more days.
+     
+     - parameter id: (path)  
+     - parameter extensionId: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createRentalExtensionDecide(id: String, extensionId: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateRentalExtensionDecideResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createRentalExtensionDecideWithRequestBuilder(id: id, extensionId: extensionId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Approve or decline a renter’s request for more days.
+     - POST /v1/rentals/{id}/extensions/{extensionId}/decide
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - parameter extensionId: (path)  
+     - returns: RequestBuilder<CreateRentalExtensionDecideResponse> 
+     */
+    open class func createRentalExtensionDecideWithRequestBuilder(id: String, extensionId: String) -> RequestBuilder<CreateRentalExtensionDecideResponse> {
+        var localVariablePath = "/v1/rentals/{id}/extensions/{extensionId}/decide"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let extensionIdPreEscape = "\(APIHelper.mapValueToPathItem(extensionId))"
+        let extensionIdPostEscape = extensionIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{extensionId}", with: extensionIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateRentalExtensionDecideResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Record the return inspection: the checklist, photos, and optionally release the deposit.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createRentalInspect(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: RentalResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createRentalInspectWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Record the return inspection: the checklist, photos, and optionally release the deposit.
+     - POST /v1/rentals/{id}/inspect
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<RentalResponse> 
+     */
+    open class func createRentalInspectWithRequestBuilder(id: String) -> RequestBuilder<RentalResponse> {
+        var localVariablePath = "/v1/rentals/{id}/inspect"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<RentalResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Buy both labels for a booked rental: outbound to the renter, and the return label they use.
      
      - parameter id: (path)  
@@ -1276,6 +1979,104 @@ open class OrdersAPI {
      */
     open class func createRentalLabelWithRequestBuilder(id: String) -> RequestBuilder<RentalResponse> {
         var localVariablePath = "/v1/rentals/{id}/labels"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<RentalResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Report a rental not returned (14 days past due): the deposit goes to you.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createRentalNotReturned(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: RentalResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createRentalNotReturnedWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Report a rental not returned (14 days past due): the deposit goes to you.
+     - POST /v1/rentals/{id}/not-returned
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<RentalResponse> 
+     */
+    open class func createRentalNotReturnedWithRequestBuilder(id: String) -> RequestBuilder<RentalResponse> {
+        var localVariablePath = "/v1/rentals/{id}/not-returned"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<RentalResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Release the deposit now, without a claim.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createRentalReleaseDeposit(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: RentalResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createRentalReleaseDepositWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Release the deposit now, without a claim.
+     - POST /v1/rentals/{id}/release-deposit
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<RentalResponse> 
+     */
+    open class func createRentalReleaseDepositWithRequestBuilder(id: String) -> RequestBuilder<RentalResponse> {
+        var localVariablePath = "/v1/rentals/{id}/release-deposit"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
@@ -1394,14 +2195,14 @@ open class OrdersAPI {
     }
 
     /**
-     Get one order.
+     Get one order, with its sale price, fees, SKU and line items.
      
      - parameter id: (path)  
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func getOrder(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListOrdersItem?, _ error: Error?) -> Void)) -> RequestTask {
+    open class func getOrder(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetOrderResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return getOrderWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
@@ -1413,15 +2214,16 @@ open class OrdersAPI {
     }
 
     /**
-     Get one order.
+     Get one order, with its sale price, fees, SKU and line items.
      - GET /v1/orders/{id}
+     - Each order carries its sale exactly as the order.created webhook sent it: salePrice, platformFee, taxCollected and shippingCharged in DOLLARS as JSON numbers (not decimal strings), feeSource (\"exact\" = the fee the marketplace charged, \"estimated\"), sku (the SKU of the listing), quantity (units), and lineItems: one entry per order row {lineKey, listingId, inventoryItemId, platformListingId (the MARKETPLACE listing id), sku (variant SKU, else the listing SKU), variantId, quantity, unitPrice (dollars per unit, rounded to the cent), total (dollars)}. A multi-item marketplace order is one order row per line sharing platformOrderId, each with its own lineKey. detailsPending: true (the sale was recorded before its price and buyer loaded), an order with no sale, or a sale with no listing behind it has null money and lineItems [] (sku and quantity are still given when known). channel is the business channel that sold it (retail, wholesale, auction, live, world, pos), purchaseOrderRef the buyer's PO number, and trade the on-account invoice behind a wholesale order {invoiceId, invoiceNumber, invoiceStatus (open, partial, overdue, paid, void), netDays, dueAt, totalCents, amountPaidCents, balanceCents} or null.
      - BASIC:
        - type: http
        - name: PersonalAccessToken
      - parameter id: (path)  
-     - returns: RequestBuilder<ListOrdersItem> 
+     - returns: RequestBuilder<GetOrderResponse> 
      */
-    open class func getOrderWithRequestBuilder(id: UUID) -> RequestBuilder<ListOrdersItem> {
+    open class func getOrderWithRequestBuilder(id: UUID) -> RequestBuilder<GetOrderResponse> {
         var localVariablePath = "/v1/orders/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1437,7 +2239,7 @@ open class OrdersAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ListOrdersItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<GetOrderResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -1531,6 +2333,56 @@ open class OrdersAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<[String: Double]>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The courier's delivery photo for this order, pulled automatically, with where it came from.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getOrderDeliveryPhoto(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetOrderDeliveryPhotoResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getOrderDeliveryPhotoWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The courier's delivery photo for this order, pulled automatically, with where it came from.
+     - GET /v1/orders/{id}/delivery-photo
+     - Crossly pulls the doorstep photo from whoever has it (the carrier API, e.g. UPS; Trackified when its tracking carries one; the marketplace when its payload does) and stores it on the order. state is found | none | not_delivered; source / sourceLabel say where it came from (\"From UPS\", \"Added by you\"); checked lists who was asked when there is none. Carriers often attach the photo hours after delivery.
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetOrderDeliveryPhotoResponse> 
+     */
+    open class func getOrderDeliveryPhotoWithRequestBuilder(id: String) -> RequestBuilder<GetOrderDeliveryPhotoResponse> {
+        var localVariablePath = "/v1/orders/{id}/delivery-photo"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetOrderDeliveryPhotoResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -1666,6 +2518,55 @@ open class OrdersAPI {
     }
 
     /**
+     The order's buyer chat thread on the marketplace (separate from listing comments): { orderId, platform, messages: [{ id, sender (buyer|seller|platform), body, sentAt, attachments? }], canSend }, oldest message first.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getOrderOrderChat(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetOrderOrderChatResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getOrderOrderChatWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The order's buyer chat thread on the marketplace (separate from listing comments): { orderId, platform, messages: [{ id, sender (buyer|seller|platform), body, sentAt, attachments? }], canSend }, oldest message first.
+     - GET /v1/orders/{id}/order-chat
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetOrderOrderChatResponse> 
+     */
+    open class func getOrderOrderChatWithRequestBuilder(id: UUID) -> RequestBuilder<GetOrderOrderChatResponse> {
+        var localVariablePath = "/v1/orders/{id}/order-chat"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetOrderOrderChatResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Single-order packing slip PDF.
      
      - parameter id: (path)  
@@ -1715,6 +2616,202 @@ open class OrdersAPI {
     }
 
     /**
+     What buying a marketplace label offers for this order (weight tiers, mailbox state).
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getOrderPlatformLabelOption(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetOrderPlatformLabelOptionResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getOrderPlatformLabelOptionWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     What buying a marketplace label offers for this order (weight tiers, mailbox state).
+     - GET /v1/orders/{id}/platform-label/options
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetOrderPlatformLabelOptionResponse> 
+     */
+    open class func getOrderPlatformLabelOptionWithRequestBuilder(id: UUID) -> RequestBuilder<GetOrderPlatformLabelOptionResponse> {
+        var localVariablePath = "/v1/orders/{id}/platform-label/options"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetOrderPlatformLabelOptionResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     A fresh link to the marketplace's own packing slip PDF.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getOrderPlatformLabelPackingSlip(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: UrlExpiresInSecondsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getOrderPlatformLabelPackingSlipWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A fresh link to the marketplace's own packing slip PDF.
+     - GET /v1/orders/{id}/platform-label/packing-slip
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<UrlExpiresInSecondsResponse> 
+     */
+    open class func getOrderPlatformLabelPackingSlipWithRequestBuilder(id: UUID) -> RequestBuilder<UrlExpiresInSecondsResponse> {
+        var localVariablePath = "/v1/orders/{id}/platform-label/packing-slip"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<UrlExpiresInSecondsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The marketplace's shipment for an order (package, label, tracking). Records a label found on it.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getOrderPlatformLabelState(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetOrderWhatnotShipmentResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getOrderPlatformLabelStateWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The marketplace's shipment for an order (package, label, tracking). Records a label found on it.
+     - GET /v1/orders/{id}/platform-label/state
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetOrderWhatnotShipmentResponse> 
+     */
+    open class func getOrderPlatformLabelStateWithRequestBuilder(id: UUID) -> RequestBuilder<GetOrderWhatnotShipmentResponse> {
+        var localVariablePath = "/v1/orders/{id}/platform-label/state"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetOrderWhatnotShipmentResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     A fresh, short-lived link to the marketplace's label sheet. Never stored.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getOrderPlatformLabelUrl(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: UrlExpiresInSecondsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getOrderPlatformLabelUrlWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     A fresh, short-lived link to the marketplace's label sheet. Never stored.
+     - GET /v1/orders/{id}/platform-label/url
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<UrlExpiresInSecondsResponse> 
+     */
+    open class func getOrderPlatformLabelUrlWithRequestBuilder(id: UUID) -> RequestBuilder<UrlExpiresInSecondsResponse> {
+        var localVariablePath = "/v1/orders/{id}/platform-label/url"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<UrlExpiresInSecondsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Proof-of-delivery evidence from the carrier's scan record (PDF, or JSON).
      
      - parameter id: (path)  
@@ -1759,6 +2856,104 @@ open class OrdersAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<GetOrderProofOfDeliveryResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     What a refund on this order may be, from the platform's declared capability: whether Crossly can refund it at all, full and/or partial, what a partial is measured against (total = what the buyer paid, item = the item price only), whether it may precede shipment, the platform's own reason keys (when listed, a refund's reason must be one of them), whether a comment is sent, whether the refund IS cancelling the sale (cancelsSale: Mercari, full only), whether the window closes when the order completes (untilCompleted; windowClosed = it has) and a one-line note on what the platform does not allow.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getOrderRefundOption(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetOrderRefundOptionResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getOrderRefundOptionWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     What a refund on this order may be, from the platform's declared capability: whether Crossly can refund it at all, full and/or partial, what a partial is measured against (total = what the buyer paid, item = the item price only), whether it may precede shipment, the platform's own reason keys (when listed, a refund's reason must be one of them), whether a comment is sent, whether the refund IS cancelling the sale (cancelsSale: Mercari, full only), whether the window closes when the order completes (untilCompleted; windowClosed = it has) and a one-line note on what the platform does not allow.
+     - GET /v1/orders/{id}/refund-options
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetOrderRefundOptionResponse> 
+     */
+    open class func getOrderRefundOptionWithRequestBuilder(id: UUID) -> RequestBuilder<GetOrderRefundOptionResponse> {
+        var localVariablePath = "/v1/orders/{id}/refund-options"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetOrderRefundOptionResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Who collected sales tax on one Crossly marketplace order, where, and the seller notice.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getOrderSalesTax(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetOrderSalesTaxResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getOrderSalesTaxWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Who collected sales tax on one Crossly marketplace order, where, and the seller notice.
+     - GET /v1/orders/{id}/sales-tax
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetOrderSalesTaxResponse> 
+     */
+    open class func getOrderSalesTaxWithRequestBuilder(id: UUID) -> RequestBuilder<GetOrderSalesTaxResponse> {
+        var localVariablePath = "/v1/orders/{id}/sales-tax"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetOrderSalesTaxResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -1870,7 +3065,7 @@ open class OrdersAPI {
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func getOrderWhatnotPackingSlip(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetOrderWhatnotPackingSlipResponse?, _ error: Error?) -> Void)) -> RequestTask {
+    open class func getOrderWhatnotPackingSlip(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: UrlExpiresInSecondsResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return getOrderWhatnotPackingSlipWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
@@ -1888,9 +3083,9 @@ open class OrdersAPI {
        - type: http
        - name: PersonalAccessToken
      - parameter id: (path)  
-     - returns: RequestBuilder<GetOrderWhatnotPackingSlipResponse> 
+     - returns: RequestBuilder<UrlExpiresInSecondsResponse> 
      */
-    open class func getOrderWhatnotPackingSlipWithRequestBuilder(id: UUID) -> RequestBuilder<GetOrderWhatnotPackingSlipResponse> {
+    open class func getOrderWhatnotPackingSlipWithRequestBuilder(id: UUID) -> RequestBuilder<UrlExpiresInSecondsResponse> {
         var localVariablePath = "/v1/orders/{id}/whatnot/packing-slip"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1906,7 +3101,7 @@ open class OrdersAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<GetOrderWhatnotPackingSlipResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UrlExpiresInSecondsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -1919,7 +3114,7 @@ open class OrdersAPI {
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func getOrderWhatnotShipment(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateOrderWhatnotLabelResponse?, _ error: Error?) -> Void)) -> RequestTask {
+    open class func getOrderWhatnotShipment(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetOrderWhatnotShipmentResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return getOrderWhatnotShipmentWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
@@ -1937,9 +3132,9 @@ open class OrdersAPI {
        - type: http
        - name: PersonalAccessToken
      - parameter id: (path)  
-     - returns: RequestBuilder<CreateOrderWhatnotLabelResponse> 
+     - returns: RequestBuilder<GetOrderWhatnotShipmentResponse> 
      */
-    open class func getOrderWhatnotShipmentWithRequestBuilder(id: UUID) -> RequestBuilder<CreateOrderWhatnotLabelResponse> {
+    open class func getOrderWhatnotShipmentWithRequestBuilder(id: UUID) -> RequestBuilder<GetOrderWhatnotShipmentResponse> {
         var localVariablePath = "/v1/orders/{id}/whatnot/shipment"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -1955,7 +3150,100 @@ open class OrdersAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<CreateOrderWhatnotLabelResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<GetOrderWhatnotShipmentResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     One rental: its timeline, both sides’ condition photos, payments, extensions and what can be done next.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getRental(id: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetRentalResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getRentalWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One rental: its timeline, both sides’ condition photos, payments, extensions and what can be done next.
+     - GET /v1/rentals/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetRentalResponse> 
+     */
+    open class func getRentalWithRequestBuilder(id: String) -> RequestBuilder<GetRentalResponse> {
+        var localVariablePath = "/v1/rentals/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetRentalResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Every rentable item’s bookings (per unit), turnaround buffers and blackouts between two dates (≤ 93 days).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getRentalCalendar(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetRentalCalendarResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getRentalCalendarWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Every rentable item’s bookings (per unit), turnaround buffers and blackouts between two dates (≤ 93 days).
+     - GET /v1/rentals/calendar
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetRentalCalendarResponse> 
+     */
+    open class func getRentalCalendarWithRequestBuilder() -> RequestBuilder<GetRentalCalendarResponse> {
+        let localVariablePath = "/v1/rentals/calendar"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetRentalCalendarResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -2049,7 +3337,7 @@ open class OrdersAPI {
     }
 
     /**
-     Orders with a purchased Shippo label a courier can collect or a SCAN form can cover, grouped by carrier.
+     Orders with a purchased Crossly Shipping label a courier can collect or a SCAN form can cover, grouped by carrier.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
@@ -2067,7 +3355,7 @@ open class OrdersAPI {
     }
 
     /**
-     Orders with a purchased Shippo label a courier can collect or a SCAN form can cover, grouped by carrier.
+     Orders with a purchased Crossly Shipping label a courier can collect or a SCAN form can cover, grouped by carrier.
      - GET /v1/orders/pickup-ready
      - BASIC:
        - type: http
@@ -2132,6 +3420,55 @@ open class OrdersAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<ListOrderPickupsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Every refund requested on this order through the API or a cancel, newest first (amounts in dollars).
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listOrderRefunds(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListOrderRefundsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listOrderRefundsWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Every refund requested on this order through the API or a cancel, newest first (amounts in dollars).
+     - GET /v1/orders/{id}/refunds
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<ListOrderRefundsResponse> 
+     */
+    open class func listOrderRefundsWithRequestBuilder(id: UUID) -> RequestBuilder<ListOrderRefundsResponse> {
+        var localVariablePath = "/v1/orders/{id}/refunds"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListOrderRefundsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -2231,18 +3568,52 @@ open class OrdersAPI {
     }
 
     /**
-     List orders.
+     * enum for parameter channel
+     */
+    public enum Channel_listOrders: String, CaseIterable {
+        case retail = "retail"
+        case wholesale = "wholesale"
+        case auction = "auction"
+        case live = "live"
+        case world = "world"
+        case pos = "pos"
+        case rental = "rental"
+    }
+
+    /**
+     * enum for parameter details
+     */
+    public enum Details_listOrders: String, CaseIterable {
+        case pending = "pending"
+    }
+
+    /**
+     * enum for parameter unlinked
+     */
+    public enum Unlinked_listOrders: String, CaseIterable {
+        case _1 = "1"
+        case _true = "true"
+        case _0 = "0"
+        case _false = "false"
+    }
+
+    /**
+     List orders, each with its sale price, fees, SKU and line items.
      
      - parameter page: (query)  (optional, default to 1)
      - parameter limit: (query)  (optional, default to 25)
      - parameter status: (query)  (optional)
      - parameter platform: (query)  (optional)
+     - parameter channel: (query) Only orders sold through this business channel (e.g. wholesale). (optional)
+     - parameter details: (query) pending &#x3D; only orders whose sale details (price, buyer) have not loaded yet. (optional)
+     - parameter unlinked: (query) 1 or true &#x3D; only orders whose sale is not linked to any listing (an orphan sale). (optional)
+     - parameter updatedSince: (query) Only orders created or changed at or after this time (ISO 8601): poll with the time of your last call to catch new orders and status/tracking changes. (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func listOrders(page: Int? = nil, limit: Int? = nil, status: String? = nil, platform: String? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListOrdersResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return listOrdersWithRequestBuilder(page: page, limit: limit, status: status, platform: platform).execute(apiResponseQueue) { result in
+    open class func listOrders(page: Int? = nil, limit: Int? = nil, status: String? = nil, platform: String? = nil, channel: Channel_listOrders? = nil, details: Details_listOrders? = nil, unlinked: Unlinked_listOrders? = nil, updatedSince: Date? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListOrdersResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listOrdersWithRequestBuilder(page: page, limit: limit, status: status, platform: platform, channel: channel, details: details, unlinked: unlinked, updatedSince: updatedSince).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -2253,8 +3624,9 @@ open class OrdersAPI {
     }
 
     /**
-     List orders.
+     List orders, each with its sale price, fees, SKU and line items.
      - GET /v1/orders
+     - Each order carries its sale exactly as the order.created webhook sent it: salePrice, platformFee, taxCollected and shippingCharged in DOLLARS as JSON numbers (not decimal strings), feeSource (\"exact\" = the fee the marketplace charged, \"estimated\"), sku (the SKU of the listing), quantity (units), and lineItems: one entry per order row {lineKey, listingId, inventoryItemId, platformListingId (the MARKETPLACE listing id), sku (variant SKU, else the listing SKU), variantId, quantity, unitPrice (dollars per unit, rounded to the cent), total (dollars)}. A multi-item marketplace order is one order row per line sharing platformOrderId, each with its own lineKey. detailsPending: true (the sale was recorded before its price and buyer loaded), an order with no sale, or a sale with no listing behind it has null money and lineItems [] (sku and quantity are still given when known). channel is the business channel that sold it (retail, wholesale, auction, live, world, pos), purchaseOrderRef the buyer's PO number, and trade the on-account invoice behind a wholesale order {invoiceId, invoiceNumber, invoiceStatus (open, partial, overdue, paid, void), netDays, dueAt, totalCents, amountPaidCents, balanceCents} or null.
      - BASIC:
        - type: http
        - name: PersonalAccessToken
@@ -2262,9 +3634,13 @@ open class OrdersAPI {
      - parameter limit: (query)  (optional, default to 25)
      - parameter status: (query)  (optional)
      - parameter platform: (query)  (optional)
+     - parameter channel: (query) Only orders sold through this business channel (e.g. wholesale). (optional)
+     - parameter details: (query) pending &#x3D; only orders whose sale details (price, buyer) have not loaded yet. (optional)
+     - parameter unlinked: (query) 1 or true &#x3D; only orders whose sale is not linked to any listing (an orphan sale). (optional)
+     - parameter updatedSince: (query) Only orders created or changed at or after this time (ISO 8601): poll with the time of your last call to catch new orders and status/tracking changes. (optional)
      - returns: RequestBuilder<ListOrdersResponse> 
      */
-    open class func listOrdersWithRequestBuilder(page: Int? = nil, limit: Int? = nil, status: String? = nil, platform: String? = nil) -> RequestBuilder<ListOrdersResponse> {
+    open class func listOrdersWithRequestBuilder(page: Int? = nil, limit: Int? = nil, status: String? = nil, platform: String? = nil, channel: Channel_listOrders? = nil, details: Details_listOrders? = nil, unlinked: Unlinked_listOrders? = nil, updatedSince: Date? = nil) -> RequestBuilder<ListOrdersResponse> {
         let localVariablePath = "/v1/orders"
         let localVariableURLString = CrosslyAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -2275,6 +3651,10 @@ open class OrdersAPI {
             "limit": limit?.encodeToJSON(),
             "status": status?.encodeToJSON(),
             "platform": platform?.encodeToJSON(),
+            "channel": channel?.encodeToJSON(),
+            "details": details?.encodeToJSON(),
+            "unlinked": unlinked?.encodeToJSON(),
+            "updatedSince": updatedSince?.encodeToJSON(),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -2284,6 +3664,50 @@ open class OrdersAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<ListOrdersResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Active rentals and history, filtered by view, status, dates, item or a search.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listRentalHistory(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListRentalHistoryResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listRentalHistoryWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Active rentals and history, filtered by view, status, dates, item or a search.
+     - GET /v1/rentals/history
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListRentalHistoryResponse> 
+     */
+    open class func listRentalHistoryWithRequestBuilder() -> RequestBuilder<ListRentalHistoryResponse> {
+        let localVariablePath = "/v1/rentals/history"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListRentalHistoryResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -2340,7 +3764,7 @@ open class OrdersAPI {
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func updateOrder(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListOrdersItem?, _ error: Error?) -> Void)) -> RequestTask {
+    open class func updateOrder(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: UpdateOrderResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return updateOrderWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
@@ -2358,9 +3782,9 @@ open class OrdersAPI {
        - type: http
        - name: PersonalAccessToken
      - parameter id: (path)  
-     - returns: RequestBuilder<ListOrdersItem> 
+     - returns: RequestBuilder<UpdateOrderResponse> 
      */
-    open class func updateOrderWithRequestBuilder(id: UUID) -> RequestBuilder<ListOrdersItem> {
+    open class func updateOrderWithRequestBuilder(id: UUID) -> RequestBuilder<UpdateOrderResponse> {
         var localVariablePath = "/v1/orders/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -2376,7 +3800,7 @@ open class OrdersAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ListOrdersItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UpdateOrderResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }

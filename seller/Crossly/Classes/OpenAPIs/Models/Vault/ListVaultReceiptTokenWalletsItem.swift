@@ -13,8 +13,8 @@ import AnyCodable
 public struct ListVaultReceiptTokenWalletsItem: Codable, JSONEncodable, Hashable {
 
     public enum Status: String, Codable, CaseIterable {
-        case allowed = "allowed"
         case revoked = "revoked"
+        case allowed = "allowed"
         case notAllowed = "not_allowed"
     }
     public var wallet: String

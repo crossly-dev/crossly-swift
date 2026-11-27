@@ -17,26 +17,26 @@ public struct CreateNftMarketListingResponseListing: Codable, JSONEncodable, Has
     public var updatedAt: Date
     public var status: String
     public var soldAt: Date?
-    public var sellerUserId: String?
     public var buyerUserId: String?
     public var priceCents: Double
-    public var merchantId: String
+    public var sellerUserId: String?
     public var cosmeticId: String
+    public var merchantId: String
     public var ownershipId: String
     public var sellerSubjectId: String
     public var txSig: String?
 
-    public init(id: String, createdAt: Date, updatedAt: Date, status: String, soldAt: Date? = nil, sellerUserId: String? = nil, buyerUserId: String? = nil, priceCents: Double, merchantId: String, cosmeticId: String, ownershipId: String, sellerSubjectId: String, txSig: String? = nil) {
+    public init(id: String, createdAt: Date, updatedAt: Date, status: String, soldAt: Date? = nil, buyerUserId: String? = nil, priceCents: Double, sellerUserId: String? = nil, cosmeticId: String, merchantId: String, ownershipId: String, sellerSubjectId: String, txSig: String? = nil) {
         self.id = id
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.status = status
         self.soldAt = soldAt
-        self.sellerUserId = sellerUserId
         self.buyerUserId = buyerUserId
         self.priceCents = priceCents
-        self.merchantId = merchantId
+        self.sellerUserId = sellerUserId
         self.cosmeticId = cosmeticId
+        self.merchantId = merchantId
         self.ownershipId = ownershipId
         self.sellerSubjectId = sellerSubjectId
         self.txSig = txSig
@@ -48,11 +48,11 @@ public struct CreateNftMarketListingResponseListing: Codable, JSONEncodable, Has
         case updatedAt
         case status
         case soldAt
-        case sellerUserId
         case buyerUserId
         case priceCents
-        case merchantId
+        case sellerUserId
         case cosmeticId
+        case merchantId
         case ownershipId
         case sellerSubjectId
         case txSig
@@ -67,11 +67,11 @@ public struct CreateNftMarketListingResponseListing: Codable, JSONEncodable, Has
         try container.encode(updatedAt, forKey: .updatedAt)
         try container.encode(status, forKey: .status)
         try container.encodeIfPresent(soldAt, forKey: .soldAt)
-        try container.encodeIfPresent(sellerUserId, forKey: .sellerUserId)
         try container.encodeIfPresent(buyerUserId, forKey: .buyerUserId)
         try container.encode(priceCents, forKey: .priceCents)
-        try container.encode(merchantId, forKey: .merchantId)
+        try container.encodeIfPresent(sellerUserId, forKey: .sellerUserId)
         try container.encode(cosmeticId, forKey: .cosmeticId)
+        try container.encode(merchantId, forKey: .merchantId)
         try container.encode(ownershipId, forKey: .ownershipId)
         try container.encode(sellerSubjectId, forKey: .sellerSubjectId)
         try container.encodeIfPresent(txSig, forKey: .txSig)

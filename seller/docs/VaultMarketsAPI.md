@@ -16,6 +16,8 @@ Method | HTTP request | Description
 [**createVaultMarketAuctionLot**](VaultMarketsAPI.md#createvaultmarketauctionlot) | **POST** /v1/vault-markets/auctions/lots | Consign a stored, authenticated unit to the next weekly or premier event, with an optional opening price and reserve. The unit is held until the close. Returns &#x60;{ lotId, eventId, endsAt }&#x60;.
 [**createVaultMarketAuctionLotBid**](VaultMarketsAPI.md#createvaultmarketauctionlotbid) | **POST** /v1/vault-markets/auctions/lots/{id}/bids | Leave or raise your maximum on a lot; the system bids for you up to it. A bid in the last 2 minutes extends the lot by 2 minutes. The winner&#39;s saved card is charged at the close through the order book. ID needed above $10,000.
 [**createVaultMarketAuctionLotWithdraw**](VaultMarketsAPI.md#createvaultmarketauctionlotwithdraw) | **POST** /v1/vault-markets/auctions/lots/{id}/withdraw | Withdraw your lot before any bid; the unit goes back on your shelf. Returns &#x60;{ ok }&#x60;.
+[**createVaultMarketAutoBuyPause**](VaultMarketsAPI.md#createvaultmarketautobuypause) | **POST** /v1/vault-markets/auto-buy/pause | Pause Auto-buy with payouts: the budget and want list stay; no payouts are counted and nothing is bought.
+[**createVaultMarketAutoBuyResume**](VaultMarketsAPI.md#createvaultmarketautobuyresume) | **POST** /v1/vault-markets/auto-buy/resume | Resume Auto-buy with payouts: payouts released from now on count.
 [**createVaultMarketBlock**](VaultMarketsAPI.md#createvaultmarketblock) | **POST** /v1/vault-markets/blocks | Place a block buy for an entity: one order booked to the first sub-account in &#x60;plan&#x60; (it pays from its custodian account), split across every sub-account in the plan at the average price, fees included, once it is done and the custodian confirmed each payment. Each share&#39;s cash moves between the entity&#39;s own custodian accounts; its units move only after that settles. Every sub-account must be one you may trade, and its share must fit its limits.
 [**createVaultMarketBlockAllocate**](VaultMarketsAPI.md#createvaultmarketblockallocate) | **POST** /v1/vault-markets/blocks/{orderId}/allocate | Allocate a done block now (the keeper does it too). Returns &#x60;{ outcome, block }&#x60;: allocated, waiting (a payment or transfer is not settled yet), nothing_filled or none.
 [**createVaultMarketBullionFamilyPeg**](VaultMarketsAPI.md#createvaultmarketbullionfamilypeg) | **POST** /v1/vault-markets/bullion/family-pegs | Set a family-wide spot-pegged quote: one \&quot;any 1 oz gold coin\&quot; quote resting on each product book of a bullion family at the chosen condition (DS, VNDS or Used). When any leg fills it comes off the others and goes back on only for what is left; two fills at once are settled one at a time against what is left. A bid pays from your custodian account. Replaces your live family quote on the same family, condition and side. ID required.
@@ -93,6 +95,32 @@ Method | HTTP request | Description
 [**createVaultMarketMmMassCancel**](VaultMarketsAPI.md#createvaultmarketmmmasscancel) | **POST** /v1/vault-markets/mm/mass-cancel | Cancel every open order (one key, or only quotes) and every resting leg in one statement: nothing fills between the first cancel and the last.
 [**createVaultMarketMmMmpReset**](VaultMarketsAPI.md#createvaultmarketmmmmpreset) | **POST** /v1/vault-markets/mm/mmp/reset | End a market-maker protection freeze early.
 [**createVaultMarketOpeningWaitlist**](VaultMarketsAPI.md#createvaultmarketopeningwaitlist) | **POST** /v1/vault-markets/opening/{slug}/waitlist | Join a key&#39;s waitlist, optionally with a friend&#39;s invite code (&#x60;ref&#x60;). Inviting moves you up the queue; nobody is paid. Returns your place and your own code.
+[**createVaultMarketOptionCombo**](VaultMarketsAPI.md#createvaultmarketoptioncombo) | **POST** /v1/vault-markets/options/combos | Place a strategy: 2 to 4 legs on one underlying with ratios, a quantity (units, three decimals) and ONE signed net limit per unit (+ the most you pay, - the least credit you take). Margined on the combined scenario loss of all its legs; matched against the combo book, then the legs&#39; own books; every leg fills at once or none does. Crossly venue only (409 combos_self_venue_only on the partner venue).
+[**createVaultMarketOptionComboCancel**](VaultMarketsAPI.md#createvaultmarketoptioncombocancel) | **POST** /v1/vault-markets/options/combos/{id}/cancel | Cancel a working strategy.
+[**createVaultMarketOptionComboRfq**](VaultMarketsAPI.md#createvaultmarketoptioncomborfq) | **POST** /v1/vault-markets/options/combos/rfq | Ask makers for a firm net price on a whole strategy (legs, quantity, an optional limit that is never shown). Crossly venue only.
+[**createVaultMarketOptionComboRfqAccept**](VaultMarketsAPI.md#createvaultmarketoptioncomborfqaccept) | **POST** /v1/vault-markets/options/combos/rfq/{id}/accept | Take a live, firm answer: both strategies go through the normal path (margin, pre-trade risk), every leg at once.
+[**createVaultMarketOptionComboRfqCancel**](VaultMarketsAPI.md#createvaultmarketoptioncomborfqcancel) | **POST** /v1/vault-markets/options/combos/rfq/{id}/cancel | Cancel your open strategy quote request.
+[**createVaultMarketOptionComboRfqRespond**](VaultMarketsAPI.md#createvaultmarketoptioncomborfqrespond) | **POST** /v1/vault-markets/options/combos/rfq/{id}/respond | Answer a strategy quote request with a firm net price per unit in the canonical terms, good for 60 seconds; a new answer replaces your last.
+[**createVaultMarketOptionComboRfqResponseWithdraw**](VaultMarketsAPI.md#createvaultmarketoptioncomborfqresponsewithdraw) | **POST** /v1/vault-markets/options/combos/rfq/responses/{id}/withdraw | Withdraw your live answer to a strategy quote request.
+[**createVaultMarketOptionCoveredCall**](VaultMarketsAPI.md#createvaultmarketoptioncoveredcall) | **POST** /v1/vault-markets/options/covered-calls | Write a covered call: lock a stored vault unit (&#x60;vaultItemId&#x60;) as collateral and sell up to one call on its own key (&#x60;contractId&#x60;, &#x60;quantity&#x60; &lt;&#x3D; 1) at a price or an implied vol. The unit cannot be sold, moved, lent or withdrawn until the call is bought back or expires; if assigned you pay cash, or the unit sells at the vault auction to cover.
+[**createVaultMarketOptionCoveredCallRelease**](VaultMarketsAPI.md#createvaultmarketoptioncoveredcallrelease) | **POST** /v1/vault-markets/options/covered-calls/{id}/release | Free a covered call&#39;s vault unit once the call it covers is closed (or covered by other units).
+[**createVaultMarketOptionMmHeartbeat**](VaultMarketsAPI.md#createvaultmarketoptionmmheartbeat) | **POST** /v1/vault-markets/options/mm/heartbeat | Keep your option quotes alive (cancel-on-disconnect pulls them after 30 s without a heartbeat).
+[**createVaultMarketOptionMmQuote**](VaultMarketsAPI.md#createvaultmarketoptionmmquote) | **POST** /v1/vault-markets/options/mm/quotes | Set (replace) a two-sided quote on an option contract: &#x60;bid&#x60; and / or &#x60;ask&#x60; each { priceCents, quantity in contracts }, posted as post-only GTC orders on the Crossly venue. Market-maker protection counts their fills; a quote inside 20% of its mid earns liquidity rewards (CBX).
+[**createVaultMarketOptionMmQuotePull**](VaultMarketsAPI.md#createvaultmarketoptionmmquotepull) | **POST** /v1/vault-markets/options/mm/quotes/pull | Pull your option quotes on one contract (&#x60;contractId&#x60;) or all of them.
+[**createVaultMarketOptionOrder**](VaultMarketsAPI.md#createvaultmarketoptionorder) | **POST** /v1/vault-markets/options/orders | Place an options order: &#x60;contractId&#x60;, &#x60;side&#x60;, &#x60;quantity&#x60; in contracts (three decimals), a &#x60;priceCents&#x60; or an &#x60;iv&#x60; (&#x60;quoteMode&#x60;), &#x60;tif&#x60; gtc / gtd (with &#x60;expiresAt&#x60;) / ioc, &#x60;postOnly&#x60;. Idempotent on &#x60;clientOrderId&#x60;. On the Crossly venue it matches price-time with self-trade prevention after a scenario-margin check; on the partner venue it routes to the partner (accept its &#x60;termsVersion&#x60;). &#x60;subaccountId&#x60; trades for a firm sub-account you may trade.
+[**createVaultMarketOptionOrderCancel**](VaultMarketsAPI.md#createvaultmarketoptionordercancel) | **POST** /v1/vault-markets/options/orders/{id}/cancel | Cancel a working options order (on the partner venue it is cancelled there first). A liquidation order cannot be cancelled.
+[**createVaultMarketOptionPracticeCombo**](VaultMarketsAPI.md#createvaultmarketoptionpracticecombo) | **POST** /v1/vault-markets/options/practice/combos | A practice strategy (play money): the same ticket as a real one, filled at the practice maker&#39;s quotes when the net is inside the limit.
+[**createVaultMarketOptionPracticeOrder**](VaultMarketsAPI.md#createvaultmarketoptionpracticeorder) | **POST** /v1/vault-markets/options/practice/orders | Place a practice options order (the same ticket as a real one; fills against the practice maker at the reference vol). Play money only.
+[**createVaultMarketOptionPracticeOrderCancel**](VaultMarketsAPI.md#createvaultmarketoptionpracticeordercancel) | **POST** /v1/vault-markets/options/practice/orders/{id}/cancel | Cancel a working practice options order.
+[**createVaultMarketOptionPracticeReset**](VaultMarketsAPI.md#createvaultmarketoptionpracticereset) | **POST** /v1/vault-markets/options/practice/reset | Start the options practice account again with $10,000: positions and working orders are cleared.
+[**createVaultMarketOptionQuote**](VaultMarketsAPI.md#createvaultmarketoptionquote) | **POST** /v1/vault-markets/options/quote | Price a ticket without placing it: give a price per contract or an implied vol (&#x60;quoteMode&#x60;), get the other back, the premium and fee, the Greeks for your size, the payoff at expiry and the margin it would need on your account (authoritative on the Crossly venue, an estimate when the partner clears). A bad entry is reported, not thrown.
+[**createVaultMarketOptionRfq**](VaultMarketsAPI.md#createvaultmarketoptionrfq) | **POST** /v1/vault-markets/options/rfq | Ask for a quote on an option contract: &#x60;side&#x60;, &#x60;quantity&#x60; in contracts, an optional &#x60;limitCents&#x60; (never shown). Makers quoting the series, the underlying&#39;s DMM and LPs and approved dealers are told anonymously; answers are firm for 60 s.
+[**createVaultMarketOptionRfqAccept**](VaultMarketsAPI.md#createvaultmarketoptionrfqaccept) | **POST** /v1/vault-markets/options/rfq/{id}/accept | Take a live answer (&#x60;responseId&#x60;) to your option quote request: it trades through the options book at that price or better, with margin and self-trade prevention.
+[**createVaultMarketOptionRfqCancel**](VaultMarketsAPI.md#createvaultmarketoptionrfqcancel) | **POST** /v1/vault-markets/options/rfq/{id}/cancel | Cancel your open option quote request.
+[**createVaultMarketOptionRfqRespond**](VaultMarketsAPI.md#createvaultmarketoptionrfqrespond) | **POST** /v1/vault-markets/options/rfq/{id}/respond | Answer an option quote request with a firm price per contract for its full size (good for 60 s; a new answer replaces your last).
+[**createVaultMarketOptionRfqResponseWithdraw**](VaultMarketsAPI.md#createvaultmarketoptionrfqresponsewithdraw) | **POST** /v1/vault-markets/options/rfq/responses/{id}/withdraw | Withdraw your live answer to an option quote request.
+[**createVaultMarketOptionRoll**](VaultMarketsAPI.md#createvaultmarketoptionroll) | **POST** /v1/vault-markets/options/roll | Roll a position to another contract as one strategy order at one net price (+ you pay, - you receive): the close and the open fill together or not at all. &#x60;practice&#x60; rolls a practice position.
+[**createVaultMarketOptionStrategyPreview**](VaultMarketsAPI.md#createvaultmarketoptionstrategypreview) | **POST** /v1/vault-markets/options/strategies/preview | Preview a strategy before placing it: by template (underlying, kind, direction, strikes, expiries) or by legs. Returns each leg at its bid / ask, the net per unit (+ debit, - credit), the payoff at the first expiry, max profit and max loss (null &#x3D; unbounded), breakevens, net Greeks, and the scenario margin of the whole strategy next to its legs margined one by one.
 [**createVaultMarketP2pLoanCall**](VaultMarketsAPI.md#createvaultmarketp2ploancall) | **POST** /v1/vault-markets/p2p/loans/{id}/call | Lender: call the loan (once it is a day old). A refinancing auction runs for about 30 hours, the rate a new lender gets climbing to the ceiling; repaid or refinanced, you are paid in full; neither by the end, the unit moves to your vault.
 [**createVaultMarketP2pLoanCancelCall**](VaultMarketsAPI.md#createvaultmarketp2ploancancelcall) | **POST** /v1/vault-markets/p2p/loans/{id}/cancel-call | Lender: take back your call before any other lender has taken the loan over. The refinancing auction stops and the loan carries on as before on its terms.
 [**createVaultMarketP2pLoanRefiAuction**](VaultMarketsAPI.md#createvaultmarketp2ploanrefiauction) | **POST** /v1/vault-markets/p2p/loans/{id}/refi-auction | Borrower: look for a cheaper lender. A refinancing auction runs for &#x60;hours&#x60; (1-72, default 24); the rate a new lender gets climbs from &#x60;startAprBps&#x60; (default half the loan rate) to just under the loan rate now. The first lender to take it pays your lender off and the loan carries on at that lower rate. Nobody by the end: nothing changes.
@@ -117,6 +145,34 @@ Method | HTTP request | Description
 [**createVaultMarketPositionClose**](VaultMarketsAPI.md#createvaultmarketpositionclose) | **POST** /v1/vault-markets/positions/{id}/close | Close a leveraged long: all its units, or &#x60;units&#x60; of them, each sold for at least &#x60;minCents&#x60;; each sale repays the pool first.
 [**createVaultMarketPositionCollateral**](VaultMarketsAPI.md#createvaultmarketpositioncollateral) | **POST** /v1/vault-markets/positions/{id}/collateral | Answer a margin call: a short posts more collateral (USD, or CBX at half value); a leveraged long pays down its pool loan. Returns the position.
 [**createVaultMarketPositionCover**](VaultMarketsAPI.md#createvaultmarketpositioncover) | **POST** /v1/vault-markets/positions/{id}/cover | Cover a short: all its units, or &#x60;units&#x60; of them, each buying any unit of the key into the vault for up to &#x60;maxCents&#x60;; each goes back to its lender.
+[**createVaultMarketPredictionAccount**](VaultMarketsAPI.md#createvaultmarketpredictionaccount) | **POST** /v1/vault-markets/predictions/account | Open your account at the live prediction venue (the partner DCM, or your own segregated account at the settlement bank). Returns &#x60;{ venue, status, opened }&#x60;.
+[**createVaultMarketPredictionAlert**](VaultMarketsAPI.md#createvaultmarketpredictionalert) | **POST** /v1/vault-markets/predictions/alerts | Tell me when a market&#39;s probability crosses a level: &#x60;{ marketId, levelPercent, direction }&#x60;. Returns the alert.
+[**createVaultMarketPredictionCard**](VaultMarketsAPI.md#createvaultmarketpredictioncard) | **POST** /v1/vault-markets/predictions/cards | Make an \&quot;I called it\&quot; share card for a position of yours that settled in your favour (&#x60;showAmounts&#x60; to include what you paid and won). Returns the card with its public URL.
+[**createVaultMarketPredictionComboRfq**](VaultMarketsAPI.md#createvaultmarketpredictioncomborfq) | **POST** /v1/vault-markets/predictions/combos/rfqs | Ask makers for a price on a combo: 2 to 6 legs (a market and a side each) on different underlyings, a size, and an optional limit makers never see. Pays $1 a contract if every leg comes true. &#x60;venue&#x60; paper or live.
+[**createVaultMarketPredictionComboRfqAccept**](VaultMarketsAPI.md#createvaultmarketpredictioncomborfqaccept) | **POST** /v1/vault-markets/predictions/combos/rfqs/{id}/accept | Take one live, firm answer to your combo request (&#x60;quoteId&#x60;): both stakes are locked and the combo opens. Returns the combo.
+[**createVaultMarketPredictionComboRfqCancel**](VaultMarketsAPI.md#createvaultmarketpredictioncomborfqcancel) | **POST** /v1/vault-markets/predictions/combos/rfqs/{id}/cancel | Withdraw your combo request; its answers are withdrawn too.
+[**createVaultMarketPredictionComboRfqQuote**](VaultMarketsAPI.md#createvaultmarketpredictioncomborfqquote) | **POST** /v1/vault-markets/predictions/combos/rfqs/{id}/quotes | Answer a combo request with a firm price a contract for the full size (good for 30 seconds; a new answer replaces yours). Real money needs an active prediction maker programme or approved dealer status.
+[**createVaultMarketPredictionComment**](VaultMarketsAPI.md#createvaultmarketpredictioncomment) | **POST** /v1/vault-markets/predictions/comments | Comment on a market or a series, or reply to a comment (&#x60;parentId&#x60;). Moderated like every comment on Crossly.
+[**createVaultMarketPredictionCommentReport**](VaultMarketsAPI.md#createvaultmarketpredictioncommentreport) | **POST** /v1/vault-markets/predictions/comments/{id}/report | Report a comment with a reason; enough reports hide it until ops look.
+[**createVaultMarketPredictionConversion**](VaultMarketsAPI.md#createvaultmarketpredictionconversion) | **POST** /v1/vault-markets/predictions/conversions | Split ($1 a set buys one Yes in every bucket of an expiry), merge (one Yes in every bucket gives back $1 a set before settlement) or convert (No in one bucket becomes Yes in every other) on a full bucket set. &#x60;venue&#x60; paper or live. Returns the conversion and the event after it.
+[**createVaultMarketPredictionForecast**](VaultMarketsAPI.md#createvaultmarketpredictionforecast) | **POST** /v1/vault-markets/predictions/forecasts | Forecast a market: &#x60;probabilityPercent&#x60; 0 to 100. The one standing when trading closes is scored (Brier).
+[**createVaultMarketPredictionForecasterFollow**](VaultMarketsAPI.md#createvaultmarketpredictionforecasterfollow) | **POST** /v1/vault-markets/predictions/forecasters/{id}/follow | Follow a public forecaster: you are told when they open a position or forecast (copy-watch only; nothing is ever traded for you).
+[**createVaultMarketPredictionMaker**](VaultMarketsAPI.md#createvaultmarketpredictionmaker) | **POST** /v1/vault-markets/predictions/makers | Apply to make markets in prediction ladders (one series, or all with &#x60;seriesId&#x60; null). Needs the ID check; ops approve. Returns the application.
+[**createVaultMarketPredictionMakerQuote**](VaultMarketsAPI.md#createvaultmarketpredictionmakerquote) | **POST** /v1/vault-markets/predictions/makers/quotes | Mass quote: replace your resting maker quotes on up to 50 markets with one Yes bid and one Yes ask each (post-only; an ask rests as a No bid at 100 minus it). Live quotes need an active maker programme. Returns what rests.
+[**createVaultMarketPredictionOrder**](VaultMarketsAPI.md#createvaultmarketpredictionorder) | **POST** /v1/vault-markets/predictions/orders | Place a prediction order: buy_yes, sell_yes, buy_no or sell_no; limit (priceCents 1-99 in the action&#39;s own terms) or market (IOC 10 cents through the best price); GTC, GTD (expiresAt) or IOC; post-only. Sells only what you hold. &#x60;venue&#x60; paper (practice) or live (503 until a venue is registered). Returns the order with its fills.
+[**createVaultMarketPredictionOrderAmend**](VaultMarketsAPI.md#createvaultmarketpredictionorderamend) | **POST** /v1/vault-markets/predictions/orders/{id}/amend | Amend a resting order&#39;s price (in its own terms) and/or whole size. It keeps its place in the queue only when the size goes down at the same price; otherwise it is re-queued and may trade at once. Returns the order with &#x60;keptPriority&#x60;.
+[**createVaultMarketPredictionOrderBatch**](VaultMarketsAPI.md#createvaultmarketpredictionorderbatch) | **POST** /v1/vault-markets/predictions/orders/batch | Place up to 20 orders in one call; each answers on its own (&#x60;results[]&#x60;), one refused never stops the rest.
+[**createVaultMarketPredictionOrderBatchCancel**](VaultMarketsAPI.md#createvaultmarketpredictionorderbatchcancel) | **POST** /v1/vault-markets/predictions/orders/batch-cancel | Cancel up to 20 orders in one call; each answers on its own.
+[**createVaultMarketPredictionOrderCancel**](VaultMarketsAPI.md#createvaultmarketpredictionordercancel) | **POST** /v1/vault-markets/predictions/orders/{id}/cancel | Cancel a working prediction order; the money (or practice money) it locked comes back. Returns the order.
+[**createVaultMarketPredictionOrderCancelAll**](VaultMarketsAPI.md#createvaultmarketpredictionordercancelall) | **POST** /v1/vault-markets/predictions/orders/cancel-all | Cancel every working prediction order you have, or only those on one market (&#x60;marketId&#x60;). Returns &#x60;{ cancelled }&#x60;.
+[**createVaultMarketPredictionPaperReset**](VaultMarketsAPI.md#createvaultmarketpredictionpaperreset) | **POST** /v1/vault-markets/predictions/paper/reset | Reset your practice prediction account to $1,000 of play money: working practice orders cancelled, practice positions cleared. Once a day.
+[**createVaultMarketPredictionPositionClose**](VaultMarketsAPI.md#createvaultmarketpredictionpositionclose) | **POST** /v1/vault-markets/predictions/positions/close | Close a position: your resting sells on the market are cancelled and everything you hold is sold now (market, 10-cent band) or at &#x60;priceCents&#x60;. Returns the sell order.
+[**createVaultMarketPredictionPositionCloseAll**](VaultMarketsAPI.md#createvaultmarketpredictionpositioncloseall) | **POST** /v1/vault-markets/predictions/positions/close-all | Sell all: close every open position on a venue, or only one event&#39;s (&#x60;eventId&#x60;). Each answers on its own.
+[**createVaultMarketPredictionProposal**](VaultMarketsAPI.md#createvaultmarketpredictionproposal) | **POST** /v1/vault-markets/predictions/proposals | Propose a market: an index slug or a book key, a shape (close at or above / at or below, between, touch), its strike(s) and an expiry. Ops review it; once listed you earn the creator share of Crossly&#39;s take on its fees.
+[**createVaultMarketPredictionProposalCheck**](VaultMarketsAPI.md#createvaultmarketpredictionproposalcheck) | **POST** /v1/vault-markets/predictions/proposals/check | Check a market proposal without sending it: whether the underlying may carry markets (a built-in index or a tier A key), and what is wrong with the strike or expiry.
+[**createVaultMarketPredictionProposalWithdraw**](VaultMarketsAPI.md#createvaultmarketpredictionproposalwithdraw) | **POST** /v1/vault-markets/predictions/proposals/{id}/withdraw | Withdraw a proposal still waiting for review.
+[**createVaultMarketPredictionSettlementDispute**](VaultMarketsAPI.md#createvaultmarketpredictionsettlementdispute) | **POST** /v1/vault-markets/predictions/settlements/{id}/dispute | Dispute a settlement inside its 24-hour review window (you must hold a position in the market). Payout waits for the venue&#39;s decision. Returns &#x60;{ settlementId, status }&#x60;.
+[**createVaultMarketPredictionTerm**](VaultMarketsAPI.md#createvaultmarketpredictionterm) | **POST** /v1/vault-markets/predictions/terms | Accept the current prediction-market contract terms (PREDICTION_TERMS_VERSION), needed for every real-money order. Returns &#x60;{ termsVersion, venue }&#x60;.
 [**createVaultMarketPriceWidget**](VaultMarketsAPI.md#createvaultmarketpricewidget) | **POST** /v1/vault-markets/price-widgets | Make a price widget for one vault market (&#x60;kind&#x60; mark + &#x60;bookKey&#x60;) or one public index (&#x60;kind&#x60; index + &#x60;indexSlug&#x60;): range, layout (compact or chart), theme (auto, light, dark), optionally your own affiliate code for the link back and the sites allowed to show it (empty &#x3D; any). Returns the widget with its snippets.
 [**createVaultMarketPriceWidgetPreview**](VaultMarketsAPI.md#createvaultmarketpricewidgetpreview) | **POST** /v1/vault-markets/price-widgets/preview | What a widget would show before you save it: &#x60;view&#x60; (value, move, quality, n, as-of, link back) and &#x60;html&#x60;, the exact page the iframe serves. Nothing is stored.
 [**createVaultMarketProBracket**](VaultMarketsAPI.md#createvaultmarketprobracket) | **POST** /v1/vault-markets/pro/brackets | A buy order with a take-profit and/or stop-loss attached; the exits arm as an OCO pair for what the entry fills.
@@ -139,11 +195,43 @@ Method | HTTP request | Description
 [**createVaultMarketSetGoal**](VaultMarketsAPI.md#createvaultmarketsetgoal) | **POST** /v1/vault-markets/set-goals | Start a goal on a catalogue set (category, brandSlug, modelSlug from the set search), optionally with a target: one condition, and any grade, ungraded, or one exact grade. One live goal per set.
 [**createVaultMarketSetGoalBasket**](VaultMarketsAPI.md#createvaultmarketsetgoalbasket) | **POST** /v1/vault-markets/set-goals/{id}/basket | Place the \&quot;complete my set\&quot; basket bid: one GTC limit buy per missing piece, under a hard budget, paid by one of your saved cards or your custodian account. Every leg passes pre-trade risk and the ID line like any order. Idempotent on clientBasketId. One working basket per goal; its legs are cancelled once the set is complete.
 [**createVaultMarketSetGoalBasketCancel**](VaultMarketsAPI.md#createvaultmarketsetgoalbasketcancel) | **POST** /v1/vault-markets/set-goals/{id}/basket/cancel | Cancel the goal working basket bid: every working leg comes off the book; what already filled stays in your vault.
+[**createVaultMarketShareAutoInvest**](VaultMarketsAPI.md#createvaultmarketshareautoinvest) | **POST** /v1/vault-markets/shares/auto-invest | Start auto-invest: &#x60;amountCents&#x60; ($5-$10,000) &#x60;every&#x60; week or month into &#x60;seriesIds&#x60; (equal weights) or &#x60;targets&#x60; (seriesId + weightBps summing to 10,000) or a &#x60;basketId&#x60; (with &#x60;rebalance&#x60; to keep your own shares on its weights). Whole shares only; the rest rolls over. Offerings are subscribed at their price; trading books are bought at the best ask up to &#x60;maxPremiumBps&#x60; over the indicative value. &#x60;practice&#x60; runs it on paper.
+[**createVaultMarketShareAutoInvestRun**](VaultMarketsAPI.md#createvaultmarketshareautoinvestrun) | **POST** /v1/vault-markets/shares/auto-invest/{id}/run | Run a plan now (once a minute at most); the schedule does not move.
+[**createVaultMarketShareAutoInvestUpdate**](VaultMarketsAPI.md#createvaultmarketshareautoinvestupdate) | **POST** /v1/vault-markets/shares/auto-invest/{id}/update | Change a plan (amount, cadence, series or weights, cap, rebalance) or set its &#x60;status&#x60; active, paused or cancelled.
+[**createVaultMarketShareBasketBuy**](VaultMarketsAPI.md#createvaultmarketsharebasketbuy) | **POST** /v1/vault-markets/shares/baskets/{id}/buy | Buy a basket once: &#x60;amountCents&#x60; split by its live weights into whole shares of each series, in your own name (offerings subscribed, trading books at the best ask up to &#x60;maxPremiumBps&#x60;). &#x60;practice&#x60; buys on paper.
+[**createVaultMarketShareBuyoutFund**](VaultMarketsAPI.md#createvaultmarketsharebuyoutfund) | **POST** /v1/vault-markets/shares/buyouts/{id}/fund | Your whole-unit bid reached the reserve: fund the price through your investor account within 72 hours to buy the item from its holders (no vote).
+[**createVaultMarketShareBuyoutVote**](VaultMarketsAPI.md#createvaultmarketsharebuyoutvote) | **POST** /v1/vault-markets/shares/buyouts/{id}/vote | Vote &#x60;yes&#x60; or &#x60;no&#x60; on a buyout with the shares you held when the vote opened. You can change your vote while it is open.
+[**createVaultMarketShareBuyoutWithdraw**](VaultMarketsAPI.md#createvaultmarketsharebuyoutwithdraw) | **POST** /v1/vault-markets/shares/buyouts/{id}/withdraw | Withdraw your buyout bid before its vote opens; the escrow is refunded.
 [**createVaultMarketShareCard**](VaultMarketsAPI.md#createvaultmarketsharecard) | **POST** /v1/vault-markets/share-cards | Make a verified share card of a position, a vault unit, a public index or your portfolio (&#x60;kind&#x60;, &#x60;refId&#x60;). The % on it is the price move since your real fill; amounts stay hidden unless &#x60;showAmounts&#x60;.
+[**createVaultMarketShareGiftAccept**](VaultMarketsAPI.md#createvaultmarketsharegiftaccept) | **POST** /v1/vault-markets/shares/gifts/{id}/accept | Accept a share gift. Needs your own verified Vault Shares investor account; the venue then moves the shares to you on the register.
+[**createVaultMarketShareGiftCancel**](VaultMarketsAPI.md#createvaultmarketsharegiftcancel) | **POST** /v1/vault-markets/shares/gifts/{id}/cancel | Cancel a gift you offered, before it is accepted: the shares are free again.
+[**createVaultMarketShareGiftDecline**](VaultMarketsAPI.md#createvaultmarketsharegiftdecline) | **POST** /v1/vault-markets/shares/gifts/{id}/decline | Decline a share gift offered to you.
+[**createVaultMarketShareInvestor**](VaultMarketsAPI.md#createvaultmarketshareinvestor) | **POST** /v1/vault-markets/shares/investor | Open or update your investor account at the venue: accept the current investor terms (&#x60;acceptTerms&#x60;), and state accredited status or your annual income and net worth for the Reg A+ limit. Needs a verified ID.
+[**createVaultMarketShareOrderCancel**](VaultMarketsAPI.md#createvaultmarketshareordercancel) | **POST** /v1/vault-markets/shares/orders/{id}/cancel | Cancel one of your open share-book orders.
+[**createVaultMarketSharePaperOrderCancel**](VaultMarketsAPI.md#createvaultmarketsharepaperordercancel) | **POST** /v1/vault-markets/shares/paper/orders/{id}/cancel | Cancel an open practice order.
+[**createVaultMarketSharePaperReset**](VaultMarketsAPI.md#createvaultmarketsharepaperreset) | **POST** /v1/vault-markets/shares/paper/reset | Start the practice account over with fresh play money (once a day).
+[**createVaultMarketSharePaperSeryOrder**](VaultMarketsAPI.md#createvaultmarketsharepaperseryorder) | **POST** /v1/vault-markets/shares/paper/series/{id}/orders | Place a practice order (play money) with the same rules as the real share book.
+[**createVaultMarketSharePaperSerySubscribe**](VaultMarketsAPI.md#createvaultmarketsharepaperserysubscribe) | **POST** /v1/vault-markets/shares/paper/series/{id}/subscribe | Subscribe with play money to a practice series’ offering.
+[**createVaultMarketShareRoomHide**](VaultMarketsAPI.md#createvaultmarketshareroomhide) | **POST** /v1/vault-markets/shares/room/{id}/hide | Take down one of your own holder-room posts (&#x60;reason&#x60;).
+[**createVaultMarketShareSery**](VaultMarketsAPI.md#createvaultmarketsharesery) | **POST** /v1/vault-markets/shares/series | Propose a Vault Shares series for one of your units (&#x60;vaultItemId&#x60;), keeping &#x60;retainedShares&#x60; (0-50%), with an optional minimum raise, offering length (7-60 days) and reserve. Ops then qualify it, attach the offering circular and open the offering. With no venue it is a practice series. Pass &#x60;requestId&#x60; to make a retry safe.
+[**createVaultMarketShareSeryBuyout**](VaultMarketsAPI.md#createvaultmarketshareserybuyout) | **POST** /v1/vault-markets/shares/series/{id}/buyouts | Bid for the whole item (&#x60;offerCents&#x60;, at least the mark x 1.10). The bid is escrowed at the venue, then holders vote by shares: two-thirds yes accepts, a majority against rejects, 14 days with no majority against accepts. Accepted, the item is yours and the price is paid out pro rata after storage and insurance.
+[**createVaultMarketShareSeryGift**](VaultMarketsAPI.md#createvaultmarketshareserygift) | **POST** /v1/vault-markets/shares/series/{id}/gifts | Give whole &#x60;shares&#x60; of a series to someone (&#x60;to&#x60;: their @handle, email or user id), with an optional &#x60;message&#x60;. The shares are set aside until they accept (14 days). On acceptance the broker-dealer or transfer agent verifies them and moves the shares on the register: no money moves, and your cost basis and holding date carry over.
+[**createVaultMarketShareSeryOrder**](VaultMarketsAPI.md#createvaultmarketshareseryorder) | **POST** /v1/vault-markets/shares/series/{id}/orders | Place an order on a series’ share book: &#x60;side&#x60;, &#x60;type&#x60; limit or market (immediate-or-cancel inside a 10% band), &#x60;tif&#x60; gtc / gtd (&#x60;expiresAt&#x60;) / ioc, whole &#x60;shares&#x60; or a buy’s &#x60;amountCents&#x60; (turned into whole shares at the most it could pay), integer &#x60;limitCents&#x60; a share, &#x60;postOnly&#x60;. Fees: maker 0, taker 100 bps plus the broker-dealer pass-through. Self-trades are prevented. Pass &#x60;requestId&#x60; to make a retry safe.
+[**createVaultMarketShareSeryRecombine**](VaultMarketsAPI.md#createvaultmarketshareseryrecombine) | **POST** /v1/vault-markets/shares/series/{id}/recombine | You hold every share: take the item back whole. With &#x60;withdraw&#x60;, it ships home at once (any receipt token is burned as it leaves). Storage and insurance the series owed stay with the unit.
+[**createVaultMarketShareSeryRoom**](VaultMarketsAPI.md#createvaultmarketshareseryroom) | **POST** /v1/vault-markets/shares/series/{id}/room | Post in the holder room (shareholders only), up to 1,000 characters.
+[**createVaultMarketShareSerySubscribe**](VaultMarketsAPI.md#createvaultmarketshareserysubscribe) | **POST** /v1/vault-markets/shares/series/{id}/subscribe | Subscribe for whole &#x60;shares&#x60; in an open offering at its fixed price. The money goes into the venue’s escrow in your own name and is refunded if the offering misses its minimum. Reg A+ limits apply. A joint vault member with trade rights may pass &#x60;jointVaultId&#x60;. Pass &#x60;requestId&#x60; to make a retry safe.
+[**createVaultMarketShareSeryUnwatch**](VaultMarketsAPI.md#createvaultmarketshareseryunwatch) | **POST** /v1/vault-markets/shares/series/{id}/unwatch | Stop being told about a drop (&#x60;kind&#x60; notify) or leave its waitlist (&#x60;kind&#x60; waitlist).
+[**createVaultMarketShareSeryUpdate**](VaultMarketsAPI.md#createvaultmarketshareseryupdate) | **POST** /v1/vault-markets/shares/series/{id}/updates | Post an update on your own item’s series (you are its originator): &#x60;kind&#x60; story, provenance, condition, appraisal, exhibition or event, a &#x60;title&#x60;, a &#x60;body&#x60;, an optional https &#x60;mediaUrl&#x60;, &#x60;holdersOnly&#x60;. Holders are told.
+[**createVaultMarketShareSeryWatch**](VaultMarketsAPI.md#createvaultmarketshareserywatch) | **POST** /v1/vault-markets/shares/series/{id}/watch | Ask to be told about a drop (&#x60;kind&#x60; notify: when your early access opens and when it opens to everyone) or join the waitlist of a sold-out first-come offering (&#x60;kind&#x60; waitlist, with the &#x60;shares&#x60; you want).
+[**createVaultMarketShareSeryWithdrawProposal**](VaultMarketsAPI.md#createvaultmarketshareserywithdrawproposal) | **POST** /v1/vault-markets/shares/series/{id}/withdraw-proposal | Withdraw your own proposal before its offering opens.
+[**createVaultMarketShareSubscriptionCancel**](VaultMarketsAPI.md#createvaultmarketsharesubscriptioncancel) | **POST** /v1/vault-markets/shares/subscriptions/{id}/cancel | Cancel an escrowed subscription while its offering is still open: the escrow is refunded.
+[**createVaultMarketShareViewingBook**](VaultMarketsAPI.md#createvaultmarketshareviewingbook) | **POST** /v1/vault-markets/shares/viewings/{id}/book | Book a place on a viewing day (shareholders only), with up to the day’s &#x60;guests&#x60;. Bookings close a day before; booking again changes your guests.
+[**createVaultMarketShareViewingBookingCancel**](VaultMarketsAPI.md#createvaultmarketshareviewingbookingcancel) | **POST** /v1/vault-markets/shares/viewing-bookings/{id}/cancel | Cancel your viewing-day booking.
 [**createVaultMarketShort**](VaultMarketsAPI.md#createvaultmarketshort) | **POST** /v1/vault-markets/shorts | Short a book key: borrow &#x60;units&#x60; lent units (default 1; at most 25/10/3/1 by liquidity tier A/B/C/D) and sell each at &#x60;limitCents&#x60; or better, posting collateral for all of them (50% of the mark each; CBX counts at half, up to 30%). All units are borrowed or none unless &#x60;allowPartial&#x60;. A partial sale opens with the units sold. Returns &#x60;{ positionId, matched, units }&#x60;.
 [**createVaultMarketSupplyBatchLabel**](VaultMarketsAPI.md#createvaultmarketsupplybatchlabel) | **POST** /v1/vault-markets/supply/batches/{id}/label | Buy a box&#39;s prepaid label again after it failed (for example once a ship-from address is saved). A box that has a label keeps it.
 [**createVaultMarketSupplyInvite**](VaultMarketsAPI.md#createvaultmarketsupplyinvite) | **POST** /v1/vault-markets/supply/invites/{id} | Accept or decline a Market Open invite (&#x60;accept&#x60;).
 [**createVaultMarketSupplySend**](VaultMarketsAPI.md#createvaultmarketsupplysend) | **POST** /v1/vault-markets/supply/send | Send inventory items matched to a catalogue variant to the vault as one box: each becomes an inbound vault unit, and the box gets one prepaid inbound label (a PDF to print). Optional: auto-list each unit in the vault book at a share of the mark once stored, and lend when idle. Items that cannot go say why. Crosslisted listings stay live.
+[**createVaultMarketSupplySendIn**](VaultMarketsAPI.md#createvaultmarketsupplysendin) | **POST** /v1/vault-markets/supply/send-in | Send inventory items to the vault: &#x60;method: label&#x60; (one box on a prepaid label) or &#x60;dropoff&#x60; at a partner (&#x60;partnerId&#x60;, from the finder; you get a counter code). Each item can carry its declared value; &#x60;insured&#x60; insures the box for it.
 [**createVaultMarketTerm**](VaultMarketsAPI.md#createvaultmarketterm) | **POST** /v1/vault-markets/terms | Accept the current lending terms (needed to lend or short). Returns &#x60;{ termsVersion }&#x60;.
 [**createVaultMarketTodClaimObject**](VaultMarketsAPI.md#createvaultmarkettodclaimobject) | **POST** /v1/vault-markets/tod/claims/{id}/object | Stop a transfer-on-death claim made on your own account. Returns &#x60;{ id, status, estateUnlocked }&#x60;.
 [**createVaultMarketTodMyClaim**](VaultMarketsAPI.md#createvaultmarkettodmyclaim) | **POST** /v1/vault-markets/tod/my-claims | Start a claim as a named beneficiary (ID first), naming the account holder by @username or email. It stays a draft until you add documents and submit. Returns &#x60;{ id, status, existing }&#x60;.
@@ -163,6 +251,7 @@ Method | HTTP request | Description
 [**createVaultReceiptTokenWalletAllow**](VaultMarketsAPI.md#createvaultreceipttokenwalletallow) | **POST** /v1/vault/receipt-tokens/wallets/allow | Put one of your verified Solana wallets (&#x60;wallet&#x60;) on the receipt-token allow-list so it can hold and receive receipt tokens. Returns a base64 transaction already signed by the receipts authority: the wallet pays the small rent (about 0.001 SOL) and must sign and send it within about two minutes. Needs a verified ID and a wallet that passes the sanctions screen.
 [**deleteVaultMarketAgentWatch**](VaultMarketsAPI.md#deletevaultmarketagentwatch) | **DELETE** /v1/vault-markets/agent/watches/{id} | Cancel a live price watch. Returns the watch.
 [**deleteVaultMarketAlert**](VaultMarketsAPI.md#deletevaultmarketalert) | **DELETE** /v1/vault-markets/alerts/{id} | Delete a price alert. Returns &#x60;{ ok }&#x60;.
+[**deleteVaultMarketAutoBuy**](VaultMarketsAPI.md#deletevaultmarketautobuy) | **DELETE** /v1/vault-markets/auto-buy | Stop Auto-buy with payouts. The history stays.
 [**deleteVaultMarketBullionFamilyPeg**](VaultMarketsAPI.md#deletevaultmarketbullionfamilypeg) | **DELETE** /v1/vault-markets/bullion/family-pegs/{id} | Stop a family-wide quote: every leg order comes off the book; what filled stays filled.
 [**deleteVaultMarketBullionPeg**](VaultMarketsAPI.md#deletevaultmarketbullionpeg) | **DELETE** /v1/vault-markets/bullion/pegs/{id} | Stop a spot-pegged quote: its resting order comes off the book; what filled stays filled.
 [**deleteVaultMarketDealerBand**](VaultMarketsAPI.md#deletevaultmarketdealerband) | **DELETE** /v1/vault-markets/dealer/bands | Stop a band on a key; its standing bid comes off.
@@ -171,6 +260,10 @@ Method | HTTP request | Description
 [**deleteVaultMarketIndex**](VaultMarketsAPI.md#deletevaultmarketindex) | **DELETE** /v1/vault-markets/indexes/{slug} | Delete an index of your own. Returns &#x60;{ ok }&#x60;.
 [**deleteVaultMarketLocate**](VaultMarketsAPI.md#deletevaultmarketlocate) | **DELETE** /v1/vault-markets/locates/{id} | Release a live locate before it lapses.
 [**deleteVaultMarketOpeningWaitlist**](VaultMarketsAPI.md#deletevaultmarketopeningwaitlist) | **DELETE** /v1/vault-markets/opening/{slug}/waitlist | Leave a key&#39;s waitlist.
+[**deleteVaultMarketPredictionAlert**](VaultMarketsAPI.md#deletevaultmarketpredictionalert) | **DELETE** /v1/vault-markets/predictions/alerts/{id} | Remove a probability alert. Returns &#x60;{ ok }&#x60;.
+[**deleteVaultMarketPredictionCard**](VaultMarketsAPI.md#deletevaultmarketpredictioncard) | **DELETE** /v1/vault-markets/predictions/cards/{id} | Take an \&quot;I called it\&quot; card down; its link stops working. Returns &#x60;{ ok }&#x60;.
+[**deleteVaultMarketPredictionComment**](VaultMarketsAPI.md#deletevaultmarketpredictioncomment) | **DELETE** /v1/vault-markets/predictions/comments/{id} | Delete your comment.
+[**deleteVaultMarketPredictionForecasterFollow**](VaultMarketsAPI.md#deletevaultmarketpredictionforecasterfollow) | **DELETE** /v1/vault-markets/predictions/forecasters/{id}/follow | Stop following a forecaster.
 [**deleteVaultMarketPriceWidget**](VaultMarketsAPI.md#deletevaultmarketpricewidget) | **DELETE** /v1/vault-markets/price-widgets/{id} | Delete a widget. Pages that still paste it show that it is no longer available. Returns &#x60;{ id, archived }&#x60;.
 [**deleteVaultMarketProQuote**](VaultMarketsAPI.md#deletevaultmarketproquote) | **DELETE** /v1/vault-markets/pro/quotes | Pull your quote on a book key, or every quote. Returns &#x60;{ pulled }&#x60;.
 [**deleteVaultMarketProfileFollow**](VaultMarketsAPI.md#deletevaultmarketprofilefollow) | **DELETE** /v1/vault-markets/profiles/{handle}/follow | Stop following someone.
@@ -191,6 +284,7 @@ Method | HTTP request | Description
 [**getVaultMarketAlertPref**](VaultMarketsAPI.md#getvaultmarketalertpref) | **GET** /v1/vault-markets/alert-prefs | Your vault alert settings: every kind (price, fill, margin_call, adl, p2p_loan, auction, market_open, receipt_token, set_goal, follow, account), every channel (push, telegram, terminal, email, webhook) with whether it is set up, the full on/off grid, the locked switches (a critical kind always pushes) and quiet hours.
 [**getVaultMarketAuctionLot**](VaultMarketsAPI.md#getvaultmarketauctionlot) | **GET** /v1/vault-markets/auctions/lots/{id} | One lot: the price showing, the next minimum bid, whether a reserve exists and is met, the end (extended by late bids), the bid history and your standing.
 [**getVaultMarketAuctionMine**](VaultMarketsAPI.md#getvaultmarketauctionmine) | **GET** /v1/vault-markets/auctions/mine | Lots you consigned (with your reserve) and lots you bid on (with your maximum and whether you lead).
+[**getVaultMarketAutoBuy**](VaultMarketsAPI.md#getvaultmarketautobuy) | **GET** /v1/vault-markets/auto-buy | Auto-buy with payouts: the share of each payout set aside as a vault buying budget, the budget, your want list with max prices, the purchase history and whether it is paused. &#x60;autoBuy&#x60; is null when it is not set up.
 [**getVaultMarketBlock**](VaultMarketsAPI.md#getvaultmarketblock) | **GET** /v1/vault-markets/blocks/{orderId} | One block order: its order, plan lines (planned and allocated units, average price, cash share, status).
 [**getVaultMarketBullionFor**](VaultMarketsAPI.md#getvaultmarketbullionfor) | **GET** /v1/vault-markets/bullion/for | The bullion key families one book key belongs to, with spot for its metal as a labelled reference and its melt value at that spot. Empty families when the item is not keyed bullion.
 [**getVaultMarketBullionKey**](VaultMarketsAPI.md#getvaultmarketbullionkey) | **GET** /v1/vault-markets/bullion/keys/{slug} | One bullion key family: its catalogue products, every live book key with best bid, best ask, vault units and its mark (from the book only), live pegged quote counts, and spot as a labelled reference.
@@ -229,6 +323,8 @@ Method | HTTP request | Description
 [**getVaultMarketHallLoan**](VaultMarketsAPI.md#getvaultmarkethallloan) | **GET** /v1/vault-markets/hall/loans | Your Hall of Grails desk: this week&#39;s exhibition, the rules (maxLive loans, shownPerHolder per exhibition, repPoints per exhibition shown), reputation (exhibitions finished), your loans (status active, ending or ended; onShowNow, showingUntil, exhibitions, the next exhibition it fits, the Lent to the Hall badge) and the vault units you could lend (canLend, or the blocker in words, and the next exhibition each fits). Display only.
 [**getVaultMarketHealth**](VaultMarketsAPI.md#getvaultmarkethealth) | **GET** /v1/vault-markets/health | Portfolio health of your vault holdings at Crossly marks: concentration by single item, category, grade and grader (shares, HHI on 0 to 10000, its band and effective number of holdings), value by liquidity tier, the stress grid (each category and everything down 10, 20 and 30 percent), value by mark quality, plain observations, and the held items a what-if can run on. Information only, not advice.
 [**getVaultMarketHealthWhatIf**](VaultMarketsAPI.md#getvaultmarkethealthwhatif) | **GET** /v1/vault-markets/health/what-if | What if one held item moved by moveBps (-10000 to 10000 basis points of its mark): the item, your vault total, the item and its category share of the vault, and the single-item HHI, before and after. A scenario on the mark, not a price you could sell at.
+[**getVaultMarketHoldingInventoryItem**](VaultMarketsAPI.md#getvaultmarketholdinginventoryitem) | **GET** /v1/vault-markets/holdings/{id}/inventory-item | The inventory item a vault unit of yours came from (null for a unit bought on the book).
+[**getVaultMarketHoldingWithdrawQuote**](VaultMarketsAPI.md#getvaultmarketholdingwithdrawquote) | **GET** /v1/vault-markets/holdings/{id}/withdraw-quote | What shipping one unit you own home would charge now, for &#x60;standard&#x60; and &#x60;expedited&#x60;: shipping, the storage it owes and the early-withdrawal fee (within 90 days of arriving), and the total. Read-only; ship it home with POST /api/v1/buyer/vault/:id/withdraw.
 [**getVaultMarketHomeUnit**](VaultMarketsAPI.md#getvaultmarkethomeunit) | **GET** /v1/vault-markets/home/units | \&quot;Show my vault\&quot;: the vault units you hold, the ones standing in your Crossly World home first. Each: vaultItemId, title, grade, imageUrl, bookKey (its market), inHome, visitors (visitors to your home see it). Also your home (slug, privacy, path), max units one home shows, shown, visitorsSee and a note on who sees what. Your home is made on first read. No prices.
 [**getVaultMarketIndex**](VaultMarketsAPI.md#getvaultmarketindex) | **GET** /v1/vault-markets/indexes/{slug} | One index with its daily closes (oldest first) and its level now.
 [**getVaultMarketIndexCalendar**](VaultMarketsAPI.md#getvaultmarketindexcalendar) | **GET** /v1/vault-markets/index-calendar | The next four quarterly reviews: reference day (2nd Friday of Mar/Jun/Sep/Dec), announcement day, last close under the old membership and the effective day; June and December also review the Blue-chip 50.
@@ -240,6 +336,7 @@ Method | HTTP request | Description
 [**getVaultMarketIndexLicenceUsage**](VaultMarketsAPI.md#getvaultmarketindexlicenceusage) | **GET** /v1/vault-markets/index-licence/usage | Your licensed index feed reads over &#x60;days&#x60;, per index and endpoint (licence-usage report).
 [**getVaultMarketIndexMethodology**](VaultMarketsAPI.md#getvaultmarketindexmethodology) | **GET** /v1/vault-markets/index-methodology | The index method in machine-readable form: version (semver), inputs, weightings and caps, the family and its screens, the engines and their publication gate, revisions and the settlement series, the calendar, governance and limitations.
 [**getVaultMarketInstantExit**](VaultMarketsAPI.md#getvaultmarketinstantexit) | **GET** /v1/vault-markets/instant-exit | The Instant Exit quote for one vault unit you hold: the best resting bid on its book key (anyone&#39;s, dealers&#39; included), its share of the mark, the bid depth, and whether it can be taken now.
+[**getVaultMarketItemLocation**](VaultMarketsAPI.md#getvaultmarketitemlocation) | **GET** /v1/vault-markets/items/{inventoryItemId}/location | Where one inventory item&#39;s units are: in your own stock (warehouse) and in the vault per location, each vault unit&#39;s status (in transit, received, authenticated, graded, listed, shipped out), its Sell from first choice and whether it can be sent to the vault now (with the reason when not).
 [**getVaultMarketJoint**](VaultMarketsAPI.md#getvaultmarketjoint) | **GET** /v1/vault-markets/joint | Your joint vaults and the invitations waiting for you, with the gate (open, missing env), the joint terms in words and what each right allows. A JointVaultsHome object, not a collection.
 [**getVaultMarketJointById**](VaultMarketsAPI.md#getvaultmarketjointbyid) | **GET** /v1/vault-markets/joint/{id} | One joint vault (active members only): members and rights, the units in it at the mark with each owner of record, totals, recent joint trades, and the activity from the audit trail.
 [**getVaultMarketKeyStat**](VaultMarketsAPI.md#getvaultmarketkeystat) | **GET** /v1/vault-markets/key-stats/{bookKey} | Everything derived about one book key in one read: the Crossly Estimate, the liquidity score, risk statistics and the gem rate. A part that cannot be read is &#x60;{ error }&#x60;.
@@ -262,6 +359,23 @@ Method | HTTP request | Description
 [**getVaultMarketNav**](VaultMarketsAPI.md#getvaultmarketnav) | **GET** /v1/vault-markets/nav | Mark NAV, bid NAV (the resting bids) and liquidation NAV (the bids at 20% of ADV for 10 days), holding by holding, each with its ASC 820 level, mark quality and source, and your administrator&#39;s price when uploaded.
 [**getVaultMarketNavFile**](VaultMarketsAPI.md#getvaultmarketnavfile) | **GET** /v1/vault-markets/nav/file/{format} | The NAV as a csv, pdf or json file.
 [**getVaultMarketOpening**](VaultMarketsAPI.md#getvaultmarketopening) | **GET** /v1/vault-markets/opening/{slug} | One opening key.
+[**getVaultMarketOption**](VaultMarketsAPI.md#getvaultmarketoption) | **GET** /v1/vault-markets/options | Fractional options: the venue mode (self &#x3D; Crossly is the venue and clearing house, partner &#x3D; routed to the index DCM, paper &#x3D; practice only) with the env each mode still needs, the active series and the rule book in force.
+[**getVaultMarketOptionAnalytic**](VaultMarketsAPI.md#getvaultmarketoptionanalytic) | **GET** /v1/vault-markets/options/analytics/{underlying} | Options analytics on an underlying: the vol surface (expiry x moneyness) and one expiry&#39;s smile (&#x60;expiry&#x60;), IV rank and percentile against the series&#39; own year, open interest and volume by strike and expiry, put/call ratios, the expected move to each expiry, and the historical vol of the underlying&#39;s own published series. Every implied vol is derived and display only.
+[**getVaultMarketOptionAutoClose**](VaultMarketsAPI.md#getvaultmarketoptionautoclose) | **GET** /v1/vault-markets/options/auto-close | Your auto-close rule: close positions (or only in-the-money ones) a set time before expiry with a marketable limit.
+[**getVaultMarketOptionChain**](VaultMarketsAPI.md#getvaultmarketoptionchain) | **GET** /v1/vault-markets/options/chain/{underlying} | The option chain for an underlying (index slug or book key): its expiries, and for one expiry (&#x60;expiry&#x60;, default the nearest) each strike&#39;s call and put with best bid / ask, last, open interest, the theoretical price at the reference vol, the implied vol of the mid (display only, never a mark) and the Greeks. Prices are cents per contract.
+[**getVaultMarketOptionComboBook**](VaultMarketsAPI.md#getvaultmarketoptioncombobook) | **GET** /v1/vault-markets/options/combos/book | One strategy&#39;s combo book by its canonical key (&#x60;key&#x60;, from the preview or an order): bids and asks by net price and recent strategy trades.
+[**getVaultMarketOptionComboRfq**](VaultMarketsAPI.md#getvaultmarketoptioncomborfq) | **GET** /v1/vault-markets/options/combos/rfq/{id} | One strategy quote request and its answers (all of them to the requester, your own to a responder).
+[**getVaultMarketOptionContract**](VaultMarketsAPI.md#getvaultmarketoptioncontract) | **GET** /v1/vault-markets/options/contracts/{id} | One option contract: its terms, the self-venue book and tape, its published daily settlement prices and, once settled, its settlement (value, source, flagged, and the hash chained to the previous settlement).
+[**getVaultMarketOptionContractBook**](VaultMarketsAPI.md#getvaultmarketoptioncontractbook) | **GET** /v1/vault-markets/options/contracts/{id}/book | A contract&#39;s order book on the Crossly venue (&#x60;levels&#x60;, default 20): bids and asks by price with milli-contract sizes, and the last 50 prints.
+[**getVaultMarketOptionContractSettlement**](VaultMarketsAPI.md#getvaultmarketoptioncontractsettlement) | **GET** /v1/vault-markets/options/contracts/{id}/settlement | A settled contract&#39;s settlement: the value (cents per unit of the underlying), its source (the index&#39;s frozen 7-day TWAP, the item&#39;s expiry-day A/B mark, or the last reliable value, flagged), and the hash chained to the previous settlement. Null until it settles.
+[**getVaultMarketOptionHedge**](VaultMarketsAPI.md#getvaultmarketoptionhedge) | **GET** /v1/vault-markets/options/hedges | Your hedges: long puts protecting vault units you hold (protective puts) and the vault units locked as collateral for calls you wrote (covered calls).
+[**getVaultMarketOptionIv**](VaultMarketsAPI.md#getvaultmarketoptioniv) | **GET** /v1/vault-markets/options/iv/{underlying} | The at-the-money implied volatility of the nearest expiry on an underlying, for display on its page: derived from the options book, quality C, never written as a mark.
+[**getVaultMarketOptionMargin**](VaultMarketsAPI.md#getvaultmarketoptionmargin) | **GET** /v1/vault-markets/options/margin | Your options margin: the scenario requirement (worst loss over a +/-40% price x +/-50% vol grid, with offsets from vault units and positions you hold), initial margin, equity and state (ok / call / liquidate) per underlying. Authoritative on the Crossly venue; on the partner venue the partner&#39;s figure decides and this is an estimate.
+[**getVaultMarketOptionPayoff**](VaultMarketsAPI.md#getvaultmarketoptionpayoff) | **GET** /v1/vault-markets/options/payoff | Your whole options position on one &#x60;underlying&#x60; at expiry: the P&amp;L curve over 50%..150% of spot, breakevens, and the maximum gain and loss (null when unbounded).
+[**getVaultMarketOptionPosition**](VaultMarketsAPI.md#getvaultmarketoptionposition) | **GET** /v1/vault-markets/options/positions | Your options positions: signed milli-contracts, average open price, the price it is settled to (Crossly venue), the theoretical mark, unrealised and realised P&amp;L in cents, the Greeks for your size, the protective-put flag and your auto-deleveraging queue lights. &#x60;status&#x60; open (default) / all, &#x60;subaccountId&#x60;.
+[**getVaultMarketOptionPractice**](VaultMarketsAPI.md#getvaultmarketoptionpractice) | **GET** /v1/vault-markets/options/practice | Your options practice account (play money only, $10,000 to start): cash, positions at the practice maker&#39;s price, equity and P&amp;L.
+[**getVaultMarketOptionRfq**](VaultMarketsAPI.md#getvaultmarketoptionrfq) | **GET** /v1/vault-markets/options/rfq/{id} | One option quote request: yours with every answer, or one you were sent with your own answer.
+[**getVaultMarketOptionRisk**](VaultMarketsAPI.md#getvaultmarketoptionrisk) | **GET** /v1/vault-markets/options/risk | Your options portfolio&#39;s Greeks (per underlying and total, with dollar delta and 1% gamma), a scenario&#39;s P&amp;L (&#x60;priceShift&#x60;, &#x60;volShift&#x60;, &#x60;daysForward&#x60;), a price x vol P&amp;L grid, and the beta-weighted delta against an index (&#x60;betaIndex&#x60;, default the deepest). &#x60;book&#x60; live (default) or practice.
 [**getVaultMarketOracle**](VaultMarketsAPI.md#getvaultmarketoracle) | **GET** /v1/vault-markets/oracle | Crossly as an oracle publisher (needs CROSSLY_ORACLE_PUBLISHER_KEY + CROSSLY_ORACLE_NETWORK): the network (pyth or switchboard), the ed25519 key every value is signed with, each published index feed with its latest attempt, and 24 h counts of published, skipped and failed. Only built-in indexes priced from A/B marks are published; Crossly never reads its own feed back.
 [**getVaultMarketOracleBySlug**](VaultMarketsAPI.md#getvaultmarketoraclebyslug) | **GET** /v1/vault-markets/oracle/{slug} | The latest published oracle value for an index: level, fixed-point price and confidence at the feed exponent, confidence in bps, staleness in seconds, coverage, the exact signed message and its ed25519 signature with the signer key, and whether it is fresh.
 [**getVaultMarketOrderHandling**](VaultMarketsAPI.md#getvaultmarketorderhandling) | **GET** /v1/vault-markets/order-handling | How orders are handled (the 606/607-style disclosure): one book, self-trade prevention, protected market orders, liquidations by auction, halts, dealers and fees.
@@ -269,7 +383,7 @@ Method | HTTP request | Description
 [**getVaultMarketP2pLoan**](VaultMarketsAPI.md#getvaultmarketp2ploan) | **GET** /v1/vault-markets/p2p/loans/{id} | One P2P loan with its money log (fund, repay, refinance). A loan in a running refinancing auction can be read by any lender, without the log.
 [**getVaultMarketPaper**](VaultMarketsAPI.md#getvaultmarketpaper) | **GET** /v1/vault-markets/paper | Your paper trading account (play money only, never real or convertible; opened at $10,000 the first time): play cash, buying power, paper positions at the real marks, P&amp;L, working paper orders, recent paper fills and this week on the leaderboard.
 [**getVaultMarketPaperQuote**](VaultMarketsAPI.md#getvaultmarketpaperquote) | **GET** /v1/vault-markets/paper/quote | What a paper order would fill against the real book now, without placing it: units fillable inside the limit (a market order uses the 5% protection band around the mark), average price, simulated fee, and the queue ahead of any rest.
-[**getVaultMarketPartnerMe**](VaultMarketsAPI.md#getvaultmarketpartnerme) | **GET** /v1/vault-markets/partners/me | Your Vault Drop-off Partnership (null when you never applied): status, partner code, fee share and cap, totals and batches.
+[**getVaultMarketPartnerMe**](VaultMarketsAPI.md#getvaultmarketpartnerme) | **GET** /v1/vault-markets/partners/me | Your Vault Drop-off Partnership (null when you never applied): status, partner code, fee share and cap, finder profile, totals and batches; and whether your one-time ID check is done.
 [**getVaultMarketPool**](VaultMarketsAPI.md#getvaultmarketpool) | **GET** /v1/vault-markets/pool | The CBX market staking pool: size, value, what it lends, utilisation, rate, insurance fund.
 [**getVaultMarketPopReport**](VaultMarketsAPI.md#getvaultmarketpopreport) | **GET** /v1/vault-markets/pop-reports | Grading population report for one market (&#x60;bookKey&#x60;): focus (on a graded market: its grade, pop &#x3D; copies graded at exactly that grade, higher &#x3D; copies graded better by the same grader, total, asOf and source), graders (each grader ladder for the card, best grade first, from one report: the newest, the population feed over a hand entry on the same date), provider.connected, and status (ok, not_synced, no_report or no_source) with explain, which says in plain words what is missing. source is provider (the population feed) or ops (entered by Crossly from the grader published report). Counts only, never a price.
 [**getVaultMarketPortfolio**](VaultMarketsAPI.md#getvaultmarketportfolio) | **GET** /v1/vault-markets/portfolio | Your vault holdings at the market price, with cost and P&amp;L, and units you have out on loan.
@@ -278,6 +392,30 @@ Method | HTTP request | Description
 [**getVaultMarketPosition**](VaultMarketsAPI.md#getvaultmarketposition) | **GET** /v1/vault-markets/positions/{id} | One position with its loans, auctions and custodian instruction log.
 [**getVaultMarketPositionExit**](VaultMarketsAPI.md#getvaultmarketpositionexit) | **GET** /v1/vault-markets/positions/{id}/exits | A position&#39;s take-profit / stop-loss, if set.
 [**getVaultMarketPositionRisk**](VaultMarketsAPI.md#getvaultmarketpositionrisk) | **GET** /v1/vault-markets/positions/{id}/risk | One position&#39;s call and liquidation marks.
+[**getVaultMarketPrediction**](VaultMarketsAPI.md#getvaultmarketprediction) | **GET** /v1/vault-markets/predictions | The prediction markets home: the busiest and soonest-expiring \&quot;Will it hit?\&quot; markets with their probability (each market&#39;s own price, display only), the underlyings with markets, which venue is live, and how many positions you hold.
+[**getVaultMarketPredictionAccount**](VaultMarketsAPI.md#getvaultmarketpredictionaccount) | **GET** /v1/vault-markets/predictions/account | Your prediction-market account: the live venue, your account there and the terms you accepted, whether you may trade real money (region, age, self-exclusion) and why not, your self-set limits, and the practice account line.
+[**getVaultMarketPredictionBoard**](VaultMarketsAPI.md#getvaultmarketpredictionboard) | **GET** /v1/vault-markets/predictions/board | The prediction board the Trading Floor and the Market Open plank show: the busiest open markets and their odds. Anonymous: never who holds what.
+[**getVaultMarketPredictionCombo**](VaultMarketsAPI.md#getvaultmarketpredictioncombo) | **GET** /v1/vault-markets/predictions/combos/{id} | One of your combos.
+[**getVaultMarketPredictionComboRfq**](VaultMarketsAPI.md#getvaultmarketpredictioncomborfq) | **GET** /v1/vault-markets/predictions/combos/rfqs/{id} | One combo request: its legs and size, and the answers you can see (all of them if you asked; yours if you quoted).
+[**getVaultMarketPredictionDailyPrice**](VaultMarketsAPI.md#getvaultmarketpredictiondailyprice) | **GET** /v1/vault-markets/predictions/daily-prices | The published daily settlement price of every listed market for a day (default yesterday): the last hour&#39;s volume-weighted Yes price, else the book mid, else the prior day&#39;s, with volume and open interest.
+[**getVaultMarketPredictionEvent**](VaultMarketsAPI.md#getvaultmarketpredictionevent) | **GET** /v1/vault-markets/predictions/events/{id} | One expiry of a series (an event): its markets, what you hold in each, the real worst and best case of your holdings across them (what your limit counts), and, for a full bucket set, how many sets you could merge. &#x60;venue&#x60; paper or live.
+[**getVaultMarketPredictionForecaster**](VaultMarketsAPI.md#getvaultmarketpredictionforecaster) | **GET** /v1/vault-markets/predictions/forecaster | Your forecaster profile: display name, whether it is public (opt-in) and since when, and your followers.
+[**getVaultMarketPredictionForecasterById**](VaultMarketsAPI.md#getvaultmarketpredictionforecasterbyid) | **GET** /v1/vault-markets/predictions/forecasters/{id} | A public forecaster: scores (all time and this month), open sides (never sizes), recent settled calls, followers. 404 when private.
+[**getVaultMarketPredictionLeaderboard**](VaultMarketsAPI.md#getvaultmarketpredictionleaderboard) | **GET** /v1/vault-markets/predictions/leaderboard | Opt-in forecaster leaderboards: &#x60;period&#x60; week, month or all; &#x60;metric&#x60; pnl, accuracy or brier; &#x60;venue&#x60; live or paper (practice has its own board).
+[**getVaultMarketPredictionLimit**](VaultMarketsAPI.md#getvaultmarketpredictionlimit) | **GET** /v1/vault-markets/predictions/limits | Your self-set prediction limits: daily loss limit, self-exclusion, a raise waiting its 24 hours, and any hold the venue placed.
+[**getVaultMarketPredictionMarket**](VaultMarketsAPI.md#getvaultmarketpredictionmarket) | **GET** /v1/vault-markets/predictions/markets/{id} | One prediction market: its terms, the Yes ladder of the live venue and of the practice book, recent trades, settlement history (outcome, value, hash, review), the series rules text and hash, and your positions in it.
+[**getVaultMarketPredictionMarketForecast**](VaultMarketsAPI.md#getvaultmarketpredictionmarketforecast) | **GET** /v1/vault-markets/predictions/markets/{id}/forecasts | How many people forecast a market and their median probability (no names).
+[**getVaultMarketPredictionMarketHistory**](VaultMarketsAPI.md#getvaultmarketpredictionmarkethistory) | **GET** /v1/vault-markets/predictions/markets/{id}/history | A market&#39;s history: probability points (display only, never a mark), candles on the Yes price, volume and open interest over &#x60;range&#x60; 1d, 1w, 1m or all; &#x60;venue&#x60; live or paper.
+[**getVaultMarketPredictionMarketStream**](VaultMarketsAPI.md#getvaultmarketpredictionmarketstream) | **GET** /v1/vault-markets/predictions/markets/{id}/stream | A server-sent event stream for one prediction market: &#x60;snapshot&#x60; first, then &#x60;pm_depth&#x60;, &#x60;pm_trades&#x60;, &#x60;pm_probability&#x60;, &#x60;pm_status&#x60; and &#x60;pm_settlement&#x60; as they change.
+[**getVaultMarketPredictionMarketTrade**](VaultMarketsAPI.md#getvaultmarketpredictionmarkettrade) | **GET** /v1/vault-markets/predictions/markets/{id}/trades | The trade tape, newest first: Yes price, size, which side took, venue. Page with &#x60;before&#x60; (the last &#x60;seq&#x60;).
+[**getVaultMarketPredictionMeStream**](VaultMarketsAPI.md#getvaultmarketpredictionmestream) | **GET** /v1/vault-markets/predictions/me/stream | A server-sent event stream of your own prediction events: &#x60;pm_order&#x60; (placed, filled, amended, cancelled, expired), &#x60;pm_fill&#x60; (your side, price and fee), &#x60;pm_position&#x60;, &#x60;pm_combo&#x60; and &#x60;pm_conversion&#x60;.
+[**getVaultMarketPredictionMission**](VaultMarketsAPI.md#getvaultmarketpredictionmission) | **GET** /v1/vault-markets/predictions/missions | The two \&quot;Will it hit?\&quot; practice missions (your first call; see one settle), whether the server saw each done, and the pin they lead to. Pins only.
+[**getVaultMarketPredictionPaper**](VaultMarketsAPI.md#getvaultmarketpredictionpaper) | **GET** /v1/vault-markets/predictions/paper | Your practice prediction account (play money only, $1,000 to start, never real or convertible): cash, money locked by working orders, positions and working orders.
+[**getVaultMarketPredictionQuote**](VaultMarketsAPI.md#getvaultmarketpredictionquote) | **GET** /v1/vault-markets/predictions/quote | What an order would do now without placing it: contracts fillable inside the limit (a market order uses the 10-cent band), average price, estimated fee (Kalshi&#39;s formula), the money it would lock, and the most it could pay out.
+[**getVaultMarketPredictionRulebook**](VaultMarketsAPI.md#getvaultmarketpredictionrulebook) | **GET** /v1/vault-markets/predictions/rulebook | The prediction venue&#39;s rule book now and every version, each hashed and chained to the one before (&#x60;chainOk&#x60;).
+[**getVaultMarketPredictionStream**](VaultMarketsAPI.md#getvaultmarketpredictionstream) | **GET** /v1/vault-markets/predictions/stream | A server-sent event stream for up to 50 markets (&#x60;markets&#x60;&#x3D;id,id): &#x60;ready&#x60;, then &#x60;pm_depth&#x60;, &#x60;pm_trades&#x60;, &#x60;pm_probability&#x60;, &#x60;pm_status&#x60; and &#x60;pm_settlement&#x60;, each carrying its marketId.
+[**getVaultMarketPredictionVenue**](VaultMarketsAPI.md#getvaultmarketpredictionvenue) | **GET** /v1/vault-markets/predictions/venue | Which prediction venue is live: self (Crossly as the DCM, money at the segregated settlement bank), partner (a partner DCM) or paper (practice only), who runs the book, where money sits, and the env each real mode still needs.
+[**getVaultMarketPredictionWillItHit**](VaultMarketsAPI.md#getvaultmarketpredictionwillithit) | **GET** /v1/vault-markets/predictions/will-it-hit | The \&quot;Will it hit?\&quot; panel for a key (&#x60;bookKey&#x60;) or an index (&#x60;index&#x60; slug): its open markets grouped by expiry, each with its probability. &#x60;eligible&#x60; is false when nothing is listed on it.
 [**getVaultMarketPress**](VaultMarketsAPI.md#getvaultmarketpress) | **GET** /v1/vault-markets/press | The press kit: each built-in index with level, quality, n, CSV link and a \&quot;cite as\&quot; line, plus the methodology links.
 [**getVaultMarketPriceWidget**](VaultMarketsAPI.md#getvaultmarketpricewidget) | **GET** /v1/vault-markets/price-widgets/{id} | One of your price widgets, with its iframe and script-tag snippets and URLs.
 [**getVaultMarketProDepth**](VaultMarketsAPI.md#getvaultmarketprodepth) | **GET** /v1/vault-markets/pro/depth | The L2 depth ladder: price levels and units per side, best first; asks show how many units are authenticated vault stock.
@@ -297,17 +435,34 @@ Method | HTTP request | Description
 [**getVaultMarketRiskStat**](VaultMarketsAPI.md#getvaultmarketriskstat) | **GET** /v1/vault-markets/risk-stats/{bookKey} | Risk statistics for a book key (weekly returns from A-quality marks only) or an index slug (its closes): annualised volatility raw and Geltner-desmoothed (labelled), max drawdown and beta to the Composite. Needs 26 weekly returns, else no numbers.
 [**getVaultMarketSetGoal**](VaultMarketsAPI.md#getvaultmarketsetgoal) | **GET** /v1/vault-markets/set-goals/{id} | One set goal: every piece in the set order, held (with the vault unit) or missing (with the cheapest marked book key that meets the target and its mark), the conditions and grades seen, and the working basket bid with its legs.
 [**getVaultMarketSetGoalBasketPlan**](VaultMarketsAPI.md#getvaultmarketsetgoalbasketplan) | **GET** /v1/vault-markets/set-goals/{id}/basket-plan | What a basket bid would place now, without placing it: one leg per missing piece (cheapest first, the mark plus maxBpsOverMark as the limit), the pieces skipped and why, and the most it can cost (limits plus the worst-case buyer fee), never more than budgetCents.
+[**getVaultMarketSetting**](VaultMarketsAPI.md#getvaultmarketsetting) | **GET** /v1/vault-markets/settings | Your vault defaults: Sell from first, new-inventory suggestions, the insurance rule and the default grading service.
+[**getVaultMarketShare**](VaultMarketsAPI.md#getvaultmarketshare) | **GET** /v1/vault-markets/shares | Vault Shares at a glance: the venue mode in force (self, partner or paper) and the env it still needs, the rules (about $5 a share, 100 to 100,000 shares, originator keeps 0-50%, 3% origination, maker 0 / taker 100 bps, 90-day lockup, buyouts at the mark x 1.10 with a two-thirds vote) and the disclosure.
+[**getVaultMarketShareBasket**](VaultMarketsAPI.md#getvaultmarketsharebasket) | **GET** /v1/vault-markets/shares/baskets/{id} | One theme basket (id or slug): its series, target and live weights, prices, and your own holdings against the weights.
 [**getVaultMarketShareCard**](VaultMarketsAPI.md#getvaultmarketsharecard) | **GET** /v1/vault-markets/share-cards/{id} | One share card as the public sees it, with its image and link paths.
+[**getVaultMarketShareInvestor**](VaultMarketsAPI.md#getvaultmarketshareinvestor) | **GET** /v1/vault-markets/shares/investor | Your investor account at the venue in force: its status, the investor terms you accepted, and your Reg A+ limit for one offering (10% of the greater of income and net worth unless accredited).
+[**getVaultMarketShareMe**](VaultMarketsAPI.md#getvaultmarketshareme) | **GET** /v1/vault-markets/shares/me | Your Vault Shares: shares and percent of each item, cost, implied value at the last price, your subscriptions and the payouts you were sent.
+[**getVaultMarketSharePaper**](VaultMarketsAPI.md#getvaultmarketsharepaper) | **GET** /v1/vault-markets/shares/paper | Your practice account for Vault Shares (play money only, never real, never convertible): cash, practice holdings, open practice orders, recent practice fills.
+[**getVaultMarketSharePaperSeryBook**](VaultMarketsAPI.md#getvaultmarketsharepaperserybook) | **GET** /v1/vault-markets/shares/paper/series/{id}/book | A series’ practice book: practice orders and the house quote 1% either side of the reference price.
+[**getVaultMarketSharePreview**](VaultMarketsAPI.md#getvaultmarketsharepreview) | **GET** /v1/vault-markets/shares/preview | Fractionalize instead: whether one of your vault units can become a Vault Shares series now (stored, tier A or B, reliable mark of $1,000 or more, declared and insured, free) and the offering terms it would get.
+[**getVaultMarketShareSery**](VaultMarketsAPI.md#getvaultmarketsharesery) | **GET** /v1/vault-markets/shares/series/{id} | One series: the offering, the share book depth, the latest fills, holders as share percentages (nobody named), buyouts and your vote, your orders and subscriptions.
+[**getVaultMarketShareSeryBook**](VaultMarketsAPI.md#getvaultmarketshareserybook) | **GET** /v1/vault-markets/shares/series/{id}/book | A share book’s depth: whole shares per price level (integer cents a share), best first.
+[**getVaultMarketShareSeryHistory**](VaultMarketsAPI.md#getvaultmarketshareseryhistory) | **GET** /v1/vault-markets/shares/series/{id}/history | A series’ full price history: OHLC candles of every share-book fill (&#x60;interval&#x60; 1h, 1d or 1w), the offering price, the change since the offering, and the appraisal history beside it. Share prices are display only, never a mark.
+[**getVaultMarketShareSeryPerk**](VaultMarketsAPI.md#getvaultmarketshareseryperk) | **GET** /v1/vault-markets/shares/series/{id}/perks | Holder perks on a series: whether you hold it, your holder badge, the links to visit the item in the world vault room and in AR, the viewing days with places left and your bookings.
+[**getVaultMarketShareSeryRoom**](VaultMarketsAPI.md#getvaultmarketshareseryroom) | **GET** /v1/vault-markets/shares/series/{id}/room | The holder room for a series (shareholders only): posts newest first under per-series aliases, never account names. &#x60;before&#x60; pages back.
 [**getVaultMarketStatement**](VaultMarketsAPI.md#getvaultmarketstatement) | **GET** /v1/vault-markets/statements | The last 24 months with whether each statement is issued (frozen, with its sha256).
 [**getVaultMarketStatementByMonth**](VaultMarketsAPI.md#getvaultmarketstatementbymonth) | **GET** /v1/vault-markets/statements/{month} | A monthly statement (&#x60;month&#x60; like 2026-10): units held at month end, loans, pledges, positions, fills, fees, storage, and cash quoted from the custodian and labelled as its record. Issued (frozen) once the month ends.
 [**getVaultMarketStatementFile**](VaultMarketsAPI.md#getvaultmarketstatementfile) | **GET** /v1/vault-markets/statements/{month}/file/{format} | A monthly statement as a csv, pdf or json file.
 [**getVaultMarketSupply**](VaultMarketsAPI.md#getvaultmarketsupply) | **GET** /v1/vault-markets/supply | A book key&#39;s units in the vault and authentications passed, by day (oldest first, today live).
 [**getVaultMarketSupplyBatch**](VaultMarketsAPI.md#getvaultmarketsupplybatch) | **GET** /v1/vault-markets/supply/batches/{id} | A box sent to the vault: its prepaid label and tracking, or why it has no label.
 [**getVaultMarketSupplyRoundUp**](VaultMarketsAPI.md#getvaultmarketsupplyroundup) | **GET** /v1/vault-markets/supply/round-up | Your seller round-up: the share of each payout that sets a vault buy&#39;s budget, the budget so far and what it is doing. &#x60;roundUp&#x60; is null when none is set.
+[**getVaultMarketSupplyShipment**](VaultMarketsAPI.md#getvaultmarketsupplyshipment) | **GET** /v1/vault-markets/supply/shipments/{id} | One shipment into the vault, with each unit and whether it was received.
 [**getVaultMarketTax**](VaultMarketsAPI.md#getvaultmarkettax) | **GET** /v1/vault-markets/tax | Your tax year on the vault markets: units bought and sold with cost, proceeds, gain and term; lending fees, staking interest (estimate), market-maker rewards; closed positions. Links to the CSV and PDF.
 [**getVaultMarketTaxCsv**](VaultMarketsAPI.md#getvaultmarkettaxcsv) | **GET** /v1/vault-markets/tax.csv | The tax year as a CSV: one row per sale, purchase, gift, income line and closed position.
 [**getVaultMarketTaxLossSuggestion**](VaultMarketsAPI.md#getvaultmarkettaxlosssuggestion) | **GET** /v1/vault-markets/tax/loss-suggestions | Tax-loss suggestions: the units you hold whose mark is below your cost, each with its lot (acquired when and how, cost in cents), short or long term if sold today and the day a short lot turns long, the estimated loss at the mark before selling fees, mark quality, what stops a sale, and a link to the ordinary sell ticket. With totals by term, the gains realised so far this year, and a not-tax-advice disclosure. Never sells.
+[**getVaultMarketTaxOption**](VaultMarketsAPI.md#getvaultmarkettaxoption) | **GET** /v1/vault-markets/tax/options | Your fractional options tax lots for a calendar year (&#x60;year&#x60;, default this year): FIFO disposals (closed or settled) with proceeds, cost, gain in cents and holding term, each flagged as a possible Section 1256 contract, the totals with the 60/40 split, and the positions open at year end. Real fills only; practice never appears. Not tax advice.
 [**getVaultMarketTaxPdf**](VaultMarketsAPI.md#getvaultmarkettaxpdf) | **GET** /v1/vault-markets/tax.pdf | The tax year as a PDF summary.
+[**getVaultMarketTaxPrediction**](VaultMarketsAPI.md#getvaultmarkettaxprediction) | **GET** /v1/vault-markets/tax/predictions | Your prediction-market results for a calendar year (&#x60;year&#x60;), as the venue reports them: each settled or voided real-money position with its venue, cost, fees, payout, refund, closing-trade gains and net in cents, and the totals. Practice never appears. Not tax advice.
+[**getVaultMarketTaxShare**](VaultMarketsAPI.md#getvaultmarkettaxshare) | **GET** /v1/vault-markets/tax/shares | Your Vault Shares tax lots for a calendar year (&#x60;year&#x60;): disposals (share-book sales, exit payouts) with holding periods, proceeds, cost and gain in cents, the open lots and the totals. The broker-dealer issues the 1099-B; not tax advice.
 [**getVaultMarketTca**](VaultMarketsAPI.md#getvaultmarkettca) | **GET** /v1/vault-markets/tca | Your pro orders in a window (&#x60;from&#x60;, &#x60;to&#x60;; default 90 days) with arrival mark and mid, average fill, implementation shortfall, slippage, fill rate and time to fill.
 [**getVaultMarketTcaByOrderId**](VaultMarketsAPI.md#getvaultmarkettcabyorderid) | **GET** /v1/vault-markets/tca/{orderId} | One order&#39;s TCA, including slippage against the VWAP of eligible trades while it worked.
 [**getVaultMarketTod**](VaultMarketsAPI.md#getvaultmarkettod) | **GET** /v1/vault-markets/tod | Your transfer-on-death setup: the gate and terms, whether you accepted them, your beneficiaries and shares, units with their designations and who the plan gives them to today, and open claims on your account (which you can stop). A TodOverview object, not a collection.
@@ -326,6 +481,7 @@ Method | HTTP request | Description
 [**getVaultMarketWidgetMark**](VaultMarketsAPI.md#getvaultmarketwidgetmark) | **GET** /v1/vault-markets/widgets/mark | What the &lt;crossly-mark&gt; widget shows for &#x60;bookKey&#x60;: mark, quality, trades over 30 days, as-of, sparkline, or &#x60;insufficient&#x60;.
 [**getVaultMarketWidgetSummary**](VaultMarketsAPI.md#getvaultmarketwidgetsummary) | **GET** /v1/vault-markets/widget/summary | The home-screen widget summary: portfolio value at the mark with its move since the previous marks (cents and bps) and the share resting on reliable A/B marks, the three biggest movers among what you hold (the market movers when you hold nothing; &#x60;movers.source&#x60; says which), and one watchlist key (&#x60;?key&#x3D;&#x60; a book key on your watchlist; else your newest watch) with a 14-day sparkline. Every price is from the Crossly order book and carries its mark quality (A, B, C or none). Cached for five minutes.
 [**getVaultMarketWorldFloor**](VaultMarketsAPI.md#getvaultmarketworldfloor) | **GET** /v1/vault-markets/world/floor | The Trading Floor in Crossly World: trades (the newest trades on every vault book in the last day, at most 40, newest first: bookKey, name, priceCents, priceText, side -- buy when a buyer took an ask, sell when a seller hit a bid, cross for an auction -- and ageS), tickers (the big board: the most-traded markets, each with its last trade price, the change from the last trade before today in basis points, trades today and the display mark with its quality), bell (Market Open: ringing for ten minutes after a new key opens, with the key and its market link, and what opens next) and trades24h. Every price is a trade on the Crossly order book; it never shows who traded. Nothing can be traded in the room.
+[**getVaultMarketWorldFloorBoard**](VaultMarketsAPI.md#getvaultmarketworldfloorboard) | **GET** /v1/vault-markets/world/floor/boards | The Trading Floor boards for the round-13 products: odds (the probability ladder: the busiest open \&quot;Will it hit?\&quot; markets with probabilityBps, the market’s own price as a probability, display only), heat (option-chain heat: per listed underlying, open interest and the last day’s volume in milli-contracts in strike buckets around the underlying, a 0..1 heat per bucket and the at-the-money implied vol, display only) and shares (Vault Shares tickers: last share price in cents, changeBps from the last fill before today, shares traded today and the implied item value, display only). quality is always C: none of these is ever a mark. It never shows who traded.
 [**getVaultMarketWorldLounge**](VaultMarketsAPI.md#getvaultmarketworldlounge) | **GET** /v1/vault-markets/world/lounge | The Vault Holders Lounge: the rule to join (held value at reliable marks, or a unit count), whether you may join now and what you hold toward it. Anyone may look in; only holders are seen there. No perks, nothing to trade.
 [**getVaultMarketWorldPlaceVaultGate**](VaultMarketsAPI.md#getvaultmarketworldplacevaultgate) | **GET** /v1/vault-markets/world/places/{place}/vault-gate | The vault-holder door on a Crossly World room or Space, by its presence slug (a room share slug, or space-&lt;slug&gt;): the rule (minValueCents held at reliable A/B marks and/or minUnits units, mode any or all, optionally one product, bullion family or category), the rule in words, and whether you may join now with what you hold toward it. gate is null when the place has no vault door. Anyone may look in; only holders join.
 [**getVaultMarketWorth**](VaultMarketsAPI.md#getvaultmarketworth) | **GET** /v1/vault-markets/worth | What one book key (variantId:condition:gradeKey, &#x60;bookKey&#x60;) is worth: the mark in cents with its quality (A from trades, B from firm quotes, C indicative, none) and band, what Instant Exit would pay for one unit now from the best resting bid (yours left out), and your units: how many you hold, how many are free to sell, their value at the mark and what selling every free one now would fetch from today’s bids. Plain-words &#x60;headline&#x60; and &#x60;lines&#x60;. Read only.
@@ -368,6 +524,7 @@ Method | HTTP request | Description
 [**listVaultMarketGradeToVault**](VaultMarketsAPI.md#listvaultmarketgradetovault) | **GET** /v1/vault-markets/grade-to-vault | Your Grade to Vault flows, newest first, each brought up to date: its step, the grading submission, the unit, the grade, the market for it, and the ask once listed. &#x60;live&#x3D;1&#x60; for those still going.
 [**listVaultMarketGrading**](VaultMarketsAPI.md#listvaultmarketgrading) | **GET** /v1/vault-markets/grading | Your vault units sent to grading: where each card is in its run, and the grade once it is back.
 [**listVaultMarketHallLenders**](VaultMarketsAPI.md#listvaultmarkethalllenders) | **GET** /v1/vault-markets/hall/lenders | The vault units lent to this week&#39;s Hall of Grails exhibition and on show now, in plinth order: the item (skuId, name, imageUrl, grade), the lender as the plate names them (a display name, or \&quot;a collector\&quot;), the plate lines and how many exhibitions the unit has stood in. meta.exhibition is the week (key, title, endsAt). Names no ids and no amounts.
+[**listVaultMarketHoldings**](VaultMarketsAPI.md#listvaultmarketholdings) | **GET** /v1/vault-markets/holdings | Everything you own in the Crossly vault, newest activity first: each unit with its status (inbound, stored, listed, withdraw_requested…) and situation (lent, pledged, in_grading…), what it is worth (&#x60;valueCents&#x60; with &#x60;valueSource&#x60; mark | last_sale | declared | none), declared and insured value, storage owed, its open ask, the deposit toggles when you sent it in, and what you may do with it now (&#x60;actions&#x60;). Units sold or shipped home in the last 90 days have &#x60;past: true&#x60;. &#x60;meta&#x60; carries the totals (units, value, declared, insured, storage owed), your recent boxes and their labels, the ship-home prices and the lending gate.
 [**listVaultMarketIndexCommitteeMinutes**](VaultMarketsAPI.md#listvaultmarketindexcommitteeminutes) | **GET** /v1/vault-markets/index-committee/minutes | Published Index Committee minutes, newest first: attendees (names and roles), quorum, agenda, minutes and decisions.
 [**listVaultMarketIndexComplaints**](VaultMarketsAPI.md#listvaultmarketindexcomplaints) | **GET** /v1/vault-markets/index-complaints | Your complaints and their answers, newest first.
 [**listVaultMarketIndexConstituents**](VaultMarketsAPI.md#listvaultmarketindexconstituents) | **GET** /v1/vault-markets/indexes/{slug}/constituents | The book keys in an index with their weight, move since the last close and contribution to the index&#39;s move (basis points).
@@ -392,6 +549,20 @@ Method | HTTP request | Description
 [**listVaultMarketNavHistory**](VaultMarketsAPI.md#listvaultmarketnavhistory) | **GET** /v1/vault-markets/nav/history | Daily NAV snapshots (mark, bid, liquidation, Level 2 / Level 3).
 [**listVaultMarketOffers**](VaultMarketsAPI.md#listvaultmarketoffers) | **GET** /v1/vault-markets/offers | The offers inbox: for each book key you hold, the best bid from someone else, units at it, the top bid levels, the mark, and your alert.
 [**listVaultMarketOpening**](VaultMarketsAPI.md#listvaultmarketopening) | **GET** /v1/vault-markets/opening | Keys opening soon on the vault book (and just opened): units on the shelf, dealers quoting, the waitlist, the mark when the book has one, and your place.
+[**listVaultMarketOptionComboRfq**](VaultMarketsAPI.md#listvaultmarketoptioncomborfq) | **GET** /v1/vault-markets/options/combos/rfq | Your strategy quote requests, newest first.
+[**listVaultMarketOptionComboRfqInbox**](VaultMarketsAPI.md#listvaultmarketoptioncomborfqinbox) | **GET** /v1/vault-markets/options/combos/rfq/inbox | Open strategy quote requests you may answer (never your own; the requester stays anonymous).
+[**listVaultMarketOptionCombos**](VaultMarketsAPI.md#listvaultmarketoptioncombos) | **GET** /v1/vault-markets/options/combos | Your strategies: &#x60;status&#x60; working (default), done or all, with their legs as you hold them, net per unit, filled size and status.
+[**listVaultMarketOptionContractDaily**](VaultMarketsAPI.md#listvaultmarketoptioncontractdaily) | **GET** /v1/vault-markets/options/contracts/{id}/daily | A contract&#39;s published daily settlement prices, newest first (&#x60;days&#x60;, default 30): the price, how it was set (volume-weighted fills, the mid, or Black-Scholes at the reference vol), its implied vol, the underlying, open interest and volume, and each row&#39;s chain hash.
+[**listVaultMarketOptionMmQuotes**](VaultMarketsAPI.md#listvaultmarketoptionmmquotes) | **GET** /v1/vault-markets/options/mm/quotes | Your two-sided option quotes: the contract, the bid and ask orders behind them, cancel-on-disconnect and the last heartbeat.
+[**listVaultMarketOptionNotices**](VaultMarketsAPI.md#listvaultmarketoptionnotices) | **GET** /v1/vault-markets/options/notices | Your options notices, newest first: expiry warnings, auto-closes, exercises (a long settled in the money), assignments (a short settled in the money), expiries worthless and rolls.
+[**listVaultMarketOptionOrders**](VaultMarketsAPI.md#listvaultmarketoptionorders) | **GET** /v1/vault-markets/options/orders | Your options orders, newest first: &#x60;status&#x60; working (default) / done / all, &#x60;limit&#x60;, &#x60;subaccountId&#x60;.
+[**listVaultMarketOptionPracticeCombos**](VaultMarketsAPI.md#listvaultmarketoptionpracticecombos) | **GET** /v1/vault-markets/options/practice/combos | Your practice strategies.
+[**listVaultMarketOptionPracticeFills**](VaultMarketsAPI.md#listvaultmarketoptionpracticefills) | **GET** /v1/vault-markets/options/practice/fills | Your practice options fills, newest first (&#x60;limit&#x60;).
+[**listVaultMarketOptionPracticeOrders**](VaultMarketsAPI.md#listvaultmarketoptionpracticeorders) | **GET** /v1/vault-markets/options/practice/orders | Your practice options orders: &#x60;status&#x60; working (default) / done / all, &#x60;limit&#x60;.
+[**listVaultMarketOptionRfq**](VaultMarketsAPI.md#listvaultmarketoptionrfq) | **GET** /v1/vault-markets/options/rfq | Your option quote requests, newest first.
+[**listVaultMarketOptionRfqInbox**](VaultMarketsAPI.md#listvaultmarketoptionrfqinbox) | **GET** /v1/vault-markets/options/rfq/inbox | Open option quote requests you can answer.
+[**listVaultMarketOptionSeries**](VaultMarketsAPI.md#listvaultmarketoptionseries) | **GET** /v1/vault-markets/options/series | Every options series: its underlying (a Crossly index, or a tier A item key with 90 days of reliable marks), status and the eligibility snapshot it last passed. &#x60;status&#x60;: active (default) or all.
+[**listVaultMarketOptionStrategies**](VaultMarketsAPI.md#listvaultmarketoptionstrategies) | **GET** /v1/vault-markets/options/strategies | The strategies the picker builds (vertical, calendar, diagonal, straddle, strangle, butterfly, iron condor, collar): how many strikes and expiries each takes, whether it needs calls or puts, and what it does in plain words.
 [**listVaultMarketOracleHistory**](VaultMarketsAPI.md#listvaultmarketoraclehistory) | **GET** /v1/vault-markets/oracle/{slug}/history | Recent publish attempts for an index over 30 days, newest first: published, skipped (with the reason: too few items priced, stale marks, confidence too wide...) or failed (with the error). Filter with &#x60;status&#x60;, cap with &#x60;limit&#x60; (default 100).
 [**listVaultMarketP2pAuctions**](VaultMarketsAPI.md#listvaultmarketp2pauctions) | **GET** /v1/vault-markets/p2p/auctions | Running refinancing auctions, soonest to end first: lenders calls (&#x60;auction&#x60;) and borrowers looking for a cheaper lender (&#x60;refiAuction&#x60;). The payoff now, the rate a new lender gets now, when it ends, and the item.
 [**listVaultMarketP2pLoans**](VaultMarketsAPI.md#listvaultmarketp2ploans) | **GET** /v1/vault-markets/p2p/loans | Your P2P loans as borrower and/or lender (&#x60;role&#x60;), live by default (&#x60;status&#x60;): what is owed now, daily interest, the refinancing auction when called, and the item mark for information only (it never triggers anything).
@@ -403,11 +574,26 @@ Method | HTTP request | Description
 [**listVaultMarketPaperMissions**](VaultMarketsAPI.md#listvaultmarketpapermissions) | **GET** /v1/vault-markets/paper/missions | Your paper-trading missions (play money only): each mission with what to do, your count toward its target, whether it is done and when, plus a suggested market for the \&quot;Read the mark\&quot; mission. Progress is observed by the server from your paper orders and fills, price watches, set goals and graded mark checks. Missions earn world quest progress and cosmetic pins, never money.
 [**listVaultMarketPaperOrders**](VaultMarketsAPI.md#listvaultmarketpaperorders) | **GET** /v1/vault-markets/paper/orders | Your paper orders since your last reset, newest first: working, done (filled, cancelled, expired) or all. Play money only.
 [**listVaultMarketPartnerAccruals**](VaultMarketsAPI.md#listvaultmarketpartneraccruals) | **GET** /v1/vault-markets/partners/accruals | Your partner fee shares, newest first: accrued on a unit&#39;s first sale, paid in Bucks once the sale is final, void if it was refunded.
+[**listVaultMarketPartnerFinder**](VaultMarketsAPI.md#listvaultmarketpartnerfinder) | **GET** /v1/vault-markets/partners/finder | Vault drop-off partners near a &#x60;postalCode&#x60;, optionally offering a &#x60;service&#x60;: address, hours and services.
 [**listVaultMarketPoolStakes**](VaultMarketsAPI.md#listvaultmarketpoolstakes) | **GET** /v1/vault-markets/pool/stakes | Your stakes in the market pool and what each redeems for now.
 [**listVaultMarketPortfolioMarginHistory**](VaultMarketsAPI.md#listvaultmarketportfoliomarginhistory) | **GET** /v1/vault-markets/portfolio-margin/history | The 5-minute portfolio margin recalculations for a firm sub-account over the last &#x60;hours&#x60; (default 24, at most 720), newest first: equity, requirement, excess, scenario and floor figures, gross and state.
 [**listVaultMarketPositionUnits**](VaultMarketsAPI.md#listvaultmarketpositionunits) | **GET** /v1/vault-markets/positions/{id}/units | The vault units of one of your positions that you hold (a leveraged long&#39;s collateral), each with its story link.
 [**listVaultMarketPositions**](VaultMarketsAPI.md#listvaultmarketpositions) | **GET** /v1/vault-markets/positions | Your positions, live (default) or closed.
 [**listVaultMarketPositionsRisk**](VaultMarketsAPI.md#listvaultmarketpositionsrisk) | **GET** /v1/vault-markets/positions-risk | For each live position: its tier, health, margin state, the mark at which it is called and the mark at which it is liquidated, and the distance to it.
+[**listVaultMarketPredictionAlerts**](VaultMarketsAPI.md#listvaultmarketpredictionalerts) | **GET** /v1/vault-markets/predictions/alerts | Your probability alerts: a market, a level (percent) and a direction; each fires once through the alerts hub (kind prediction_odds).
+[**listVaultMarketPredictionComboMyRfqs**](VaultMarketsAPI.md#listvaultmarketpredictioncombomyrfqs) | **GET** /v1/vault-markets/predictions/combos/my-rfqs | Your combo requests with every answer they got.
+[**listVaultMarketPredictionComboRfqs**](VaultMarketsAPI.md#listvaultmarketpredictioncomborfqs) | **GET** /v1/vault-markets/predictions/combos/rfqs | Open combo requests makers can answer: legs, size and the legs&#39; own combined price; never who asked. Your own answers are shown on them.
+[**listVaultMarketPredictionCombos**](VaultMarketsAPI.md#listvaultmarketpredictioncombos) | **GET** /v1/vault-markets/predictions/combos | Your combos, as buyer or maker: legs and their outcomes, stakes, the pot, any reprice after a voided leg, and how each settled.
+[**listVaultMarketPredictionComments**](VaultMarketsAPI.md#listvaultmarketpredictioncomments) | **GET** /v1/vault-markets/predictions/comments | A discussion thread on a market (&#x60;marketId&#x60;) or a series (&#x60;seriesId&#x60;): comments newest first with their replies. A commenter&#39;s side shows only when their forecaster profile is public.
+[**listVaultMarketPredictionConversions**](VaultMarketsAPI.md#listvaultmarketpredictionconversions) | **GET** /v1/vault-markets/predictions/conversions | Your bucket-set conversions (split, merge, convert), newest first.
+[**listVaultMarketPredictionFollowing**](VaultMarketsAPI.md#listvaultmarketpredictionfollowing) | **GET** /v1/vault-markets/predictions/following | The forecasters you follow.
+[**listVaultMarketPredictionForecasts**](VaultMarketsAPI.md#listvaultmarketpredictionforecasts) | **GET** /v1/vault-markets/predictions/forecasts | Your forecasts (a probability you attached to a market, money or not) and how the markets came out.
+[**listVaultMarketPredictionMakers**](VaultMarketsAPI.md#listvaultmarketpredictionmakers) | **GET** /v1/vault-markets/predictions/makers | Your prediction maker programme applications and their status (applied, active, suspended, revoked) and rebate.
+[**listVaultMarketPredictionMarkets**](VaultMarketsAPI.md#listvaultmarketpredictionmarkets) | **GET** /v1/vault-markets/predictions/markets | Prediction markets, filtered by a book key, an index slug, an underlying kind (index | book_key | category_pair), a status (open | closed | settled | all), an expiry day or text. Each with its strike, expiry, best Yes bid and ask, last price, volume, open interest and probability.
+[**listVaultMarketPredictionOrders**](VaultMarketsAPI.md#listvaultmarketpredictionorders) | **GET** /v1/vault-markets/predictions/orders | Your prediction orders, newest first: working, done or all; practice, live or all.
+[**listVaultMarketPredictionPositions**](VaultMarketsAPI.md#listvaultmarketpredictionpositions) | **GET** /v1/vault-markets/predictions/positions | Your prediction positions (practice, live or all; open, settled or all): side, contracts, cost, value at the last price, fees, realised P&amp;L, payout or refund once settled, and the share card if you made one.
+[**listVaultMarketPredictionProposalListed**](VaultMarketsAPI.md#listvaultmarketpredictionproposallisted) | **GET** /v1/vault-markets/predictions/proposals/listed | The markets you proposed that are listed: volume, status and what the creator share has earned you.
+[**listVaultMarketPredictionProposals**](VaultMarketsAPI.md#listvaultmarketpredictionproposals) | **GET** /v1/vault-markets/predictions/proposals | Your market proposals and where each stands (pending, listed, rejected, withdrawn).
 [**listVaultMarketPriceWidgets**](VaultMarketsAPI.md#listvaultmarketpricewidgets) | **GET** /v1/vault-markets/price-widgets | Your price widgets, newest first, each with its iframe and script-tag snippets. &#x60;meta.codes&#x60; lists your affiliate codes a widget can link through; &#x60;meta.max&#x60; is the cap on live widgets.
 [**listVaultMarketProCandles**](VaultMarketsAPI.md#listvaultmarketprocandles) | **GET** /v1/vault-markets/pro/candles | OHLCV candles (1m, 5m, 15m, 1h, 4h, 1d) from the trades on a book key.
 [**listVaultMarketProEvents**](VaultMarketsAPI.md#listvaultmarketproevents) | **GET** /v1/vault-markets/pro/events | Your order event log after a sequence number (new, leg, fill, replaced, cancelled, expired, done): a replayable drop copy.
@@ -426,9 +612,24 @@ Method | HTTP request | Description
 [**listVaultMarketSetGoalBaskets**](VaultMarketsAPI.md#listvaultmarketsetgoalbaskets) | **GET** /v1/vault-markets/set-goals/{id}/baskets | A set goal basket bids, newest first, each with its budget, what it committed and spent, and every leg (piece, book key, limit, pro order id, status).
 [**listVaultMarketSetGoalSets**](VaultMarketsAPI.md#listvaultmarketsetgoalsets) | **GET** /v1/vault-markets/set-goals/sets | Sets to start a goal on. With q (2+ characters): a word-start search of every catalogue set. Without: the sets you hold pieces of in the vault, then the collections you are building. Each with your live goal on it, if any.
 [**listVaultMarketSetGoals**](VaultMarketsAPI.md#listvaultmarketsetgoals) | **GET** /v1/vault-markets/set-goals | Your set goals: the set, the target a piece must meet, pieces held of the total (from your vault), and the working basket bid.
+[**listVaultMarketShareAutoInvest**](VaultMarketsAPI.md#listvaultmarketshareautoinvest) | **GET** /v1/vault-markets/shares/auto-invest | Your recurring auto-invest plans: amount, weekly or monthly, the series and weights or the basket, what rolled over (budget too small for a whole share; your money stays at the venue), the next run.
+[**listVaultMarketShareAutoInvestRuns**](VaultMarketsAPI.md#listvaultmarketshareautoinvestruns) | **GET** /v1/vault-markets/shares/auto-invest/{id}/runs | A plan’s runs, newest first: the budget, what each series bought, what was spent and what rolled over; rebalances too.
+[**listVaultMarketShareBaskets**](VaultMarketsAPI.md#listvaultmarketsharebaskets) | **GET** /v1/vault-markets/shares/baskets | Theme baskets: curated model portfolios of Vault Shares series with target weights. You buy and own every share directly in your own name; a basket is never a fund.
 [**listVaultMarketShareCards**](VaultMarketsAPI.md#listvaultmarketsharecards) | **GET** /v1/vault-markets/share-cards | Your share cards (not taken down), each as the public sees it.
+[**listVaultMarketShareDrops**](VaultMarketsAPI.md#listvaultmarketsharedrops) | **GET** /v1/vault-markets/shares/drops | The Vault Shares drops calendar: announced and open offerings, soonest first, each with its phase (announced, early_access, requests, open), the countdown, the allocation (fcfs, pro_rata or lottery with a per-person cap), your Crossly One early-access time (it moves when you may ask, never the price) and whether you asked to be told.
+[**listVaultMarketShareGifts**](VaultMarketsAPI.md#listvaultmarketsharegifts) | **GET** /v1/vault-markets/shares/gifts | Your share gifts, sent and received, newest first, with where each stands (offered, instructed, settled, declined, cancelled, expired, rejected).
+[**listVaultMarketShareOrders**](VaultMarketsAPI.md#listvaultmarketshareorders) | **GET** /v1/vault-markets/shares/orders | Your share-book orders, newest first; &#x60;seriesId&#x60; and &#x60;open&#x60; narrow it.
+[**listVaultMarketShareSeries**](VaultMarketsAPI.md#listvaultmarketshareseries) | **GET** /v1/vault-markets/shares/series | Vault Shares series: open offerings first, then trading, then the rest. &#x60;status&#x60; and &#x60;bookKey&#x60; narrow it. Each with its terms, progress, last share price and implied item value (display only, never a mark), and your holding.
+[**listVaultMarketShareSeryAppraisals**](VaultMarketsAPI.md#listvaultmarketshareseryappraisals) | **GET** /v1/vault-markets/shares/series/{id}/appraisals | The item’s appraisal history: the offering valuation (sealed valuation statement), independent and insurance appraisals, and any buyout or exit price.
+[**listVaultMarketShareSeryTape**](VaultMarketsAPI.md#listvaultmarketshareserytape) | **GET** /v1/vault-markets/shares/series/{id}/tape | The latest fills on a share book, newest first, with which side made the market.
+[**listVaultMarketShareSeryUpdates**](VaultMarketsAPI.md#listvaultmarketshareseryupdates) | **GET** /v1/vault-markets/shares/series/{id}/updates | The item’s story, provenance, condition reports, appraisals and exhibitions, newest first. Holders also see holders-only updates.
+[**listVaultMarketShareSubscriptions**](VaultMarketsAPI.md#listvaultmarketsharesubscriptions) | **GET** /v1/vault-markets/shares/subscriptions | Your offering subscriptions, newest first, with where each stands (pending, escrowed, allocated, refunded).
+[**listVaultMarketShareWorld**](VaultMarketsAPI.md#listvaultmarketshareworld) | **GET** /v1/vault-markets/shares/world | The world vault home’s fractional tiles: each item you own a share of, with \&quot;you own 3.2%\&quot;.
+[**listVaultMarketSupplyDeclaredValues**](VaultMarketsAPI.md#listvaultmarketsupplydeclaredvalues) | **GET** /v1/vault-markets/supply/declared-values | What each item&#39;s declared value starts at, by your insurance rule (market, cost or price). &#x60;inventoryItemIds&#x60; comma-separated.
 [**listVaultMarketSupplyDeposits**](VaultMarketsAPI.md#listvaultmarketsupplydeposits) | **GET** /v1/vault-markets/supply/deposits | Your units sent to the vault, newest first, each with its state and its key&#39;s Instant Exit line (\&quot;Instant Exit now: $X (N% of mark)\&quot; or \&quot;No market yet\&quot;). Filter with &#x60;inventoryItemIds&#x60; (comma-separated).
+[**listVaultMarketSupplyEligibility**](VaultMarketsAPI.md#listvaultmarketsupplyeligibility) | **GET** /v1/vault-markets/supply/eligibility | Can these inventory items (&#x60;inventoryItemIds&#x60;, comma-separated, or every item linked to &#x60;listingId&#x60;) be sent to the vault now? Each says why not.
 [**listVaultMarketSupplyInvites**](VaultMarketsAPI.md#listvaultmarketsupplyinvites) | **GET** /v1/vault-markets/supply/invites | Market Open invites to you as a dealer: keys Crossly is opening and asks you to quote.
+[**listVaultMarketSupplyShipments**](VaultMarketsAPI.md#listvaultmarketsupplyshipments) | **GET** /v1/vault-markets/supply/shipments | Your shipments into the vault, newest first: method, label or drop-off code, tracking and how many units were received.
 [**listVaultMarketValuationStatements**](VaultMarketsAPI.md#listvaultmarketvaluationstatements) | **GET** /v1/vault-markets/valuation-statements | The insurance and appraisal statements you issued, newest first: purpose, date, units, total at the marks, hash and verify link.
 [**listVaultMarketVaultSuggestions**](VaultMarketsAPI.md#listvaultmarketvaultsuggestions) | **GET** /v1/vault-markets/vault-suggestions | What to send to the vault: your inventory items whose book key has a liquid vault market (tier A, B or C), best first. Each has a score (0 to 100) and its reasons, the market (tier, mark and its quality, best bid, best vault ask, spread), Instant Exit now, your list price, days listed without selling, and the vault fee. &#x60;meta.summary&#x60; counts what was left out and why. Inform only; send with POST /api/v1/vault-markets/supply/send.
 [**listVaultMarketWatchlist**](VaultMarketsAPI.md#listvaultmarketwatchlist) | **GET** /v1/vault-markets/watchlist | Your watched book keys with mark, 24 h and 7 d change, and the last 30 daily marks (sparkline).
@@ -441,6 +642,7 @@ Method | HTTP request | Description
 [**listVaultReceipts**](VaultMarketsAPI.md#listvaultreceipts) | **GET** /v1/vault/receipts | Your warehouse receipts (documents of title for your vault units), live first. meta.receipts says whether receipts are registered (VAULT_WAREHOUSE_ISSUER) and their terms version.
 [**listVaultUnitList**](VaultMarketsAPI.md#listvaultunitlist) | **GET** /v1/vault/unit-list | The published unit list (bar-list equivalent): every unit on a vault shelf with its warehouse receipt number (when receipts are registered), book key, shelf location code, insured value, status, pledged / on-loan flags and a per-receipt hashed holder (never a name or id). Filter with &#x60;bookKey&#x60;; pages with &#x60;page&#x60; / &#x60;limit&#x60;.
 [**updateVaultMarketAlertPref**](VaultMarketsAPI.md#updatevaultmarketalertpref) | **PUT** /v1/vault-markets/alert-prefs | Change vault alert settings: &#x60;matrix&#x60; ({ kind: { channel: true|false } }, merged onto what is set), &#x60;quietHours&#x60; ({ start: \&quot;HH:MM\&quot;, end: \&quot;HH:MM\&quot;, tz } or null to clear) and &#x60;telegram&#x60; (the Telegram master switch). Locked switches are ignored. Returns the new settings.
+[**updateVaultMarketAutoBuy**](VaultMarketsAPI.md#updatevaultmarketautobuy) | **PUT** /v1/vault-markets/auto-buy | Set up or change Auto-buy with payouts: &#x60;shareBps&#x60; (1–50%) and the whole want list in order, each with an optional &#x60;maxPriceCents&#x60; (fee included).
 [**updateVaultMarketBlockAllocation**](VaultMarketsAPI.md#updatevaultmarketblockallocation) | **PUT** /v1/vault-markets/blocks/{orderId}/allocation | Post-trade allocation: set or replace the plan for a buy you placed for one of the entity&#39;s sub-accounts (that sub-account leads). Refused once any share has moved.
 [**updateVaultMarketChannel**](VaultMarketsAPI.md#updatevaultmarketchannel) | **PUT** /v1/vault-markets/channels | Change the switches: &#x60;telegramAlerts&#x60;, &#x60;telegramDigest&#x60;, &#x60;pushCapPerDay&#x60; (0 to 20). Margin calls and recalls are never capped. Returns the new view.
 [**updateVaultMarketDealerBand**](VaultMarketsAPI.md#updatevaultmarketdealerband) | **PUT** /v1/vault-markets/dealer/bands | Commit to an Instant Exit band on a key: a standing bid for &#x60;units&#x60; kept at &#x60;bandBps&#x60; of the mark, never above &#x60;maxPriceCents&#x60;, re-quoted as the mark moves.
@@ -452,16 +654,23 @@ Method | HTTP request | Description
 [**updateVaultMarketFollowSharing**](VaultMarketsAPI.md#updatevaultmarketfollowsharing) | **PUT** /v1/vault-markets/follows/sharing | Turn sharing switches on or off (&#x60;isPublic&#x60;, &#x60;showBuys&#x60;, &#x60;deposits&#x60;, &#x60;sales&#x60;, &#x60;hallLoans&#x60;, &#x60;orders&#x60;, &#x60;leaderboard&#x60;). A switch shows only what happens after it goes on; all but the profile itself need the profile public.
 [**updateVaultMarketHomeUnit**](VaultMarketsAPI.md#updatevaultmarkethomeunit) | **PUT** /v1/vault-markets/home/units | Show exactly these vault units in your Crossly World home: { units: [{ vaultItemId, visitors }] }. Units left out come out of their cases; units already standing stay where they are; new ones go into a free display-case or shelf slot, else a glass case of their own along a wall. visitors: true lets people who may enter your home see that unit (default false: only you). Returns placed, unplaced (no free case: the home is full), refused (with why) and the desk. Display only: nothing moves.
 [**updateVaultMarketIndex**](VaultMarketsAPI.md#updatevaultmarketindex) | **PATCH** /v1/vault-markets/indexes/{slug} | Rename, re-weight, share or change the keys of an index of your own; its level carries on.
+[**updateVaultMarketItemSellFrom**](VaultMarketsAPI.md#updatevaultmarketitemsellfrom) | **PUT** /v1/vault-markets/items/{inventoryItemId}/sell-from | Set which unit a sale of this item ships first: &#x60;vault_first&#x60;, &#x60;warehouse_first&#x60; or &#x60;cheapest&#x60; (to ship); null &#x3D; your default. Quantities stay the same on every channel: only who ships changes.
 [**updateVaultMarketLendingElection**](VaultMarketsAPI.md#updatevaultmarketlendingelection) | **PUT** /v1/vault-markets/lending/election | Change your lender election (applies to loans opened after the change). Needs lending.
 [**updateVaultMarketMmMmp**](VaultMarketsAPI.md#updatevaultmarketmmmmp) | **PUT** /v1/vault-markets/mm/mmp | Set market-maker protection: N units or $X filled on your quotes within T seconds pulls every quote and freezes quoting for a set time.
 [**updateVaultMarketMode**](VaultMarketsAPI.md#updatevaultmarketmode) | **PUT** /v1/vault-markets/mode | Choose your Vault Markets mode: &#x60;mode&#x60; simple or pro. Remembered for you on the web and in the app. A display preference only: it places nothing and moves no money.
 [**updateVaultMarketOfferAlert**](VaultMarketsAPI.md#updatevaultmarketofferalert) | **PUT** /v1/vault-markets/offers/alert | Set (or clear with null) the bid price that should always notify you on a key you hold, and mute or unmute offer notices on it.
+[**updateVaultMarketOptionAutoClose**](VaultMarketsAPI.md#updatevaultmarketoptionautoclose) | **PUT** /v1/vault-markets/options/auto-close | Set your auto-close rule: &#x60;enabled&#x60;, &#x60;minutesBefore&#x60; (30 to 10080), &#x60;onlyItm&#x60;, &#x60;maxSlippageBps&#x60; (0 to 2000).
 [**updateVaultMarketPaperLeaderboard**](VaultMarketsAPI.md#updatevaultmarketpaperleaderboard) | **PUT** /v1/vault-markets/paper/leaderboard | Join or leave the weekly paper leaderboard. Joining needs a display name (2 to 24 letters, numbers, spaces, dots, dashes or underscores), never your real name. Returns &#x60;{ optIn, displayName }&#x60;.
+[**updateVaultMarketPartnerMe**](VaultMarketsAPI.md#updatevaultmarketpartnerme) | **PATCH** /v1/vault-markets/partners/me | Your drop-off partnership&#39;s finder profile: postal code, opening hours, services and whether you are listed.
 [**updateVaultMarketPositionExit**](VaultMarketsAPI.md#updatevaultmarketpositionexit) | **PUT** /v1/vault-markets/positions/{id}/exits | Set a position&#39;s take-profit / stop-loss: a long is closed, a short covered, when the last trade reaches one. Both null clears them.
+[**updateVaultMarketPredictionComment**](VaultMarketsAPI.md#updatevaultmarketpredictioncomment) | **PATCH** /v1/vault-markets/predictions/comments/{id} | Edit your comment.
+[**updateVaultMarketPredictionForecaster**](VaultMarketsAPI.md#updatevaultmarketpredictionforecaster) | **PUT** /v1/vault-markets/predictions/forecaster | Go public under a display name (&#x60;public: true&#x60;), rename, or go private (&#x60;public: false&#x60;: nothing is shown again).
+[**updateVaultMarketPredictionLimit**](VaultMarketsAPI.md#updatevaultmarketpredictionlimit) | **PUT** /v1/vault-markets/predictions/limits | Set your daily loss limit (&#x60;dailyLossLimitCents&#x60;, null &#x3D; none) or exclude yourself (&#x60;excludeDays&#x60;, &#x60;excludedUntil&#x60; or \&quot;forever\&quot;). Tighter takes effect at once; looser waits 24 hours.
 [**updateVaultMarketPriceWidget**](VaultMarketsAPI.md#updatevaultmarketpricewidget) | **PATCH** /v1/vault-markets/price-widgets/{id} | Change a widget: name, range, layout, theme, affiliate code (null for none) or allowed sites. The market or index it shows never changes: make a new widget for another.
 [**updateVaultMarketProfile**](VaultMarketsAPI.md#updatevaultmarketprofile) | **PUT** /v1/vault-markets/profile | Turn your public vault profile on or off (&#x60;isPublic&#x60;) and whether followers see your new buys (&#x60;showBuys&#x60;). It shows weights by market, never dollars.
 [**updateVaultMarketRecurring**](VaultMarketsAPI.md#updatevaultmarketrecurring) | **PATCH** /v1/vault-markets/recurring/{id} | Change a recurring buy&#39;s schedule, caps, cards or auto-lend, or pause / resume it.
 [**updateVaultMarketSetGoal**](VaultMarketsAPI.md#updatevaultmarketsetgoal) | **PATCH** /v1/vault-markets/set-goals/{id} | Change what a piece must be to count (condition, grade mode, grade). Refused while a basket bid works: cancel it first.
+[**updateVaultMarketSetting**](VaultMarketsAPI.md#updatevaultmarketsetting) | **PUT** /v1/vault-markets/settings | Change your vault defaults; send only the fields you change.
 [**updateVaultMarketShareCard**](VaultMarketsAPI.md#updatevaultmarketsharecard) | **PATCH** /v1/vault-markets/share-cards/{id} | Show or hide the dollar amounts on one of your share cards (&#x60;showAmounts&#x60;).
 [**updateVaultMarketSupplyDeposit**](VaultMarketsAPI.md#updatevaultmarketsupplydeposit) | **PATCH** /v1/vault-markets/supply/deposits/{id} | Change a deposit&#39;s toggles: &#x60;autoListBps&#x60; (list at that share of the mark once stored; null &#x3D; do not) and &#x60;lendWhenIdle&#x60;.
 [**updateVaultMarketSupplyRoundUp**](VaultMarketsAPI.md#updatevaultmarketsupplyroundup) | **PUT** /v1/vault-markets/supply/round-up | Set the round-up: &#x60;shareBps&#x60; (1%-50%) of each payout released to you adds to a budget; when it covers the cheapest vault unit on &#x60;bookKey&#x60;, one unit is bought with your saved card, never above the budget.
@@ -1007,6 +1216,94 @@ Name | Type | Description  | Notes
 ### Return type
 
 **OkResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketAutoBuyPause**
+```swift
+    open class func createVaultMarketAutoBuyPause(completion: @escaping (_ data: CreateVaultMarketAutoBuyPauseResponse?, _ error: Error?) -> Void)
+```
+
+Pause Auto-buy with payouts: the budget and want list stay; no payouts are counted and nothing is bought.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Pause Auto-buy with payouts: the budget and want list stay; no payouts are counted and nothing is bought.
+VaultMarketsAPI.createVaultMarketAutoBuyPause() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketAutoBuyPauseResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketAutoBuyResume**
+```swift
+    open class func createVaultMarketAutoBuyResume(completion: @escaping (_ data: CreateVaultMarketAutoBuyResumeResponse?, _ error: Error?) -> Void)
+```
+
+Resume Auto-buy with payouts: payouts released from now on count.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Resume Auto-buy with payouts: payouts released from now on count.
+VaultMarketsAPI.createVaultMarketAutoBuyResume() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketAutoBuyResumeResponse**
 
 ### Authorization
 
@@ -4601,6 +4898,1198 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **createVaultMarketOptionCombo**
+```swift
+    open class func createVaultMarketOptionCombo(completion: @escaping (_ data: CreateVaultMarketOptionComboResponse?, _ error: Error?) -> Void)
+```
+
+Place a strategy: 2 to 4 legs on one underlying with ratios, a quantity (units, three decimals) and ONE signed net limit per unit (+ the most you pay, - the least credit you take). Margined on the combined scenario loss of all its legs; matched against the combo book, then the legs' own books; every leg fills at once or none does. Crossly venue only (409 combos_self_venue_only on the partner venue).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Place a strategy: 2 to 4 legs on one underlying with ratios, a quantity (units, three decimals) and ONE signed net limit per unit (+ the most you pay, - the least credit you take). Margined on the combined scenario loss of all its legs; matched against the combo book, then the legs' own books; every leg fills at once or none does. Crossly venue only (409 combos_self_venue_only on the partner venue).
+VaultMarketsAPI.createVaultMarketOptionCombo() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketOptionComboResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketOptionComboCancel**
+```swift
+    open class func createVaultMarketOptionComboCancel(id: String, completion: @escaping (_ data: ListVaultMarketOptionCombosItem?, _ error: Error?) -> Void)
+```
+
+Cancel a working strategy.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Cancel a working strategy.
+VaultMarketsAPI.createVaultMarketOptionComboCancel(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**ListVaultMarketOptionCombosItem**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketOptionComboRfq**
+```swift
+    open class func createVaultMarketOptionComboRfq(completion: @escaping (_ data: CreateVaultMarketOptionComboRfqResponse?, _ error: Error?) -> Void)
+```
+
+Ask makers for a firm net price on a whole strategy (legs, quantity, an optional limit that is never shown). Crossly venue only.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Ask makers for a firm net price on a whole strategy (legs, quantity, an optional limit that is never shown). Crossly venue only.
+VaultMarketsAPI.createVaultMarketOptionComboRfq() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketOptionComboRfqResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketOptionComboRfqAccept**
+```swift
+    open class func createVaultMarketOptionComboRfqAccept(id: String, completion: @escaping (_ data: CreateVaultMarketOptionComboRfqAcceptResponse?, _ error: Error?) -> Void)
+```
+
+Take a live, firm answer: both strategies go through the normal path (margin, pre-trade risk), every leg at once.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Take a live, firm answer: both strategies go through the normal path (margin, pre-trade risk), every leg at once.
+VaultMarketsAPI.createVaultMarketOptionComboRfqAccept(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketOptionComboRfqAcceptResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketOptionComboRfqCancel**
+```swift
+    open class func createVaultMarketOptionComboRfqCancel(id: String, completion: @escaping (_ data: IdStatusResponse?, _ error: Error?) -> Void)
+```
+
+Cancel your open strategy quote request.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Cancel your open strategy quote request.
+VaultMarketsAPI.createVaultMarketOptionComboRfqCancel(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**IdStatusResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketOptionComboRfqRespond**
+```swift
+    open class func createVaultMarketOptionComboRfqRespond(id: String, completion: @escaping (_ data: CreateVaultMarketOptionRfqRespondResponse?, _ error: Error?) -> Void)
+```
+
+Answer a strategy quote request with a firm net price per unit in the canonical terms, good for 60 seconds; a new answer replaces your last.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Answer a strategy quote request with a firm net price per unit in the canonical terms, good for 60 seconds; a new answer replaces your last.
+VaultMarketsAPI.createVaultMarketOptionComboRfqRespond(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketOptionRfqRespondResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketOptionComboRfqResponseWithdraw**
+```swift
+    open class func createVaultMarketOptionComboRfqResponseWithdraw(id: String, completion: @escaping (_ data: IdStatusResponse?, _ error: Error?) -> Void)
+```
+
+Withdraw your live answer to a strategy quote request.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Withdraw your live answer to a strategy quote request.
+VaultMarketsAPI.createVaultMarketOptionComboRfqResponseWithdraw(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**IdStatusResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketOptionCoveredCall**
+```swift
+    open class func createVaultMarketOptionCoveredCall(completion: @escaping (_ data: CreateVaultMarketOptionCoveredCallResponse?, _ error: Error?) -> Void)
+```
+
+Write a covered call: lock a stored vault unit (`vaultItemId`) as collateral and sell up to one call on its own key (`contractId`, `quantity` <= 1) at a price or an implied vol. The unit cannot be sold, moved, lent or withdrawn until the call is bought back or expires; if assigned you pay cash, or the unit sells at the vault auction to cover.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Write a covered call: lock a stored vault unit (`vaultItemId`) as collateral and sell up to one call on its own key (`contractId`, `quantity` <= 1) at a price or an implied vol. The unit cannot be sold, moved, lent or withdrawn until the call is bought back or expires; if assigned you pay cash, or the unit sells at the vault auction to cover.
+VaultMarketsAPI.createVaultMarketOptionCoveredCall() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketOptionCoveredCallResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketOptionCoveredCallRelease**
+```swift
+    open class func createVaultMarketOptionCoveredCallRelease(id: String, completion: @escaping (_ data: CreateVaultMarketOptionCoveredCallReleaseResponse?, _ error: Error?) -> Void)
+```
+
+Free a covered call's vault unit once the call it covers is closed (or covered by other units).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Free a covered call's vault unit once the call it covers is closed (or covered by other units).
+VaultMarketsAPI.createVaultMarketOptionCoveredCallRelease(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketOptionCoveredCallReleaseResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketOptionMmHeartbeat**
+```swift
+    open class func createVaultMarketOptionMmHeartbeat(completion: @escaping (_ data: CreateVaultMarketOptionMmHeartbeatResponse?, _ error: Error?) -> Void)
+```
+
+Keep your option quotes alive (cancel-on-disconnect pulls them after 30 s without a heartbeat).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Keep your option quotes alive (cancel-on-disconnect pulls them after 30 s without a heartbeat).
+VaultMarketsAPI.createVaultMarketOptionMmHeartbeat() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketOptionMmHeartbeatResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketOptionMmQuote**
+```swift
+    open class func createVaultMarketOptionMmQuote(completion: @escaping (_ data: CreateVaultMarketOptionMmQuoteResponse?, _ error: Error?) -> Void)
+```
+
+Set (replace) a two-sided quote on an option contract: `bid` and / or `ask` each { priceCents, quantity in contracts }, posted as post-only GTC orders on the Crossly venue. Market-maker protection counts their fills; a quote inside 20% of its mid earns liquidity rewards (CBX).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Set (replace) a two-sided quote on an option contract: `bid` and / or `ask` each { priceCents, quantity in contracts }, posted as post-only GTC orders on the Crossly venue. Market-maker protection counts their fills; a quote inside 20% of its mid earns liquidity rewards (CBX).
+VaultMarketsAPI.createVaultMarketOptionMmQuote() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketOptionMmQuoteResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketOptionMmQuotePull**
+```swift
+    open class func createVaultMarketOptionMmQuotePull(completion: @escaping (_ data: DeleteVaultMarketProQuoteResponse?, _ error: Error?) -> Void)
+```
+
+Pull your option quotes on one contract (`contractId`) or all of them.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Pull your option quotes on one contract (`contractId`) or all of them.
+VaultMarketsAPI.createVaultMarketOptionMmQuotePull() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**DeleteVaultMarketProQuoteResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketOptionOrder**
+```swift
+    open class func createVaultMarketOptionOrder(completion: @escaping (_ data: CreateVaultMarketOptionOrderResponse?, _ error: Error?) -> Void)
+```
+
+Place an options order: `contractId`, `side`, `quantity` in contracts (three decimals), a `priceCents` or an `iv` (`quoteMode`), `tif` gtc / gtd (with `expiresAt`) / ioc, `postOnly`. Idempotent on `clientOrderId`. On the Crossly venue it matches price-time with self-trade prevention after a scenario-margin check; on the partner venue it routes to the partner (accept its `termsVersion`). `subaccountId` trades for a firm sub-account you may trade.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Place an options order: `contractId`, `side`, `quantity` in contracts (three decimals), a `priceCents` or an `iv` (`quoteMode`), `tif` gtc / gtd (with `expiresAt`) / ioc, `postOnly`. Idempotent on `clientOrderId`. On the Crossly venue it matches price-time with self-trade prevention after a scenario-margin check; on the partner venue it routes to the partner (accept its `termsVersion`). `subaccountId` trades for a firm sub-account you may trade.
+VaultMarketsAPI.createVaultMarketOptionOrder() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketOptionOrderResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketOptionOrderCancel**
+```swift
+    open class func createVaultMarketOptionOrderCancel(id: String, completion: @escaping (_ data: CreateVaultMarketOptionOrderCancelResponse?, _ error: Error?) -> Void)
+```
+
+Cancel a working options order (on the partner venue it is cancelled there first). A liquidation order cannot be cancelled.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Cancel a working options order (on the partner venue it is cancelled there first). A liquidation order cannot be cancelled.
+VaultMarketsAPI.createVaultMarketOptionOrderCancel(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketOptionOrderCancelResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketOptionPracticeCombo**
+```swift
+    open class func createVaultMarketOptionPracticeCombo(completion: @escaping (_ data: CreateVaultMarketOptionPracticeComboResponse?, _ error: Error?) -> Void)
+```
+
+A practice strategy (play money): the same ticket as a real one, filled at the practice maker's quotes when the net is inside the limit.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// A practice strategy (play money): the same ticket as a real one, filled at the practice maker's quotes when the net is inside the limit.
+VaultMarketsAPI.createVaultMarketOptionPracticeCombo() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketOptionPracticeComboResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketOptionPracticeOrder**
+```swift
+    open class func createVaultMarketOptionPracticeOrder(completion: @escaping (_ data: CreateVaultMarketOptionPracticeOrderResponse?, _ error: Error?) -> Void)
+```
+
+Place a practice options order (the same ticket as a real one; fills against the practice maker at the reference vol). Play money only.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Place a practice options order (the same ticket as a real one; fills against the practice maker at the reference vol). Play money only.
+VaultMarketsAPI.createVaultMarketOptionPracticeOrder() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketOptionPracticeOrderResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketOptionPracticeOrderCancel**
+```swift
+    open class func createVaultMarketOptionPracticeOrderCancel(id: String, completion: @escaping (_ data: ListVaultMarketOptionPracticeOrdersItem?, _ error: Error?) -> Void)
+```
+
+Cancel a working practice options order.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Cancel a working practice options order.
+VaultMarketsAPI.createVaultMarketOptionPracticeOrderCancel(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**ListVaultMarketOptionPracticeOrdersItem**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketOptionPracticeReset**
+```swift
+    open class func createVaultMarketOptionPracticeReset(completion: @escaping (_ data: GetVaultMarketOptionPracticeResponse?, _ error: Error?) -> Void)
+```
+
+Start the options practice account again with $10,000: positions and working orders are cleared.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Start the options practice account again with $10,000: positions and working orders are cleared.
+VaultMarketsAPI.createVaultMarketOptionPracticeReset() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketOptionPracticeResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketOptionQuote**
+```swift
+    open class func createVaultMarketOptionQuote(completion: @escaping (_ data: CreateVaultMarketOptionQuoteResponse?, _ error: Error?) -> Void)
+```
+
+Price a ticket without placing it: give a price per contract or an implied vol (`quoteMode`), get the other back, the premium and fee, the Greeks for your size, the payoff at expiry and the margin it would need on your account (authoritative on the Crossly venue, an estimate when the partner clears). A bad entry is reported, not thrown.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Price a ticket without placing it: give a price per contract or an implied vol (`quoteMode`), get the other back, the premium and fee, the Greeks for your size, the payoff at expiry and the margin it would need on your account (authoritative on the Crossly venue, an estimate when the partner clears). A bad entry is reported, not thrown.
+VaultMarketsAPI.createVaultMarketOptionQuote() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketOptionQuoteResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketOptionRfq**
+```swift
+    open class func createVaultMarketOptionRfq(completion: @escaping (_ data: CreateVaultMarketRfqResponse?, _ error: Error?) -> Void)
+```
+
+Ask for a quote on an option contract: `side`, `quantity` in contracts, an optional `limitCents` (never shown). Makers quoting the series, the underlying's DMM and LPs and approved dealers are told anonymously; answers are firm for 60 s.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Ask for a quote on an option contract: `side`, `quantity` in contracts, an optional `limitCents` (never shown). Makers quoting the series, the underlying's DMM and LPs and approved dealers are told anonymously; answers are firm for 60 s.
+VaultMarketsAPI.createVaultMarketOptionRfq() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketRfqResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketOptionRfqAccept**
+```swift
+    open class func createVaultMarketOptionRfqAccept(id: String, completion: @escaping (_ data: CreateVaultMarketOptionRfqAcceptResponse?, _ error: Error?) -> Void)
+```
+
+Take a live answer (`responseId`) to your option quote request: it trades through the options book at that price or better, with margin and self-trade prevention.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Take a live answer (`responseId`) to your option quote request: it trades through the options book at that price or better, with margin and self-trade prevention.
+VaultMarketsAPI.createVaultMarketOptionRfqAccept(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketOptionRfqAcceptResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketOptionRfqCancel**
+```swift
+    open class func createVaultMarketOptionRfqCancel(id: String, completion: @escaping (_ data: IdStatusResponse?, _ error: Error?) -> Void)
+```
+
+Cancel your open option quote request.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Cancel your open option quote request.
+VaultMarketsAPI.createVaultMarketOptionRfqCancel(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**IdStatusResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketOptionRfqRespond**
+```swift
+    open class func createVaultMarketOptionRfqRespond(id: String, completion: @escaping (_ data: CreateVaultMarketOptionRfqRespondResponse?, _ error: Error?) -> Void)
+```
+
+Answer an option quote request with a firm price per contract for its full size (good for 60 s; a new answer replaces your last).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Answer an option quote request with a firm price per contract for its full size (good for 60 s; a new answer replaces your last).
+VaultMarketsAPI.createVaultMarketOptionRfqRespond(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketOptionRfqRespondResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketOptionRfqResponseWithdraw**
+```swift
+    open class func createVaultMarketOptionRfqResponseWithdraw(id: String, completion: @escaping (_ data: IdStatusResponse?, _ error: Error?) -> Void)
+```
+
+Withdraw your live answer to an option quote request.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Withdraw your live answer to an option quote request.
+VaultMarketsAPI.createVaultMarketOptionRfqResponseWithdraw(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**IdStatusResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketOptionRoll**
+```swift
+    open class func createVaultMarketOptionRoll(completion: @escaping (_ data: CreateVaultMarketOptionRollResponse?, _ error: Error?) -> Void)
+```
+
+Roll a position to another contract as one strategy order at one net price (+ you pay, - you receive): the close and the open fill together or not at all. `practice` rolls a practice position.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Roll a position to another contract as one strategy order at one net price (+ you pay, - you receive): the close and the open fill together or not at all. `practice` rolls a practice position.
+VaultMarketsAPI.createVaultMarketOptionRoll() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketOptionRollResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketOptionStrategyPreview**
+```swift
+    open class func createVaultMarketOptionStrategyPreview(completion: @escaping (_ data: CreateVaultMarketOptionStrategyPreviewResponse?, _ error: Error?) -> Void)
+```
+
+Preview a strategy before placing it: by template (underlying, kind, direction, strikes, expiries) or by legs. Returns each leg at its bid / ask, the net per unit (+ debit, - credit), the payoff at the first expiry, max profit and max loss (null = unbounded), breakevens, net Greeks, and the scenario margin of the whole strategy next to its legs margined one by one.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Preview a strategy before placing it: by template (underlying, kind, direction, strikes, expiries) or by legs. Returns each leg at its bid / ask, the net per unit (+ debit, - credit), the payoff at the first expiry, max profit and max loss (null = unbounded), breakevens, net Greeks, and the scenario margin of the whole strategy next to its legs margined one by one.
+VaultMarketsAPI.createVaultMarketOptionStrategyPreview() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketOptionStrategyPreviewResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **createVaultMarketP2pLoanCall**
 ```swift
     open class func createVaultMarketP2pLoanCall(id: String, completion: @escaping (_ data: GetVaultMarketP2pLoanResponse?, _ error: Error?) -> Void)
@@ -5713,6 +7202,1274 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **createVaultMarketPredictionAccount**
+```swift
+    open class func createVaultMarketPredictionAccount(completion: @escaping (_ data: CreateVaultMarketPredictionAccountResponse?, _ error: Error?) -> Void)
+```
+
+Open your account at the live prediction venue (the partner DCM, or your own segregated account at the settlement bank). Returns `{ venue, status, opened }`.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Open your account at the live prediction venue (the partner DCM, or your own segregated account at the settlement bank). Returns `{ venue, status, opened }`.
+VaultMarketsAPI.createVaultMarketPredictionAccount() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketPredictionAccountResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketPredictionAlert**
+```swift
+    open class func createVaultMarketPredictionAlert(completion: @escaping (_ data: CreateVaultMarketPredictionAlertResponse?, _ error: Error?) -> Void)
+```
+
+Tell me when a market's probability crosses a level: `{ marketId, levelPercent, direction }`. Returns the alert.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Tell me when a market's probability crosses a level: `{ marketId, levelPercent, direction }`. Returns the alert.
+VaultMarketsAPI.createVaultMarketPredictionAlert() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketPredictionAlertResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketPredictionCard**
+```swift
+    open class func createVaultMarketPredictionCard(completion: @escaping (_ data: CreateVaultMarketPredictionCardResponse?, _ error: Error?) -> Void)
+```
+
+Make an \"I called it\" share card for a position of yours that settled in your favour (`showAmounts` to include what you paid and won). Returns the card with its public URL.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Make an \"I called it\" share card for a position of yours that settled in your favour (`showAmounts` to include what you paid and won). Returns the card with its public URL.
+VaultMarketsAPI.createVaultMarketPredictionCard() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketPredictionCardResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketPredictionComboRfq**
+```swift
+    open class func createVaultMarketPredictionComboRfq(completion: @escaping (_ data: CreateVaultMarketPredictionComboRfqResponse?, _ error: Error?) -> Void)
+```
+
+Ask makers for a price on a combo: 2 to 6 legs (a market and a side each) on different underlyings, a size, and an optional limit makers never see. Pays $1 a contract if every leg comes true. `venue` paper or live.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Ask makers for a price on a combo: 2 to 6 legs (a market and a side each) on different underlyings, a size, and an optional limit makers never see. Pays $1 a contract if every leg comes true. `venue` paper or live.
+VaultMarketsAPI.createVaultMarketPredictionComboRfq() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketPredictionComboRfqResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketPredictionComboRfqAccept**
+```swift
+    open class func createVaultMarketPredictionComboRfqAccept(id: String, completion: @escaping (_ data: ListVaultMarketPredictionCombosItem?, _ error: Error?) -> Void)
+```
+
+Take one live, firm answer to your combo request (`quoteId`): both stakes are locked and the combo opens. Returns the combo.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Take one live, firm answer to your combo request (`quoteId`): both stakes are locked and the combo opens. Returns the combo.
+VaultMarketsAPI.createVaultMarketPredictionComboRfqAccept(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**ListVaultMarketPredictionCombosItem**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketPredictionComboRfqCancel**
+```swift
+    open class func createVaultMarketPredictionComboRfqCancel(id: String, completion: @escaping (_ data: ListVaultMarketPredictionComboRfqsItem?, _ error: Error?) -> Void)
+```
+
+Withdraw your combo request; its answers are withdrawn too.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Withdraw your combo request; its answers are withdrawn too.
+VaultMarketsAPI.createVaultMarketPredictionComboRfqCancel(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**ListVaultMarketPredictionComboRfqsItem**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketPredictionComboRfqQuote**
+```swift
+    open class func createVaultMarketPredictionComboRfqQuote(id: String, completion: @escaping (_ data: CreateVaultMarketPredictionComboRfqQuoteResponse?, _ error: Error?) -> Void)
+```
+
+Answer a combo request with a firm price a contract for the full size (good for 30 seconds; a new answer replaces yours). Real money needs an active prediction maker programme or approved dealer status.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Answer a combo request with a firm price a contract for the full size (good for 30 seconds; a new answer replaces yours). Real money needs an active prediction maker programme or approved dealer status.
+VaultMarketsAPI.createVaultMarketPredictionComboRfqQuote(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketPredictionComboRfqQuoteResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketPredictionComment**
+```swift
+    open class func createVaultMarketPredictionComment(completion: @escaping (_ data: CreateVaultMarketPredictionCommentResponse?, _ error: Error?) -> Void)
+```
+
+Comment on a market or a series, or reply to a comment (`parentId`). Moderated like every comment on Crossly.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Comment on a market or a series, or reply to a comment (`parentId`). Moderated like every comment on Crossly.
+VaultMarketsAPI.createVaultMarketPredictionComment() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketPredictionCommentResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketPredictionCommentReport**
+```swift
+    open class func createVaultMarketPredictionCommentReport(id: String, completion: @escaping (_ data: CreateVaultMarketPredictionCommentReportResponse?, _ error: Error?) -> Void)
+```
+
+Report a comment with a reason; enough reports hide it until ops look.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Report a comment with a reason; enough reports hide it until ops look.
+VaultMarketsAPI.createVaultMarketPredictionCommentReport(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketPredictionCommentReportResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketPredictionConversion**
+```swift
+    open class func createVaultMarketPredictionConversion(completion: @escaping (_ data: CreateVaultMarketPredictionConversionResponse?, _ error: Error?) -> Void)
+```
+
+Split ($1 a set buys one Yes in every bucket of an expiry), merge (one Yes in every bucket gives back $1 a set before settlement) or convert (No in one bucket becomes Yes in every other) on a full bucket set. `venue` paper or live. Returns the conversion and the event after it.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Split ($1 a set buys one Yes in every bucket of an expiry), merge (one Yes in every bucket gives back $1 a set before settlement) or convert (No in one bucket becomes Yes in every other) on a full bucket set. `venue` paper or live. Returns the conversion and the event after it.
+VaultMarketsAPI.createVaultMarketPredictionConversion() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketPredictionConversionResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketPredictionForecast**
+```swift
+    open class func createVaultMarketPredictionForecast(completion: @escaping (_ data: CreateVaultMarketPredictionForecastResponse?, _ error: Error?) -> Void)
+```
+
+Forecast a market: `probabilityPercent` 0 to 100. The one standing when trading closes is scored (Brier).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Forecast a market: `probabilityPercent` 0 to 100. The one standing when trading closes is scored (Brier).
+VaultMarketsAPI.createVaultMarketPredictionForecast() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketPredictionForecastResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketPredictionForecasterFollow**
+```swift
+    open class func createVaultMarketPredictionForecasterFollow(id: String, completion: @escaping (_ data: CreateVaultMarketPredictionForecasterFollowResponse?, _ error: Error?) -> Void)
+```
+
+Follow a public forecaster: you are told when they open a position or forecast (copy-watch only; nothing is ever traded for you).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Follow a public forecaster: you are told when they open a position or forecast (copy-watch only; nothing is ever traded for you).
+VaultMarketsAPI.createVaultMarketPredictionForecasterFollow(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketPredictionForecasterFollowResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketPredictionMaker**
+```swift
+    open class func createVaultMarketPredictionMaker(completion: @escaping (_ data: ListVaultMarketPredictionMakersItem?, _ error: Error?) -> Void)
+```
+
+Apply to make markets in prediction ladders (one series, or all with `seriesId` null). Needs the ID check; ops approve. Returns the application.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Apply to make markets in prediction ladders (one series, or all with `seriesId` null). Needs the ID check; ops approve. Returns the application.
+VaultMarketsAPI.createVaultMarketPredictionMaker() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketPredictionMakersItem**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketPredictionMakerQuote**
+```swift
+    open class func createVaultMarketPredictionMakerQuote(completion: @escaping (_ data: CreateVaultMarketPredictionMakerQuoteResponse?, _ error: Error?) -> Void)
+```
+
+Mass quote: replace your resting maker quotes on up to 50 markets with one Yes bid and one Yes ask each (post-only; an ask rests as a No bid at 100 minus it). Live quotes need an active maker programme. Returns what rests.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Mass quote: replace your resting maker quotes on up to 50 markets with one Yes bid and one Yes ask each (post-only; an ask rests as a No bid at 100 minus it). Live quotes need an active maker programme. Returns what rests.
+VaultMarketsAPI.createVaultMarketPredictionMakerQuote() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketPredictionMakerQuoteResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketPredictionOrder**
+```swift
+    open class func createVaultMarketPredictionOrder(completion: @escaping (_ data: CreateVaultMarketPredictionOrderResponse?, _ error: Error?) -> Void)
+```
+
+Place a prediction order: buy_yes, sell_yes, buy_no or sell_no; limit (priceCents 1-99 in the action's own terms) or market (IOC 10 cents through the best price); GTC, GTD (expiresAt) or IOC; post-only. Sells only what you hold. `venue` paper (practice) or live (503 until a venue is registered). Returns the order with its fills.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Place a prediction order: buy_yes, sell_yes, buy_no or sell_no; limit (priceCents 1-99 in the action's own terms) or market (IOC 10 cents through the best price); GTC, GTD (expiresAt) or IOC; post-only. Sells only what you hold. `venue` paper (practice) or live (503 until a venue is registered). Returns the order with its fills.
+VaultMarketsAPI.createVaultMarketPredictionOrder() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketPredictionOrderResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketPredictionOrderAmend**
+```swift
+    open class func createVaultMarketPredictionOrderAmend(id: String, completion: @escaping (_ data: CreateVaultMarketPredictionOrderAmendResponse?, _ error: Error?) -> Void)
+```
+
+Amend a resting order's price (in its own terms) and/or whole size. It keeps its place in the queue only when the size goes down at the same price; otherwise it is re-queued and may trade at once. Returns the order with `keptPriority`.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Amend a resting order's price (in its own terms) and/or whole size. It keeps its place in the queue only when the size goes down at the same price; otherwise it is re-queued and may trade at once. Returns the order with `keptPriority`.
+VaultMarketsAPI.createVaultMarketPredictionOrderAmend(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketPredictionOrderAmendResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketPredictionOrderBatch**
+```swift
+    open class func createVaultMarketPredictionOrderBatch(completion: @escaping (_ data: CreateVaultMarketPredictionOrderBatchResponse?, _ error: Error?) -> Void)
+```
+
+Place up to 20 orders in one call; each answers on its own (`results[]`), one refused never stops the rest.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Place up to 20 orders in one call; each answers on its own (`results[]`), one refused never stops the rest.
+VaultMarketsAPI.createVaultMarketPredictionOrderBatch() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketPredictionOrderBatchResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketPredictionOrderBatchCancel**
+```swift
+    open class func createVaultMarketPredictionOrderBatchCancel(completion: @escaping (_ data: CreateVaultMarketPredictionOrderBatchCancelResponse?, _ error: Error?) -> Void)
+```
+
+Cancel up to 20 orders in one call; each answers on its own.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Cancel up to 20 orders in one call; each answers on its own.
+VaultMarketsAPI.createVaultMarketPredictionOrderBatchCancel() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketPredictionOrderBatchCancelResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketPredictionOrderCancel**
+```swift
+    open class func createVaultMarketPredictionOrderCancel(id: String, completion: @escaping (_ data: CreateVaultMarketPredictionOrderResponse?, _ error: Error?) -> Void)
+```
+
+Cancel a working prediction order; the money (or practice money) it locked comes back. Returns the order.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Cancel a working prediction order; the money (or practice money) it locked comes back. Returns the order.
+VaultMarketsAPI.createVaultMarketPredictionOrderCancel(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketPredictionOrderResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketPredictionOrderCancelAll**
+```swift
+    open class func createVaultMarketPredictionOrderCancelAll(completion: @escaping (_ data: CreateVaultMarketProOrderCancelAllResponse?, _ error: Error?) -> Void)
+```
+
+Cancel every working prediction order you have, or only those on one market (`marketId`). Returns `{ cancelled }`.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Cancel every working prediction order you have, or only those on one market (`marketId`). Returns `{ cancelled }`.
+VaultMarketsAPI.createVaultMarketPredictionOrderCancelAll() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketProOrderCancelAllResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketPredictionPaperReset**
+```swift
+    open class func createVaultMarketPredictionPaperReset(completion: @escaping (_ data: CreateVaultMarketPredictionPaperResetResponse?, _ error: Error?) -> Void)
+```
+
+Reset your practice prediction account to $1,000 of play money: working practice orders cancelled, practice positions cleared. Once a day.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Reset your practice prediction account to $1,000 of play money: working practice orders cancelled, practice positions cleared. Once a day.
+VaultMarketsAPI.createVaultMarketPredictionPaperReset() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketPredictionPaperResetResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketPredictionPositionClose**
+```swift
+    open class func createVaultMarketPredictionPositionClose(completion: @escaping (_ data: CreateVaultMarketPredictionOrderResponse?, _ error: Error?) -> Void)
+```
+
+Close a position: your resting sells on the market are cancelled and everything you hold is sold now (market, 10-cent band) or at `priceCents`. Returns the sell order.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Close a position: your resting sells on the market are cancelled and everything you hold is sold now (market, 10-cent band) or at `priceCents`. Returns the sell order.
+VaultMarketsAPI.createVaultMarketPredictionPositionClose() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketPredictionOrderResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketPredictionPositionCloseAll**
+```swift
+    open class func createVaultMarketPredictionPositionCloseAll(completion: @escaping (_ data: CreateVaultMarketPredictionPositionCloseAllResponse?, _ error: Error?) -> Void)
+```
+
+Sell all: close every open position on a venue, or only one event's (`eventId`). Each answers on its own.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Sell all: close every open position on a venue, or only one event's (`eventId`). Each answers on its own.
+VaultMarketsAPI.createVaultMarketPredictionPositionCloseAll() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketPredictionPositionCloseAllResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketPredictionProposal**
+```swift
+    open class func createVaultMarketPredictionProposal(completion: @escaping (_ data: ListVaultMarketPredictionProposalsItem?, _ error: Error?) -> Void)
+```
+
+Propose a market: an index slug or a book key, a shape (close at or above / at or below, between, touch), its strike(s) and an expiry. Ops review it; once listed you earn the creator share of Crossly's take on its fees.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Propose a market: an index slug or a book key, a shape (close at or above / at or below, between, touch), its strike(s) and an expiry. Ops review it; once listed you earn the creator share of Crossly's take on its fees.
+VaultMarketsAPI.createVaultMarketPredictionProposal() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketPredictionProposalsItem**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketPredictionProposalCheck**
+```swift
+    open class func createVaultMarketPredictionProposalCheck(completion: @escaping (_ data: CreateVaultMarketPredictionProposalCheckResponse?, _ error: Error?) -> Void)
+```
+
+Check a market proposal without sending it: whether the underlying may carry markets (a built-in index or a tier A key), and what is wrong with the strike or expiry.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Check a market proposal without sending it: whether the underlying may carry markets (a built-in index or a tier A key), and what is wrong with the strike or expiry.
+VaultMarketsAPI.createVaultMarketPredictionProposalCheck() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketPredictionProposalCheckResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketPredictionProposalWithdraw**
+```swift
+    open class func createVaultMarketPredictionProposalWithdraw(id: String, completion: @escaping (_ data: ListVaultMarketPredictionProposalsItem?, _ error: Error?) -> Void)
+```
+
+Withdraw a proposal still waiting for review.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Withdraw a proposal still waiting for review.
+VaultMarketsAPI.createVaultMarketPredictionProposalWithdraw(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**ListVaultMarketPredictionProposalsItem**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketPredictionSettlementDispute**
+```swift
+    open class func createVaultMarketPredictionSettlementDispute(id: String, completion: @escaping (_ data: CreateVaultMarketPredictionSettlementDisputeResponse?, _ error: Error?) -> Void)
+```
+
+Dispute a settlement inside its 24-hour review window (you must hold a position in the market). Payout waits for the venue's decision. Returns `{ settlementId, status }`.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Dispute a settlement inside its 24-hour review window (you must hold a position in the market). Payout waits for the venue's decision. Returns `{ settlementId, status }`.
+VaultMarketsAPI.createVaultMarketPredictionSettlementDispute(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketPredictionSettlementDisputeResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketPredictionTerm**
+```swift
+    open class func createVaultMarketPredictionTerm(completion: @escaping (_ data: CreateVaultMarketPredictionTermResponse?, _ error: Error?) -> Void)
+```
+
+Accept the current prediction-market contract terms (PREDICTION_TERMS_VERSION), needed for every real-money order. Returns `{ termsVersion, venue }`.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Accept the current prediction-market contract terms (PREDICTION_TERMS_VERSION), needed for every real-money order. Returns `{ termsVersion, venue }`.
+VaultMarketsAPI.createVaultMarketPredictionTerm() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketPredictionTermResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **createVaultMarketPriceWidget**
 ```swift
     open class func createVaultMarketPriceWidget(completion: @escaping (_ data: ListVaultMarketPriceWidgetsItem?, _ error: Error?) -> Void)
@@ -6167,7 +8924,7 @@ This endpoint does not need any parameter.
 
 # **createVaultMarketProQuoteHeartbeat**
 ```swift
-    open class func createVaultMarketProQuoteHeartbeat(completion: @escaping (_ data: CreateVaultMarketProQuoteHeartbeatResponse?, _ error: Error?) -> Void)
+    open class func createVaultMarketProQuoteHeartbeat(completion: @escaping (_ data: CreateVaultMarketOptionMmHeartbeatResponse?, _ error: Error?) -> Void)
 ```
 
 Keep your quotes alive (cancel-on-disconnect). Returns `{ quotes, at }`.
@@ -6196,7 +8953,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-**CreateVaultMarketProQuoteHeartbeatResponse**
+**CreateVaultMarketOptionMmHeartbeatResponse**
 
 ### Authorization
 
@@ -6721,6 +9478,338 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **createVaultMarketShareAutoInvest**
+```swift
+    open class func createVaultMarketShareAutoInvest(completion: @escaping (_ data: ListVaultMarketShareAutoInvestItem?, _ error: Error?) -> Void)
+```
+
+Start auto-invest: `amountCents` ($5-$10,000) `every` week or month into `seriesIds` (equal weights) or `targets` (seriesId + weightBps summing to 10,000) or a `basketId` (with `rebalance` to keep your own shares on its weights). Whole shares only; the rest rolls over. Offerings are subscribed at their price; trading books are bought at the best ask up to `maxPremiumBps` over the indicative value. `practice` runs it on paper.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Start auto-invest: `amountCents` ($5-$10,000) `every` week or month into `seriesIds` (equal weights) or `targets` (seriesId + weightBps summing to 10,000) or a `basketId` (with `rebalance` to keep your own shares on its weights). Whole shares only; the rest rolls over. Offerings are subscribed at their price; trading books are bought at the best ask up to `maxPremiumBps` over the indicative value. `practice` runs it on paper.
+VaultMarketsAPI.createVaultMarketShareAutoInvest() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketShareAutoInvestItem**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketShareAutoInvestRun**
+```swift
+    open class func createVaultMarketShareAutoInvestRun(id: String, completion: @escaping (_ data: CreateVaultMarketShareAutoInvestRunResponse?, _ error: Error?) -> Void)
+```
+
+Run a plan now (once a minute at most); the schedule does not move.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Run a plan now (once a minute at most); the schedule does not move.
+VaultMarketsAPI.createVaultMarketShareAutoInvestRun(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketShareAutoInvestRunResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketShareAutoInvestUpdate**
+```swift
+    open class func createVaultMarketShareAutoInvestUpdate(id: String, completion: @escaping (_ data: ListVaultMarketShareAutoInvestItem?, _ error: Error?) -> Void)
+```
+
+Change a plan (amount, cadence, series or weights, cap, rebalance) or set its `status` active, paused or cancelled.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Change a plan (amount, cadence, series or weights, cap, rebalance) or set its `status` active, paused or cancelled.
+VaultMarketsAPI.createVaultMarketShareAutoInvestUpdate(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**ListVaultMarketShareAutoInvestItem**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketShareBasketBuy**
+```swift
+    open class func createVaultMarketShareBasketBuy(id: String, completion: @escaping (_ data: CreateVaultMarketShareBasketBuyResponse?, _ error: Error?) -> Void)
+```
+
+Buy a basket once: `amountCents` split by its live weights into whole shares of each series, in your own name (offerings subscribed, trading books at the best ask up to `maxPremiumBps`). `practice` buys on paper.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Buy a basket once: `amountCents` split by its live weights into whole shares of each series, in your own name (offerings subscribed, trading books at the best ask up to `maxPremiumBps`). `practice` buys on paper.
+VaultMarketsAPI.createVaultMarketShareBasketBuy(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketShareBasketBuyResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketShareBuyoutFund**
+```swift
+    open class func createVaultMarketShareBuyoutFund(id: String, completion: @escaping (_ data: CreateVaultMarketShareBuyoutFundResponse?, _ error: Error?) -> Void)
+```
+
+Your whole-unit bid reached the reserve: fund the price through your investor account within 72 hours to buy the item from its holders (no vote).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Your whole-unit bid reached the reserve: fund the price through your investor account within 72 hours to buy the item from its holders (no vote).
+VaultMarketsAPI.createVaultMarketShareBuyoutFund(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketShareBuyoutFundResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketShareBuyoutVote**
+```swift
+    open class func createVaultMarketShareBuyoutVote(id: String, completion: @escaping (_ data: CreateVaultMarketShareBuyoutFundResponse?, _ error: Error?) -> Void)
+```
+
+Vote `yes` or `no` on a buyout with the shares you held when the vote opened. You can change your vote while it is open.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Vote `yes` or `no` on a buyout with the shares you held when the vote opened. You can change your vote while it is open.
+VaultMarketsAPI.createVaultMarketShareBuyoutVote(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketShareBuyoutFundResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketShareBuyoutWithdraw**
+```swift
+    open class func createVaultMarketShareBuyoutWithdraw(id: String, completion: @escaping (_ data: CreateVaultMarketShareBuyoutFundResponse?, _ error: Error?) -> Void)
+```
+
+Withdraw your buyout bid before its vote opens; the escrow is refunded.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Withdraw your buyout bid before its vote opens; the escrow is refunded.
+VaultMarketsAPI.createVaultMarketShareBuyoutWithdraw(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketShareBuyoutFundResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **createVaultMarketShareCard**
 ```swift
     open class func createVaultMarketShareCard(completion: @escaping (_ data: ListVaultMarketShareCardsItem?, _ error: Error?) -> Void)
@@ -6753,6 +9842,1146 @@ This endpoint does not need any parameter.
 ### Return type
 
 **ListVaultMarketShareCardsItem**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketShareGiftAccept**
+```swift
+    open class func createVaultMarketShareGiftAccept(id: String, completion: @escaping (_ data: ListVaultMarketShareGiftsItem?, _ error: Error?) -> Void)
+```
+
+Accept a share gift. Needs your own verified Vault Shares investor account; the venue then moves the shares to you on the register.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Accept a share gift. Needs your own verified Vault Shares investor account; the venue then moves the shares to you on the register.
+VaultMarketsAPI.createVaultMarketShareGiftAccept(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**ListVaultMarketShareGiftsItem**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketShareGiftCancel**
+```swift
+    open class func createVaultMarketShareGiftCancel(id: String, completion: @escaping (_ data: ListVaultMarketShareGiftsItem?, _ error: Error?) -> Void)
+```
+
+Cancel a gift you offered, before it is accepted: the shares are free again.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Cancel a gift you offered, before it is accepted: the shares are free again.
+VaultMarketsAPI.createVaultMarketShareGiftCancel(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**ListVaultMarketShareGiftsItem**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketShareGiftDecline**
+```swift
+    open class func createVaultMarketShareGiftDecline(id: String, completion: @escaping (_ data: ListVaultMarketShareGiftsItem?, _ error: Error?) -> Void)
+```
+
+Decline a share gift offered to you.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Decline a share gift offered to you.
+VaultMarketsAPI.createVaultMarketShareGiftDecline(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**ListVaultMarketShareGiftsItem**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketShareInvestor**
+```swift
+    open class func createVaultMarketShareInvestor(completion: @escaping (_ data: GetVaultMarketShareInvestorResponse?, _ error: Error?) -> Void)
+```
+
+Open or update your investor account at the venue: accept the current investor terms (`acceptTerms`), and state accredited status or your annual income and net worth for the Reg A+ limit. Needs a verified ID.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Open or update your investor account at the venue: accept the current investor terms (`acceptTerms`), and state accredited status or your annual income and net worth for the Reg A+ limit. Needs a verified ID.
+VaultMarketsAPI.createVaultMarketShareInvestor() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketShareInvestorResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketShareOrderCancel**
+```swift
+    open class func createVaultMarketShareOrderCancel(id: String, completion: @escaping (_ data: ListVaultMarketShareOrdersItem?, _ error: Error?) -> Void)
+```
+
+Cancel one of your open share-book orders.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Cancel one of your open share-book orders.
+VaultMarketsAPI.createVaultMarketShareOrderCancel(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**ListVaultMarketShareOrdersItem**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketSharePaperOrderCancel**
+```swift
+    open class func createVaultMarketSharePaperOrderCancel(id: String, completion: @escaping (_ data: CreateVaultMarketSharePaperSeryOrderResponse?, _ error: Error?) -> Void)
+```
+
+Cancel an open practice order.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Cancel an open practice order.
+VaultMarketsAPI.createVaultMarketSharePaperOrderCancel(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketSharePaperSeryOrderResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketSharePaperReset**
+```swift
+    open class func createVaultMarketSharePaperReset(completion: @escaping (_ data: GetVaultMarketSharePaperResponse?, _ error: Error?) -> Void)
+```
+
+Start the practice account over with fresh play money (once a day).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Start the practice account over with fresh play money (once a day).
+VaultMarketsAPI.createVaultMarketSharePaperReset() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketSharePaperResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketSharePaperSeryOrder**
+```swift
+    open class func createVaultMarketSharePaperSeryOrder(id: String, completion: @escaping (_ data: CreateVaultMarketSharePaperSeryOrderResponse?, _ error: Error?) -> Void)
+```
+
+Place a practice order (play money) with the same rules as the real share book.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Place a practice order (play money) with the same rules as the real share book.
+VaultMarketsAPI.createVaultMarketSharePaperSeryOrder(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketSharePaperSeryOrderResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketSharePaperSerySubscribe**
+```swift
+    open class func createVaultMarketSharePaperSerySubscribe(id: String, completion: @escaping (_ data: GetVaultMarketSharePaperResponse?, _ error: Error?) -> Void)
+```
+
+Subscribe with play money to a practice series’ offering.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Subscribe with play money to a practice series’ offering.
+VaultMarketsAPI.createVaultMarketSharePaperSerySubscribe(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetVaultMarketSharePaperResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketShareRoomHide**
+```swift
+    open class func createVaultMarketShareRoomHide(id: String, completion: @escaping (_ data: CreateVaultMarketShareRoomHideResponse?, _ error: Error?) -> Void)
+```
+
+Take down one of your own holder-room posts (`reason`).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Take down one of your own holder-room posts (`reason`).
+VaultMarketsAPI.createVaultMarketShareRoomHide(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketShareRoomHideResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketShareSery**
+```swift
+    open class func createVaultMarketShareSery(completion: @escaping (_ data: ListVaultMarketShareSeriesItem?, _ error: Error?) -> Void)
+```
+
+Propose a Vault Shares series for one of your units (`vaultItemId`), keeping `retainedShares` (0-50%), with an optional minimum raise, offering length (7-60 days) and reserve. Ops then qualify it, attach the offering circular and open the offering. With no venue it is a practice series. Pass `requestId` to make a retry safe.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Propose a Vault Shares series for one of your units (`vaultItemId`), keeping `retainedShares` (0-50%), with an optional minimum raise, offering length (7-60 days) and reserve. Ops then qualify it, attach the offering circular and open the offering. With no venue it is a practice series. Pass `requestId` to make a retry safe.
+VaultMarketsAPI.createVaultMarketShareSery() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketShareSeriesItem**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketShareSeryBuyout**
+```swift
+    open class func createVaultMarketShareSeryBuyout(id: String, completion: @escaping (_ data: CreateVaultMarketShareBuyoutFundResponse?, _ error: Error?) -> Void)
+```
+
+Bid for the whole item (`offerCents`, at least the mark x 1.10). The bid is escrowed at the venue, then holders vote by shares: two-thirds yes accepts, a majority against rejects, 14 days with no majority against accepts. Accepted, the item is yours and the price is paid out pro rata after storage and insurance.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Bid for the whole item (`offerCents`, at least the mark x 1.10). The bid is escrowed at the venue, then holders vote by shares: two-thirds yes accepts, a majority against rejects, 14 days with no majority against accepts. Accepted, the item is yours and the price is paid out pro rata after storage and insurance.
+VaultMarketsAPI.createVaultMarketShareSeryBuyout(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketShareBuyoutFundResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketShareSeryGift**
+```swift
+    open class func createVaultMarketShareSeryGift(id: String, completion: @escaping (_ data: ListVaultMarketShareGiftsItem?, _ error: Error?) -> Void)
+```
+
+Give whole `shares` of a series to someone (`to`: their @handle, email or user id), with an optional `message`. The shares are set aside until they accept (14 days). On acceptance the broker-dealer or transfer agent verifies them and moves the shares on the register: no money moves, and your cost basis and holding date carry over.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Give whole `shares` of a series to someone (`to`: their @handle, email or user id), with an optional `message`. The shares are set aside until they accept (14 days). On acceptance the broker-dealer or transfer agent verifies them and moves the shares on the register: no money moves, and your cost basis and holding date carry over.
+VaultMarketsAPI.createVaultMarketShareSeryGift(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**ListVaultMarketShareGiftsItem**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketShareSeryOrder**
+```swift
+    open class func createVaultMarketShareSeryOrder(id: String, completion: @escaping (_ data: ListVaultMarketShareOrdersItem?, _ error: Error?) -> Void)
+```
+
+Place an order on a series’ share book: `side`, `type` limit or market (immediate-or-cancel inside a 10% band), `tif` gtc / gtd (`expiresAt`) / ioc, whole `shares` or a buy’s `amountCents` (turned into whole shares at the most it could pay), integer `limitCents` a share, `postOnly`. Fees: maker 0, taker 100 bps plus the broker-dealer pass-through. Self-trades are prevented. Pass `requestId` to make a retry safe.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Place an order on a series’ share book: `side`, `type` limit or market (immediate-or-cancel inside a 10% band), `tif` gtc / gtd (`expiresAt`) / ioc, whole `shares` or a buy’s `amountCents` (turned into whole shares at the most it could pay), integer `limitCents` a share, `postOnly`. Fees: maker 0, taker 100 bps plus the broker-dealer pass-through. Self-trades are prevented. Pass `requestId` to make a retry safe.
+VaultMarketsAPI.createVaultMarketShareSeryOrder(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**ListVaultMarketShareOrdersItem**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketShareSeryRecombine**
+```swift
+    open class func createVaultMarketShareSeryRecombine(id: String, completion: @escaping (_ data: CreateVaultMarketShareSeryRecombineResponse?, _ error: Error?) -> Void)
+```
+
+You hold every share: take the item back whole. With `withdraw`, it ships home at once (any receipt token is burned as it leaves). Storage and insurance the series owed stay with the unit.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// You hold every share: take the item back whole. With `withdraw`, it ships home at once (any receipt token is burned as it leaves). Storage and insurance the series owed stay with the unit.
+VaultMarketsAPI.createVaultMarketShareSeryRecombine(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketShareSeryRecombineResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketShareSeryRoom**
+```swift
+    open class func createVaultMarketShareSeryRoom(id: String, completion: @escaping (_ data: CreateVaultMarketShareSeryRoomResponse?, _ error: Error?) -> Void)
+```
+
+Post in the holder room (shareholders only), up to 1,000 characters.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Post in the holder room (shareholders only), up to 1,000 characters.
+VaultMarketsAPI.createVaultMarketShareSeryRoom(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketShareSeryRoomResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketShareSerySubscribe**
+```swift
+    open class func createVaultMarketShareSerySubscribe(id: String, completion: @escaping (_ data: ListVaultMarketShareSubscriptionsItem?, _ error: Error?) -> Void)
+```
+
+Subscribe for whole `shares` in an open offering at its fixed price. The money goes into the venue’s escrow in your own name and is refunded if the offering misses its minimum. Reg A+ limits apply. A joint vault member with trade rights may pass `jointVaultId`. Pass `requestId` to make a retry safe.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Subscribe for whole `shares` in an open offering at its fixed price. The money goes into the venue’s escrow in your own name and is refunded if the offering misses its minimum. Reg A+ limits apply. A joint vault member with trade rights may pass `jointVaultId`. Pass `requestId` to make a retry safe.
+VaultMarketsAPI.createVaultMarketShareSerySubscribe(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**ListVaultMarketShareSubscriptionsItem**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketShareSeryUnwatch**
+```swift
+    open class func createVaultMarketShareSeryUnwatch(id: String, completion: @escaping (_ data: CreateVaultMarketShareSeryWatchResponse?, _ error: Error?) -> Void)
+```
+
+Stop being told about a drop (`kind` notify) or leave its waitlist (`kind` waitlist).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Stop being told about a drop (`kind` notify) or leave its waitlist (`kind` waitlist).
+VaultMarketsAPI.createVaultMarketShareSeryUnwatch(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketShareSeryWatchResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketShareSeryUpdate**
+```swift
+    open class func createVaultMarketShareSeryUpdate(id: String, completion: @escaping (_ data: IdResponse?, _ error: Error?) -> Void)
+```
+
+Post an update on your own item’s series (you are its originator): `kind` story, provenance, condition, appraisal, exhibition or event, a `title`, a `body`, an optional https `mediaUrl`, `holdersOnly`. Holders are told.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Post an update on your own item’s series (you are its originator): `kind` story, provenance, condition, appraisal, exhibition or event, a `title`, a `body`, an optional https `mediaUrl`, `holdersOnly`. Holders are told.
+VaultMarketsAPI.createVaultMarketShareSeryUpdate(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**IdResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketShareSeryWatch**
+```swift
+    open class func createVaultMarketShareSeryWatch(id: String, completion: @escaping (_ data: CreateVaultMarketShareSeryWatchResponse?, _ error: Error?) -> Void)
+```
+
+Ask to be told about a drop (`kind` notify: when your early access opens and when it opens to everyone) or join the waitlist of a sold-out first-come offering (`kind` waitlist, with the `shares` you want).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Ask to be told about a drop (`kind` notify: when your early access opens and when it opens to everyone) or join the waitlist of a sold-out first-come offering (`kind` waitlist, with the `shares` you want).
+VaultMarketsAPI.createVaultMarketShareSeryWatch(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketShareSeryWatchResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketShareSeryWithdrawProposal**
+```swift
+    open class func createVaultMarketShareSeryWithdrawProposal(id: String, completion: @escaping (_ data: ListVaultMarketShareSeriesItem?, _ error: Error?) -> Void)
+```
+
+Withdraw your own proposal before its offering opens.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Withdraw your own proposal before its offering opens.
+VaultMarketsAPI.createVaultMarketShareSeryWithdrawProposal(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**ListVaultMarketShareSeriesItem**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketShareSubscriptionCancel**
+```swift
+    open class func createVaultMarketShareSubscriptionCancel(id: String, completion: @escaping (_ data: ListVaultMarketShareSubscriptionsItem?, _ error: Error?) -> Void)
+```
+
+Cancel an escrowed subscription while its offering is still open: the escrow is refunded.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Cancel an escrowed subscription while its offering is still open: the escrow is refunded.
+VaultMarketsAPI.createVaultMarketShareSubscriptionCancel(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**ListVaultMarketShareSubscriptionsItem**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketShareViewingBook**
+```swift
+    open class func createVaultMarketShareViewingBook(id: String, completion: @escaping (_ data: CreateVaultMarketShareViewingBookResponse?, _ error: Error?) -> Void)
+```
+
+Book a place on a viewing day (shareholders only), with up to the day’s `guests`. Bookings close a day before; booking again changes your guests.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Book a place on a viewing day (shareholders only), with up to the day’s `guests`. Bookings close a day before; booking again changes your guests.
+VaultMarketsAPI.createVaultMarketShareViewingBook(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketShareViewingBookResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketShareViewingBookingCancel**
+```swift
+    open class func createVaultMarketShareViewingBookingCancel(id: String, completion: @escaping (_ data: CreateVaultMarketShareViewingBookingCancelResponse?, _ error: Error?) -> Void)
+```
+
+Cancel your viewing-day booking.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Cancel your viewing-day booking.
+VaultMarketsAPI.createVaultMarketShareViewingBookingCancel(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketShareViewingBookingCancelResponse**
 
 ### Authorization
 
@@ -6937,6 +11166,50 @@ This endpoint does not need any parameter.
 ### Return type
 
 **CreateVaultMarketSupplySendResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createVaultMarketSupplySendIn**
+```swift
+    open class func createVaultMarketSupplySendIn(completion: @escaping (_ data: CreateVaultMarketSupplySendInResponse?, _ error: Error?) -> Void)
+```
+
+Send inventory items to the vault: `method: label` (one box on a prepaid label) or `dropoff` at a partner (`partnerId`, from the finder; you get a counter code). Each item can carry its declared value; `insured` insures the box for it.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Send inventory items to the vault: `method: label` (one box on a prepaid label) or `dropoff` at a partner (`partnerId`, from the finder; you get a counter code). Each item can carry its declared value; `insured` insures the box for it.
+VaultMarketsAPI.createVaultMarketSupplySendIn() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateVaultMarketSupplySendInResponse**
 
 ### Authorization
 
@@ -7829,6 +12102,50 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **deleteVaultMarketAutoBuy**
+```swift
+    open class func deleteVaultMarketAutoBuy(completion: @escaping (_ data: DeleteVaultMarketAutoBuyResponse?, _ error: Error?) -> Void)
+```
+
+Stop Auto-buy with payouts. The history stays.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Stop Auto-buy with payouts. The history stays.
+VaultMarketsAPI.deleteVaultMarketAutoBuy() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**DeleteVaultMarketAutoBuyResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **deleteVaultMarketBullionFamilyPeg**
 ```swift
     open class func deleteVaultMarketBullionFamilyPeg(id: String, completion: @escaping (_ data: ListVaultMarketBullionFamilyPegsItem?, _ error: Error?) -> Void)
@@ -8199,6 +12516,198 @@ Name | Type | Description  | Notes
 ### Return type
 
 **DeleteVaultMarketOpeningWaitlistResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **deleteVaultMarketPredictionAlert**
+```swift
+    open class func deleteVaultMarketPredictionAlert(id: String, completion: @escaping (_ data: OkResponse?, _ error: Error?) -> Void)
+```
+
+Remove a probability alert. Returns `{ ok }`.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Remove a probability alert. Returns `{ ok }`.
+VaultMarketsAPI.deleteVaultMarketPredictionAlert(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**OkResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **deleteVaultMarketPredictionCard**
+```swift
+    open class func deleteVaultMarketPredictionCard(id: String, completion: @escaping (_ data: OkResponse?, _ error: Error?) -> Void)
+```
+
+Take an \"I called it\" card down; its link stops working. Returns `{ ok }`.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Take an \"I called it\" card down; its link stops working. Returns `{ ok }`.
+VaultMarketsAPI.deleteVaultMarketPredictionCard(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**OkResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **deleteVaultMarketPredictionComment**
+```swift
+    open class func deleteVaultMarketPredictionComment(id: String, completion: @escaping (_ data: OkResponse?, _ error: Error?) -> Void)
+```
+
+Delete your comment.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Delete your comment.
+VaultMarketsAPI.deleteVaultMarketPredictionComment(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**OkResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **deleteVaultMarketPredictionForecasterFollow**
+```swift
+    open class func deleteVaultMarketPredictionForecasterFollow(id: String, completion: @escaping (_ data: CreateVaultMarketPredictionForecasterFollowResponse?, _ error: Error?) -> Void)
+```
+
+Stop following a forecaster.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Stop following a forecaster.
+VaultMarketsAPI.deleteVaultMarketPredictionForecasterFollow(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketPredictionForecasterFollowResponse**
 
 ### Authorization
 
@@ -9121,6 +13630,50 @@ This endpoint does not need any parameter.
 ### Return type
 
 **GetVaultMarketAuctionMineResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketAutoBuy**
+```swift
+    open class func getVaultMarketAutoBuy(completion: @escaping (_ data: GetVaultMarketAutoBuyResponse?, _ error: Error?) -> Void)
+```
+
+Auto-buy with payouts: the share of each payout set aside as a vault buying budget, the budget, your want list with max prices, the purchase history and whether it is paused. `autoBuy` is null when it is not set up.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Auto-buy with payouts: the share of each payout set aside as a vault buying budget, the budget, your want list with max prices, the purchase history and whether it is paused. `autoBuy` is null when it is not set up.
+VaultMarketsAPI.getVaultMarketAutoBuy() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketAutoBuyResponse**
 
 ### Authorization
 
@@ -10867,6 +15420,102 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **getVaultMarketHoldingInventoryItem**
+```swift
+    open class func getVaultMarketHoldingInventoryItem(id: String, completion: @escaping (_ data: GetVaultMarketHoldingInventoryItemResponse?, _ error: Error?) -> Void)
+```
+
+The inventory item a vault unit of yours came from (null for a unit bought on the book).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// The inventory item a vault unit of yours came from (null for a unit bought on the book).
+VaultMarketsAPI.getVaultMarketHoldingInventoryItem(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetVaultMarketHoldingInventoryItemResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketHoldingWithdrawQuote**
+```swift
+    open class func getVaultMarketHoldingWithdrawQuote(id: String, completion: @escaping (_ data: GetVaultMarketHoldingWithdrawQuoteResponse?, _ error: Error?) -> Void)
+```
+
+What shipping one unit you own home would charge now, for `standard` and `expedited`: shipping, the storage it owes and the early-withdrawal fee (within 90 days of arriving), and the total. Read-only; ship it home with POST /api/v1/buyer/vault/:id/withdraw.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// What shipping one unit you own home would charge now, for `standard` and `expedited`: shipping, the storage it owes and the early-withdrawal fee (within 90 days of arriving), and the total. Read-only; ship it home with POST /api/v1/buyer/vault/:id/withdraw.
+VaultMarketsAPI.getVaultMarketHoldingWithdrawQuote(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetVaultMarketHoldingWithdrawQuoteResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **getVaultMarketHomeUnit**
 ```swift
     open class func getVaultMarketHomeUnit(completion: @escaping (_ data: GetVaultMarketHomeUnitResponse?, _ error: Error?) -> Void)
@@ -11363,6 +16012,54 @@ This endpoint does not need any parameter.
 ### Return type
 
 **GetVaultMarketInstantExitResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketItemLocation**
+```swift
+    open class func getVaultMarketItemLocation(inventoryItemId: String, completion: @escaping (_ data: GetVaultMarketItemLocationResponse?, _ error: Error?) -> Void)
+```
+
+Where one inventory item's units are: in your own stock (warehouse) and in the vault per location, each vault unit's status (in transit, received, authenticated, graded, listed, shipped out), its Sell from first choice and whether it can be sent to the vault now (with the reason when not).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let inventoryItemId = "inventoryItemId_example" // String | 
+
+// Where one inventory item's units are: in your own stock (warehouse) and in the vault per location, each vault unit's status (in transit, received, authenticated, graded, listed, shipped out), its Sell from first choice and whether it can be sent to the vault now (with the reason when not).
+VaultMarketsAPI.getVaultMarketItemLocation(inventoryItemId: inventoryItemId) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **inventoryItemId** | **String** |  | 
+
+### Return type
+
+**GetVaultMarketItemLocationResponse**
 
 ### Authorization
 
@@ -12381,6 +17078,786 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **getVaultMarketOption**
+```swift
+    open class func getVaultMarketOption(completion: @escaping (_ data: GetVaultMarketOptionResponse?, _ error: Error?) -> Void)
+```
+
+Fractional options: the venue mode (self = Crossly is the venue and clearing house, partner = routed to the index DCM, paper = practice only) with the env each mode still needs, the active series and the rule book in force.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Fractional options: the venue mode (self = Crossly is the venue and clearing house, partner = routed to the index DCM, paper = practice only) with the env each mode still needs, the active series and the rule book in force.
+VaultMarketsAPI.getVaultMarketOption() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketOptionResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketOptionAnalytic**
+```swift
+    open class func getVaultMarketOptionAnalytic(underlying: String, completion: @escaping (_ data: GetVaultMarketOptionAnalyticResponse?, _ error: Error?) -> Void)
+```
+
+Options analytics on an underlying: the vol surface (expiry x moneyness) and one expiry's smile (`expiry`), IV rank and percentile against the series' own year, open interest and volume by strike and expiry, put/call ratios, the expected move to each expiry, and the historical vol of the underlying's own published series. Every implied vol is derived and display only.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let underlying = "underlying_example" // String | 
+
+// Options analytics on an underlying: the vol surface (expiry x moneyness) and one expiry's smile (`expiry`), IV rank and percentile against the series' own year, open interest and volume by strike and expiry, put/call ratios, the expected move to each expiry, and the historical vol of the underlying's own published series. Every implied vol is derived and display only.
+VaultMarketsAPI.getVaultMarketOptionAnalytic(underlying: underlying) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **underlying** | **String** |  | 
+
+### Return type
+
+**GetVaultMarketOptionAnalyticResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketOptionAutoClose**
+```swift
+    open class func getVaultMarketOptionAutoClose(completion: @escaping (_ data: GetVaultMarketOptionAutoCloseResponse?, _ error: Error?) -> Void)
+```
+
+Your auto-close rule: close positions (or only in-the-money ones) a set time before expiry with a marketable limit.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your auto-close rule: close positions (or only in-the-money ones) a set time before expiry with a marketable limit.
+VaultMarketsAPI.getVaultMarketOptionAutoClose() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketOptionAutoCloseResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketOptionChain**
+```swift
+    open class func getVaultMarketOptionChain(underlying: String, completion: @escaping (_ data: GetVaultMarketOptionChainResponse?, _ error: Error?) -> Void)
+```
+
+The option chain for an underlying (index slug or book key): its expiries, and for one expiry (`expiry`, default the nearest) each strike's call and put with best bid / ask, last, open interest, the theoretical price at the reference vol, the implied vol of the mid (display only, never a mark) and the Greeks. Prices are cents per contract.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let underlying = "underlying_example" // String | 
+
+// The option chain for an underlying (index slug or book key): its expiries, and for one expiry (`expiry`, default the nearest) each strike's call and put with best bid / ask, last, open interest, the theoretical price at the reference vol, the implied vol of the mid (display only, never a mark) and the Greeks. Prices are cents per contract.
+VaultMarketsAPI.getVaultMarketOptionChain(underlying: underlying) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **underlying** | **String** |  | 
+
+### Return type
+
+**GetVaultMarketOptionChainResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketOptionComboBook**
+```swift
+    open class func getVaultMarketOptionComboBook(completion: @escaping (_ data: GetVaultMarketOptionComboBookResponse?, _ error: Error?) -> Void)
+```
+
+One strategy's combo book by its canonical key (`key`, from the preview or an order): bids and asks by net price and recent strategy trades.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// One strategy's combo book by its canonical key (`key`, from the preview or an order): bids and asks by net price and recent strategy trades.
+VaultMarketsAPI.getVaultMarketOptionComboBook() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketOptionComboBookResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketOptionComboRfq**
+```swift
+    open class func getVaultMarketOptionComboRfq(id: String, completion: @escaping (_ data: GetVaultMarketOptionComboRfqResponse?, _ error: Error?) -> Void)
+```
+
+One strategy quote request and its answers (all of them to the requester, your own to a responder).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// One strategy quote request and its answers (all of them to the requester, your own to a responder).
+VaultMarketsAPI.getVaultMarketOptionComboRfq(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetVaultMarketOptionComboRfqResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketOptionContract**
+```swift
+    open class func getVaultMarketOptionContract(id: String, completion: @escaping (_ data: GetVaultMarketOptionContractResponse?, _ error: Error?) -> Void)
+```
+
+One option contract: its terms, the self-venue book and tape, its published daily settlement prices and, once settled, its settlement (value, source, flagged, and the hash chained to the previous settlement).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// One option contract: its terms, the self-venue book and tape, its published daily settlement prices and, once settled, its settlement (value, source, flagged, and the hash chained to the previous settlement).
+VaultMarketsAPI.getVaultMarketOptionContract(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetVaultMarketOptionContractResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketOptionContractBook**
+```swift
+    open class func getVaultMarketOptionContractBook(id: String, completion: @escaping (_ data: GetVaultMarketOptionContractBookResponse?, _ error: Error?) -> Void)
+```
+
+A contract's order book on the Crossly venue (`levels`, default 20): bids and asks by price with milli-contract sizes, and the last 50 prints.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// A contract's order book on the Crossly venue (`levels`, default 20): bids and asks by price with milli-contract sizes, and the last 50 prints.
+VaultMarketsAPI.getVaultMarketOptionContractBook(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetVaultMarketOptionContractBookResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketOptionContractSettlement**
+```swift
+    open class func getVaultMarketOptionContractSettlement(id: String, completion: @escaping (_ data: GetVaultMarketOptionContractSettlementResponse?, _ error: Error?) -> Void)
+```
+
+A settled contract's settlement: the value (cents per unit of the underlying), its source (the index's frozen 7-day TWAP, the item's expiry-day A/B mark, or the last reliable value, flagged), and the hash chained to the previous settlement. Null until it settles.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// A settled contract's settlement: the value (cents per unit of the underlying), its source (the index's frozen 7-day TWAP, the item's expiry-day A/B mark, or the last reliable value, flagged), and the hash chained to the previous settlement. Null until it settles.
+VaultMarketsAPI.getVaultMarketOptionContractSettlement(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetVaultMarketOptionContractSettlementResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketOptionHedge**
+```swift
+    open class func getVaultMarketOptionHedge(completion: @escaping (_ data: GetVaultMarketOptionHedgeResponse?, _ error: Error?) -> Void)
+```
+
+Your hedges: long puts protecting vault units you hold (protective puts) and the vault units locked as collateral for calls you wrote (covered calls).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your hedges: long puts protecting vault units you hold (protective puts) and the vault units locked as collateral for calls you wrote (covered calls).
+VaultMarketsAPI.getVaultMarketOptionHedge() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketOptionHedgeResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketOptionIv**
+```swift
+    open class func getVaultMarketOptionIv(underlying: String, completion: @escaping (_ data: GetVaultMarketOptionIvResponse?, _ error: Error?) -> Void)
+```
+
+The at-the-money implied volatility of the nearest expiry on an underlying, for display on its page: derived from the options book, quality C, never written as a mark.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let underlying = "underlying_example" // String | 
+
+// The at-the-money implied volatility of the nearest expiry on an underlying, for display on its page: derived from the options book, quality C, never written as a mark.
+VaultMarketsAPI.getVaultMarketOptionIv(underlying: underlying) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **underlying** | **String** |  | 
+
+### Return type
+
+**GetVaultMarketOptionIvResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketOptionMargin**
+```swift
+    open class func getVaultMarketOptionMargin(completion: @escaping (_ data: GetVaultMarketOptionMarginResponse?, _ error: Error?) -> Void)
+```
+
+Your options margin: the scenario requirement (worst loss over a +/-40% price x +/-50% vol grid, with offsets from vault units and positions you hold), initial margin, equity and state (ok / call / liquidate) per underlying. Authoritative on the Crossly venue; on the partner venue the partner's figure decides and this is an estimate.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your options margin: the scenario requirement (worst loss over a +/-40% price x +/-50% vol grid, with offsets from vault units and positions you hold), initial margin, equity and state (ok / call / liquidate) per underlying. Authoritative on the Crossly venue; on the partner venue the partner's figure decides and this is an estimate.
+VaultMarketsAPI.getVaultMarketOptionMargin() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketOptionMarginResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketOptionPayoff**
+```swift
+    open class func getVaultMarketOptionPayoff(completion: @escaping (_ data: GetVaultMarketOptionPayoffResponse?, _ error: Error?) -> Void)
+```
+
+Your whole options position on one `underlying` at expiry: the P&L curve over 50%..150% of spot, breakevens, and the maximum gain and loss (null when unbounded).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your whole options position on one `underlying` at expiry: the P&L curve over 50%..150% of spot, breakevens, and the maximum gain and loss (null when unbounded).
+VaultMarketsAPI.getVaultMarketOptionPayoff() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketOptionPayoffResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketOptionPosition**
+```swift
+    open class func getVaultMarketOptionPosition(completion: @escaping (_ data: GetVaultMarketOptionPositionResponse?, _ error: Error?) -> Void)
+```
+
+Your options positions: signed milli-contracts, average open price, the price it is settled to (Crossly venue), the theoretical mark, unrealised and realised P&L in cents, the Greeks for your size, the protective-put flag and your auto-deleveraging queue lights. `status` open (default) / all, `subaccountId`.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your options positions: signed milli-contracts, average open price, the price it is settled to (Crossly venue), the theoretical mark, unrealised and realised P&L in cents, the Greeks for your size, the protective-put flag and your auto-deleveraging queue lights. `status` open (default) / all, `subaccountId`.
+VaultMarketsAPI.getVaultMarketOptionPosition() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketOptionPositionResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketOptionPractice**
+```swift
+    open class func getVaultMarketOptionPractice(completion: @escaping (_ data: GetVaultMarketOptionPracticeResponse?, _ error: Error?) -> Void)
+```
+
+Your options practice account (play money only, $10,000 to start): cash, positions at the practice maker's price, equity and P&L.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your options practice account (play money only, $10,000 to start): cash, positions at the practice maker's price, equity and P&L.
+VaultMarketsAPI.getVaultMarketOptionPractice() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketOptionPracticeResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketOptionRfq**
+```swift
+    open class func getVaultMarketOptionRfq(id: String, completion: @escaping (_ data: GetVaultMarketOptionRfqResponse?, _ error: Error?) -> Void)
+```
+
+One option quote request: yours with every answer, or one you were sent with your own answer.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// One option quote request: yours with every answer, or one you were sent with your own answer.
+VaultMarketsAPI.getVaultMarketOptionRfq(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetVaultMarketOptionRfqResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketOptionRisk**
+```swift
+    open class func getVaultMarketOptionRisk(completion: @escaping (_ data: GetVaultMarketOptionRiskResponse?, _ error: Error?) -> Void)
+```
+
+Your options portfolio's Greeks (per underlying and total, with dollar delta and 1% gamma), a scenario's P&L (`priceShift`, `volShift`, `daysForward`), a price x vol P&L grid, and the beta-weighted delta against an index (`betaIndex`, default the deepest). `book` live (default) or practice.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your options portfolio's Greeks (per underlying and total, with dollar delta and 1% gamma), a scenario's P&L (`priceShift`, `volShift`, `daysForward`), a price x vol P&L grid, and the beta-weighted delta against an index (`betaIndex`, default the deepest). `book` live (default) or practice.
+VaultMarketsAPI.getVaultMarketOptionRisk() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketOptionRiskResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **getVaultMarketOracle**
 ```swift
     open class func getVaultMarketOracle(completion: @escaping (_ data: GetVaultMarketOracleResponse?, _ error: Error?) -> Void)
@@ -12702,7 +18179,7 @@ This endpoint does not need any parameter.
     open class func getVaultMarketPartnerMe(completion: @escaping (_ data: GetVaultMarketPartnerMeResponse?, _ error: Error?) -> Void)
 ```
 
-Your Vault Drop-off Partnership (null when you never applied): status, partner code, fee share and cap, totals and batches.
+Your Vault Drop-off Partnership (null when you never applied): status, partner code, fee share and cap, finder profile, totals and batches; and whether your one-time ID check is done.
 
 ### Example
 ```swift
@@ -12710,7 +18187,7 @@ Your Vault Drop-off Partnership (null when you never applied): status, partner c
 import Crossly
 
 
-// Your Vault Drop-off Partnership (null when you never applied): status, partner code, fee share and cap, totals and batches.
+// Your Vault Drop-off Partnership (null when you never applied): status, partner code, fee share and cap, finder profile, totals and batches; and whether your one-time ID check is done.
 VaultMarketsAPI.getVaultMarketPartnerMe() { (response, error) in
     guard error == nil else {
         print(error)
@@ -13097,6 +18574,1098 @@ Name | Type | Description  | Notes
 ### Return type
 
 **ListVaultMarketPositionsRiskItem**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketPrediction**
+```swift
+    open class func getVaultMarketPrediction(completion: @escaping (_ data: GetVaultMarketPredictionResponse?, _ error: Error?) -> Void)
+```
+
+The prediction markets home: the busiest and soonest-expiring \"Will it hit?\" markets with their probability (each market's own price, display only), the underlyings with markets, which venue is live, and how many positions you hold.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// The prediction markets home: the busiest and soonest-expiring \"Will it hit?\" markets with their probability (each market's own price, display only), the underlyings with markets, which venue is live, and how many positions you hold.
+VaultMarketsAPI.getVaultMarketPrediction() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketPredictionResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketPredictionAccount**
+```swift
+    open class func getVaultMarketPredictionAccount(completion: @escaping (_ data: GetVaultMarketPredictionAccountResponse?, _ error: Error?) -> Void)
+```
+
+Your prediction-market account: the live venue, your account there and the terms you accepted, whether you may trade real money (region, age, self-exclusion) and why not, your self-set limits, and the practice account line.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your prediction-market account: the live venue, your account there and the terms you accepted, whether you may trade real money (region, age, self-exclusion) and why not, your self-set limits, and the practice account line.
+VaultMarketsAPI.getVaultMarketPredictionAccount() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketPredictionAccountResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketPredictionBoard**
+```swift
+    open class func getVaultMarketPredictionBoard(completion: @escaping (_ data: GetVaultMarketPredictionBoardResponse?, _ error: Error?) -> Void)
+```
+
+The prediction board the Trading Floor and the Market Open plank show: the busiest open markets and their odds. Anonymous: never who holds what.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// The prediction board the Trading Floor and the Market Open plank show: the busiest open markets and their odds. Anonymous: never who holds what.
+VaultMarketsAPI.getVaultMarketPredictionBoard() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketPredictionBoardResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketPredictionCombo**
+```swift
+    open class func getVaultMarketPredictionCombo(id: String, completion: @escaping (_ data: ListVaultMarketPredictionCombosItem?, _ error: Error?) -> Void)
+```
+
+One of your combos.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// One of your combos.
+VaultMarketsAPI.getVaultMarketPredictionCombo(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**ListVaultMarketPredictionCombosItem**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketPredictionComboRfq**
+```swift
+    open class func getVaultMarketPredictionComboRfq(id: String, completion: @escaping (_ data: ListVaultMarketPredictionComboRfqsItem?, _ error: Error?) -> Void)
+```
+
+One combo request: its legs and size, and the answers you can see (all of them if you asked; yours if you quoted).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// One combo request: its legs and size, and the answers you can see (all of them if you asked; yours if you quoted).
+VaultMarketsAPI.getVaultMarketPredictionComboRfq(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**ListVaultMarketPredictionComboRfqsItem**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketPredictionDailyPrice**
+```swift
+    open class func getVaultMarketPredictionDailyPrice(completion: @escaping (_ data: GetVaultMarketPredictionDailyPriceResponse?, _ error: Error?) -> Void)
+```
+
+The published daily settlement price of every listed market for a day (default yesterday): the last hour's volume-weighted Yes price, else the book mid, else the prior day's, with volume and open interest.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// The published daily settlement price of every listed market for a day (default yesterday): the last hour's volume-weighted Yes price, else the book mid, else the prior day's, with volume and open interest.
+VaultMarketsAPI.getVaultMarketPredictionDailyPrice() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketPredictionDailyPriceResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketPredictionEvent**
+```swift
+    open class func getVaultMarketPredictionEvent(id: String, completion: @escaping (_ data: GetVaultMarketPredictionEventResponse?, _ error: Error?) -> Void)
+```
+
+One expiry of a series (an event): its markets, what you hold in each, the real worst and best case of your holdings across them (what your limit counts), and, for a full bucket set, how many sets you could merge. `venue` paper or live.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// One expiry of a series (an event): its markets, what you hold in each, the real worst and best case of your holdings across them (what your limit counts), and, for a full bucket set, how many sets you could merge. `venue` paper or live.
+VaultMarketsAPI.getVaultMarketPredictionEvent(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetVaultMarketPredictionEventResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketPredictionForecaster**
+```swift
+    open class func getVaultMarketPredictionForecaster(completion: @escaping (_ data: GetVaultMarketPredictionForecasterResponse?, _ error: Error?) -> Void)
+```
+
+Your forecaster profile: display name, whether it is public (opt-in) and since when, and your followers.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your forecaster profile: display name, whether it is public (opt-in) and since when, and your followers.
+VaultMarketsAPI.getVaultMarketPredictionForecaster() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketPredictionForecasterResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketPredictionForecasterById**
+```swift
+    open class func getVaultMarketPredictionForecasterById(id: String, completion: @escaping (_ data: GetVaultMarketPredictionForecasterByIdResponse?, _ error: Error?) -> Void)
+```
+
+A public forecaster: scores (all time and this month), open sides (never sizes), recent settled calls, followers. 404 when private.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// A public forecaster: scores (all time and this month), open sides (never sizes), recent settled calls, followers. 404 when private.
+VaultMarketsAPI.getVaultMarketPredictionForecasterById(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetVaultMarketPredictionForecasterByIdResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketPredictionLeaderboard**
+```swift
+    open class func getVaultMarketPredictionLeaderboard(completion: @escaping (_ data: GetVaultMarketPredictionLeaderboardResponse?, _ error: Error?) -> Void)
+```
+
+Opt-in forecaster leaderboards: `period` week, month or all; `metric` pnl, accuracy or brier; `venue` live or paper (practice has its own board).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Opt-in forecaster leaderboards: `period` week, month or all; `metric` pnl, accuracy or brier; `venue` live or paper (practice has its own board).
+VaultMarketsAPI.getVaultMarketPredictionLeaderboard() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketPredictionLeaderboardResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketPredictionLimit**
+```swift
+    open class func getVaultMarketPredictionLimit(completion: @escaping (_ data: GetVaultMarketPredictionLimitResponse?, _ error: Error?) -> Void)
+```
+
+Your self-set prediction limits: daily loss limit, self-exclusion, a raise waiting its 24 hours, and any hold the venue placed.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your self-set prediction limits: daily loss limit, self-exclusion, a raise waiting its 24 hours, and any hold the venue placed.
+VaultMarketsAPI.getVaultMarketPredictionLimit() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketPredictionLimitResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketPredictionMarket**
+```swift
+    open class func getVaultMarketPredictionMarket(id: String, completion: @escaping (_ data: GetVaultMarketPredictionMarketResponse?, _ error: Error?) -> Void)
+```
+
+One prediction market: its terms, the Yes ladder of the live venue and of the practice book, recent trades, settlement history (outcome, value, hash, review), the series rules text and hash, and your positions in it.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// One prediction market: its terms, the Yes ladder of the live venue and of the practice book, recent trades, settlement history (outcome, value, hash, review), the series rules text and hash, and your positions in it.
+VaultMarketsAPI.getVaultMarketPredictionMarket(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetVaultMarketPredictionMarketResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketPredictionMarketForecast**
+```swift
+    open class func getVaultMarketPredictionMarketForecast(id: String, completion: @escaping (_ data: GetVaultMarketPredictionMarketForecastResponse?, _ error: Error?) -> Void)
+```
+
+How many people forecast a market and their median probability (no names).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// How many people forecast a market and their median probability (no names).
+VaultMarketsAPI.getVaultMarketPredictionMarketForecast(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetVaultMarketPredictionMarketForecastResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketPredictionMarketHistory**
+```swift
+    open class func getVaultMarketPredictionMarketHistory(id: String, completion: @escaping (_ data: GetVaultMarketPredictionMarketHistoryResponse?, _ error: Error?) -> Void)
+```
+
+A market's history: probability points (display only, never a mark), candles on the Yes price, volume and open interest over `range` 1d, 1w, 1m or all; `venue` live or paper.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// A market's history: probability points (display only, never a mark), candles on the Yes price, volume and open interest over `range` 1d, 1w, 1m or all; `venue` live or paper.
+VaultMarketsAPI.getVaultMarketPredictionMarketHistory(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetVaultMarketPredictionMarketHistoryResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketPredictionMarketStream**
+```swift
+    open class func getVaultMarketPredictionMarketStream(id: String, completion: @escaping (_ data: String?, _ error: Error?) -> Void)
+```
+
+A server-sent event stream for one prediction market: `snapshot` first, then `pm_depth`, `pm_trades`, `pm_probability`, `pm_status` and `pm_settlement` as they change.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// A server-sent event stream for one prediction market: `snapshot` first, then `pm_depth`, `pm_trades`, `pm_probability`, `pm_status` and `pm_settlement` as they change.
+VaultMarketsAPI.getVaultMarketPredictionMarketStream(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**String**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/event-stream, application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketPredictionMarketTrade**
+```swift
+    open class func getVaultMarketPredictionMarketTrade(id: String, completion: @escaping (_ data: GetVaultMarketPredictionMarketTradeResponse?, _ error: Error?) -> Void)
+```
+
+The trade tape, newest first: Yes price, size, which side took, venue. Page with `before` (the last `seq`).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// The trade tape, newest first: Yes price, size, which side took, venue. Page with `before` (the last `seq`).
+VaultMarketsAPI.getVaultMarketPredictionMarketTrade(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetVaultMarketPredictionMarketTradeResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketPredictionMeStream**
+```swift
+    open class func getVaultMarketPredictionMeStream(completion: @escaping (_ data: String?, _ error: Error?) -> Void)
+```
+
+A server-sent event stream of your own prediction events: `pm_order` (placed, filled, amended, cancelled, expired), `pm_fill` (your side, price and fee), `pm_position`, `pm_combo` and `pm_conversion`.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// A server-sent event stream of your own prediction events: `pm_order` (placed, filled, amended, cancelled, expired), `pm_fill` (your side, price and fee), `pm_position`, `pm_combo` and `pm_conversion`.
+VaultMarketsAPI.getVaultMarketPredictionMeStream() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**String**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/event-stream, application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketPredictionMission**
+```swift
+    open class func getVaultMarketPredictionMission(completion: @escaping (_ data: GetVaultMarketPredictionMissionResponse?, _ error: Error?) -> Void)
+```
+
+The two \"Will it hit?\" practice missions (your first call; see one settle), whether the server saw each done, and the pin they lead to. Pins only.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// The two \"Will it hit?\" practice missions (your first call; see one settle), whether the server saw each done, and the pin they lead to. Pins only.
+VaultMarketsAPI.getVaultMarketPredictionMission() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketPredictionMissionResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketPredictionPaper**
+```swift
+    open class func getVaultMarketPredictionPaper(completion: @escaping (_ data: GetVaultMarketPredictionPaperResponse?, _ error: Error?) -> Void)
+```
+
+Your practice prediction account (play money only, $1,000 to start, never real or convertible): cash, money locked by working orders, positions and working orders.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your practice prediction account (play money only, $1,000 to start, never real or convertible): cash, money locked by working orders, positions and working orders.
+VaultMarketsAPI.getVaultMarketPredictionPaper() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketPredictionPaperResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketPredictionQuote**
+```swift
+    open class func getVaultMarketPredictionQuote(completion: @escaping (_ data: GetVaultMarketPredictionQuoteResponse?, _ error: Error?) -> Void)
+```
+
+What an order would do now without placing it: contracts fillable inside the limit (a market order uses the 10-cent band), average price, estimated fee (Kalshi's formula), the money it would lock, and the most it could pay out.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// What an order would do now without placing it: contracts fillable inside the limit (a market order uses the 10-cent band), average price, estimated fee (Kalshi's formula), the money it would lock, and the most it could pay out.
+VaultMarketsAPI.getVaultMarketPredictionQuote() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketPredictionQuoteResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketPredictionRulebook**
+```swift
+    open class func getVaultMarketPredictionRulebook(completion: @escaping (_ data: GetVaultMarketPredictionRulebookResponse?, _ error: Error?) -> Void)
+```
+
+The prediction venue's rule book now and every version, each hashed and chained to the one before (`chainOk`).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// The prediction venue's rule book now and every version, each hashed and chained to the one before (`chainOk`).
+VaultMarketsAPI.getVaultMarketPredictionRulebook() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketPredictionRulebookResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketPredictionStream**
+```swift
+    open class func getVaultMarketPredictionStream(completion: @escaping (_ data: String?, _ error: Error?) -> Void)
+```
+
+A server-sent event stream for up to 50 markets (`markets`=id,id): `ready`, then `pm_depth`, `pm_trades`, `pm_probability`, `pm_status` and `pm_settlement`, each carrying its marketId.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// A server-sent event stream for up to 50 markets (`markets`=id,id): `ready`, then `pm_depth`, `pm_trades`, `pm_probability`, `pm_status` and `pm_settlement`, each carrying its marketId.
+VaultMarketsAPI.getVaultMarketPredictionStream() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**String**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/event-stream, application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketPredictionVenue**
+```swift
+    open class func getVaultMarketPredictionVenue(completion: @escaping (_ data: GetVaultMarketPredictionVenueResponse?, _ error: Error?) -> Void)
+```
+
+Which prediction venue is live: self (Crossly as the DCM, money at the segregated settlement bank), partner (a partner DCM) or paper (practice only), who runs the book, where money sits, and the env each real mode still needs.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Which prediction venue is live: self (Crossly as the DCM, money at the segregated settlement bank), partner (a partner DCM) or paper (practice only), who runs the book, where money sits, and the env each real mode still needs.
+VaultMarketsAPI.getVaultMarketPredictionVenue() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketPredictionVenueResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketPredictionWillItHit**
+```swift
+    open class func getVaultMarketPredictionWillItHit(completion: @escaping (_ data: GetVaultMarketPredictionWillItHitResponse?, _ error: Error?) -> Void)
+```
+
+The \"Will it hit?\" panel for a key (`bookKey`) or an index (`index` slug): its open markets grouped by expiry, each with its probability. `eligible` is false when nothing is listed on it.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// The \"Will it hit?\" panel for a key (`bookKey`) or an index (`index` slug): its open markets grouped by expiry, each with its probability. `eligible` is false when nothing is listed on it.
+VaultMarketsAPI.getVaultMarketPredictionWillItHit() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketPredictionWillItHitResponse**
 
 ### Authorization
 
@@ -13977,6 +20546,142 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **getVaultMarketSetting**
+```swift
+    open class func getVaultMarketSetting(completion: @escaping (_ data: GetVaultMarketSettingResponse?, _ error: Error?) -> Void)
+```
+
+Your vault defaults: Sell from first, new-inventory suggestions, the insurance rule and the default grading service.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your vault defaults: Sell from first, new-inventory suggestions, the insurance rule and the default grading service.
+VaultMarketsAPI.getVaultMarketSetting() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketSettingResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketShare**
+```swift
+    open class func getVaultMarketShare(completion: @escaping (_ data: GetVaultMarketShareResponse?, _ error: Error?) -> Void)
+```
+
+Vault Shares at a glance: the venue mode in force (self, partner or paper) and the env it still needs, the rules (about $5 a share, 100 to 100,000 shares, originator keeps 0-50%, 3% origination, maker 0 / taker 100 bps, 90-day lockup, buyouts at the mark x 1.10 with a two-thirds vote) and the disclosure.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Vault Shares at a glance: the venue mode in force (self, partner or paper) and the env it still needs, the rules (about $5 a share, 100 to 100,000 shares, originator keeps 0-50%, 3% origination, maker 0 / taker 100 bps, 90-day lockup, buyouts at the mark x 1.10 with a two-thirds vote) and the disclosure.
+VaultMarketsAPI.getVaultMarketShare() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketShareResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketShareBasket**
+```swift
+    open class func getVaultMarketShareBasket(id: String, completion: @escaping (_ data: GetVaultMarketShareBasketResponse?, _ error: Error?) -> Void)
+```
+
+One theme basket (id or slug): its series, target and live weights, prices, and your own holdings against the weights.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// One theme basket (id or slug): its series, target and live weights, prices, and your own holdings against the weights.
+VaultMarketsAPI.getVaultMarketShareBasket(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetVaultMarketShareBasketResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **getVaultMarketShareCard**
 ```swift
     open class func getVaultMarketShareCard(id: UUID, completion: @escaping (_ data: ListVaultMarketShareCardsItem?, _ error: Error?) -> Void)
@@ -14013,6 +20718,470 @@ Name | Type | Description  | Notes
 ### Return type
 
 **ListVaultMarketShareCardsItem**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketShareInvestor**
+```swift
+    open class func getVaultMarketShareInvestor(completion: @escaping (_ data: GetVaultMarketShareInvestorResponse?, _ error: Error?) -> Void)
+```
+
+Your investor account at the venue in force: its status, the investor terms you accepted, and your Reg A+ limit for one offering (10% of the greater of income and net worth unless accredited).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your investor account at the venue in force: its status, the investor terms you accepted, and your Reg A+ limit for one offering (10% of the greater of income and net worth unless accredited).
+VaultMarketsAPI.getVaultMarketShareInvestor() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketShareInvestorResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketShareMe**
+```swift
+    open class func getVaultMarketShareMe(completion: @escaping (_ data: GetVaultMarketShareMeResponse?, _ error: Error?) -> Void)
+```
+
+Your Vault Shares: shares and percent of each item, cost, implied value at the last price, your subscriptions and the payouts you were sent.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your Vault Shares: shares and percent of each item, cost, implied value at the last price, your subscriptions and the payouts you were sent.
+VaultMarketsAPI.getVaultMarketShareMe() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketShareMeResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketSharePaper**
+```swift
+    open class func getVaultMarketSharePaper(completion: @escaping (_ data: GetVaultMarketSharePaperResponse?, _ error: Error?) -> Void)
+```
+
+Your practice account for Vault Shares (play money only, never real, never convertible): cash, practice holdings, open practice orders, recent practice fills.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your practice account for Vault Shares (play money only, never real, never convertible): cash, practice holdings, open practice orders, recent practice fills.
+VaultMarketsAPI.getVaultMarketSharePaper() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketSharePaperResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketSharePaperSeryBook**
+```swift
+    open class func getVaultMarketSharePaperSeryBook(id: String, completion: @escaping (_ data: GetVaultMarketSharePaperSeryBookResponse?, _ error: Error?) -> Void)
+```
+
+A series’ practice book: practice orders and the house quote 1% either side of the reference price.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// A series’ practice book: practice orders and the house quote 1% either side of the reference price.
+VaultMarketsAPI.getVaultMarketSharePaperSeryBook(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetVaultMarketSharePaperSeryBookResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketSharePreview**
+```swift
+    open class func getVaultMarketSharePreview(completion: @escaping (_ data: GetVaultMarketSharePreviewResponse?, _ error: Error?) -> Void)
+```
+
+Fractionalize instead: whether one of your vault units can become a Vault Shares series now (stored, tier A or B, reliable mark of $1,000 or more, declared and insured, free) and the offering terms it would get.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Fractionalize instead: whether one of your vault units can become a Vault Shares series now (stored, tier A or B, reliable mark of $1,000 or more, declared and insured, free) and the offering terms it would get.
+VaultMarketsAPI.getVaultMarketSharePreview() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketSharePreviewResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketShareSery**
+```swift
+    open class func getVaultMarketShareSery(id: String, completion: @escaping (_ data: GetVaultMarketShareSeryResponse?, _ error: Error?) -> Void)
+```
+
+One series: the offering, the share book depth, the latest fills, holders as share percentages (nobody named), buyouts and your vote, your orders and subscriptions.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// One series: the offering, the share book depth, the latest fills, holders as share percentages (nobody named), buyouts and your vote, your orders and subscriptions.
+VaultMarketsAPI.getVaultMarketShareSery(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetVaultMarketShareSeryResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketShareSeryBook**
+```swift
+    open class func getVaultMarketShareSeryBook(id: String, completion: @escaping (_ data: GetVaultMarketShareSeryBookResponse?, _ error: Error?) -> Void)
+```
+
+A share book’s depth: whole shares per price level (integer cents a share), best first.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// A share book’s depth: whole shares per price level (integer cents a share), best first.
+VaultMarketsAPI.getVaultMarketShareSeryBook(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetVaultMarketShareSeryBookResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketShareSeryHistory**
+```swift
+    open class func getVaultMarketShareSeryHistory(id: String, completion: @escaping (_ data: GetVaultMarketShareSeryHistoryResponse?, _ error: Error?) -> Void)
+```
+
+A series’ full price history: OHLC candles of every share-book fill (`interval` 1h, 1d or 1w), the offering price, the change since the offering, and the appraisal history beside it. Share prices are display only, never a mark.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// A series’ full price history: OHLC candles of every share-book fill (`interval` 1h, 1d or 1w), the offering price, the change since the offering, and the appraisal history beside it. Share prices are display only, never a mark.
+VaultMarketsAPI.getVaultMarketShareSeryHistory(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetVaultMarketShareSeryHistoryResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketShareSeryPerk**
+```swift
+    open class func getVaultMarketShareSeryPerk(id: String, completion: @escaping (_ data: GetVaultMarketShareSeryPerkResponse?, _ error: Error?) -> Void)
+```
+
+Holder perks on a series: whether you hold it, your holder badge, the links to visit the item in the world vault room and in AR, the viewing days with places left and your bookings.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Holder perks on a series: whether you hold it, your holder badge, the links to visit the item in the world vault room and in AR, the viewing days with places left and your bookings.
+VaultMarketsAPI.getVaultMarketShareSeryPerk(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetVaultMarketShareSeryPerkResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketShareSeryRoom**
+```swift
+    open class func getVaultMarketShareSeryRoom(id: String, completion: @escaping (_ data: GetVaultMarketShareSeryRoomResponse?, _ error: Error?) -> Void)
+```
+
+The holder room for a series (shareholders only): posts newest first under per-series aliases, never account names. `before` pages back.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// The holder room for a series (shareholders only): posts newest first under per-series aliases, never account names. `before` pages back.
+VaultMarketsAPI.getVaultMarketShareSeryRoom(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetVaultMarketShareSeryRoomResponse**
 
 ### Authorization
 
@@ -14303,6 +21472,54 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **getVaultMarketSupplyShipment**
+```swift
+    open class func getVaultMarketSupplyShipment(id: String, completion: @escaping (_ data: GetVaultMarketSupplyShipmentResponse?, _ error: Error?) -> Void)
+```
+
+One shipment into the vault, with each unit and whether it was received.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// One shipment into the vault, with each unit and whether it was received.
+VaultMarketsAPI.getVaultMarketSupplyShipment(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetVaultMarketSupplyShipmentResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **getVaultMarketTax**
 ```swift
     open class func getVaultMarketTax(completion: @escaping (_ data: GetVaultMarketTaxResponse?, _ error: Error?) -> Void)
@@ -14435,6 +21652,50 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **getVaultMarketTaxOption**
+```swift
+    open class func getVaultMarketTaxOption(completion: @escaping (_ data: GetVaultMarketTaxOptionResponse?, _ error: Error?) -> Void)
+```
+
+Your fractional options tax lots for a calendar year (`year`, default this year): FIFO disposals (closed or settled) with proceeds, cost, gain in cents and holding term, each flagged as a possible Section 1256 contract, the totals with the 60/40 split, and the positions open at year end. Real fills only; practice never appears. Not tax advice.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your fractional options tax lots for a calendar year (`year`, default this year): FIFO disposals (closed or settled) with proceeds, cost, gain in cents and holding term, each flagged as a possible Section 1256 contract, the totals with the 60/40 split, and the positions open at year end. Real fills only; practice never appears. Not tax advice.
+VaultMarketsAPI.getVaultMarketTaxOption() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketTaxOptionResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **getVaultMarketTaxPdf**
 ```swift
     open class func getVaultMarketTaxPdf(completion: @escaping (_ data: URL?, _ error: Error?) -> Void)
@@ -14476,6 +21737,94 @@ This endpoint does not need any parameter.
 
  - **Content-Type**: Not defined
  - **Accept**: application/pdf, application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketTaxPrediction**
+```swift
+    open class func getVaultMarketTaxPrediction(completion: @escaping (_ data: GetVaultMarketTaxPredictionResponse?, _ error: Error?) -> Void)
+```
+
+Your prediction-market results for a calendar year (`year`), as the venue reports them: each settled or voided real-money position with its venue, cost, fees, payout, refund, closing-trade gains and net in cents, and the totals. Practice never appears. Not tax advice.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your prediction-market results for a calendar year (`year`), as the venue reports them: each settled or voided real-money position with its venue, cost, fees, payout, refund, closing-trade gains and net in cents, and the totals. Practice never appears. Not tax advice.
+VaultMarketsAPI.getVaultMarketTaxPrediction() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketTaxPredictionResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketTaxShare**
+```swift
+    open class func getVaultMarketTaxShare(completion: @escaping (_ data: GetVaultMarketTaxShareResponse?, _ error: Error?) -> Void)
+```
+
+Your Vault Shares tax lots for a calendar year (`year`): disposals (share-book sales, exit payouts) with holding periods, proceeds, cost and gain in cents, the open lots and the totals. The broker-dealer issues the 1099-B; not tax advice.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your Vault Shares tax lots for a calendar year (`year`): disposals (share-book sales, exit payouts) with holding periods, proceeds, cost and gain in cents, the open lots and the totals. The broker-dealer issues the 1099-B; not tax advice.
+VaultMarketsAPI.getVaultMarketTaxShare() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketTaxShareResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
@@ -15299,6 +22648,50 @@ This endpoint does not need any parameter.
 ### Return type
 
 **GetVaultMarketWorldFloorResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getVaultMarketWorldFloorBoard**
+```swift
+    open class func getVaultMarketWorldFloorBoard(completion: @escaping (_ data: GetVaultMarketWorldFloorBoardResponse?, _ error: Error?) -> Void)
+```
+
+The Trading Floor boards for the round-13 products: odds (the probability ladder: the busiest open \"Will it hit?\" markets with probabilityBps, the market’s own price as a probability, display only), heat (option-chain heat: per listed underlying, open interest and the last day’s volume in milli-contracts in strike buckets around the underlying, a 0..1 heat per bucket and the at-the-money implied vol, display only) and shares (Vault Shares tickers: last share price in cents, changeBps from the last fill before today, shares traded today and the implied item value, display only). quality is always C: none of these is ever a mark. It never shows who traded.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// The Trading Floor boards for the round-13 products: odds (the probability ladder: the busiest open \"Will it hit?\" markets with probabilityBps, the market’s own price as a probability, display only), heat (option-chain heat: per listed underlying, open interest and the last day’s volume in milli-contracts in strike buckets around the underlying, a 0..1 heat per bucket and the at-the-money implied vol, display only) and shares (Vault Shares tickers: last share price in cents, changeBps from the last fill before today, shares traded today and the implied item value, display only). quality is always C: none of these is ever a mark. It never shows who traded.
+VaultMarketsAPI.getVaultMarketWorldFloorBoard() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketWorldFloorBoardResponse**
 
 ### Authorization
 
@@ -17191,6 +24584,50 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **listVaultMarketHoldings**
+```swift
+    open class func listVaultMarketHoldings(completion: @escaping (_ data: ListVaultMarketHoldingsResponse?, _ error: Error?) -> Void)
+```
+
+Everything you own in the Crossly vault, newest activity first: each unit with its status (inbound, stored, listed, withdraw_requested…) and situation (lent, pledged, in_grading…), what it is worth (`valueCents` with `valueSource` mark | last_sale | declared | none), declared and insured value, storage owed, its open ask, the deposit toggles when you sent it in, and what you may do with it now (`actions`). Units sold or shipped home in the last 90 days have `past: true`. `meta` carries the totals (units, value, declared, insured, storage owed), your recent boxes and their labels, the ship-home prices and the lending gate.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Everything you own in the Crossly vault, newest activity first: each unit with its status (inbound, stored, listed, withdraw_requested…) and situation (lent, pledged, in_grading…), what it is worth (`valueCents` with `valueSource` mark | last_sale | declared | none), declared and insured value, storage owed, its open ask, the deposit toggles when you sent it in, and what you may do with it now (`actions`). Units sold or shipped home in the last 90 days have `past: true`. `meta` carries the totals (units, value, declared, insured, storage owed), your recent boxes and their labels, the ship-home prices and the lending gate.
+VaultMarketsAPI.listVaultMarketHoldings() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketHoldingsResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **listVaultMarketIndexCommitteeMinutes**
 ```swift
     open class func listVaultMarketIndexCommitteeMinutes(completion: @escaping (_ data: ListVaultMarketIndexCommitteeMinutesResponse?, _ error: Error?) -> Void)
@@ -18267,6 +25704,626 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **listVaultMarketOptionComboRfq**
+```swift
+    open class func listVaultMarketOptionComboRfq(completion: @escaping (_ data: ListVaultMarketOptionComboRfqResponse?, _ error: Error?) -> Void)
+```
+
+Your strategy quote requests, newest first.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your strategy quote requests, newest first.
+VaultMarketsAPI.listVaultMarketOptionComboRfq() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketOptionComboRfqResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketOptionComboRfqInbox**
+```swift
+    open class func listVaultMarketOptionComboRfqInbox(completion: @escaping (_ data: ListVaultMarketOptionComboRfqResponse?, _ error: Error?) -> Void)
+```
+
+Open strategy quote requests you may answer (never your own; the requester stays anonymous).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Open strategy quote requests you may answer (never your own; the requester stays anonymous).
+VaultMarketsAPI.listVaultMarketOptionComboRfqInbox() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketOptionComboRfqResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketOptionCombos**
+```swift
+    open class func listVaultMarketOptionCombos(completion: @escaping (_ data: ListVaultMarketOptionCombosResponse?, _ error: Error?) -> Void)
+```
+
+Your strategies: `status` working (default), done or all, with their legs as you hold them, net per unit, filled size and status.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your strategies: `status` working (default), done or all, with their legs as you hold them, net per unit, filled size and status.
+VaultMarketsAPI.listVaultMarketOptionCombos() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketOptionCombosResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketOptionContractDaily**
+```swift
+    open class func listVaultMarketOptionContractDaily(id: String, completion: @escaping (_ data: ListVaultMarketOptionContractDailyResponse?, _ error: Error?) -> Void)
+```
+
+A contract's published daily settlement prices, newest first (`days`, default 30): the price, how it was set (volume-weighted fills, the mid, or Black-Scholes at the reference vol), its implied vol, the underlying, open interest and volume, and each row's chain hash.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// A contract's published daily settlement prices, newest first (`days`, default 30): the price, how it was set (volume-weighted fills, the mid, or Black-Scholes at the reference vol), its implied vol, the underlying, open interest and volume, and each row's chain hash.
+VaultMarketsAPI.listVaultMarketOptionContractDaily(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**ListVaultMarketOptionContractDailyResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketOptionMmQuotes**
+```swift
+    open class func listVaultMarketOptionMmQuotes(completion: @escaping (_ data: ListVaultMarketOptionMmQuotesResponse?, _ error: Error?) -> Void)
+```
+
+Your two-sided option quotes: the contract, the bid and ask orders behind them, cancel-on-disconnect and the last heartbeat.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your two-sided option quotes: the contract, the bid and ask orders behind them, cancel-on-disconnect and the last heartbeat.
+VaultMarketsAPI.listVaultMarketOptionMmQuotes() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketOptionMmQuotesResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketOptionNotices**
+```swift
+    open class func listVaultMarketOptionNotices(completion: @escaping (_ data: ListVaultMarketOptionNoticesResponse?, _ error: Error?) -> Void)
+```
+
+Your options notices, newest first: expiry warnings, auto-closes, exercises (a long settled in the money), assignments (a short settled in the money), expiries worthless and rolls.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your options notices, newest first: expiry warnings, auto-closes, exercises (a long settled in the money), assignments (a short settled in the money), expiries worthless and rolls.
+VaultMarketsAPI.listVaultMarketOptionNotices() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketOptionNoticesResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketOptionOrders**
+```swift
+    open class func listVaultMarketOptionOrders(completion: @escaping (_ data: ListVaultMarketOptionOrdersResponse?, _ error: Error?) -> Void)
+```
+
+Your options orders, newest first: `status` working (default) / done / all, `limit`, `subaccountId`.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your options orders, newest first: `status` working (default) / done / all, `limit`, `subaccountId`.
+VaultMarketsAPI.listVaultMarketOptionOrders() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketOptionOrdersResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketOptionPracticeCombos**
+```swift
+    open class func listVaultMarketOptionPracticeCombos(completion: @escaping (_ data: ListVaultMarketOptionCombosResponse?, _ error: Error?) -> Void)
+```
+
+Your practice strategies.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your practice strategies.
+VaultMarketsAPI.listVaultMarketOptionPracticeCombos() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketOptionCombosResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketOptionPracticeFills**
+```swift
+    open class func listVaultMarketOptionPracticeFills(completion: @escaping (_ data: ListVaultMarketOptionPracticeFillsResponse?, _ error: Error?) -> Void)
+```
+
+Your practice options fills, newest first (`limit`).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your practice options fills, newest first (`limit`).
+VaultMarketsAPI.listVaultMarketOptionPracticeFills() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketOptionPracticeFillsResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketOptionPracticeOrders**
+```swift
+    open class func listVaultMarketOptionPracticeOrders(completion: @escaping (_ data: ListVaultMarketOptionPracticeOrdersResponse?, _ error: Error?) -> Void)
+```
+
+Your practice options orders: `status` working (default) / done / all, `limit`.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your practice options orders: `status` working (default) / done / all, `limit`.
+VaultMarketsAPI.listVaultMarketOptionPracticeOrders() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketOptionPracticeOrdersResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketOptionRfq**
+```swift
+    open class func listVaultMarketOptionRfq(completion: @escaping (_ data: ListVaultMarketOptionRfqResponse?, _ error: Error?) -> Void)
+```
+
+Your option quote requests, newest first.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your option quote requests, newest first.
+VaultMarketsAPI.listVaultMarketOptionRfq() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketOptionRfqResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketOptionRfqInbox**
+```swift
+    open class func listVaultMarketOptionRfqInbox(completion: @escaping (_ data: ListVaultMarketOptionRfqResponse?, _ error: Error?) -> Void)
+```
+
+Open option quote requests you can answer.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Open option quote requests you can answer.
+VaultMarketsAPI.listVaultMarketOptionRfqInbox() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketOptionRfqResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketOptionSeries**
+```swift
+    open class func listVaultMarketOptionSeries(completion: @escaping (_ data: ListVaultMarketOptionSeriesResponse?, _ error: Error?) -> Void)
+```
+
+Every options series: its underlying (a Crossly index, or a tier A item key with 90 days of reliable marks), status and the eligibility snapshot it last passed. `status`: active (default) or all.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Every options series: its underlying (a Crossly index, or a tier A item key with 90 days of reliable marks), status and the eligibility snapshot it last passed. `status`: active (default) or all.
+VaultMarketsAPI.listVaultMarketOptionSeries() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketOptionSeriesResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketOptionStrategies**
+```swift
+    open class func listVaultMarketOptionStrategies(completion: @escaping (_ data: ListVaultMarketOptionStrategiesResponse?, _ error: Error?) -> Void)
+```
+
+The strategies the picker builds (vertical, calendar, diagonal, straddle, strangle, butterfly, iron condor, collar): how many strikes and expiries each takes, whether it needs calls or puts, and what it does in plain words.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// The strategies the picker builds (vertical, calendar, diagonal, straddle, strangle, butterfly, iron condor, collar): how many strikes and expiries each takes, whether it needs calls or puts, and what it does in plain words.
+VaultMarketsAPI.listVaultMarketOptionStrategies() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketOptionStrategiesResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **listVaultMarketOracleHistory**
 ```swift
     open class func listVaultMarketOracleHistory(slug: String, completion: @escaping (_ data: ListVaultMarketOracleHistoryResponse?, _ error: Error?) -> Void)
@@ -18755,6 +26812,50 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **listVaultMarketPartnerFinder**
+```swift
+    open class func listVaultMarketPartnerFinder(completion: @escaping (_ data: ListVaultMarketPartnerFinderResponse?, _ error: Error?) -> Void)
+```
+
+Vault drop-off partners near a `postalCode`, optionally offering a `service`: address, hours and services.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Vault drop-off partners near a `postalCode`, optionally offering a `service`: address, hours and services.
+VaultMarketsAPI.listVaultMarketPartnerFinder() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketPartnerFinderResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **listVaultMarketPoolStakes**
 ```swift
     open class func listVaultMarketPoolStakes(completion: @escaping (_ data: ListVaultMarketPoolStakesResponse?, _ error: Error?) -> Void)
@@ -18967,6 +27068,622 @@ This endpoint does not need any parameter.
 ### Return type
 
 **ListVaultMarketPositionsRiskResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketPredictionAlerts**
+```swift
+    open class func listVaultMarketPredictionAlerts(completion: @escaping (_ data: ListVaultMarketPredictionAlertsResponse?, _ error: Error?) -> Void)
+```
+
+Your probability alerts: a market, a level (percent) and a direction; each fires once through the alerts hub (kind prediction_odds).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your probability alerts: a market, a level (percent) and a direction; each fires once through the alerts hub (kind prediction_odds).
+VaultMarketsAPI.listVaultMarketPredictionAlerts() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketPredictionAlertsResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketPredictionComboMyRfqs**
+```swift
+    open class func listVaultMarketPredictionComboMyRfqs(completion: @escaping (_ data: ListVaultMarketPredictionComboRfqsResponse?, _ error: Error?) -> Void)
+```
+
+Your combo requests with every answer they got.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your combo requests with every answer they got.
+VaultMarketsAPI.listVaultMarketPredictionComboMyRfqs() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketPredictionComboRfqsResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketPredictionComboRfqs**
+```swift
+    open class func listVaultMarketPredictionComboRfqs(completion: @escaping (_ data: ListVaultMarketPredictionComboRfqsResponse?, _ error: Error?) -> Void)
+```
+
+Open combo requests makers can answer: legs, size and the legs' own combined price; never who asked. Your own answers are shown on them.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Open combo requests makers can answer: legs, size and the legs' own combined price; never who asked. Your own answers are shown on them.
+VaultMarketsAPI.listVaultMarketPredictionComboRfqs() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketPredictionComboRfqsResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketPredictionCombos**
+```swift
+    open class func listVaultMarketPredictionCombos(completion: @escaping (_ data: ListVaultMarketPredictionCombosResponse?, _ error: Error?) -> Void)
+```
+
+Your combos, as buyer or maker: legs and their outcomes, stakes, the pot, any reprice after a voided leg, and how each settled.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your combos, as buyer or maker: legs and their outcomes, stakes, the pot, any reprice after a voided leg, and how each settled.
+VaultMarketsAPI.listVaultMarketPredictionCombos() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketPredictionCombosResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketPredictionComments**
+```swift
+    open class func listVaultMarketPredictionComments(completion: @escaping (_ data: ListVaultMarketPredictionCommentsResponse?, _ error: Error?) -> Void)
+```
+
+A discussion thread on a market (`marketId`) or a series (`seriesId`): comments newest first with their replies. A commenter's side shows only when their forecaster profile is public.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// A discussion thread on a market (`marketId`) or a series (`seriesId`): comments newest first with their replies. A commenter's side shows only when their forecaster profile is public.
+VaultMarketsAPI.listVaultMarketPredictionComments() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketPredictionCommentsResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketPredictionConversions**
+```swift
+    open class func listVaultMarketPredictionConversions(completion: @escaping (_ data: ListVaultMarketPredictionConversionsResponse?, _ error: Error?) -> Void)
+```
+
+Your bucket-set conversions (split, merge, convert), newest first.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your bucket-set conversions (split, merge, convert), newest first.
+VaultMarketsAPI.listVaultMarketPredictionConversions() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketPredictionConversionsResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketPredictionFollowing**
+```swift
+    open class func listVaultMarketPredictionFollowing(completion: @escaping (_ data: ListVaultMarketPredictionFollowingResponse?, _ error: Error?) -> Void)
+```
+
+The forecasters you follow.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// The forecasters you follow.
+VaultMarketsAPI.listVaultMarketPredictionFollowing() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketPredictionFollowingResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketPredictionForecasts**
+```swift
+    open class func listVaultMarketPredictionForecasts(completion: @escaping (_ data: ListVaultMarketPredictionForecastsResponse?, _ error: Error?) -> Void)
+```
+
+Your forecasts (a probability you attached to a market, money or not) and how the markets came out.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your forecasts (a probability you attached to a market, money or not) and how the markets came out.
+VaultMarketsAPI.listVaultMarketPredictionForecasts() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketPredictionForecastsResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketPredictionMakers**
+```swift
+    open class func listVaultMarketPredictionMakers(completion: @escaping (_ data: ListVaultMarketPredictionMakersResponse?, _ error: Error?) -> Void)
+```
+
+Your prediction maker programme applications and their status (applied, active, suspended, revoked) and rebate.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your prediction maker programme applications and their status (applied, active, suspended, revoked) and rebate.
+VaultMarketsAPI.listVaultMarketPredictionMakers() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketPredictionMakersResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketPredictionMarkets**
+```swift
+    open class func listVaultMarketPredictionMarkets(completion: @escaping (_ data: ListVaultMarketPredictionMarketsResponse?, _ error: Error?) -> Void)
+```
+
+Prediction markets, filtered by a book key, an index slug, an underlying kind (index | book_key | category_pair), a status (open | closed | settled | all), an expiry day or text. Each with its strike, expiry, best Yes bid and ask, last price, volume, open interest and probability.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Prediction markets, filtered by a book key, an index slug, an underlying kind (index | book_key | category_pair), a status (open | closed | settled | all), an expiry day or text. Each with its strike, expiry, best Yes bid and ask, last price, volume, open interest and probability.
+VaultMarketsAPI.listVaultMarketPredictionMarkets() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketPredictionMarketsResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketPredictionOrders**
+```swift
+    open class func listVaultMarketPredictionOrders(completion: @escaping (_ data: ListVaultMarketPredictionOrdersResponse?, _ error: Error?) -> Void)
+```
+
+Your prediction orders, newest first: working, done or all; practice, live or all.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your prediction orders, newest first: working, done or all; practice, live or all.
+VaultMarketsAPI.listVaultMarketPredictionOrders() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketPredictionOrdersResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketPredictionPositions**
+```swift
+    open class func listVaultMarketPredictionPositions(completion: @escaping (_ data: ListVaultMarketPredictionPositionsResponse?, _ error: Error?) -> Void)
+```
+
+Your prediction positions (practice, live or all; open, settled or all): side, contracts, cost, value at the last price, fees, realised P&L, payout or refund once settled, and the share card if you made one.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your prediction positions (practice, live or all; open, settled or all): side, contracts, cost, value at the last price, fees, realised P&L, payout or refund once settled, and the share card if you made one.
+VaultMarketsAPI.listVaultMarketPredictionPositions() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketPredictionPositionsResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketPredictionProposalListed**
+```swift
+    open class func listVaultMarketPredictionProposalListed(completion: @escaping (_ data: ListVaultMarketPredictionProposalListedResponse?, _ error: Error?) -> Void)
+```
+
+The markets you proposed that are listed: volume, status and what the creator share has earned you.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// The markets you proposed that are listed: volume, status and what the creator share has earned you.
+VaultMarketsAPI.listVaultMarketPredictionProposalListed() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketPredictionProposalListedResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketPredictionProposals**
+```swift
+    open class func listVaultMarketPredictionProposals(completion: @escaping (_ data: ListVaultMarketPredictionProposalsResponse?, _ error: Error?) -> Void)
+```
+
+Your market proposals and where each stands (pending, listed, rejected, withdrawn).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your market proposals and where each stands (pending, listed, rejected, withdrawn).
+VaultMarketsAPI.listVaultMarketPredictionProposals() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketPredictionProposalsResponse**
 
 ### Authorization
 
@@ -19783,6 +28500,142 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **listVaultMarketShareAutoInvest**
+```swift
+    open class func listVaultMarketShareAutoInvest(completion: @escaping (_ data: ListVaultMarketShareAutoInvestResponse?, _ error: Error?) -> Void)
+```
+
+Your recurring auto-invest plans: amount, weekly or monthly, the series and weights or the basket, what rolled over (budget too small for a whole share; your money stays at the venue), the next run.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your recurring auto-invest plans: amount, weekly or monthly, the series and weights or the basket, what rolled over (budget too small for a whole share; your money stays at the venue), the next run.
+VaultMarketsAPI.listVaultMarketShareAutoInvest() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketShareAutoInvestResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketShareAutoInvestRuns**
+```swift
+    open class func listVaultMarketShareAutoInvestRuns(id: String, completion: @escaping (_ data: ListVaultMarketShareAutoInvestRunsResponse?, _ error: Error?) -> Void)
+```
+
+A plan’s runs, newest first: the budget, what each series bought, what was spent and what rolled over; rebalances too.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// A plan’s runs, newest first: the budget, what each series bought, what was spent and what rolled over; rebalances too.
+VaultMarketsAPI.listVaultMarketShareAutoInvestRuns(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**ListVaultMarketShareAutoInvestRunsResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketShareBaskets**
+```swift
+    open class func listVaultMarketShareBaskets(completion: @escaping (_ data: ListVaultMarketShareBasketsResponse?, _ error: Error?) -> Void)
+```
+
+Theme baskets: curated model portfolios of Vault Shares series with target weights. You buy and own every share directly in your own name; a basket is never a fund.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Theme baskets: curated model portfolios of Vault Shares series with target weights. You buy and own every share directly in your own name; a basket is never a fund.
+VaultMarketsAPI.listVaultMarketShareBaskets() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketShareBasketsResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **listVaultMarketShareCards**
 ```swift
     open class func listVaultMarketShareCards(completion: @escaping (_ data: ListVaultMarketShareCardsResponse?, _ error: Error?) -> Void)
@@ -19815,6 +28668,458 @@ This endpoint does not need any parameter.
 ### Return type
 
 **ListVaultMarketShareCardsResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketShareDrops**
+```swift
+    open class func listVaultMarketShareDrops(completion: @escaping (_ data: ListVaultMarketShareDropsResponse?, _ error: Error?) -> Void)
+```
+
+The Vault Shares drops calendar: announced and open offerings, soonest first, each with its phase (announced, early_access, requests, open), the countdown, the allocation (fcfs, pro_rata or lottery with a per-person cap), your Crossly One early-access time (it moves when you may ask, never the price) and whether you asked to be told.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// The Vault Shares drops calendar: announced and open offerings, soonest first, each with its phase (announced, early_access, requests, open), the countdown, the allocation (fcfs, pro_rata or lottery with a per-person cap), your Crossly One early-access time (it moves when you may ask, never the price) and whether you asked to be told.
+VaultMarketsAPI.listVaultMarketShareDrops() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketShareDropsResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketShareGifts**
+```swift
+    open class func listVaultMarketShareGifts(completion: @escaping (_ data: ListVaultMarketShareGiftsResponse?, _ error: Error?) -> Void)
+```
+
+Your share gifts, sent and received, newest first, with where each stands (offered, instructed, settled, declined, cancelled, expired, rejected).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your share gifts, sent and received, newest first, with where each stands (offered, instructed, settled, declined, cancelled, expired, rejected).
+VaultMarketsAPI.listVaultMarketShareGifts() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketShareGiftsResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketShareOrders**
+```swift
+    open class func listVaultMarketShareOrders(completion: @escaping (_ data: ListVaultMarketShareOrdersResponse?, _ error: Error?) -> Void)
+```
+
+Your share-book orders, newest first; `seriesId` and `open` narrow it.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your share-book orders, newest first; `seriesId` and `open` narrow it.
+VaultMarketsAPI.listVaultMarketShareOrders() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketShareOrdersResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketShareSeries**
+```swift
+    open class func listVaultMarketShareSeries(completion: @escaping (_ data: ListVaultMarketShareSeriesResponse?, _ error: Error?) -> Void)
+```
+
+Vault Shares series: open offerings first, then trading, then the rest. `status` and `bookKey` narrow it. Each with its terms, progress, last share price and implied item value (display only, never a mark), and your holding.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Vault Shares series: open offerings first, then trading, then the rest. `status` and `bookKey` narrow it. Each with its terms, progress, last share price and implied item value (display only, never a mark), and your holding.
+VaultMarketsAPI.listVaultMarketShareSeries() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketShareSeriesResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketShareSeryAppraisals**
+```swift
+    open class func listVaultMarketShareSeryAppraisals(id: String, completion: @escaping (_ data: ListVaultMarketShareSeryAppraisalsResponse?, _ error: Error?) -> Void)
+```
+
+The item’s appraisal history: the offering valuation (sealed valuation statement), independent and insurance appraisals, and any buyout or exit price.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// The item’s appraisal history: the offering valuation (sealed valuation statement), independent and insurance appraisals, and any buyout or exit price.
+VaultMarketsAPI.listVaultMarketShareSeryAppraisals(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**ListVaultMarketShareSeryAppraisalsResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketShareSeryTape**
+```swift
+    open class func listVaultMarketShareSeryTape(id: String, completion: @escaping (_ data: ListVaultMarketShareSeryTapeResponse?, _ error: Error?) -> Void)
+```
+
+The latest fills on a share book, newest first, with which side made the market.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// The latest fills on a share book, newest first, with which side made the market.
+VaultMarketsAPI.listVaultMarketShareSeryTape(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**ListVaultMarketShareSeryTapeResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketShareSeryUpdates**
+```swift
+    open class func listVaultMarketShareSeryUpdates(id: String, completion: @escaping (_ data: ListVaultMarketShareSeryUpdatesResponse?, _ error: Error?) -> Void)
+```
+
+The item’s story, provenance, condition reports, appraisals and exhibitions, newest first. Holders also see holders-only updates.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// The item’s story, provenance, condition reports, appraisals and exhibitions, newest first. Holders also see holders-only updates.
+VaultMarketsAPI.listVaultMarketShareSeryUpdates(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**ListVaultMarketShareSeryUpdatesResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketShareSubscriptions**
+```swift
+    open class func listVaultMarketShareSubscriptions(completion: @escaping (_ data: ListVaultMarketShareSubscriptionsResponse?, _ error: Error?) -> Void)
+```
+
+Your offering subscriptions, newest first, with where each stands (pending, escrowed, allocated, refunded).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your offering subscriptions, newest first, with where each stands (pending, escrowed, allocated, refunded).
+VaultMarketsAPI.listVaultMarketShareSubscriptions() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketShareSubscriptionsResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketShareWorld**
+```swift
+    open class func listVaultMarketShareWorld(completion: @escaping (_ data: ListVaultMarketShareWorldResponse?, _ error: Error?) -> Void)
+```
+
+The world vault home’s fractional tiles: each item you own a share of, with \"you own 3.2%\".
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// The world vault home’s fractional tiles: each item you own a share of, with \"you own 3.2%\".
+VaultMarketsAPI.listVaultMarketShareWorld() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketShareWorldResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketSupplyDeclaredValues**
+```swift
+    open class func listVaultMarketSupplyDeclaredValues(completion: @escaping (_ data: ListVaultMarketSupplyDeclaredValuesResponse?, _ error: Error?) -> Void)
+```
+
+What each item's declared value starts at, by your insurance rule (market, cost or price). `inventoryItemIds` comma-separated.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// What each item's declared value starts at, by your insurance rule (market, cost or price). `inventoryItemIds` comma-separated.
+VaultMarketsAPI.listVaultMarketSupplyDeclaredValues() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketSupplyDeclaredValuesResponse**
 
 ### Authorization
 
@@ -19871,6 +29176,50 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **listVaultMarketSupplyEligibility**
+```swift
+    open class func listVaultMarketSupplyEligibility(completion: @escaping (_ data: ListVaultMarketSupplyEligibilityResponse?, _ error: Error?) -> Void)
+```
+
+Can these inventory items (`inventoryItemIds`, comma-separated, or every item linked to `listingId`) be sent to the vault now? Each says why not.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Can these inventory items (`inventoryItemIds`, comma-separated, or every item linked to `listingId`) be sent to the vault now? Each says why not.
+VaultMarketsAPI.listVaultMarketSupplyEligibility() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketSupplyEligibilityResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **listVaultMarketSupplyInvites**
 ```swift
     open class func listVaultMarketSupplyInvites(completion: @escaping (_ data: ListVaultMarketSupplyInvitesResponse?, _ error: Error?) -> Void)
@@ -19903,6 +29252,50 @@ This endpoint does not need any parameter.
 ### Return type
 
 **ListVaultMarketSupplyInvitesResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listVaultMarketSupplyShipments**
+```swift
+    open class func listVaultMarketSupplyShipments(completion: @escaping (_ data: ListVaultMarketSupplyShipmentsResponse?, _ error: Error?) -> Void)
+```
+
+Your shipments into the vault, newest first: method, label or drop-off code, tracking and how many units were received.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your shipments into the vault, newest first: method, label or drop-off code, tracking and how many units were received.
+VaultMarketsAPI.listVaultMarketSupplyShipments() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListVaultMarketSupplyShipmentsResponse**
 
 ### Authorization
 
@@ -20443,6 +29836,50 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **updateVaultMarketAutoBuy**
+```swift
+    open class func updateVaultMarketAutoBuy(completion: @escaping (_ data: UpdateVaultMarketAutoBuyResponse?, _ error: Error?) -> Void)
+```
+
+Set up or change Auto-buy with payouts: `shareBps` (1–50%) and the whole want list in order, each with an optional `maxPriceCents` (fee included).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Set up or change Auto-buy with payouts: `shareBps` (1–50%) and the whole want list in order, each with an optional `maxPriceCents` (fee included).
+VaultMarketsAPI.updateVaultMarketAutoBuy() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**UpdateVaultMarketAutoBuyResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **updateVaultMarketBlockAllocation**
 ```swift
     open class func updateVaultMarketBlockAllocation(orderId: String, completion: @escaping (_ data: ListVaultMarketBlocksItem?, _ error: Error?) -> Void)
@@ -20959,6 +30396,54 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **updateVaultMarketItemSellFrom**
+```swift
+    open class func updateVaultMarketItemSellFrom(inventoryItemId: String, completion: @escaping (_ data: GetVaultMarketItemLocationResponse?, _ error: Error?) -> Void)
+```
+
+Set which unit a sale of this item ships first: `vault_first`, `warehouse_first` or `cheapest` (to ship); null = your default. Quantities stay the same on every channel: only who ships changes.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let inventoryItemId = "inventoryItemId_example" // String | 
+
+// Set which unit a sale of this item ships first: `vault_first`, `warehouse_first` or `cheapest` (to ship); null = your default. Quantities stay the same on every channel: only who ships changes.
+VaultMarketsAPI.updateVaultMarketItemSellFrom(inventoryItemId: inventoryItemId) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **inventoryItemId** | **String** |  | 
+
+### Return type
+
+**GetVaultMarketItemLocationResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **updateVaultMarketLendingElection**
 ```swift
     open class func updateVaultMarketLendingElection(completion: @escaping (_ data: GetVaultMarketLendingElectionResponse?, _ error: Error?) -> Void)
@@ -21135,6 +30620,50 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **updateVaultMarketOptionAutoClose**
+```swift
+    open class func updateVaultMarketOptionAutoClose(completion: @escaping (_ data: GetVaultMarketOptionAutoCloseResponse?, _ error: Error?) -> Void)
+```
+
+Set your auto-close rule: `enabled`, `minutesBefore` (30 to 10080), `onlyItm`, `maxSlippageBps` (0 to 2000).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Set your auto-close rule: `enabled`, `minutesBefore` (30 to 10080), `onlyItm`, `maxSlippageBps` (0 to 2000).
+VaultMarketsAPI.updateVaultMarketOptionAutoClose() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketOptionAutoCloseResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **updateVaultMarketPaperLeaderboard**
 ```swift
     open class func updateVaultMarketPaperLeaderboard(completion: @escaping (_ data: UpdateVaultMarketPaperLeaderboardResponse?, _ error: Error?) -> Void)
@@ -21167,6 +30696,50 @@ This endpoint does not need any parameter.
 ### Return type
 
 **UpdateVaultMarketPaperLeaderboardResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **updateVaultMarketPartnerMe**
+```swift
+    open class func updateVaultMarketPartnerMe(completion: @escaping (_ data: UpdateVaultMarketPartnerMeResponse?, _ error: Error?) -> Void)
+```
+
+Your drop-off partnership's finder profile: postal code, opening hours, services and whether you are listed.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your drop-off partnership's finder profile: postal code, opening hours, services and whether you are listed.
+VaultMarketsAPI.updateVaultMarketPartnerMe() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**UpdateVaultMarketPartnerMeResponse**
 
 ### Authorization
 
@@ -21215,6 +30788,142 @@ Name | Type | Description  | Notes
 ### Return type
 
 **UpdateVaultMarketPositionExitResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **updateVaultMarketPredictionComment**
+```swift
+    open class func updateVaultMarketPredictionComment(id: String, completion: @escaping (_ data: CreateVaultMarketPredictionCommentResponse?, _ error: Error?) -> Void)
+```
+
+Edit your comment.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let id = "id_example" // String | 
+
+// Edit your comment.
+VaultMarketsAPI.updateVaultMarketPredictionComment(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateVaultMarketPredictionCommentResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **updateVaultMarketPredictionForecaster**
+```swift
+    open class func updateVaultMarketPredictionForecaster(completion: @escaping (_ data: GetVaultMarketPredictionForecasterResponse?, _ error: Error?) -> Void)
+```
+
+Go public under a display name (`public: true`), rename, or go private (`public: false`: nothing is shown again).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Go public under a display name (`public: true`), rename, or go private (`public: false`: nothing is shown again).
+VaultMarketsAPI.updateVaultMarketPredictionForecaster() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketPredictionForecasterResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **updateVaultMarketPredictionLimit**
+```swift
+    open class func updateVaultMarketPredictionLimit(completion: @escaping (_ data: GetVaultMarketPredictionLimitResponse?, _ error: Error?) -> Void)
+```
+
+Set your daily loss limit (`dailyLossLimitCents`, null = none) or exclude yourself (`excludeDays`, `excludedUntil` or \"forever\"). Tighter takes effect at once; looser waits 24 hours.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Set your daily loss limit (`dailyLossLimitCents`, null = none) or exclude yourself (`excludeDays`, `excludedUntil` or \"forever\"). Tighter takes effect at once; looser waits 24 hours.
+VaultMarketsAPI.updateVaultMarketPredictionLimit() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketPredictionLimitResponse**
 
 ### Authorization
 
@@ -21403,6 +31112,50 @@ Name | Type | Description  | Notes
 ### Return type
 
 **GetVaultMarketSetGoalResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **updateVaultMarketSetting**
+```swift
+    open class func updateVaultMarketSetting(completion: @escaping (_ data: GetVaultMarketSettingResponse?, _ error: Error?) -> Void)
+```
+
+Change your vault defaults; send only the fields you change.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Change your vault defaults; send only the fields you change.
+VaultMarketsAPI.updateVaultMarketSetting() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetVaultMarketSettingResponse**
 
 ### Authorization
 

@@ -13,40 +13,40 @@ import AnyCodable
 public struct ListBuyerGiftSentItem: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var createdAt: String
-    public var status: String
-    public var url: String
-    public var openedAt: String?
-    public var revealedAt: String?
-    public var recipientEmail: String
     public var recipientName: String
+    public var recipientEmail: String
+    public var status: String
     public var teaserSentAt: String?
+    public var revealedAt: String?
+    public var openedAt: String?
     public var thanksMessage: String?
+    public var createdAt: String
+    public var url: String
 
-    public init(id: String, createdAt: String, status: String, url: String, openedAt: String? = nil, revealedAt: String? = nil, recipientEmail: String, recipientName: String, teaserSentAt: String? = nil, thanksMessage: String? = nil) {
+    public init(id: String, recipientName: String, recipientEmail: String, status: String, teaserSentAt: String? = nil, revealedAt: String? = nil, openedAt: String? = nil, thanksMessage: String? = nil, createdAt: String, url: String) {
         self.id = id
-        self.createdAt = createdAt
-        self.status = status
-        self.url = url
-        self.openedAt = openedAt
-        self.revealedAt = revealedAt
-        self.recipientEmail = recipientEmail
         self.recipientName = recipientName
+        self.recipientEmail = recipientEmail
+        self.status = status
         self.teaserSentAt = teaserSentAt
+        self.revealedAt = revealedAt
+        self.openedAt = openedAt
         self.thanksMessage = thanksMessage
+        self.createdAt = createdAt
+        self.url = url
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case createdAt
-        case status
-        case url
-        case openedAt
-        case revealedAt
-        case recipientEmail
         case recipientName
+        case recipientEmail
+        case status
         case teaserSentAt
+        case revealedAt
+        case openedAt
         case thanksMessage
+        case createdAt
+        case url
     }
 
     // Encodable protocol methods
@@ -54,15 +54,15 @@ public struct ListBuyerGiftSentItem: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(createdAt, forKey: .createdAt)
-        try container.encode(status, forKey: .status)
-        try container.encode(url, forKey: .url)
-        try container.encodeIfPresent(openedAt, forKey: .openedAt)
-        try container.encodeIfPresent(revealedAt, forKey: .revealedAt)
-        try container.encode(recipientEmail, forKey: .recipientEmail)
         try container.encode(recipientName, forKey: .recipientName)
+        try container.encode(recipientEmail, forKey: .recipientEmail)
+        try container.encode(status, forKey: .status)
         try container.encodeIfPresent(teaserSentAt, forKey: .teaserSentAt)
+        try container.encodeIfPresent(revealedAt, forKey: .revealedAt)
+        try container.encodeIfPresent(openedAt, forKey: .openedAt)
         try container.encodeIfPresent(thanksMessage, forKey: .thanksMessage)
+        try container.encode(createdAt, forKey: .createdAt)
+        try container.encode(url, forKey: .url)
     }
 }
 

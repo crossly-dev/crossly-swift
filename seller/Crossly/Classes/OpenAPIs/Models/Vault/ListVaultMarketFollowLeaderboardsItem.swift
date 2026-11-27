@@ -13,6 +13,7 @@ import AnyCodable
 public struct ListVaultMarketFollowLeaderboardsItem: Codable, JSONEncodable, Hashable {
 
     public var rank: Double
+    public var person: ListVaultMarketFollowLeaderboardsItemPerson
     public var returnBps: Double
     public var volatilityBps: Double
     public var riskAdjusted: Double
@@ -21,8 +22,9 @@ public struct ListVaultMarketFollowLeaderboardsItem: Codable, JSONEncodable, Has
     public var markets: Double
     public var isMe: Bool
 
-    public init(rank: Double, returnBps: Double, volatilityBps: Double, riskAdjusted: Double, maxDrawdownBps: Double, days: Double, markets: Double, isMe: Bool) {
+    public init(rank: Double, person: ListVaultMarketFollowLeaderboardsItemPerson, returnBps: Double, volatilityBps: Double, riskAdjusted: Double, maxDrawdownBps: Double, days: Double, markets: Double, isMe: Bool) {
         self.rank = rank
+        self.person = person
         self.returnBps = returnBps
         self.volatilityBps = volatilityBps
         self.riskAdjusted = riskAdjusted
@@ -34,6 +36,7 @@ public struct ListVaultMarketFollowLeaderboardsItem: Codable, JSONEncodable, Has
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case rank
+        case person
         case returnBps
         case volatilityBps
         case riskAdjusted
@@ -48,6 +51,7 @@ public struct ListVaultMarketFollowLeaderboardsItem: Codable, JSONEncodable, Has
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(rank, forKey: .rank)
+        try container.encode(person, forKey: .person)
         try container.encode(returnBps, forKey: .returnBps)
         try container.encode(volatilityBps, forKey: .volatilityBps)
         try container.encode(riskAdjusted, forKey: .riskAdjusted)

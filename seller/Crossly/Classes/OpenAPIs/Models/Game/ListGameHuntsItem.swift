@@ -14,15 +14,16 @@ public struct ListGameHuntsItem: Codable, JSONEncodable, Hashable {
 
     public var id: String
     public var title: String
-    public var shop: SlugName
+    public var shop: NameSlug
     public var stall: ListGameHuntsItemStall?
     public var tokens: Double
     /** \"10% off\" / \"$5 off\": what finishing it unlocks, never the code itself. */
     public var reward: String
     public var endsAt: String
     public var finishers: Double
+    public var rules: ListGameHuntsItemRules?
 
-    public init(id: String, title: String, shop: SlugName, stall: ListGameHuntsItemStall? = nil, tokens: Double, reward: String, endsAt: String, finishers: Double) {
+    public init(id: String, title: String, shop: NameSlug, stall: ListGameHuntsItemStall? = nil, tokens: Double, reward: String, endsAt: String, finishers: Double, rules: ListGameHuntsItemRules? = nil) {
         self.id = id
         self.title = title
         self.shop = shop
@@ -31,6 +32,7 @@ public struct ListGameHuntsItem: Codable, JSONEncodable, Hashable {
         self.reward = reward
         self.endsAt = endsAt
         self.finishers = finishers
+        self.rules = rules
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -42,6 +44,7 @@ public struct ListGameHuntsItem: Codable, JSONEncodable, Hashable {
         case reward
         case endsAt
         case finishers
+        case rules
     }
 
     // Encodable protocol methods
@@ -56,6 +59,7 @@ public struct ListGameHuntsItem: Codable, JSONEncodable, Hashable {
         try container.encode(reward, forKey: .reward)
         try container.encode(endsAt, forKey: .endsAt)
         try container.encode(finishers, forKey: .finishers)
+        try container.encodeIfPresent(rules, forKey: .rules)
     }
 }
 

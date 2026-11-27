@@ -18,6 +18,7 @@ public struct GetPayoutConnectResponseData: Codable, JSONEncodable, Hashable {
     }
     public var status: String
     public var defaultCountry: String?
+    public var accountSource: String
     public var payoutsEnabled: Bool?
     public var chargesEnabled: Bool?
     /** `capabilities.transfers === 'active'` — the capability every Crossly payout uses. */
@@ -33,9 +34,10 @@ public struct GetPayoutConnectResponseData: Codable, JSONEncodable, Hashable {
     public var payoutsSupported: Bool?
     public var message: String?
 
-    public init(status: String, defaultCountry: String? = nil, payoutsEnabled: Bool? = nil, chargesEnabled: Bool? = nil, transfersActive: Bool? = nil, detailsSubmitted: Bool? = nil, taxReporting1099kReady: Bool? = nil, country: String? = nil, agreement: Agreement? = nil, defaultCurrency: String? = nil, accountId: String? = nil, payoutsSupported: Bool? = nil, message: String? = nil) {
+    public init(status: String, defaultCountry: String? = nil, accountSource: String, payoutsEnabled: Bool? = nil, chargesEnabled: Bool? = nil, transfersActive: Bool? = nil, detailsSubmitted: Bool? = nil, taxReporting1099kReady: Bool? = nil, country: String? = nil, agreement: Agreement? = nil, defaultCurrency: String? = nil, accountId: String? = nil, payoutsSupported: Bool? = nil, message: String? = nil) {
         self.status = status
         self.defaultCountry = defaultCountry
+        self.accountSource = accountSource
         self.payoutsEnabled = payoutsEnabled
         self.chargesEnabled = chargesEnabled
         self.transfersActive = transfersActive
@@ -52,6 +54,7 @@ public struct GetPayoutConnectResponseData: Codable, JSONEncodable, Hashable {
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case status
         case defaultCountry
+        case accountSource
         case payoutsEnabled
         case chargesEnabled
         case transfersActive
@@ -71,6 +74,7 @@ public struct GetPayoutConnectResponseData: Codable, JSONEncodable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(status, forKey: .status)
         try container.encodeIfPresent(defaultCountry, forKey: .defaultCountry)
+        try container.encode(accountSource, forKey: .accountSource)
         try container.encodeIfPresent(payoutsEnabled, forKey: .payoutsEnabled)
         try container.encodeIfPresent(chargesEnabled, forKey: .chargesEnabled)
         try container.encodeIfPresent(transfersActive, forKey: .transfersActive)

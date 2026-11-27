@@ -28,12 +28,14 @@ public struct GetHomeResponseLayoutItem: Codable, JSONEncodable, Hashable {
     public var found: String?
     /** The thing ITSELF as a 3D object in a case or on a shelf (shared listing-space.ts): never a flat photo. Not for NFTs. */
     public var object: String?
-    /** A `vault` ref: the unit's market (a book key), so a click opens /shop/vault/markets/<market>. */
+    /** A `vault` ref: the unit's market (a book key), so a click opens /trading/<market>. */
     public var market: String?
     /** A `vault` ref, to its OWNER only: visitors may see it (vm_home_display.visitors). */
     public var visitors: Bool?
+    /** The owner's open Trade Block post for this same product (trade-posts.ts): \"Offer a trade\" opens it. */
+    public var tradePostId: String?
 
-    public init(title: String, imageUrl: String? = nil, grade: String? = nil, listingSlug: String? = nil, model: String? = nil, crossly: Bool? = nil, space: String? = nil, found: String? = nil, object: String? = nil, market: String? = nil, visitors: Bool? = nil) {
+    public init(title: String, imageUrl: String? = nil, grade: String? = nil, listingSlug: String? = nil, model: String? = nil, crossly: Bool? = nil, space: String? = nil, found: String? = nil, object: String? = nil, market: String? = nil, visitors: Bool? = nil, tradePostId: String? = nil) {
         self.title = title
         self.imageUrl = imageUrl
         self.grade = grade
@@ -45,6 +47,7 @@ public struct GetHomeResponseLayoutItem: Codable, JSONEncodable, Hashable {
         self.object = object
         self.market = market
         self.visitors = visitors
+        self.tradePostId = tradePostId
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -59,6 +62,7 @@ public struct GetHomeResponseLayoutItem: Codable, JSONEncodable, Hashable {
         case object
         case market
         case visitors
+        case tradePostId
     }
 
     // Encodable protocol methods
@@ -76,6 +80,7 @@ public struct GetHomeResponseLayoutItem: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(object, forKey: .object)
         try container.encodeIfPresent(market, forKey: .market)
         try container.encodeIfPresent(visitors, forKey: .visitors)
+        try container.encodeIfPresent(tradePostId, forKey: .tradePostId)
     }
 }
 

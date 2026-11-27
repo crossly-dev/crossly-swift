@@ -13,8 +13,8 @@ import AnyCodable
 public struct CreateStallBookResponseBooking: Codable, JSONEncodable, Hashable {
 
     public enum Unit: String, Codable, CaseIterable {
-        case event = "event"
         case day = "day"
+        case event = "event"
     }
     public enum Status: String, Codable, CaseIterable {
         case cancelled = "cancelled"
@@ -24,8 +24,13 @@ public struct CreateStallBookResponseBooking: Codable, JSONEncodable, Hashable {
     }
     public enum Rail: String, Codable, CaseIterable {
         case card = "card"
-        case bucks = "bucks"
         case cbx = "cbx"
+        case bucks = "bucks"
+    }
+    public enum BoothKind: String, Codable, CaseIterable {
+        case booth = "booth"
+        case cart = "cart"
+        case pavilion = "pavilion"
     }
     public var id: String
     public var street: String
@@ -42,6 +47,8 @@ public struct CreateStallBookResponseBooking: Codable, JSONEncodable, Hashable {
     public var refundedCents: Double
     public var cancellable: Bool
     public var listingIds: [String]
+    public var boothKind: BoothKind
+    public var capacity: Double
     public var awning: ColourPattern?
     public var booth: CreateStallBookResponseBookingBooth?
     public var sign: String?
@@ -49,7 +56,7 @@ public struct CreateStallBookResponseBooking: Codable, JSONEncodable, Hashable {
     public var stats: CreateStallBookResponseBookingStats
     public var createdAt: String
 
-    public init(id: String, street: String, spotIndex: Double, unit: Unit, units: [CreateStallBookResponseBookingUnits], startsAt: String, endsAt: String, status: Status, rail: Rail, owner: CreateStallBookResponseBookingOwner, quote: CreateStallBookResponseBookingQuote, totalCents: Double, refundedCents: Double, cancellable: Bool, listingIds: [String], awning: ColourPattern? = nil, booth: CreateStallBookResponseBookingBooth? = nil, sign: String? = nil, attendant: Bool, stats: CreateStallBookResponseBookingStats, createdAt: String) {
+    public init(id: String, street: String, spotIndex: Double, unit: Unit, units: [CreateStallBookResponseBookingUnits], startsAt: String, endsAt: String, status: Status, rail: Rail, owner: CreateStallBookResponseBookingOwner, quote: CreateStallBookResponseBookingQuote, totalCents: Double, refundedCents: Double, cancellable: Bool, listingIds: [String], boothKind: BoothKind, capacity: Double, awning: ColourPattern? = nil, booth: CreateStallBookResponseBookingBooth? = nil, sign: String? = nil, attendant: Bool, stats: CreateStallBookResponseBookingStats, createdAt: String) {
         self.id = id
         self.street = street
         self.spotIndex = spotIndex
@@ -65,6 +72,8 @@ public struct CreateStallBookResponseBooking: Codable, JSONEncodable, Hashable {
         self.refundedCents = refundedCents
         self.cancellable = cancellable
         self.listingIds = listingIds
+        self.boothKind = boothKind
+        self.capacity = capacity
         self.awning = awning
         self.booth = booth
         self.sign = sign
@@ -89,6 +98,8 @@ public struct CreateStallBookResponseBooking: Codable, JSONEncodable, Hashable {
         case refundedCents
         case cancellable
         case listingIds
+        case boothKind
+        case capacity
         case awning
         case booth
         case sign
@@ -116,6 +127,8 @@ public struct CreateStallBookResponseBooking: Codable, JSONEncodable, Hashable {
         try container.encode(refundedCents, forKey: .refundedCents)
         try container.encode(cancellable, forKey: .cancellable)
         try container.encode(listingIds, forKey: .listingIds)
+        try container.encode(boothKind, forKey: .boothKind)
+        try container.encode(capacity, forKey: .capacity)
         try container.encodeIfPresent(awning, forKey: .awning)
         try container.encodeIfPresent(booth, forKey: .booth)
         try container.encodeIfPresent(sign, forKey: .sign)

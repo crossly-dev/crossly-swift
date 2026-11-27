@@ -25,14 +25,19 @@ Method | HTTP request | Description
 [**createBuyerCatalogListingRental**](BuyerAPI.md#createbuyercataloglistingrental) | **POST** /v1/buyer/catalog/listings/{slug}/rental | Book a rental. Returns a Stripe PaymentIntent client secret for rent + shipping both ways + deposit; the dates are held 30 minutes for payment. Crossly buys both labels; the deposit comes back after the item does.
 [**createBuyerCatalogListingRentalQuote**](BuyerAPI.md#createbuyercataloglistingrentalquote) | **POST** /v1/buyer/catalog/listings/{slug}/rental/quote | Price a rental: rent (the cheaper of by-the-day and by-the-week), both shipping legs once a ship-to is given, and the deposit. &#x60;problem&#x60; says why the dates can’t be booked.
 [**createBuyerCatalogListingVideoRequest**](BuyerAPI.md#createbuyercataloglistingvideorequest) | **POST** /v1/buyer/catalog/listings/{slug}/video-requests | Ask the seller for a video of an item (one open request per item). The seller is notified; their answer appears on the listing for every buyer.
+[**createBuyerCompany**](BuyerAPI.md#createbuyercompany) | **POST** /v1/buyer/company | Create a buyer company: name, taxId?, website?. You become its owner; a user is in at most one company.
+[**createBuyerCompanyApproval**](BuyerAPI.md#createbuyercompanyapproval) | **POST** /v1/buyer/company/approvals | Ask for approval of a trade order above your limit: sellerUserId, amountCents, note?, poReference?. Good for 7 days, used once at checkout.
+[**createBuyerCompanyApprovalDecide**](BuyerAPI.md#createbuyercompanyapprovaldecide) | **POST** /v1/buyer/company/approvals/{id}/decide | Approve or decline a pending request (owner, accounts payable): decision approved | declined, note?.
+[**createBuyerCompanyMember**](BuyerAPI.md#createbuyercompanymember) | **POST** /v1/buyer/company/members | Invite a teammate by email (owner): role owner | buyer | accounts_payable | viewer, approvalLimitCents for a buyer (orders above it need an approval).
 [**createBuyerConversationInvite**](BuyerAPI.md#createbuyerconversationinvite) | **POST** /v1/buyer/conversations/{id}/invite | Invite a friend into a chat with a seller: a single-use link (7 days) that makes whoever opens it a guest who can read and post. Only the thread’s buyer can invite; at most 5 guests.
 [**createBuyerConversationJoin**](BuyerAPI.md#createbuyerconversationjoin) | **POST** /v1/buyer/conversations/join/{token} | Join a chat you were invited into, as a guest.
+[**createBuyerEventRsvp**](BuyerAPI.md#createbuyereventrsvp) | **POST** /v1/buyer/events/{slug}/rsvp | RSVP to an event: going (counts against its capacity) or interested.
 [**createBuyerFeedback**](BuyerAPI.md#createbuyerfeedback) | **POST** /v1/buyer/feedback | Leave feedback on up to 25 orders at once, with optional detailed seller ratings.
 [**createBuyerFitRef**](BuyerAPI.md#createbuyerfitref) | **POST** /v1/buyer/fit/refs | Save a reference garment (flat measurements, inches) to compare listings against.
 [**createBuyerFollowingSellerSeen**](BuyerAPI.md#createbuyerfollowingsellerseen) | **POST** /v1/buyer/following/sellers/seen | Clear the \&quot;new listings\&quot; count on a followed seller, or on all of them.
 [**createBuyerGiftCard**](BuyerAPI.md#createbuyergiftcard) | **POST** /v1/buyer/gift-cards | Start a gift card purchase.
 [**createBuyerGiftCardRedeem**](BuyerAPI.md#createbuyergiftcardredeem) | **POST** /v1/buyer/gift-cards/redeem | Redeem a gift card code into your own balance.
-[**createBuyerGroupBuyJoin**](BuyerAPI.md#createbuyergroupbuyjoin) | **POST** /v1/buyer/group-buys/{id}/join | Join a group buy: a hold at the starting price, captured at the price the group reaches. Checked against this key’s spending controls; send an Idempotency-Key.
+[**createBuyerGroupBuyJoin**](BuyerAPI.md#createbuyergroupbuyjoin) | **POST** /v1/buyer/group-buys/{id}/join | Join a group buy with a quantity (up to its per-buyer max): a hold (or, for pay-now pools, a charge refunded the difference) at the starting price, settled at the price the group reaches. &#x60;linkToken&#x60; opens a link-only pool. Checked against this key’s spending controls; send an Idempotency-Key.
 [**createBuyerGroupBuyLeave**](BuyerAPI.md#createbuyergroupbuyleave) | **POST** /v1/buyer/group-buys/{id}/leave | Leave a group buy and release your hold.
 [**createBuyerHunt**](BuyerAPI.md#createbuyerhunt) | **POST** /v1/buyer/hunts | Start a buyer-agent hunt — over a search (filters), or auto-buy on one listing (listingSlug: buy it once its price, sale applied, is within maxPriceCents). &#x60;offer&#x60; and &#x60;buy&#x60; modes also need buyer:checkout:write, and the budget is checked against this key’s spending controls.
 [**createBuyerInstantOfferAccept**](BuyerAPI.md#createbuyerinstantofferaccept) | **POST** /v1/buyer/instant-offers/{id}/accept | Accept Crossly’s instant offer on a collection item. Ops then send a prepaid label; the store credit is paid once the item arrives and checks out.
@@ -53,22 +58,28 @@ Method | HTTP request | Description
 [**createBuyerPackFairnessRotate**](BuyerAPI.md#createbuyerpackfairnessrotate) | **POST** /v1/buyer/packs/fairness/rotate | Reveal your current server seed and start a new one (optionally with your own client seed). Refused while an opening is awaiting payment.
 [**createBuyerPackOpen**](BuyerAPI.md#createbuyerpackopen) | **POST** /v1/buyer/packs/{slug}/open | Open a pack. SPENDS MONEY: charges the pack price to your saved card, then pulls one real item by the published odds (provably fair: see /buyer/packs/fairness) into your Crossly vault. confirmAdult must be true. Checked against this key’s spending controls; send an Idempotency-Key.
 [**createBuyerPackOpeningSellBack**](BuyerAPI.md#createbuyerpackopeningsellback) | **POST** /v1/buyer/pack-openings/{id}/sell-back | Sell a pull straight back for Crossly credit at the pack’s buyback rate, within its window, while it is still in your vault.
-[**createBuyerPassportClaim**](BuyerAPI.md#createbuyerpassportclaim) | **POST** /v1/buyer/passports/{code}/claim | Claim a passport as the item’s current owner (the buyer of its latest sale) — shown as “in its owner’s hands” until it sells again.
+[**createBuyerPassportClaim**](BuyerAPI.md#createbuyerpassportclaim) | **POST** /v1/buyer/passports/{code}/claim | Claim a passport as the item’s current owner — the buyer of its latest Crossly sale, or (after a sale on another marketplace) with the transfer code from the card in the box — shown as “in its owner’s hands” until it sells again.
 [**createBuyerProtectionPlanCancel**](BuyerAPI.md#createbuyerprotectionplancancel) | **POST** /v1/buyer/protection-plans/{id}/cancel | Cancel a protection plan. The insurer decides what is refundable (pro-rata after the free-look window); that amount goes back to the card.
-[**createBuyerPurchaseDownload**](BuyerAPI.md#createbuyerpurchasedownload) | **POST** /v1/buyer/purchases/{id}/download | A ten-minute link to a digital purchase’s file; each call uses one of its downloads.
 [**createBuyerPurchaseFit**](BuyerAPI.md#createbuyerpurchasefit) | **POST** /v1/buyer/purchases/{id}/fit | Say how a delivered purchase fit: true_to_size, small or large. It teaches your size memory and, pooled with other buyers, how the brand runs.
 [**createBuyerPurchaseReturn**](BuyerAPI.md#createbuyerpurchasereturn) | **POST** /v1/buyer/purchases/{id}/return | Return a purchase under the seller’s policy, or send back a try-at-home item. With reason doesnt_fit, &#x60;fit&#x60; (small | large) says which way, and it feeds your size memory.
 [**createBuyerRegistry**](BuyerAPI.md#createbuyerregistry) | **POST** /v1/buyer/registries | Start a gift registry (wedding, baby, birthday, housewarming, graduation, other). Items are added like any wishlist item; set shipAddressId to one of your saved addresses so guests can buy — they never see it.
 [**createBuyerRegistryGiftThanked**](BuyerAPI.md#createbuyerregistrygiftthanked) | **POST** /v1/buyer/registries/{id}/gifts/{giftId}/thanked | Tick a gift as thanked (or untick it).
 [**createBuyerRentalArrivalPhoto**](BuyerAPI.md#createbuyerrentalarrivalphoto) | **POST** /v1/buyer/rentals/{id}/arrival-photos | Photograph a rental on arrival (URLs you uploaded): your side of the condition record.
+[**createBuyerRentalBuyout**](BuyerAPI.md#createbuyerrentalbuyout) | **POST** /v1/buyer/rentals/{id}/buyout | Buy the item you are renting: the price less the rent-to-own credit → clientSecret.
 [**createBuyerRentalCancel**](BuyerAPI.md#createbuyerrentalcancel) | **POST** /v1/buyer/rentals/{id}/cancel | Cancel a rental that has not shipped: everything is refunded.
 [**createBuyerRentalClaimResponse**](BuyerAPI.md#createbuyerrentalclaimresponse) | **POST** /v1/buyer/rentals/{id}/claim-response | Answer a deposit claim: accept (the claim is paid, the rest refunded) or dispute (Crossly decides).
+[**createBuyerRentalDelivered**](BuyerAPI.md#createbuyerrentaldelivered) | **POST** /v1/buyer/rentals/{id}/delivered | Confirm your rental arrived.
+[**createBuyerRentalExtension**](BuyerAPI.md#createbuyerrentalextension) | **POST** /v1/buyer/rentals/{id}/extensions | Ask for more days. Auto-approved extensions return a clientSecret to pay with Stripe.
+[**createBuyerRentalExtensionPay**](BuyerAPI.md#createbuyerrentalextensionpay) | **POST** /v1/buyer/rentals/{id}/extensions/{extensionId}/pay | Pay for an extension the seller approved → clientSecret.
 [**createBuyerRentalIdentityStart**](BuyerAPI.md#createbuyerrentalidentitystart) | **POST** /v1/buyer/rentals/identity/start | Start the ID check renting needs (Stripe Identity: photo ID + selfie). Open &#x60;url&#x60; (hosted) or use &#x60;clientSecret&#x60; with Stripe.js.
+[**createBuyerRentalReturnShipped**](BuyerAPI.md#createbuyerrentalreturnshipped) | **POST** /v1/buyer/rentals/{id}/return-shipped | Say you sent your rental back (optionally with photos).
 [**createBuyerReturnCancel**](BuyerAPI.md#createbuyerreturncancel) | **POST** /v1/buyer/returns/{id}/cancel | Cancel a return before it ships.
 [**createBuyerReturnTracking**](BuyerAPI.md#createbuyerreturntracking) | **POST** /v1/buyer/returns/{id}/tracking | Add tracking to a return you shipped on your own label.
 [**createBuyerSellerClubJoin**](BuyerAPI.md#createbuyersellerclubjoin) | **POST** /v1/buyer/sellers/{sellerUserId}/club/join | Join a seller’s loyalty club (free). Your tier’s discount then applies to their items — the best of it and any other rate you have with them, never stacked.
+[**createBuyerSellerLoyaltyJoin**](BuyerAPI.md#createbuyersellerloyaltyjoin) | **POST** /v1/buyer/sellers/{sellerUserId}/loyalty/join | Join a seller’s loyalty club. Invite-only clubs take only invited buyers. Your tier and its perks are granted at once.
 [**createBuyerSellerReport**](BuyerAPI.md#createbuyersellerreport) | **POST** /v1/buyer/sellers/{username}/report | Report a seller to Crossly’s trust team.
 [**createBuyerSplitCancel**](BuyerAPI.md#createbuyersplitcancel) | **POST** /v1/buyer/splits/{id}/cancel | Cancel a split you organised; every held share is released.
+[**createBuyerStoreReport**](BuyerAPI.md#createbuyerstorereport) | **POST** /v1/buyer/stores/{slug}/report | Report a store to Crossly’s trust team.
 [**createBuyerTogether**](BuyerAPI.md#createbuyertogether) | **POST** /v1/buyer/together | Start a shop-together room.
 [**createBuyerTogetherItem**](BuyerAPI.md#createbuyertogetheritem) | **POST** /v1/buyer/together/{code}/items | Add a listing to a shop-together board.
 [**createBuyerTogetherItemVote**](BuyerAPI.md#createbuyertogetheritemvote) | **POST** /v1/buyer/together/{code}/items/{id}/vote | Vote an item on a room’s board up (1), down (-1) or clear (0).
@@ -79,6 +90,14 @@ Method | HTTP request | Description
 [**createBuyerVaultList**](BuyerAPI.md#createbuyervaultlist) | **POST** /v1/buyer/vault/{id}/list | Sell a vault item on the market at your price. It is already authenticated, so when it sells nothing ships in: the buyer keeps it vaulted or it ships straight to them.
 [**createBuyerVaultUnlist**](BuyerAPI.md#createbuyervaultunlist) | **POST** /v1/buyer/vault/{id}/unlist | Take a vault item off the market; it stays stored.
 [**createBuyerVaultWithdraw**](BuyerAPI.md#createbuyervaultwithdraw) | **POST** /v1/buyer/vault/{id}/withdraw | Ship a vault item home, standard or expedited. The shipping, any storage it owes and the early-withdrawal fee (within 90 days of arriving) are charged to your saved card now, all checked against this key’s spending controls; send an Idempotency-Key.
+[**createBuyerWholesaleCatalogApply**](BuyerAPI.md#createbuyerwholesalecatalogapply) | **POST** /v1/buyer/wholesale/catalogs/{storeSlug}/{catalogSlug}/apply | Apply to a store&#39;s wholesale catalog: { message?, answers [{ id, value }], resaleCertUrl?, resaleCertState?, taxId?, businessInfo? }. The seller&#39;s requirements are enforced (400 trade_apply_requirements names the first one missing); the seller reviews the request.
+[**createBuyerWholesaleFreightRequest**](BuyerAPI.md#createbuyerwholesalefreightrequest) | **POST** /v1/buyer/wholesale/freight-requests | Ask a seller to quote freight for their lines in your cart (an order over their pallet threshold): { sellerUserId, weightLbs?, shipTo? { postalCode, country, city?, region?, liftgate?, dock? }, note? }. One open request per seller.
+[**createBuyerWholesaleInvoicePayLink**](BuyerAPI.md#createbuyerwholesaleinvoicepaylink) | **POST** /v1/buyer/wholesale/invoices/{id}/pay-link | A hosted payment page for an on-account invoice: amountCents? (part of the balance, at least $1), method? card | ach. Nothing is charged until the buyer completes the page.
+[**createBuyerWholesaleOrderSheet**](BuyerAPI.md#createbuyerwholesaleordersheet) | **POST** /v1/buyer/wholesale/order-sheets | Save an order sheet: name, lines [{ platformListingId, listingVariantId?, catalogId?, quantity }] from one seller, optional catalogId, poReference, note.
+[**createBuyerWholesaleQuote**](BuyerAPI.md#createbuyerwholesalequote) | **POST** /v1/buyer/wholesale/quotes | Ask one seller for a quote: items [{ platformListingId, listingVariantId?, quantity, targetUnitPriceCents? }] (one seller per quote), optional catalogId, note, poReference.
+[**createBuyerWholesaleQuoteAccept**](BuyerAPI.md#createbuyerwholesalequoteaccept) | **POST** /v1/buyer/wholesale/quotes/{id}/accept | Accept an answered quote: its priced items go into your cart at the quoted quantities, locked at the quoted prices until the quote expires (changing a line&#39;s quantity drops the lock). Paying happens at checkout on Crossly.
+[**createBuyerWholesaleQuoteWithdraw**](BuyerAPI.md#createbuyerwholesalequotewithdraw) | **POST** /v1/buyer/wholesale/quotes/{id}/withdraw | Withdraw a quote request that is still requested or answered.
+[**createBuyerWholesaleUploadValidate**](BuyerAPI.md#createbuyerwholesaleuploadvalidate) | **POST** /v1/buyer/wholesale/upload/validate | Validate a CSV / PO against one catalog: rows [{ line, sku, quantity }] are matched by SKU (item or option SKU, or listing slug), merged per item and priced today; unmatched rows come back by line.
 [**createBuyerWishlist**](BuyerAPI.md#createbuyerwishlist) | **POST** /v1/buyer/wishlists | Create a wishlist.
 [**createBuyerWishlistInvite**](BuyerAPI.md#createbuyerwishlistinvite) | **POST** /v1/buyer/wishlists/{id}/invite | Share a wishlist with a co-editor: a single-use link (14 days). Members add and remove items; only the owner renames, deletes or removes members. At most 20.
 [**createBuyerWishlistItem**](BuyerAPI.md#createbuyerwishlistitem) | **POST** /v1/buyer/wishlists/{id}/items | Add a listing to a wishlist.
@@ -89,8 +108,12 @@ Method | HTTP request | Description
 [**deleteBuyerBreakSpotHold**](BuyerAPI.md#deletebuyerbreakspothold) | **DELETE** /v1/buyer/breaks/{id}/spots/{spotId}/hold | Release a break spot you hold.
 [**deleteBuyerCartItem**](BuyerAPI.md#deletebuyercartitem) | **DELETE** /v1/buyer/cart/items/{id} | Remove a line from your cart.
 [**deleteBuyerCartSaved**](BuyerAPI.md#deletebuyercartsaved) | **DELETE** /v1/buyer/cart/saved/{id} | Remove an item from saved-for-later. Returns the remaining list.
+[**deleteBuyerCompanyMember**](BuyerAPI.md#deletebuyercompanymember) | **DELETE** /v1/buyer/company/members/{id} | Remove a member or cancel an invite (owner), or leave the company (your own member id).
 [**deleteBuyerConversationGuest**](BuyerAPI.md#deletebuyerconversationguest) | **DELETE** /v1/buyer/conversations/{id}/guests/{userId} | Remove a guest (the thread’s buyer), or leave (a guest, with your own user id).
+[**deleteBuyerCreationReview**](BuyerAPI.md#deletebuyercreationreview) | **DELETE** /v1/buyer/creations/{format}/{id}/review | Remove your review of a creation (its vote leaves the rating with it).
+[**deleteBuyerEventRsvp**](BuyerAPI.md#deletebuyereventrsvp) | **DELETE** /v1/buyer/events/{slug}/rsvp | Take back your RSVP.
 [**deleteBuyerFitRef**](BuyerAPI.md#deletebuyerfitref) | **DELETE** /v1/buyer/fit/refs/{id} | Delete a reference garment.
+[**deleteBuyerHomeGuestbook**](BuyerAPI.md#deletebuyerhomeguestbook) | **DELETE** /v1/buyer/home/guestbook/{id} | Hide a line from your home’s guestbook.
 [**deleteBuyerMarketBid**](BuyerAPI.md#deletebuyermarketbid) | **DELETE** /v1/buyer/market/bids/{id} | Cancel a resting market bid.
 [**deleteBuyerMarketWatch**](BuyerAPI.md#deletebuyermarketwatch) | **DELETE** /v1/buyer/market/watches/{id} | Stop watching a market variant.
 [**deleteBuyerOffer**](BuyerAPI.md#deletebuyeroffer) | **DELETE** /v1/buyer/offers/{id} | Withdraw an offer you made that the seller has not answered.
@@ -98,9 +121,11 @@ Method | HTTP request | Description
 [**deleteBuyerRecentlyViewed2**](BuyerAPI.md#deletebuyerrecentlyviewed2) | **DELETE** /v1/buyer/recently-viewed | Clear your recently viewed list.
 [**deleteBuyerRegistry**](BuyerAPI.md#deletebuyerregistry) | **DELETE** /v1/buyer/registries/{id} | Delete a registry (and the wishlist behind it).
 [**deleteBuyerSellerClubJoin**](BuyerAPI.md#deletebuyersellerclubjoin) | **DELETE** /v1/buyer/sellers/{sellerUserId}/club/join | Leave a seller’s loyalty club.
+[**deleteBuyerSellerLoyaltyJoin**](BuyerAPI.md#deletebuyersellerloyaltyjoin) | **DELETE** /v1/buyer/sellers/{sellerUserId}/loyalty/join | Leave a seller’s loyalty club.
 [**deleteBuyerTogetherItem**](BuyerAPI.md#deletebuyertogetheritem) | **DELETE** /v1/buyer/together/{code}/items/{id} | Take an item you added off a room’s board.
 [**deleteBuyerTotalRequest**](BuyerAPI.md#deletebuyertotalrequest) | **DELETE** /v1/buyer/total-requests/{id} | Cancel a total request you made.
 [**deleteBuyerTryOn**](BuyerAPI.md#deletebuyertryon) | **DELETE** /v1/buyer/try-ons/{id} | Delete a try-on and its images — or pass &#x60;all&#x60; to delete every photo and result.
+[**deleteBuyerWholesaleOrderSheet**](BuyerAPI.md#deletebuyerwholesaleordersheet) | **DELETE** /v1/buyer/wholesale/order-sheets/{id} | Delete an order sheet.
 [**deleteBuyerWishlist**](BuyerAPI.md#deletebuyerwishlist) | **DELETE** /v1/buyer/wishlists/{id} | Delete a wishlist and everything on it.
 [**deleteBuyerWishlistItem**](BuyerAPI.md#deletebuyerwishlistitem) | **DELETE** /v1/buyer/wishlists/{id}/items/{slug} | Take a listing off a wishlist.
 [**deleteBuyerWishlistMember**](BuyerAPI.md#deletebuyerwishlistmember) | **DELETE** /v1/buyer/wishlists/{id}/members/{userId} | Remove a co-editor (the owner), or leave a list shared with you (your own user id).
@@ -116,9 +141,14 @@ Method | HTTP request | Description
 [**getBuyerCheckoutUsdc**](BuyerAPI.md#getbuyercheckoutusdc) | **GET** /v1/buyer/checkout/usdc | Whether Crossly takes USDC (Stripe stablecoin payments: Solana, Ethereum, Base, Polygon), and its per-order limit. Paying needs the buyer’s wallet, so it happens in the browser checkout, never unattended.
 [**getBuyerCollectionOffer**](BuyerAPI.md#getbuyercollectionoffer) | **GET** /v1/buyer/collection/{id}/offer | What an item in your collection would fetch now: the top open bid on the market for the same variant, condition and grade, and Crossly’s instant offer in store credit when that is switched on (a quote valid for a limited time).
 [**getBuyerCollectionSet**](BuyerAPI.md#getbuyercollectionset) | **GET** /v1/buyer/collection/sets/{category}/{brand}/{model} | One set: every piece (owned or missing, with its lowest ask on the market), what completing it would cost now, and the leaderboard of collectors who opted in, with your rank.
+[**getBuyerCompany**](BuyerAPI.md#getbuyercompany) | **GET** /v1/buyer/company | Your buyer company (members, roles, approval limits, shared addresses), or null when you are in none.
+[**getBuyerCreation**](BuyerAPI.md#getbuyercreation) | **GET** /v1/buyer/creations/{format}/{id} | A live creation&#39;s public page: its rating breakdown, recent reviews and whether you can review it.
 [**getBuyerCreator**](BuyerAPI.md#getbuyercreator) | **GET** /v1/buyer/creators/{handle} | A creator storefront: profile, affiliate code, and shelves of live picks.
+[**getBuyerEvent**](BuyerAPI.md#getbuyerevent) | **GET** /v1/buyer/events/{slug} | A seller event: schedule, location, host, linked listings, live show, promo code, RSVP counts and your own RSVP.
 [**getBuyerFitVocabulary**](BuyerAPI.md#getbuyerfitvocabulary) | **GET** /v1/buyer/fit/vocabulary | Garment kinds and the measurements each takes.
 [**getBuyerGiftFinderOption**](BuyerAPI.md#getbuyergiftfinderoption) | **GET** /v1/buyer/gift-finder/options | The gift finder’s questions: recipients, interests, budgets.
+[**getBuyerHome**](BuyerAPI.md#getbuyerhome) | **GET** /v1/buyer/home | Your home in Crossly World (made on first read).
+[**getBuyerHomePlaceable**](BuyerAPI.md#getbuyerhomeplaceable) | **GET** /v1/buyer/home/placeable | What you could place in your home: your items and delivered furniture.
 [**getBuyerImpact**](BuyerAPI.md#getbuyerimpact) | **GET** /v1/buyer/impact | The sourced footprint your secondhand purchases avoided.
 [**getBuyerLayaway**](BuyerAPI.md#getbuyerlayaway) | **GET** /v1/buyer/layaways/{id} | One layaway and its schedule.
 [**getBuyerListingAudioSummary**](BuyerAPI.md#getbuyerlistingaudiosummary) | **GET** /v1/buyer/listings/{slug}/audio-summary | A spoken summary of a listing (accessibility): the text, built only from the listing’s own fields and the seller’s description, and the recording of it when one exists.
@@ -139,7 +169,7 @@ Method | HTTP request | Description
 [**getBuyerPack**](BuyerAPI.md#getbuyerpack) | **GET** /v1/buyer/packs/{slug} | One pack: tiers and odds, items left, expected value, the chase items still in it.
 [**getBuyerPackFairness**](BuyerAPI.md#getbuyerpackfairness) | **GET** /v1/buyer/packs/fairness | Your provably-fair seeds: the active server-seed commitment (sha256), your client seed and nonce, and every retired seed in full so past openings can be re-run.
 [**getBuyerParty**](BuyerAPI.md#getbuyerparty) | **GET** /v1/buyer/parties/{slug} | One shopping party.
-[**getBuyerPassport**](BuyerAPI.md#getbuyerpassport) | **GET** /v1/buyer/passports/{code} | What a product passport tag opens: the item, whether it was authenticated, how many owners on Crossly and since when — never who or for how much.
+[**getBuyerPassport**](BuyerAPI.md#getbuyerpassport) | **GET** /v1/buyer/passports/{code} | What a product passport tag opens: the item, the verify verdict (registered, tag bound, tag matches with ?uid&#x3D;, authenticated, graded, in its owner’s hands), how many owners and since when — never who or for how much.
 [**getBuyerPreference**](BuyerAPI.md#getbuyerpreference) | **GET** /v1/buyer/preferences | The shopping profile derived from that activity.
 [**getBuyerPriceGuide**](BuyerAPI.md#getbuyerpriceguide) | **GET** /v1/buyer/price-guide | What matching items actually sold for on Crossly: median, quartiles, by month, and recent sales. Needs q, brand or category.
 [**getBuyerProfile**](BuyerAPI.md#getbuyerprofile) | **GET** /v1/buyer/profile | Your Crossly shopping profile — name, email, saved address, Bucks balance.
@@ -149,14 +179,38 @@ Method | HTTP request | Description
 [**getBuyerPurchaseStory**](BuyerAPI.md#getbuyerpurchasestory) | **GET** /v1/buyer/purchases/{id}/story | Your owner story on a purchase, passed on to the next owner if you resell it.
 [**getBuyerRegistry**](BuyerAPI.md#getbuyerregistry) | **GET** /v1/buyer/registries/{id} | One of your registries: items with how many are wanted and bought.
 [**getBuyerRegistryByToken**](BuyerAPI.md#getbuyerregistrybytoken) | **GET** /v1/buyer/registry/{token} | A registry as a guest sees it: items, how many are still wanted, and whether it can ship. Never the address.
+[**getBuyerRental**](BuyerAPI.md#getbuyerrental) | **GET** /v1/buyer/rentals/{id} | One of your rentals: timeline, payments, the return label, extension and buy-out terms.
 [**getBuyerRentalEligibility**](BuyerAPI.md#getbuyerrentaleligibility) | **GET** /v1/buyer/rentals/eligibility | Can you rent right now: ID-verified (a photo ID and a matching selfie, once), the verified name rentals ship to, and your standing (one rental at a time until your first comes back; none after one that never did).
 [**getBuyerSellerClub**](BuyerAPI.md#getbuyersellerclub) | **GET** /v1/buyer/sellers/{sellerUserId}/club | A seller’s loyalty club: its tiers (spend threshold, discount, perks) and your standing. null when the seller has none.
+[**getBuyerSellerLoyalty**](BuyerAPI.md#getbuyersellerloyalty) | **GET** /v1/buyer/sellers/{sellerUserId}/loyalty | A seller’s loyalty club with its typed perks per tier, its join mode (automatic, opt-in, invite-only) and your standing. null when they run none.
 [**getBuyerSellerTrust**](BuyerAPI.md#getbuyersellertrust) | **GET** /v1/buyer/sellers/{username}/trust | Seller at a glance: member since, completed sales, independent rating, typical handling time, dispute rate, trust tier, badges — and the plain sentences the profile shows.
 [**getBuyerTogether**](BuyerAPI.md#getbuyertogether) | **GET** /v1/buyer/together/{code} | A shop-together room: members, the board with votes, and chat.
 [**getBuyerVaultMarketHistory**](BuyerAPI.md#getbuyervaultmarkethistory) | **GET** /v1/buyer/vault-markets/history | Your Vault Markets value by day at the marks (oldest first, today live) over &#x60;days&#x60; (default 90), and today’s change against yesterday’s close.
 [**getBuyerVaultMarketIndex**](BuyerAPI.md#getbuyervaultmarketindex) | **GET** /v1/buyer/vault-markets/indexes/{slug} | One index with its published daily closes (oldest first, &#x60;days&#x60; default 365) and its level now.
 [**getBuyerVaultMarketInstantExit**](BuyerAPI.md#getbuyervaultmarketinstantexit) | **GET** /v1/buyer/vault-markets/instant-exit/{id} | The Instant Exit quote for one vault unit you hold, and whether it can be sold now.
+[**getBuyerVaultMarketOptionAnalytic**](BuyerAPI.md#getbuyervaultmarketoptionanalytic) | **GET** /v1/buyer/vault-markets/options/analytics/{underlying} | Options analytics on an underlying: vol surface and smile, IV rank and percentile, open interest and volume by strike and expiry, put/call ratios, expected move and historical vol. Derived, display only. Read only.
+[**getBuyerVaultMarketOptionChain**](BuyerAPI.md#getbuyervaultmarketoptionchain) | **GET** /v1/buyer/vault-markets/options/chain/{underlying} | The option chain for an underlying (index slug or book key): expiries, and for one expiry each strike’s call and put with bid / ask, last, open interest, theoretical price, implied vol (display only) and Greeks. Prices are cents per contract.
+[**getBuyerVaultMarketOptionIv**](BuyerAPI.md#getbuyervaultmarketoptioniv) | **GET** /v1/buyer/vault-markets/options/iv/{underlying} | The at-the-money implied vol on an underlying’s nearest expiry, for display: derived from the options book, quality C, never a mark.
+[**getBuyerVaultMarketOptionPosition**](BuyerAPI.md#getbuyervaultmarketoptionposition) | **GET** /v1/buyer/vault-markets/options/positions | Your fractional options positions with their marks, P&amp;L and Greeks (open by default; &#x60;status&#x60; all for closed and settled too). Read only.
+[**getBuyerVaultMarketOptionRisk**](BuyerAPI.md#getbuyervaultmarketoptionrisk) | **GET** /v1/buyer/vault-markets/options/risk | Your options portfolio Greeks, a scenario&#39;s P&amp;L (&#x60;priceShift&#x60;, &#x60;volShift&#x60;, &#x60;daysForward&#x60;) and the beta-weighted delta against an index. Read only.
+[**getBuyerVaultMarketPredictionBoard**](BuyerAPI.md#getbuyervaultmarketpredictionboard) | **GET** /v1/buyer/vault-markets/predictions/board | The busiest open prediction markets and their odds (the Trading Floor board). Anonymous.
+[**getBuyerVaultMarketPredictionEvent**](BuyerAPI.md#getbuyervaultmarketpredictionevent) | **GET** /v1/buyer/vault-markets/predictions/events/{id} | One expiry’s markets with your holdings in each and their real worst and best case across them.
+[**getBuyerVaultMarketPredictionLeaderboard**](BuyerAPI.md#getbuyervaultmarketpredictionleaderboard) | **GET** /v1/buyer/vault-markets/predictions/leaderboard | Opt-in forecaster leaderboards (&#x60;period&#x60; week | month | all; &#x60;metric&#x60; pnl | accuracy | brier; &#x60;venue&#x60; live | paper).
+[**getBuyerVaultMarketPredictionMarket**](BuyerAPI.md#getbuyervaultmarketpredictionmarket) | **GET** /v1/buyer/vault-markets/predictions/markets/{id} | One prediction market: terms, the Yes ladder (live and practice), recent trades, settlement history and the series rules with their hash.
+[**getBuyerVaultMarketPredictionMarketHistory**](BuyerAPI.md#getbuyervaultmarketpredictionmarkethistory) | **GET** /v1/buyer/vault-markets/predictions/markets/{id}/history | A prediction market’s probability over time (display only, never a mark), candles on the Yes price, volume and open interest (&#x60;range&#x60; 1d, 1w, 1m, all; &#x60;venue&#x60; live or paper).
+[**getBuyerVaultMarketShare**](BuyerAPI.md#getbuyervaultmarketshare) | **GET** /v1/buyer/vault-markets/shares | Your Vault Shares: shares and percent of each item, cost, implied value at the last share price (display only, never a mark), subscriptions and payouts.
+[**getBuyerVaultMarketShareBasket**](BuyerAPI.md#getbuyervaultmarketsharebasket) | **GET** /v1/buyer/vault-markets/shares/baskets/{id} | One theme basket: its series, weights and prices, and your holdings against them.
+[**getBuyerVaultMarketShareSery**](BuyerAPI.md#getbuyervaultmarketsharesery) | **GET** /v1/buyer/vault-markets/shares/series/{id} | One Vault Shares series: the offering, the share book, the latest fills, holders as percentages (nobody named) and buyouts.
+[**getBuyerVaultMarketShareSeryHistory**](BuyerAPI.md#getbuyervaultmarketshareseryhistory) | **GET** /v1/buyer/vault-markets/shares/series/{id}/history | A Vault Shares series’ full price history (candles), the offering price and the appraisal history. Display only, never a mark.
+[**getBuyerVaultMarketShareSeryPerk**](BuyerAPI.md#getbuyervaultmarketshareseryperk) | **GET** /v1/buyer/vault-markets/shares/series/{id}/perks | Your holder perks on a series: badge, visit links, viewing days and your bookings.
 [**getBuyerVaultMarketWorth**](BuyerAPI.md#getbuyervaultmarketworth) | **GET** /v1/buyer/vault-markets/worth | What your vault is worth now: value at the market prices (marks come only from trades) split into reliable and indicative marks, cost and P&amp;L, today’s change, and an estimate of what the units free to sell would fetch from the bids resting on the book now. Read only.
+[**getBuyerWholesaleCart**](BuyerAPI.md#getbuyerwholesalecart) | **GET** /v1/buyer/wholesale/cart | Your cart grouped per seller: trade terms, the order-minimum progress, every rule the cart breaks (the messages checkout would refuse with), PO reference, quote-locked lines, and the checkout methods, deposit and freight threshold for each group.
+[**getBuyerWholesaleCatalogApply**](BuyerAPI.md#getbuyerwholesalecatalogapply) | **GET** /v1/buyer/wholesale/catalogs/{storeSlug}/{catalogSlug}/apply | The application form for a store&#39;s wholesale catalog: the seller&#39;s requirements (resale certificate and accepted states, tax id, their custom questions) and your business info pre-filled. applicable&#x3D;false for a catalog you cannot apply to.
+[**getBuyerWholesaleDrop**](BuyerAPI.md#getbuyerwholesaledrop) | **GET** /v1/buyer/wholesale/drops/{id} | One trade drop open to you: its listings once live (add one to your cart to reserve or buy it), and your reservations in it. 404 for a drop not open to you.
+[**getBuyerWholesaleInvoicePayQuote**](BuyerAPI.md#getbuyerwholesaleinvoicepayquote) | **GET** /v1/buyer/wholesale/invoices/{id}/pay-quote | What paying an on-account invoice costs now: balance due, the early-pay discount if still open, the minimum part payment and the methods (card, ach).
+[**getBuyerWholesaleOrderSheet**](BuyerAPI.md#getbuyerwholesaleordersheet) | **GET** /v1/buyer/wholesale/order-sheets/{id} | One order sheet priced TODAY at its quantities, with stock, trade terms and flags (unavailable, out_of_stock, short_stock, price_hidden, needs_option).
+[**getBuyerWholesaleQuote**](BuyerAPI.md#getbuyerwholesalequote) | **GET** /v1/buyer/wholesale/quotes/{id} | One of your quotes with its items, the seller&#39;s prices and expiry.
+[**getBuyerWholesaleReorder**](BuyerAPI.md#getbuyerwholesalereorder) | **GET** /v1/buyer/wholesale/reorder/{id} | Buy again: a past wholesale order (purchase or order id) as order-sheet lines at the same quantities, priced today, out-of-stock flagged.
 [**listBuyerActivity**](BuyerAPI.md#listbuyeractivity) | **GET** /v1/buyer/activity | What this buyer has compared lately.
 [**listBuyerAuctionBids**](BuyerAPI.md#listbuyerauctionbids) | **GET** /v1/buyer/auctions/{slug}/bids | An auction’s bid history, highest first, bidders anonymised.
 [**listBuyerAuctions**](BuyerAPI.md#listbuyerauctions) | **GET** /v1/buyer/auctions | Auctions you have bid in — bidding, won or lost (last 100).
@@ -170,8 +224,11 @@ Method | HTTP request | Description
 [**listBuyerCatalogListingVideos**](BuyerAPI.md#listbuyercataloglistingvideos) | **GET** /v1/buyer/catalog/listings/{slug}/videos | Videos the seller recorded for this item on request, newest first, with the question each one answers.
 [**listBuyerClubs**](BuyerAPI.md#listbuyerclubs) | **GET** /v1/buyer/clubs | Sellers’ loyalty clubs you belong to: your spend with each, your tier and its discount, and the next tier.
 [**listBuyerCollectionSets**](BuyerAPI.md#listbuyercollectionsets) | **GET** /v1/buyer/collection/sets | Sets you are collecting — a catalogue brand + model you own at least two pieces of — with owned / total and percent complete, most complete first; and whether you show on set leaderboards.
+[**listBuyerCompanyApprovals**](BuyerAPI.md#listbuyercompanyapprovals) | **GET** /v1/buyer/company/approvals | Spend approval requests (owners and accounts payable see all; others their own). ?status&#x3D;pending|approved|declined|used|expired.
 [**listBuyerConsolidations**](BuyerAPI.md#listbuyerconsolidations) | **GET** /v1/buyer/consolidations | Your ship-together orders: parcels at the hub, and the one box out.
 [**listBuyerConversationGuests**](BuyerAPI.md#listbuyerconversationguests) | **GET** /v1/buyer/conversations/{id}/guests | Guests in a chat.
+[**listBuyerCreationReviewable**](BuyerAPI.md#listbuyercreationreviewable) | **GET** /v1/buyer/creations/reviewable | Creations you bought (decor, wearables, interactive objects, cards from packs) and your review of each.
+[**listBuyerEvents**](BuyerAPI.md#listbuyerevents) | **GET** /v1/buyer/events | Upcoming and live seller events across Crossly, soonest first.
 [**listBuyerFeedback**](BuyerAPI.md#listbuyerfeedback) | **GET** /v1/buyer/feedback | Feedback you have left sellers, newest first — with the ids you revise by.
 [**listBuyerFeedbackPending**](BuyerAPI.md#listbuyerfeedbackpending) | **GET** /v1/buyer/feedback/pending | Orders from the last 60 days that are on their way or arrived and still need your feedback.
 [**listBuyerFitRefs**](BuyerAPI.md#listbuyerfitrefs) | **GET** /v1/buyer/fit/refs | Your saved reference garments for fit comparison.
@@ -180,6 +237,8 @@ Method | HTTP request | Description
 [**listBuyerGiftCards**](BuyerAPI.md#listbuyergiftcards) | **GET** /v1/buyer/gift-cards | Gift cards you bought, newest first.
 [**listBuyerGiftFinder**](BuyerAPI.md#listbuyergiftfinder) | **GET** /v1/buyer/gift-finder | Live listings for a recipient, interest and budget.
 [**listBuyerGiftSent**](BuyerAPI.md#listbuyergiftsent) | **GET** /v1/buyer/gifts/sent | Items you sent as gifts: whether the teaser went out, whether it arrived and was opened, and any thank-you. Send one with &#x60;gift&#x60; on checkout.
+[**listBuyerHomeBuilders**](BuyerAPI.md#listbuyerhomebuilders) | **GET** /v1/buyer/home/builders | Your co-builders: friends who may arrange your home with you.
+[**listBuyerHomeBuilding**](BuyerAPI.md#listbuyerhomebuilding) | **GET** /v1/buyer/homes/building | The homes you co-build, to visit and arrange.
 [**listBuyerHotspots**](BuyerAPI.md#listbuyerhotspots) | **GET** /v1/buyer/hotspots | Shop-the-look tags on a story or lookbook photo: each tagged listing and where it sits on the image (x, y as fractions).
 [**listBuyerHunts**](BuyerAPI.md#listbuyerhunts) | **GET** /v1/buyer/hunts | Your buyer-agent hunts and what they did.
 [**listBuyerInstantOffers**](BuyerAPI.md#listbuyerinstantoffers) | **GET** /v1/buyer/instant-offers | Your instant offers: live quotes, accepted ones awaiting a label, approved ones (with the prepaid label) and paid ones.
@@ -188,6 +247,7 @@ Method | HTTP request | Description
 [**listBuyerListingSellerReviews**](BuyerAPI.md#listbuyerlistingsellerreviews) | **GET** /v1/buyer/listings/{slug}/seller-reviews | The seller’s public reviews: summary, text, photos, replies.
 [**listBuyerLiveShipments**](BuyerAPI.md#listbuyerliveshipments) | **GET** /v1/buyer/live-shipments | Your one-box-per-show shipments: every order won in a show ships together, and postage is charged once (the rest refunded when it ships).
 [**listBuyerLiveStreamLineup**](BuyerAPI.md#listbuyerlivestreamlineup) | **GET** /v1/buyer/live-streams/{id}/lineup | What a live show will sell, in order: each item, its price, and whether it is still available.
+[**listBuyerLoyalty**](BuyerAPI.md#listbuyerloyalty) | **GET** /v1/buyer/loyalty | Your loyalty clubs: the tier you hold, progress and how to reach the next tier, the typed perks you hold now, and your history.
 [**listBuyerMarketBids**](BuyerAPI.md#listbuyermarketbids) | **GET** /v1/buyer/market/bids | Your resting market bids.
 [**listBuyerMarketWatches**](BuyerAPI.md#listbuyermarketwatches) | **GET** /v1/buyer/market/watches | Market variants you watch, with the price you are waiting for.
 [**listBuyerOffers**](BuyerAPI.md#listbuyeroffers) | **GET** /v1/buyer/offers | Offers you have made, newest first (last 100).
@@ -196,6 +256,7 @@ Method | HTTP request | Description
 [**listBuyerPacks**](BuyerAPI.md#listbuyerpacks) | **GET** /v1/buyer/packs | Packs you can open: price, every tier with its published odds, what is left in it and its value range, and the expected value of one opening.
 [**listBuyerParties**](BuyerAPI.md#listbuyerparties) | **GET** /v1/buyer/parties | Themed shopping parties, live and upcoming.
 [**listBuyerPartyListings**](BuyerAPI.md#listbuyerpartylistings) | **GET** /v1/buyer/parties/{slug}/listings | Listings shared to a party, featured first.
+[**listBuyerPaymentMethods**](BuyerAPI.md#listbuyerpaymentmethods) | **GET** /v1/buyer/payment-methods | Your saved cards, the default first.
 [**listBuyerPickupPoints**](BuyerAPI.md#listbuyerpickuppoints) | **GET** /v1/buyer/pickup-points | Carrier pickup points (UPS Access Point / FedEx Hold at Location) near an address; pass one as &#x60;pickupPoint&#x60; to POST /v1/buyer/checkout.
 [**listBuyerProtectionPlans**](BuyerAPI.md#listbuyerprotectionplans) | **GET** /v1/buyer/protection-plans | Your protection plans (bought at checkout with &#x60;protection&#x60;): status, term, coverage, contract id, and any refund.
 [**listBuyerRegistries**](BuyerAPI.md#listbuyerregistries) | **GET** /v1/buyer/registries | Your gift registries.
@@ -205,6 +266,7 @@ Method | HTTP request | Description
 [**listBuyerSizeMemoryPrompts**](BuyerAPI.md#listbuyersizememoryprompts) | **GET** /v1/buyer/size-memory/prompts | Delivered orders with a size that you haven’t said how they fit (the last 60 days).
 [**listBuyerSizeMemorySizes**](BuyerAPI.md#listbuyersizememorysizes) | **GET** /v1/buyer/size-memory/sizes | The sizes learned from what you bought and kept, by kind of item (shoes, tops, bottoms, dresses, outerwear) and department.
 [**listBuyerSplits**](BuyerAPI.md#listbuyersplits) | **GET** /v1/buyer/splits | Purchases you split, with each share’s status.
+[**listBuyerStoreListings**](BuyerAPI.md#listbuyerstorelistings) | **GET** /v1/buyer/stores/{slug}/listings | A store&#39;s live listings, filtered by tag, category, text and program chips (f: on_sale, discount_eligible, code_eligible, group_buy_active, rentable, wholesale_available…; all must hold), sorted; each card carries its program badges.
 [**listBuyerSubscriptions**](BuyerAPI.md#listbuyersubscriptions) | **GET** /v1/buyer/subscriptions | Your subscribe &amp; save standing orders.
 [**listBuyerTogether**](BuyerAPI.md#listbuyertogether) | **GET** /v1/buyer/together | Shop-together rooms you are in.
 [**listBuyerTotalRequests**](BuyerAPI.md#listbuyertotalrequests) | **GET** /v1/buyer/total-requests | Your combined-shipping total requests, newest per seller.
@@ -213,20 +275,51 @@ Method | HTTP request | Description
 [**listBuyerVaultMarketHoldings**](BuyerAPI.md#listbuyervaultmarketholdings) | **GET** /v1/buyer/vault-markets/holdings | Each unit you hold in the vault at its market price, with the mark’s quality (A or B reliable, C indicative, none), cost, P&amp;L and where it stands (stored, listed, lent, pledged, at the grader); &#x60;meta&#x60; carries the totals and the units you have out on loan.
 [**listBuyerVaultMarketIndexes**](BuyerAPI.md#listbuyervaultmarketindexes) | **GET** /v1/buyer/vault-markets/indexes | Crossly indexes over vault book keys (category, brand, curated, composite, segment, and your own), each with its level now and change since the last daily close. Index levels are valued only from the book’s marks.
 [**listBuyerVaultMarketInstantExit**](BuyerAPI.md#listbuyervaultmarketinstantexit) | **GET** /v1/buyer/vault-markets/instant-exit | Instant Exit quotes for what you hold, one per book key: the best resting bid (yours left out), its share of the mark, the bid levels, units held and which are free to sell, and why a key cannot be sold instantly. A quote, not an order.
+[**listBuyerVaultMarketOptionCombos**](BuyerAPI.md#listbuyervaultmarketoptioncombos) | **GET** /v1/buyer/vault-markets/options/combos | Your options strategies (working by default) with their legs, net price per unit and fills. Read only.
+[**listBuyerVaultMarketOptionNotices**](BuyerAPI.md#listbuyervaultmarketoptionnotices) | **GET** /v1/buyer/vault-markets/options/notices | Your options notices: expiry warnings, auto-closes, exercises, assignments, expiries worthless and rolls. Read only.
+[**listBuyerVaultMarketOptionSeries**](BuyerAPI.md#listbuyervaultmarketoptionseries) | **GET** /v1/buyer/vault-markets/options/series | Fractional options series on Crossly prices (indexes, and tier A item keys with 90 days of reliable marks): underlying, status and eligibility. Read only.
+[**listBuyerVaultMarketOptionStrategies**](BuyerAPI.md#listbuyervaultmarketoptionstrategies) | **GET** /v1/buyer/vault-markets/options/strategies | The options strategies the picker builds (vertical, calendar, diagonal, straddle, strangle, butterfly, iron condor, collar) and what each does. Read only.
+[**listBuyerVaultMarketPredictionComments**](BuyerAPI.md#listbuyervaultmarketpredictioncomments) | **GET** /v1/buyer/vault-markets/predictions/comments | A prediction market’s (or series’) discussion thread. Read only.
+[**listBuyerVaultMarketPredictionMarkets**](BuyerAPI.md#listbuyervaultmarketpredictionmarkets) | **GET** /v1/buyer/vault-markets/predictions/markets | \&quot;Will it hit?\&quot; prediction markets on Crossly prices (filter by book key, index slug, kind, status, expiry or text): strike, expiry, best Yes bid and ask, last price and the probability (the market&#39;s own price, display only).
+[**listBuyerVaultMarketPredictionPositions**](BuyerAPI.md#listbuyervaultmarketpredictionpositions) | **GET** /v1/buyer/vault-markets/predictions/positions | Your prediction positions (practice and live): side, contracts, cost, value at the last price, payout or refund once settled.
+[**listBuyerVaultMarketShareAutoInvest**](BuyerAPI.md#listbuyervaultmarketshareautoinvest) | **GET** /v1/buyer/vault-markets/shares/auto-invest | Your recurring Vault Shares auto-invest plans.
+[**listBuyerVaultMarketShareBaskets**](BuyerAPI.md#listbuyervaultmarketsharebaskets) | **GET** /v1/buyer/vault-markets/shares/baskets | Theme baskets: model portfolios of Vault Shares series you would own directly, never a fund.
+[**listBuyerVaultMarketShareDrops**](BuyerAPI.md#listbuyervaultmarketsharedrops) | **GET** /v1/buyer/vault-markets/shares/drops | Upcoming and open Vault Shares drops: phase, countdown, allocation (first come, pro-rata or lottery), your Crossly One early-access time (never a better price).
+[**listBuyerVaultMarketShareGifts**](BuyerAPI.md#listbuyervaultmarketsharegifts) | **GET** /v1/buyer/vault-markets/shares/gifts | Vault Shares gifts you sent or were offered.
+[**listBuyerVaultMarketShareSeries**](BuyerAPI.md#listbuyervaultmarketshareseries) | **GET** /v1/buyer/vault-markets/shares/series | Vault Shares series: open offerings first, then trading. Terms, progress, last share price and implied item value, and your holding.
 [**listBuyerVaultMarketWatchlist**](BuyerAPI.md#listbuyervaultmarketwatchlist) | **GET** /v1/buyer/vault-markets/watchlist | The book keys you watch, with mark and its quality, 24 h and 7 d change, and the last 30 daily marks.
 [**listBuyerVideoRequests**](BuyerAPI.md#listbuyervideorequests) | **GET** /v1/buyer/video-requests | Your video requests and their answers.
+[**listBuyerWalletPerks**](BuyerAPI.md#listbuyerwalletperks) | **GET** /v1/buyer/wallet/perks | The perks your wallets unlock: each Collection holders deal (a shop’s percent off for holders of a collection) and creator shop perk on a collection a linked wallet or your Crossly wallet holds, best first. Checkout applies the best one; perks never stack with each other.
+[**listBuyerWholesaleDrops**](BuyerAPI.md#listbuyerwholesaledrops) | **GET** /v1/buyer/wholesale/drops | Upcoming and live trade drops open to you: drops sellers release only to their approved trade buyers or to a catalog audience. kind prebook &#x3D; reserve quantity now with a deposit (depositBps) at checkout; the balance is invoiced when the seller releases the stock.
+[**listBuyerWholesaleFreightRequests**](BuyerAPI.md#listbuyerwholesalefreightrequests) | **GET** /v1/buyer/wholesale/freight-requests | Your freight (LTL) quote requests to sellers, with the seller&#39;s figure in cents once quoted.
+[**listBuyerWholesaleOrderSheets**](BuyerAPI.md#listbuyerwholesaleordersheets) | **GET** /v1/buyer/wholesale/order-sheets | Your saved wholesale order sheets (one seller each), newest first.
+[**listBuyerWholesaleOrders**](BuyerAPI.md#listbuyerwholesaleorders) | **GET** /v1/buyer/wholesale/orders | Your past wholesale orders (trade-priced or on account), newest first — the starting point for reorder.
+[**listBuyerWholesalePrebooks**](BuyerAPI.md#listbuyerwholesaleprebooks) | **GET** /v1/buyer/wholesale/prebooks | Your pre-books: the drop, item, quantity, deposit paid, balance, status (awaiting_release, invoiced, paid, cancelled, failed) and the balance invoice once the seller released the stock.
+[**listBuyerWholesaleQuotes**](BuyerAPI.md#listbuyerwholesalequotes) | **GET** /v1/buyer/wholesale/quotes | Your requests for a quote (RFQ) to wholesale sellers. ?status&#x3D;open|all|requested|answered|accepted|declined|withdrawn|expired. An answered or accepted quote past expiresAt reads expired.
+[**listBuyerWholesaleStatement**](BuyerAPI.md#listbuyerwholesalestatement) | **GET** /v1/buyer/wholesale/statement | Your open trade balances per seller in aging buckets (current, 1-30, 31-60, 61-90, 90+ days past due), with the invoices behind them.
+[**listBuyerWholesaleSuppliers**](BuyerAPI.md#listbuyerwholesalesuppliers) | **GET** /v1/buyer/wholesale/suppliers | The sellers you trade with: catalogs you can open, your terms (net days, credit limit, discount), customer groups, and what you owe each.
 [**listBuyerWishlistItems**](BuyerAPI.md#listbuyerwishlistitems) | **GET** /v1/buyer/wishlists/{id}/items | What is on one wishlist.
 [**listBuyerWishlistMembers**](BuyerAPI.md#listbuyerwishlistmembers) | **GET** /v1/buyer/wishlists/{id}/members | Co-editors of a shared wishlist.
 [**listBuyerWishlists**](BuyerAPI.md#listbuyerwishlists) | **GET** /v1/buyer/wishlists | Your wishlists.
 [**updateBuyerBoard**](BuyerAPI.md#updatebuyerboard) | **PATCH** /v1/buyer/boards/{id} | Rename a board, change its description, or make it public / private.
 [**updateBuyerBoardLayout**](BuyerAPI.md#updatebuyerboardlayout) | **PUT** /v1/buyer/boards/{id}/layout | Replace a board’s layout: items by platform listing id or slug, with x, y, w (0–1) and z. At most 40.
 [**updateBuyerCollectionSetLeaderboard**](BuyerAPI.md#updatebuyercollectionsetleaderboard) | **PUT** /v1/buyer/collection/sets/leaderboard | Show or hide yourself (by your public handle) on set leaderboards.
+[**updateBuyerCompany**](BuyerAPI.md#updatebuyercompany) | **PATCH** /v1/buyer/company | Rename the company or change its tax id / website (owner).
+[**updateBuyerCompanyAddress**](BuyerAPI.md#updatebuyercompanyaddress) | **PUT** /v1/buyer/company/addresses | Replace the shared address book (owner): addresses [{ id, label, name, line1, line2?, city, region, postalCode, country, phone?, isDefault? }], at most 20.
+[**updateBuyerCompanyMember**](BuyerAPI.md#updatebuyercompanymember) | **PATCH** /v1/buyer/company/members/{id} | Change a member&#39;s role or approval limit (owner). The last owner stays an owner.
+[**updateBuyerCreationReview**](BuyerAPI.md#updatebuyercreationreview) | **PUT** /v1/buyer/creations/{format}/{id}/review | Review a creation you bought (or change your review): 1-5 stars and an optional comment.
 [**updateBuyerFeedback**](BuyerAPI.md#updatebuyerfeedback) | **PATCH** /v1/buyer/feedback/{id} | Revise feedback you left, within 60 days.
+[**updateBuyerHome**](BuyerAPI.md#updatebuyerhome) | **PATCH** /v1/buyer/home | Who may walk in (privacy), the lighting (theme), wallpaper/floor/mood decor and whether visitors see your vault wall values.
+[**updateBuyerHomeBuilder**](BuyerAPI.md#updatebuyerhomebuilder) | **PUT** /v1/buyer/home/builders | Set your co-builders (friends only, at most 4).
+[**updateBuyerHomeLayout**](BuyerAPI.md#updatebuyerhomelayout) | **PUT** /v1/buyer/home/layout | Arrange your home: the whole layout, checked against what you own.
 [**updateBuyerHunt**](BuyerAPI.md#updatebuyerhunt) | **PATCH** /v1/buyer/hunts/{id} | Pause, resume or stop a hunt.
+[**updateBuyerPaymentMethodDefault**](BuyerAPI.md#updatebuyerpaymentmethoddefault) | **PUT** /v1/buyer/payment-methods/{id}/default | Make one of your saved cards the default.
 [**updateBuyerPurchaseStory**](BuyerAPI.md#updatebuyerpurchasestory) | **PUT** /v1/buyer/purchases/{id}/story | Write your owner story (280 characters); it travels with the item if you resell it.
 [**updateBuyerRegistry**](BuyerAPI.md#updatebuyerregistry) | **PATCH** /v1/buyer/registries/{id} | Edit a registry: title, kind, date, message, ship-to address.
 [**updateBuyerRegistryItem**](BuyerAPI.md#updatebuyerregistryitem) | **PUT** /v1/buyer/registries/{id}/items/{platformListingId} | How many of an item you want (1–50).
 [**updateBuyerSubscription**](BuyerAPI.md#updatebuyersubscription) | **PATCH** /v1/buyer/subscriptions/{id} | Pause, resume, skip the next delivery, change the interval, or cancel.
+[**updateBuyerWholesaleCartPo**](BuyerAPI.md#updatebuyerwholesalecartpo) | **PUT** /v1/buyer/wholesale/cart/po | Set the PO reference for one seller&#39;s group of your cart: { sellerUserId, poReference } (empty clears it).
+[**updateBuyerWholesaleOrderSheet**](BuyerAPI.md#updatebuyerwholesaleordersheet) | **PATCH** /v1/buyer/wholesale/order-sheets/{id} | Rename an order sheet, change its PO reference or note, or replace its lines.
 [**updateBuyerWishlist**](BuyerAPI.md#updatebuyerwishlist) | **PATCH** /v1/buyer/wishlists/{id} | Rename a wishlist, or make it public / private.
 
 
@@ -636,7 +729,7 @@ Add a listing to your cart.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import CrosslyBuyer
 
-let createBuyerCartItemRequest = CreateBuyerCartItemRequest(listingSlug: "listingSlug_example", quantity: 123, via: "via_example") // CreateBuyerCartItemRequest | 
+let createBuyerCartItemRequest = CreateBuyerCartItemRequest(listingSlug: "listingSlug_example", quantity: 123, listingVariantId: "listingVariantId_example", via: "via_example") // CreateBuyerCartItemRequest | 
 
 // Add a listing to your cart.
 BuyerAPI.createBuyerCartItem(createBuyerCartItemRequest: createBuyerCartItemRequest) { (response, error) in
@@ -1260,6 +1353,186 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **createBuyerCompany**
+```swift
+    open class func createBuyerCompany(completion: @escaping (_ data: BuyerCompanyResponse?, _ error: Error?) -> Void)
+```
+
+Create a buyer company: name, taxId?, website?. You become its owner; a user is in at most one company.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Create a buyer company: name, taxId?, website?. You become its owner; a user is in at most one company.
+BuyerAPI.createBuyerCompany() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**BuyerCompanyResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createBuyerCompanyApproval**
+```swift
+    open class func createBuyerCompanyApproval(completion: @escaping (_ data: CreateBuyerCompanyApprovalResponse?, _ error: Error?) -> Void)
+```
+
+Ask for approval of a trade order above your limit: sellerUserId, amountCents, note?, poReference?. Good for 7 days, used once at checkout.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Ask for approval of a trade order above your limit: sellerUserId, amountCents, note?, poReference?. Good for 7 days, used once at checkout.
+BuyerAPI.createBuyerCompanyApproval() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateBuyerCompanyApprovalResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createBuyerCompanyApprovalDecide**
+```swift
+    open class func createBuyerCompanyApprovalDecide(id: String, completion: @escaping (_ data: CreateBuyerCompanyApprovalResponse?, _ error: Error?) -> Void)
+```
+
+Approve or decline a pending request (owner, accounts payable): decision approved | declined, note?.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let id = "id_example" // String | 
+
+// Approve or decline a pending request (owner, accounts payable): decision approved | declined, note?.
+BuyerAPI.createBuyerCompanyApprovalDecide(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateBuyerCompanyApprovalResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createBuyerCompanyMember**
+```swift
+    open class func createBuyerCompanyMember(completion: @escaping (_ data: BuyerCompanyResponse?, _ error: Error?) -> Void)
+```
+
+Invite a teammate by email (owner): role owner | buyer | accounts_payable | viewer, approvalLimitCents for a buyer (orders above it need an approval).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Invite a teammate by email (owner): role owner | buyer | accounts_payable | viewer, approvalLimitCents for a buyer (orders above it need an approval).
+BuyerAPI.createBuyerCompanyMember() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**BuyerCompanyResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **createBuyerConversationInvite**
 ```swift
     open class func createBuyerConversationInvite(id: String, completion: @escaping (_ data: CreateBuyerWishlistInviteResponse?, _ error: Error?) -> Void)
@@ -1344,6 +1617,54 @@ Name | Type | Description  | Notes
 ### Return type
 
 **CreateBuyerConversationJoinResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createBuyerEventRsvp**
+```swift
+    open class func createBuyerEventRsvp(slug: String, completion: @escaping (_ data: CreateBuyerEventRsvpResponse?, _ error: Error?) -> Void)
+```
+
+RSVP to an event: going (counts against its capacity) or interested.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let slug = "slug_example" // String | 
+
+// RSVP to an event: going (counts against its capacity) or interested.
+BuyerAPI.createBuyerEventRsvp(slug: slug) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **slug** | **String** |  | 
+
+### Return type
+
+**CreateBuyerEventRsvpResponse**
 
 ### Authorization
 
@@ -1603,7 +1924,7 @@ Name | Type | Description  | Notes
     open class func createBuyerGroupBuyJoin(id: String, completion: @escaping (_ data: CreateBuyerGroupBuyJoinResponse?, _ error: Error?) -> Void)
 ```
 
-Join a group buy: a hold at the starting price, captured at the price the group reaches. Checked against this key’s spending controls; send an Idempotency-Key.
+Join a group buy with a quantity (up to its per-buyer max): a hold (or, for pay-now pools, a charge refunded the difference) at the starting price, settled at the price the group reaches. `linkToken` opens a link-only pool. Checked against this key’s spending controls; send an Idempotency-Key.
 
 ### Example
 ```swift
@@ -1612,7 +1933,7 @@ import CrosslyBuyer
 
 let id = "id_example" // String | 
 
-// Join a group buy: a hold at the starting price, captured at the price the group reaches. Checked against this key’s spending controls; send an Idempotency-Key.
+// Join a group buy with a quantity (up to its per-buyer max): a hold (or, for pay-now pools, a charge refunded the difference) at the starting price, settled at the price the group reaches. `linkToken` opens a link-only pool. Checked against this key’s spending controls; send an Idempotency-Key.
 BuyerAPI.createBuyerGroupBuyJoin(id: id) { (response, error) in
     guard error == nil else {
         print(error)
@@ -2609,7 +2930,7 @@ Name | Type | Description  | Notes
     open class func createBuyerPassportClaim(code: String, completion: @escaping (_ data: GetBuyerPassportResponse?, _ error: Error?) -> Void)
 ```
 
-Claim a passport as the item’s current owner (the buyer of its latest sale) — shown as “in its owner’s hands” until it sells again.
+Claim a passport as the item’s current owner — the buyer of its latest Crossly sale, or (after a sale on another marketplace) with the transfer code from the card in the box — shown as “in its owner’s hands” until it sells again.
 
 ### Example
 ```swift
@@ -2618,7 +2939,7 @@ import CrosslyBuyer
 
 let code = "code_example" // String | 
 
-// Claim a passport as the item’s current owner (the buyer of its latest sale) — shown as “in its owner’s hands” until it sells again.
+// Claim a passport as the item’s current owner — the buyer of its latest Crossly sale, or (after a sale on another marketplace) with the transfer code from the card in the box — shown as “in its owner’s hands” until it sells again.
 BuyerAPI.createBuyerPassportClaim(code: code) { (response, error) in
     guard error == nil else {
         print(error)
@@ -2688,54 +3009,6 @@ Name | Type | Description  | Notes
 ### Return type
 
 **CreateBuyerProtectionPlanCancelResponse**
-
-### Authorization
-
-[BuyerOAuth](../README.md#BuyerOAuth)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-# **createBuyerPurchaseDownload**
-```swift
-    open class func createBuyerPurchaseDownload(id: String, completion: @escaping (_ data: CreateBuyerPurchaseDownloadResponse?, _ error: Error?) -> Void)
-```
-
-A ten-minute link to a digital purchase’s file; each call uses one of its downloads.
-
-### Example
-```swift
-// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import CrosslyBuyer
-
-let id = "id_example" // String | 
-
-// A ten-minute link to a digital purchase’s file; each call uses one of its downloads.
-BuyerAPI.createBuyerPurchaseDownload(id: id) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **String** |  | 
-
-### Return type
-
-**CreateBuyerPurchaseDownloadResponse**
 
 ### Authorization
 
@@ -2940,7 +3213,7 @@ Name | Type | Description  | Notes
 
 # **createBuyerRentalArrivalPhoto**
 ```swift
-    open class func createBuyerRentalArrivalPhoto(id: String, completion: @escaping (_ data: CreateBuyerRentalArrivalPhotoResponse?, _ error: Error?) -> Void)
+    open class func createBuyerRentalArrivalPhoto(id: String, completion: @escaping (_ data: BuyerRentalResponse?, _ error: Error?) -> Void)
 ```
 
 Photograph a rental on arrival (URLs you uploaded): your side of the condition record.
@@ -2973,7 +3246,55 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**CreateBuyerRentalArrivalPhotoResponse**
+**BuyerRentalResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createBuyerRentalBuyout**
+```swift
+    open class func createBuyerRentalBuyout(id: String, completion: @escaping (_ data: CreateBuyerRentalBuyoutResponse?, _ error: Error?) -> Void)
+```
+
+Buy the item you are renting: the price less the rent-to-own credit → clientSecret.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let id = "id_example" // String | 
+
+// Buy the item you are renting: the price less the rent-to-own credit → clientSecret.
+BuyerAPI.createBuyerRentalBuyout(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateBuyerRentalBuyoutResponse**
 
 ### Authorization
 
@@ -3082,6 +3403,152 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **createBuyerRentalDelivered**
+```swift
+    open class func createBuyerRentalDelivered(id: String, completion: @escaping (_ data: BuyerRentalResponse?, _ error: Error?) -> Void)
+```
+
+Confirm your rental arrived.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let id = "id_example" // String | 
+
+// Confirm your rental arrived.
+BuyerAPI.createBuyerRentalDelivered(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**BuyerRentalResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createBuyerRentalExtension**
+```swift
+    open class func createBuyerRentalExtension(id: String, completion: @escaping (_ data: CreateBuyerRentalExtensionResponse?, _ error: Error?) -> Void)
+```
+
+Ask for more days. Auto-approved extensions return a clientSecret to pay with Stripe.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let id = "id_example" // String | 
+
+// Ask for more days. Auto-approved extensions return a clientSecret to pay with Stripe.
+BuyerAPI.createBuyerRentalExtension(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateBuyerRentalExtensionResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createBuyerRentalExtensionPay**
+```swift
+    open class func createBuyerRentalExtensionPay(id: String, extensionId: String, completion: @escaping (_ data: CreateBuyerRentalExtensionPayResponse?, _ error: Error?) -> Void)
+```
+
+Pay for an extension the seller approved → clientSecret.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let id = "id_example" // String | 
+let extensionId = "extensionId_example" // String | 
+
+// Pay for an extension the seller approved → clientSecret.
+BuyerAPI.createBuyerRentalExtensionPay(id: id, extensionId: extensionId) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+ **extensionId** | **String** |  | 
+
+### Return type
+
+**CreateBuyerRentalExtensionPayResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **createBuyerRentalIdentityStart**
 ```swift
     open class func createBuyerRentalIdentityStart(completion: @escaping (_ data: CreateBuyerRentalIdentityStartResponse?, _ error: Error?) -> Void)
@@ -3114,6 +3581,54 @@ This endpoint does not need any parameter.
 ### Return type
 
 **CreateBuyerRentalIdentityStartResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createBuyerRentalReturnShipped**
+```swift
+    open class func createBuyerRentalReturnShipped(id: String, completion: @escaping (_ data: BuyerRentalResponse?, _ error: Error?) -> Void)
+```
+
+Say you sent your rental back (optionally with photos).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let id = "id_example" // String | 
+
+// Say you sent your rental back (optionally with photos).
+BuyerAPI.createBuyerRentalReturnShipped(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**BuyerRentalResponse**
 
 ### Authorization
 
@@ -3270,9 +3785,57 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **createBuyerSellerLoyaltyJoin**
+```swift
+    open class func createBuyerSellerLoyaltyJoin(sellerUserId: String, completion: @escaping (_ data: GetBuyerSellerLoyaltyResponse?, _ error: Error?) -> Void)
+```
+
+Join a seller’s loyalty club. Invite-only clubs take only invited buyers. Your tier and its perks are granted at once.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let sellerUserId = "sellerUserId_example" // String | 
+
+// Join a seller’s loyalty club. Invite-only clubs take only invited buyers. Your tier and its perks are granted at once.
+BuyerAPI.createBuyerSellerLoyaltyJoin(sellerUserId: sellerUserId) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **sellerUserId** | **String** |  | 
+
+### Return type
+
+**GetBuyerSellerLoyaltyResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **createBuyerSellerReport**
 ```swift
-    open class func createBuyerSellerReport(username: String, createBuyerSellerReportRequest: CreateBuyerSellerReportRequest, completion: @escaping (_ data: CreateBuyerSellerReportResponse?, _ error: Error?) -> Void)
+    open class func createBuyerSellerReport(username: String, createBuyerSellerReportRequest: CreateBuyerSellerReportRequest, completion: @escaping (_ data: CreateBuyerStoreReportResponse?, _ error: Error?) -> Void)
 ```
 
 Report a seller to Crossly’s trust team.
@@ -3309,7 +3872,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**CreateBuyerSellerReportResponse**
+**CreateBuyerStoreReportResponse**
 
 ### Authorization
 
@@ -3366,6 +3929,58 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createBuyerStoreReport**
+```swift
+    open class func createBuyerStoreReport(slug: String, createBuyerSellerReportRequest: CreateBuyerSellerReportRequest, completion: @escaping (_ data: CreateBuyerStoreReportResponse?, _ error: Error?) -> Void)
+```
+
+Report a store to Crossly’s trust team.
+
+Files against whoever runs the store. A second report while your first is still under review updates that report instead of filing another. `purchaseId` is attached only if it is your order from this seller.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let slug = "slug_example" // String | The store’s slug (its /shop/s/<slug> address).
+let createBuyerSellerReportRequest = CreateBuyerSellerReportRequest(reason: "reason_example", details: "details_example", purchaseId: 123) // CreateBuyerSellerReportRequest | 
+
+// Report a store to Crossly’s trust team.
+BuyerAPI.createBuyerStoreReport(slug: slug, createBuyerSellerReportRequest: createBuyerSellerReportRequest) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **slug** | **String** | The store’s slug (its /shop/s/&lt;slug&gt; address). | 
+ **createBuyerSellerReportRequest** | **CreateBuyerSellerReportRequest** |  | 
+
+### Return type
+
+**CreateBuyerStoreReportResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
@@ -3838,6 +4453,376 @@ Name | Type | Description  | Notes
 ### Return type
 
 **CreateBuyerVaultWithdrawResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createBuyerWholesaleCatalogApply**
+```swift
+    open class func createBuyerWholesaleCatalogApply(storeSlug: String, catalogSlug: String, completion: @escaping (_ data: CreateBuyerWholesaleCatalogApplyResponse?, _ error: Error?) -> Void)
+```
+
+Apply to a store's wholesale catalog: { message?, answers [{ id, value }], resaleCertUrl?, resaleCertState?, taxId?, businessInfo? }. The seller's requirements are enforced (400 trade_apply_requirements names the first one missing); the seller reviews the request.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let storeSlug = "storeSlug_example" // String | 
+let catalogSlug = "catalogSlug_example" // String | 
+
+// Apply to a store's wholesale catalog: { message?, answers [{ id, value }], resaleCertUrl?, resaleCertState?, taxId?, businessInfo? }. The seller's requirements are enforced (400 trade_apply_requirements names the first one missing); the seller reviews the request.
+BuyerAPI.createBuyerWholesaleCatalogApply(storeSlug: storeSlug, catalogSlug: catalogSlug) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **storeSlug** | **String** |  | 
+ **catalogSlug** | **String** |  | 
+
+### Return type
+
+**CreateBuyerWholesaleCatalogApplyResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createBuyerWholesaleFreightRequest**
+```swift
+    open class func createBuyerWholesaleFreightRequest(completion: @escaping (_ data: CreateBuyerWholesaleFreightRequestResponse?, _ error: Error?) -> Void)
+```
+
+Ask a seller to quote freight for their lines in your cart (an order over their pallet threshold): { sellerUserId, weightLbs?, shipTo? { postalCode, country, city?, region?, liftgate?, dock? }, note? }. One open request per seller.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Ask a seller to quote freight for their lines in your cart (an order over their pallet threshold): { sellerUserId, weightLbs?, shipTo? { postalCode, country, city?, region?, liftgate?, dock? }, note? }. One open request per seller.
+BuyerAPI.createBuyerWholesaleFreightRequest() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateBuyerWholesaleFreightRequestResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createBuyerWholesaleInvoicePayLink**
+```swift
+    open class func createBuyerWholesaleInvoicePayLink(id: String, completion: @escaping (_ data: CreateBuyerWholesaleInvoicePayLinkResponse?, _ error: Error?) -> Void)
+```
+
+A hosted payment page for an on-account invoice: amountCents? (part of the balance, at least $1), method? card | ach. Nothing is charged until the buyer completes the page.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let id = "id_example" // String | 
+
+// A hosted payment page for an on-account invoice: amountCents? (part of the balance, at least $1), method? card | ach. Nothing is charged until the buyer completes the page.
+BuyerAPI.createBuyerWholesaleInvoicePayLink(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateBuyerWholesaleInvoicePayLinkResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createBuyerWholesaleOrderSheet**
+```swift
+    open class func createBuyerWholesaleOrderSheet(completion: @escaping (_ data: BuyerWholesaleOrderSheetResponse?, _ error: Error?) -> Void)
+```
+
+Save an order sheet: name, lines [{ platformListingId, listingVariantId?, catalogId?, quantity }] from one seller, optional catalogId, poReference, note.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Save an order sheet: name, lines [{ platformListingId, listingVariantId?, catalogId?, quantity }] from one seller, optional catalogId, poReference, note.
+BuyerAPI.createBuyerWholesaleOrderSheet() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**BuyerWholesaleOrderSheetResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createBuyerWholesaleQuote**
+```swift
+    open class func createBuyerWholesaleQuote(completion: @escaping (_ data: BuyerWholesaleQuoteResponse?, _ error: Error?) -> Void)
+```
+
+Ask one seller for a quote: items [{ platformListingId, listingVariantId?, quantity, targetUnitPriceCents? }] (one seller per quote), optional catalogId, note, poReference.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Ask one seller for a quote: items [{ platformListingId, listingVariantId?, quantity, targetUnitPriceCents? }] (one seller per quote), optional catalogId, note, poReference.
+BuyerAPI.createBuyerWholesaleQuote() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**BuyerWholesaleQuoteResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createBuyerWholesaleQuoteAccept**
+```swift
+    open class func createBuyerWholesaleQuoteAccept(id: String, completion: @escaping (_ data: CreateBuyerWholesaleQuoteAcceptResponse?, _ error: Error?) -> Void)
+```
+
+Accept an answered quote: its priced items go into your cart at the quoted quantities, locked at the quoted prices until the quote expires (changing a line's quantity drops the lock). Paying happens at checkout on Crossly.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let id = "id_example" // String | 
+
+// Accept an answered quote: its priced items go into your cart at the quoted quantities, locked at the quoted prices until the quote expires (changing a line's quantity drops the lock). Paying happens at checkout on Crossly.
+BuyerAPI.createBuyerWholesaleQuoteAccept(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**CreateBuyerWholesaleQuoteAcceptResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createBuyerWholesaleQuoteWithdraw**
+```swift
+    open class func createBuyerWholesaleQuoteWithdraw(id: String, completion: @escaping (_ data: BuyerWholesaleQuoteResponse?, _ error: Error?) -> Void)
+```
+
+Withdraw a quote request that is still requested or answered.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let id = "id_example" // String | 
+
+// Withdraw a quote request that is still requested or answered.
+BuyerAPI.createBuyerWholesaleQuoteWithdraw(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**BuyerWholesaleQuoteResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createBuyerWholesaleUploadValidate**
+```swift
+    open class func createBuyerWholesaleUploadValidate(completion: @escaping (_ data: CreateBuyerWholesaleUploadValidateResponse?, _ error: Error?) -> Void)
+```
+
+Validate a CSV / PO against one catalog: rows [{ line, sku, quantity }] are matched by SKU (item or option SKU, or listing slug), merged per item and priced today; unmatched rows come back by line.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Validate a CSV / PO against one catalog: rows [{ line, sku, quantity }] are matched by SKU (item or option SKU, or listing slug), merged per item and priced today; unmatched rows come back by line.
+BuyerAPI.createBuyerWholesaleUploadValidate() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateBuyerWholesaleUploadValidateResponse**
 
 ### Authorization
 
@@ -4340,6 +5325,54 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **deleteBuyerCompanyMember**
+```swift
+    open class func deleteBuyerCompanyMember(id: String, completion: @escaping (_ data: BuyerCompanyResponse?, _ error: Error?) -> Void)
+```
+
+Remove a member or cancel an invite (owner), or leave the company (your own member id).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let id = "id_example" // String | 
+
+// Remove a member or cancel an invite (owner), or leave the company (your own member id).
+BuyerAPI.deleteBuyerCompanyMember(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**BuyerCompanyResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **deleteBuyerConversationGuest**
 ```swift
     open class func deleteBuyerConversationGuest(id: String, userId: String, completion: @escaping (_ data: BuyerResponse?, _ error: Error?) -> Void)
@@ -4374,6 +5407,104 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** |  | 
  **userId** | **String** |  | 
+
+### Return type
+
+**BuyerResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **deleteBuyerCreationReview**
+```swift
+    open class func deleteBuyerCreationReview(format: Format_deleteBuyerCreationReview, id: String, completion: @escaping (_ data: BuyerResponse?, _ error: Error?) -> Void)
+```
+
+Remove your review of a creation (its vote leaves the rating with it).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let format = "format_example" // String | The creation format.
+let id = "id_example" // String | The creation id (a card is <setId>.<slug>).
+
+// Remove your review of a creation (its vote leaves the rating with it).
+BuyerAPI.deleteBuyerCreationReview(format: format, id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **format** | **String** | The creation format. | 
+ **id** | **String** | The creation id (a card is &lt;setId&gt;.&lt;slug&gt;). | 
+
+### Return type
+
+**BuyerResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **deleteBuyerEventRsvp**
+```swift
+    open class func deleteBuyerEventRsvp(slug: String, completion: @escaping (_ data: BuyerResponse?, _ error: Error?) -> Void)
+```
+
+Take back your RSVP.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let slug = "slug_example" // String | 
+
+// Take back your RSVP.
+BuyerAPI.deleteBuyerEventRsvp(slug: slug) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **slug** | **String** |  | 
 
 ### Return type
 
@@ -4426,6 +5557,54 @@ Name | Type | Description  | Notes
 ### Return type
 
 **BuyerResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **deleteBuyerHomeGuestbook**
+```swift
+    open class func deleteBuyerHomeGuestbook(id: String, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+```
+
+Hide a line from your home’s guestbook.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let id = "id_example" // String | 
+
+// Hide a line from your home’s guestbook.
+BuyerAPI.deleteBuyerHomeGuestbook(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+Void (empty response body)
 
 ### Authorization
 
@@ -4774,6 +5953,54 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **deleteBuyerSellerLoyaltyJoin**
+```swift
+    open class func deleteBuyerSellerLoyaltyJoin(sellerUserId: String, completion: @escaping (_ data: BuyerResponse?, _ error: Error?) -> Void)
+```
+
+Leave a seller’s loyalty club.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let sellerUserId = "sellerUserId_example" // String | 
+
+// Leave a seller’s loyalty club.
+BuyerAPI.deleteBuyerSellerLoyaltyJoin(sellerUserId: sellerUserId) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **sellerUserId** | **String** |  | 
+
+### Return type
+
+**BuyerResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **deleteBuyerTogetherItem**
 ```swift
     open class func deleteBuyerTogetherItem(code: String, id: String, completion: @escaping (_ data: BuyerResponse?, _ error: Error?) -> Void)
@@ -4908,6 +6135,54 @@ Name | Type | Description  | Notes
 ### Return type
 
 **DeleteBuyerTryOnResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **deleteBuyerWholesaleOrderSheet**
+```swift
+    open class func deleteBuyerWholesaleOrderSheet(id: String, completion: @escaping (_ data: DeleteBuyerWholesaleOrderSheetResponse?, _ error: Error?) -> Void)
+```
+
+Delete an order sheet.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let id = "id_example" // String | 
+
+// Delete an order sheet.
+BuyerAPI.deleteBuyerWholesaleOrderSheet(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**DeleteBuyerWholesaleOrderSheetResponse**
 
 ### Authorization
 
@@ -5640,6 +6915,100 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **getBuyerCompany**
+```swift
+    open class func getBuyerCompany(completion: @escaping (_ data: BuyerCompanyResponse?, _ error: Error?) -> Void)
+```
+
+Your buyer company (members, roles, approval limits, shared addresses), or null when you are in none.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Your buyer company (members, roles, approval limits, shared addresses), or null when you are in none.
+BuyerAPI.getBuyerCompany() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**BuyerCompanyResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getBuyerCreation**
+```swift
+    open class func getBuyerCreation(format: Format_getBuyerCreation, id: String, completion: @escaping (_ data: GetBuyerCreationResponse?, _ error: Error?) -> Void)
+```
+
+A live creation's public page: its rating breakdown, recent reviews and whether you can review it.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let format = "format_example" // String | The creation format.
+let id = "id_example" // String | The creation id (a card is <setId>.<slug>).
+
+// A live creation's public page: its rating breakdown, recent reviews and whether you can review it.
+BuyerAPI.getBuyerCreation(format: format, id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **format** | **String** | The creation format. | 
+ **id** | **String** | The creation id (a card is &lt;setId&gt;.&lt;slug&gt;). | 
+
+### Return type
+
+**GetBuyerCreationResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **getBuyerCreator**
 ```swift
     open class func getBuyerCreator(handle: String, completion: @escaping (_ data: GetBuyerCreatorResponse?, _ error: Error?) -> Void)
@@ -5676,6 +7045,54 @@ Name | Type | Description  | Notes
 ### Return type
 
 **GetBuyerCreatorResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getBuyerEvent**
+```swift
+    open class func getBuyerEvent(slug: String, completion: @escaping (_ data: GetBuyerEventResponse?, _ error: Error?) -> Void)
+```
+
+A seller event: schedule, location, host, linked listings, live show, promo code, RSVP counts and your own RSVP.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let slug = "slug_example" // String | 
+
+// A seller event: schedule, location, host, linked listings, live show, promo code, RSVP counts and your own RSVP.
+BuyerAPI.getBuyerEvent(slug: slug) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **slug** | **String** |  | 
+
+### Return type
+
+**GetBuyerEventResponse**
 
 ### Authorization
 
@@ -5764,6 +7181,94 @@ This endpoint does not need any parameter.
 ### Return type
 
 **GetBuyerGiftFinderOptionResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getBuyerHome**
+```swift
+    open class func getBuyerHome(completion: @escaping (_ data: BuyerHomeResponse?, _ error: Error?) -> Void)
+```
+
+Your home in Crossly World (made on first read).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Your home in Crossly World (made on first read).
+BuyerAPI.getBuyerHome() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**BuyerHomeResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getBuyerHomePlaceable**
+```swift
+    open class func getBuyerHomePlaceable(completion: @escaping (_ data: GetBuyerHomePlaceableResponse?, _ error: Error?) -> Void)
+```
+
+What you could place in your home: your items and delivered furniture.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// What you could place in your home: your items and delivered furniture.
+BuyerAPI.getBuyerHomePlaceable() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetBuyerHomePlaceableResponse**
 
 ### Authorization
 
@@ -6735,7 +8240,7 @@ Name | Type | Description  | Notes
     open class func getBuyerPassport(code: String, completion: @escaping (_ data: GetBuyerPassportResponse?, _ error: Error?) -> Void)
 ```
 
-What a product passport tag opens: the item, whether it was authenticated, how many owners on Crossly and since when — never who or for how much.
+What a product passport tag opens: the item, the verify verdict (registered, tag bound, tag matches with ?uid=, authenticated, graded, in its owner’s hands), how many owners and since when — never who or for how much.
 
 ### Example
 ```swift
@@ -6744,7 +8249,7 @@ import CrosslyBuyer
 
 let code = "code_example" // String | 
 
-// What a product passport tag opens: the item, whether it was authenticated, how many owners on Crossly and since when — never who or for how much.
+// What a product passport tag opens: the item, the verify verdict (registered, tag bound, tag matches with ?uid=, authenticated, graded, in its owner’s hands), how many owners and since when — never who or for how much.
 BuyerAPI.getBuyerPassport(code: code) { (response, error) in
     guard error == nil else {
         print(error)
@@ -7200,6 +8705,54 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **getBuyerRental**
+```swift
+    open class func getBuyerRental(id: String, completion: @escaping (_ data: GetBuyerRentalResponse?, _ error: Error?) -> Void)
+```
+
+One of your rentals: timeline, payments, the return label, extension and buy-out terms.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let id = "id_example" // String | 
+
+// One of your rentals: timeline, payments, the return label, extension and buy-out terms.
+BuyerAPI.getBuyerRental(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetBuyerRentalResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **getBuyerRentalEligibility**
 ```swift
     open class func getBuyerRentalEligibility(completion: @escaping (_ data: GetBuyerRentalEligibilityResponse?, _ error: Error?) -> Void)
@@ -7280,6 +8833,54 @@ Name | Type | Description  | Notes
 ### Return type
 
 **GetBuyerSellerClubResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getBuyerSellerLoyalty**
+```swift
+    open class func getBuyerSellerLoyalty(sellerUserId: String, completion: @escaping (_ data: GetBuyerSellerLoyaltyResponse?, _ error: Error?) -> Void)
+```
+
+A seller’s loyalty club with its typed perks per tier, its join mode (automatic, opt-in, invite-only) and your standing. null when they run none.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let sellerUserId = "sellerUserId_example" // String | 
+
+// A seller’s loyalty club with its typed perks per tier, its join mode (automatic, opt-in, invite-only) and your standing. null when they run none.
+BuyerAPI.getBuyerSellerLoyalty(sellerUserId: sellerUserId) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **sellerUserId** | **String** |  | 
+
+### Return type
+
+**GetBuyerSellerLoyaltyResponse**
 
 ### Authorization
 
@@ -7528,6 +9129,706 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **getBuyerVaultMarketOptionAnalytic**
+```swift
+    open class func getBuyerVaultMarketOptionAnalytic(underlying: String, completion: @escaping (_ data: GetBuyerVaultMarketOptionAnalyticResponse?, _ error: Error?) -> Void)
+```
+
+Options analytics on an underlying: vol surface and smile, IV rank and percentile, open interest and volume by strike and expiry, put/call ratios, expected move and historical vol. Derived, display only. Read only.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let underlying = "underlying_example" // String | 
+
+// Options analytics on an underlying: vol surface and smile, IV rank and percentile, open interest and volume by strike and expiry, put/call ratios, expected move and historical vol. Derived, display only. Read only.
+BuyerAPI.getBuyerVaultMarketOptionAnalytic(underlying: underlying) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **underlying** | **String** |  | 
+
+### Return type
+
+**GetBuyerVaultMarketOptionAnalyticResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getBuyerVaultMarketOptionChain**
+```swift
+    open class func getBuyerVaultMarketOptionChain(underlying: String, completion: @escaping (_ data: GetBuyerVaultMarketOptionChainResponse?, _ error: Error?) -> Void)
+```
+
+The option chain for an underlying (index slug or book key): expiries, and for one expiry each strike’s call and put with bid / ask, last, open interest, theoretical price, implied vol (display only) and Greeks. Prices are cents per contract.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let underlying = "underlying_example" // String | 
+
+// The option chain for an underlying (index slug or book key): expiries, and for one expiry each strike’s call and put with bid / ask, last, open interest, theoretical price, implied vol (display only) and Greeks. Prices are cents per contract.
+BuyerAPI.getBuyerVaultMarketOptionChain(underlying: underlying) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **underlying** | **String** |  | 
+
+### Return type
+
+**GetBuyerVaultMarketOptionChainResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getBuyerVaultMarketOptionIv**
+```swift
+    open class func getBuyerVaultMarketOptionIv(underlying: String, completion: @escaping (_ data: GetBuyerVaultMarketOptionIvResponse?, _ error: Error?) -> Void)
+```
+
+The at-the-money implied vol on an underlying’s nearest expiry, for display: derived from the options book, quality C, never a mark.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let underlying = "underlying_example" // String | 
+
+// The at-the-money implied vol on an underlying’s nearest expiry, for display: derived from the options book, quality C, never a mark.
+BuyerAPI.getBuyerVaultMarketOptionIv(underlying: underlying) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **underlying** | **String** |  | 
+
+### Return type
+
+**GetBuyerVaultMarketOptionIvResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getBuyerVaultMarketOptionPosition**
+```swift
+    open class func getBuyerVaultMarketOptionPosition(completion: @escaping (_ data: GetBuyerVaultMarketOptionPositionResponse?, _ error: Error?) -> Void)
+```
+
+Your fractional options positions with their marks, P&L and Greeks (open by default; `status` all for closed and settled too). Read only.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Your fractional options positions with their marks, P&L and Greeks (open by default; `status` all for closed and settled too). Read only.
+BuyerAPI.getBuyerVaultMarketOptionPosition() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetBuyerVaultMarketOptionPositionResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getBuyerVaultMarketOptionRisk**
+```swift
+    open class func getBuyerVaultMarketOptionRisk(completion: @escaping (_ data: GetBuyerVaultMarketOptionRiskResponse?, _ error: Error?) -> Void)
+```
+
+Your options portfolio Greeks, a scenario's P&L (`priceShift`, `volShift`, `daysForward`) and the beta-weighted delta against an index. Read only.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Your options portfolio Greeks, a scenario's P&L (`priceShift`, `volShift`, `daysForward`) and the beta-weighted delta against an index. Read only.
+BuyerAPI.getBuyerVaultMarketOptionRisk() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetBuyerVaultMarketOptionRiskResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getBuyerVaultMarketPredictionBoard**
+```swift
+    open class func getBuyerVaultMarketPredictionBoard(completion: @escaping (_ data: GetBuyerVaultMarketPredictionBoardResponse?, _ error: Error?) -> Void)
+```
+
+The busiest open prediction markets and their odds (the Trading Floor board). Anonymous.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// The busiest open prediction markets and their odds (the Trading Floor board). Anonymous.
+BuyerAPI.getBuyerVaultMarketPredictionBoard() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetBuyerVaultMarketPredictionBoardResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getBuyerVaultMarketPredictionEvent**
+```swift
+    open class func getBuyerVaultMarketPredictionEvent(id: String, completion: @escaping (_ data: GetBuyerVaultMarketPredictionEventResponse?, _ error: Error?) -> Void)
+```
+
+One expiry’s markets with your holdings in each and their real worst and best case across them.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let id = "id_example" // String | 
+
+// One expiry’s markets with your holdings in each and their real worst and best case across them.
+BuyerAPI.getBuyerVaultMarketPredictionEvent(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetBuyerVaultMarketPredictionEventResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getBuyerVaultMarketPredictionLeaderboard**
+```swift
+    open class func getBuyerVaultMarketPredictionLeaderboard(completion: @escaping (_ data: GetBuyerVaultMarketPredictionLeaderboardResponse?, _ error: Error?) -> Void)
+```
+
+Opt-in forecaster leaderboards (`period` week | month | all; `metric` pnl | accuracy | brier; `venue` live | paper).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Opt-in forecaster leaderboards (`period` week | month | all; `metric` pnl | accuracy | brier; `venue` live | paper).
+BuyerAPI.getBuyerVaultMarketPredictionLeaderboard() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetBuyerVaultMarketPredictionLeaderboardResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getBuyerVaultMarketPredictionMarket**
+```swift
+    open class func getBuyerVaultMarketPredictionMarket(id: String, completion: @escaping (_ data: GetBuyerVaultMarketPredictionMarketResponse?, _ error: Error?) -> Void)
+```
+
+One prediction market: terms, the Yes ladder (live and practice), recent trades, settlement history and the series rules with their hash.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let id = "id_example" // String | 
+
+// One prediction market: terms, the Yes ladder (live and practice), recent trades, settlement history and the series rules with their hash.
+BuyerAPI.getBuyerVaultMarketPredictionMarket(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetBuyerVaultMarketPredictionMarketResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getBuyerVaultMarketPredictionMarketHistory**
+```swift
+    open class func getBuyerVaultMarketPredictionMarketHistory(id: String, completion: @escaping (_ data: GetBuyerVaultMarketPredictionMarketHistoryResponse?, _ error: Error?) -> Void)
+```
+
+A prediction market’s probability over time (display only, never a mark), candles on the Yes price, volume and open interest (`range` 1d, 1w, 1m, all; `venue` live or paper).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let id = "id_example" // String | 
+
+// A prediction market’s probability over time (display only, never a mark), candles on the Yes price, volume and open interest (`range` 1d, 1w, 1m, all; `venue` live or paper).
+BuyerAPI.getBuyerVaultMarketPredictionMarketHistory(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetBuyerVaultMarketPredictionMarketHistoryResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getBuyerVaultMarketShare**
+```swift
+    open class func getBuyerVaultMarketShare(completion: @escaping (_ data: GetBuyerVaultMarketShareResponse?, _ error: Error?) -> Void)
+```
+
+Your Vault Shares: shares and percent of each item, cost, implied value at the last share price (display only, never a mark), subscriptions and payouts.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Your Vault Shares: shares and percent of each item, cost, implied value at the last share price (display only, never a mark), subscriptions and payouts.
+BuyerAPI.getBuyerVaultMarketShare() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetBuyerVaultMarketShareResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getBuyerVaultMarketShareBasket**
+```swift
+    open class func getBuyerVaultMarketShareBasket(id: String, completion: @escaping (_ data: GetBuyerVaultMarketShareBasketResponse?, _ error: Error?) -> Void)
+```
+
+One theme basket: its series, weights and prices, and your holdings against them.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let id = "id_example" // String | 
+
+// One theme basket: its series, weights and prices, and your holdings against them.
+BuyerAPI.getBuyerVaultMarketShareBasket(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetBuyerVaultMarketShareBasketResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getBuyerVaultMarketShareSery**
+```swift
+    open class func getBuyerVaultMarketShareSery(id: String, completion: @escaping (_ data: GetBuyerVaultMarketShareSeryResponse?, _ error: Error?) -> Void)
+```
+
+One Vault Shares series: the offering, the share book, the latest fills, holders as percentages (nobody named) and buyouts.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let id = "id_example" // String | 
+
+// One Vault Shares series: the offering, the share book, the latest fills, holders as percentages (nobody named) and buyouts.
+BuyerAPI.getBuyerVaultMarketShareSery(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetBuyerVaultMarketShareSeryResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getBuyerVaultMarketShareSeryHistory**
+```swift
+    open class func getBuyerVaultMarketShareSeryHistory(id: String, completion: @escaping (_ data: GetBuyerVaultMarketShareSeryHistoryResponse?, _ error: Error?) -> Void)
+```
+
+A Vault Shares series’ full price history (candles), the offering price and the appraisal history. Display only, never a mark.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let id = "id_example" // String | 
+
+// A Vault Shares series’ full price history (candles), the offering price and the appraisal history. Display only, never a mark.
+BuyerAPI.getBuyerVaultMarketShareSeryHistory(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetBuyerVaultMarketShareSeryHistoryResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getBuyerVaultMarketShareSeryPerk**
+```swift
+    open class func getBuyerVaultMarketShareSeryPerk(id: String, completion: @escaping (_ data: GetBuyerVaultMarketShareSeryPerkResponse?, _ error: Error?) -> Void)
+```
+
+Your holder perks on a series: badge, visit links, viewing days and your bookings.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let id = "id_example" // String | 
+
+// Your holder perks on a series: badge, visit links, viewing days and your bookings.
+BuyerAPI.getBuyerVaultMarketShareSeryPerk(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetBuyerVaultMarketShareSeryPerkResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **getBuyerVaultMarketWorth**
 ```swift
     open class func getBuyerVaultMarketWorth(completion: @escaping (_ data: GetBuyerVaultMarketWorthResponse?, _ error: Error?) -> Void)
@@ -7560,6 +9861,340 @@ This endpoint does not need any parameter.
 ### Return type
 
 **GetBuyerVaultMarketWorthResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getBuyerWholesaleCart**
+```swift
+    open class func getBuyerWholesaleCart(completion: @escaping (_ data: GetBuyerWholesaleCartResponse?, _ error: Error?) -> Void)
+```
+
+Your cart grouped per seller: trade terms, the order-minimum progress, every rule the cart breaks (the messages checkout would refuse with), PO reference, quote-locked lines, and the checkout methods, deposit and freight threshold for each group.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Your cart grouped per seller: trade terms, the order-minimum progress, every rule the cart breaks (the messages checkout would refuse with), PO reference, quote-locked lines, and the checkout methods, deposit and freight threshold for each group.
+BuyerAPI.getBuyerWholesaleCart() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetBuyerWholesaleCartResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getBuyerWholesaleCatalogApply**
+```swift
+    open class func getBuyerWholesaleCatalogApply(storeSlug: String, catalogSlug: String, completion: @escaping (_ data: GetBuyerWholesaleCatalogApplyResponse?, _ error: Error?) -> Void)
+```
+
+The application form for a store's wholesale catalog: the seller's requirements (resale certificate and accepted states, tax id, their custom questions) and your business info pre-filled. applicable=false for a catalog you cannot apply to.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let storeSlug = "storeSlug_example" // String | 
+let catalogSlug = "catalogSlug_example" // String | 
+
+// The application form for a store's wholesale catalog: the seller's requirements (resale certificate and accepted states, tax id, their custom questions) and your business info pre-filled. applicable=false for a catalog you cannot apply to.
+BuyerAPI.getBuyerWholesaleCatalogApply(storeSlug: storeSlug, catalogSlug: catalogSlug) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **storeSlug** | **String** |  | 
+ **catalogSlug** | **String** |  | 
+
+### Return type
+
+**GetBuyerWholesaleCatalogApplyResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getBuyerWholesaleDrop**
+```swift
+    open class func getBuyerWholesaleDrop(id: String, completion: @escaping (_ data: GetBuyerWholesaleDropResponse?, _ error: Error?) -> Void)
+```
+
+One trade drop open to you: its listings once live (add one to your cart to reserve or buy it), and your reservations in it. 404 for a drop not open to you.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let id = "id_example" // String | 
+
+// One trade drop open to you: its listings once live (add one to your cart to reserve or buy it), and your reservations in it. 404 for a drop not open to you.
+BuyerAPI.getBuyerWholesaleDrop(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetBuyerWholesaleDropResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getBuyerWholesaleInvoicePayQuote**
+```swift
+    open class func getBuyerWholesaleInvoicePayQuote(id: String, completion: @escaping (_ data: GetBuyerWholesaleInvoicePayQuoteResponse?, _ error: Error?) -> Void)
+```
+
+What paying an on-account invoice costs now: balance due, the early-pay discount if still open, the minimum part payment and the methods (card, ach).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let id = "id_example" // String | 
+
+// What paying an on-account invoice costs now: balance due, the early-pay discount if still open, the minimum part payment and the methods (card, ach).
+BuyerAPI.getBuyerWholesaleInvoicePayQuote(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetBuyerWholesaleInvoicePayQuoteResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getBuyerWholesaleOrderSheet**
+```swift
+    open class func getBuyerWholesaleOrderSheet(id: String, completion: @escaping (_ data: BuyerWholesaleOrderSheetResponse?, _ error: Error?) -> Void)
+```
+
+One order sheet priced TODAY at its quantities, with stock, trade terms and flags (unavailable, out_of_stock, short_stock, price_hidden, needs_option).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let id = "id_example" // String | 
+
+// One order sheet priced TODAY at its quantities, with stock, trade terms and flags (unavailable, out_of_stock, short_stock, price_hidden, needs_option).
+BuyerAPI.getBuyerWholesaleOrderSheet(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**BuyerWholesaleOrderSheetResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getBuyerWholesaleQuote**
+```swift
+    open class func getBuyerWholesaleQuote(id: String, completion: @escaping (_ data: BuyerWholesaleQuoteResponse?, _ error: Error?) -> Void)
+```
+
+One of your quotes with its items, the seller's prices and expiry.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let id = "id_example" // String | 
+
+// One of your quotes with its items, the seller's prices and expiry.
+BuyerAPI.getBuyerWholesaleQuote(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**BuyerWholesaleQuoteResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getBuyerWholesaleReorder**
+```swift
+    open class func getBuyerWholesaleReorder(id: String, completion: @escaping (_ data: GetBuyerWholesaleReorderResponse?, _ error: Error?) -> Void)
+```
+
+Buy again: a past wholesale order (purchase or order id) as order-sheet lines at the same quantities, priced today, out-of-stock flagged.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let id = "id_example" // String | 
+
+// Buy again: a past wholesale order (purchase or order id) as order-sheet lines at the same quantities, priced today, out-of-stock flagged.
+BuyerAPI.getBuyerWholesaleReorder(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**GetBuyerWholesaleReorderResponse**
 
 ### Authorization
 
@@ -8176,6 +10811,50 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **listBuyerCompanyApprovals**
+```swift
+    open class func listBuyerCompanyApprovals(completion: @escaping (_ data: BuyerResponse3?, _ error: Error?) -> Void)
+```
+
+Spend approval requests (owners and accounts payable see all; others their own). ?status=pending|approved|declined|used|expired.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Spend approval requests (owners and accounts payable see all; others their own). ?status=pending|approved|declined|used|expired.
+BuyerAPI.listBuyerCompanyApprovals() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**BuyerResponse3**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **listBuyerConsolidations**
 ```swift
     open class func listBuyerConsolidations(completion: @escaping (_ data: BuyerResponse3?, _ error: Error?) -> Void)
@@ -8256,6 +10935,98 @@ Name | Type | Description  | Notes
 ### Return type
 
 **ListBuyerWishlistMembersResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listBuyerCreationReviewable**
+```swift
+    open class func listBuyerCreationReviewable(purchaseRef: String? = nil, completion: @escaping (_ data: ListBuyerCreationReviewableResponse?, _ error: Error?) -> Void)
+```
+
+Creations you bought (decor, wearables, interactive objects, cards from packs) and your review of each.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let purchaseRef = "purchaseRef_example" // String | Only the creation this purchase bought. (optional)
+
+// Creations you bought (decor, wearables, interactive objects, cards from packs) and your review of each.
+BuyerAPI.listBuyerCreationReviewable(purchaseRef: purchaseRef) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **purchaseRef** | **String** | Only the creation this purchase bought. | [optional] 
+
+### Return type
+
+**ListBuyerCreationReviewableResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listBuyerEvents**
+```swift
+    open class func listBuyerEvents(completion: @escaping (_ data: ListBuyerEventsResponse?, _ error: Error?) -> Void)
+```
+
+Upcoming and live seller events across Crossly, soonest first.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Upcoming and live seller events across Crossly, soonest first.
+BuyerAPI.listBuyerEvents() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListBuyerEventsResponse**
 
 ### Authorization
 
@@ -8612,6 +11383,94 @@ This endpoint does not need any parameter.
 ### Return type
 
 **ListBuyerGiftSentResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listBuyerHomeBuilders**
+```swift
+    open class func listBuyerHomeBuilders(completion: @escaping (_ data: ListBuyerHomeBuildersResponse?, _ error: Error?) -> Void)
+```
+
+Your co-builders: friends who may arrange your home with you.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Your co-builders: friends who may arrange your home with you.
+BuyerAPI.listBuyerHomeBuilders() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListBuyerHomeBuildersResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listBuyerHomeBuilding**
+```swift
+    open class func listBuyerHomeBuilding(completion: @escaping (_ data: ListBuyerHomeBuildingResponse?, _ error: Error?) -> Void)
+```
+
+The homes you co-build, to visit and arrange.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// The homes you co-build, to visit and arrange.
+BuyerAPI.listBuyerHomeBuilding() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListBuyerHomeBuildingResponse**
 
 ### Authorization
 
@@ -8988,6 +11847,50 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **listBuyerLoyalty**
+```swift
+    open class func listBuyerLoyalty(completion: @escaping (_ data: ListBuyerLoyaltyResponse?, _ error: Error?) -> Void)
+```
+
+Your loyalty clubs: the tier you hold, progress and how to reach the next tier, the typed perks you hold now, and your history.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Your loyalty clubs: the tier you hold, progress and how to reach the next tier, the typed perks you hold now, and your history.
+BuyerAPI.listBuyerLoyalty() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListBuyerLoyaltyResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **listBuyerMarketBids**
 ```swift
     open class func listBuyerMarketBids(completion: @escaping (_ data: BuyerResponse3?, _ error: Error?) -> Void)
@@ -9344,6 +12247,52 @@ Name | Type | Description  | Notes
 ### Return type
 
 **BuyerResponse3**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listBuyerPaymentMethods**
+```swift
+    open class func listBuyerPaymentMethods(completion: @escaping (_ data: ListBuyerPaymentMethodsResponse?, _ error: Error?) -> Void)
+```
+
+Your saved cards, the default first.
+
+Brand, last 4, expiry and whether it is your default. The `id` is what checkout and auction bids take as `paymentMethodId`.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Your saved cards, the default first.
+BuyerAPI.listBuyerPaymentMethods() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListBuyerPaymentMethodsResponse**
 
 ### Authorization
 
@@ -9756,6 +12705,54 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **listBuyerStoreListings**
+```swift
+    open class func listBuyerStoreListings(slug: String, completion: @escaping (_ data: ListBuyerStoreListingsResponse?, _ error: Error?) -> Void)
+```
+
+A store's live listings, filtered by tag, category, text and program chips (f: on_sale, discount_eligible, code_eligible, group_buy_active, rentable, wholesale_available…; all must hold), sorted; each card carries its program badges.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let slug = "slug_example" // String | 
+
+// A store's live listings, filtered by tag, category, text and program chips (f: on_sale, discount_eligible, code_eligible, group_buy_active, rentable, wholesale_available…; all must hold), sorted; each card carries its program badges.
+BuyerAPI.listBuyerStoreListings(slug: slug) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **slug** | **String** |  | 
+
+### Return type
+
+**ListBuyerStoreListingsResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **listBuyerSubscriptions**
 ```swift
     open class func listBuyerSubscriptions(completion: @escaping (_ data: ListBuyerSubscriptionsResponse?, _ error: Error?) -> Void)
@@ -10110,6 +13107,534 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **listBuyerVaultMarketOptionCombos**
+```swift
+    open class func listBuyerVaultMarketOptionCombos(completion: @escaping (_ data: ListBuyerVaultMarketOptionCombosResponse?, _ error: Error?) -> Void)
+```
+
+Your options strategies (working by default) with their legs, net price per unit and fills. Read only.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Your options strategies (working by default) with their legs, net price per unit and fills. Read only.
+BuyerAPI.listBuyerVaultMarketOptionCombos() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListBuyerVaultMarketOptionCombosResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listBuyerVaultMarketOptionNotices**
+```swift
+    open class func listBuyerVaultMarketOptionNotices(completion: @escaping (_ data: ListBuyerVaultMarketOptionNoticesResponse?, _ error: Error?) -> Void)
+```
+
+Your options notices: expiry warnings, auto-closes, exercises, assignments, expiries worthless and rolls. Read only.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Your options notices: expiry warnings, auto-closes, exercises, assignments, expiries worthless and rolls. Read only.
+BuyerAPI.listBuyerVaultMarketOptionNotices() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListBuyerVaultMarketOptionNoticesResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listBuyerVaultMarketOptionSeries**
+```swift
+    open class func listBuyerVaultMarketOptionSeries(completion: @escaping (_ data: ListBuyerVaultMarketOptionSeriesResponse?, _ error: Error?) -> Void)
+```
+
+Fractional options series on Crossly prices (indexes, and tier A item keys with 90 days of reliable marks): underlying, status and eligibility. Read only.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Fractional options series on Crossly prices (indexes, and tier A item keys with 90 days of reliable marks): underlying, status and eligibility. Read only.
+BuyerAPI.listBuyerVaultMarketOptionSeries() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListBuyerVaultMarketOptionSeriesResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listBuyerVaultMarketOptionStrategies**
+```swift
+    open class func listBuyerVaultMarketOptionStrategies(completion: @escaping (_ data: ListBuyerVaultMarketOptionStrategiesResponse?, _ error: Error?) -> Void)
+```
+
+The options strategies the picker builds (vertical, calendar, diagonal, straddle, strangle, butterfly, iron condor, collar) and what each does. Read only.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// The options strategies the picker builds (vertical, calendar, diagonal, straddle, strangle, butterfly, iron condor, collar) and what each does. Read only.
+BuyerAPI.listBuyerVaultMarketOptionStrategies() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListBuyerVaultMarketOptionStrategiesResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listBuyerVaultMarketPredictionComments**
+```swift
+    open class func listBuyerVaultMarketPredictionComments(completion: @escaping (_ data: ListBuyerVaultMarketPredictionCommentsResponse?, _ error: Error?) -> Void)
+```
+
+A prediction market’s (or series’) discussion thread. Read only.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// A prediction market’s (or series’) discussion thread. Read only.
+BuyerAPI.listBuyerVaultMarketPredictionComments() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListBuyerVaultMarketPredictionCommentsResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listBuyerVaultMarketPredictionMarkets**
+```swift
+    open class func listBuyerVaultMarketPredictionMarkets(completion: @escaping (_ data: ListBuyerVaultMarketPredictionMarketsResponse?, _ error: Error?) -> Void)
+```
+
+\"Will it hit?\" prediction markets on Crossly prices (filter by book key, index slug, kind, status, expiry or text): strike, expiry, best Yes bid and ask, last price and the probability (the market's own price, display only).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// \"Will it hit?\" prediction markets on Crossly prices (filter by book key, index slug, kind, status, expiry or text): strike, expiry, best Yes bid and ask, last price and the probability (the market's own price, display only).
+BuyerAPI.listBuyerVaultMarketPredictionMarkets() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListBuyerVaultMarketPredictionMarketsResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listBuyerVaultMarketPredictionPositions**
+```swift
+    open class func listBuyerVaultMarketPredictionPositions(completion: @escaping (_ data: ListBuyerVaultMarketPredictionPositionsResponse?, _ error: Error?) -> Void)
+```
+
+Your prediction positions (practice and live): side, contracts, cost, value at the last price, payout or refund once settled.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Your prediction positions (practice and live): side, contracts, cost, value at the last price, payout or refund once settled.
+BuyerAPI.listBuyerVaultMarketPredictionPositions() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListBuyerVaultMarketPredictionPositionsResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listBuyerVaultMarketShareAutoInvest**
+```swift
+    open class func listBuyerVaultMarketShareAutoInvest(completion: @escaping (_ data: ListBuyerVaultMarketShareAutoInvestResponse?, _ error: Error?) -> Void)
+```
+
+Your recurring Vault Shares auto-invest plans.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Your recurring Vault Shares auto-invest plans.
+BuyerAPI.listBuyerVaultMarketShareAutoInvest() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListBuyerVaultMarketShareAutoInvestResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listBuyerVaultMarketShareBaskets**
+```swift
+    open class func listBuyerVaultMarketShareBaskets(completion: @escaping (_ data: ListBuyerVaultMarketShareBasketsResponse?, _ error: Error?) -> Void)
+```
+
+Theme baskets: model portfolios of Vault Shares series you would own directly, never a fund.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Theme baskets: model portfolios of Vault Shares series you would own directly, never a fund.
+BuyerAPI.listBuyerVaultMarketShareBaskets() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListBuyerVaultMarketShareBasketsResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listBuyerVaultMarketShareDrops**
+```swift
+    open class func listBuyerVaultMarketShareDrops(completion: @escaping (_ data: ListBuyerVaultMarketShareDropsResponse?, _ error: Error?) -> Void)
+```
+
+Upcoming and open Vault Shares drops: phase, countdown, allocation (first come, pro-rata or lottery), your Crossly One early-access time (never a better price).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Upcoming and open Vault Shares drops: phase, countdown, allocation (first come, pro-rata or lottery), your Crossly One early-access time (never a better price).
+BuyerAPI.listBuyerVaultMarketShareDrops() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListBuyerVaultMarketShareDropsResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listBuyerVaultMarketShareGifts**
+```swift
+    open class func listBuyerVaultMarketShareGifts(completion: @escaping (_ data: ListBuyerVaultMarketShareGiftsResponse?, _ error: Error?) -> Void)
+```
+
+Vault Shares gifts you sent or were offered.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Vault Shares gifts you sent or were offered.
+BuyerAPI.listBuyerVaultMarketShareGifts() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListBuyerVaultMarketShareGiftsResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listBuyerVaultMarketShareSeries**
+```swift
+    open class func listBuyerVaultMarketShareSeries(completion: @escaping (_ data: ListBuyerVaultMarketShareSeriesResponse?, _ error: Error?) -> Void)
+```
+
+Vault Shares series: open offerings first, then trading. Terms, progress, last share price and implied item value, and your holding.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Vault Shares series: open offerings first, then trading. Terms, progress, last share price and implied item value, and your holding.
+BuyerAPI.listBuyerVaultMarketShareSeries() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListBuyerVaultMarketShareSeriesResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **listBuyerVaultMarketWatchlist**
 ```swift
     open class func listBuyerVaultMarketWatchlist(completion: @escaping (_ data: ListBuyerVaultMarketWatchlistResponse?, _ error: Error?) -> Void)
@@ -10186,6 +13711,402 @@ This endpoint does not need any parameter.
 ### Return type
 
 **ListBuyerVideoRequestsResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listBuyerWalletPerks**
+```swift
+    open class func listBuyerWalletPerks(completion: @escaping (_ data: ListBuyerWalletPerksResponse?, _ error: Error?) -> Void)
+```
+
+The perks your wallets unlock: each Collection holders deal (a shop’s percent off for holders of a collection) and creator shop perk on a collection a linked wallet or your Crossly wallet holds, best first. Checkout applies the best one; perks never stack with each other.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// The perks your wallets unlock: each Collection holders deal (a shop’s percent off for holders of a collection) and creator shop perk on a collection a linked wallet or your Crossly wallet holds, best first. Checkout applies the best one; perks never stack with each other.
+BuyerAPI.listBuyerWalletPerks() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListBuyerWalletPerksResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listBuyerWholesaleDrops**
+```swift
+    open class func listBuyerWholesaleDrops(completion: @escaping (_ data: ListBuyerWholesaleDropsResponse?, _ error: Error?) -> Void)
+```
+
+Upcoming and live trade drops open to you: drops sellers release only to their approved trade buyers or to a catalog audience. kind prebook = reserve quantity now with a deposit (depositBps) at checkout; the balance is invoiced when the seller releases the stock.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Upcoming and live trade drops open to you: drops sellers release only to their approved trade buyers or to a catalog audience. kind prebook = reserve quantity now with a deposit (depositBps) at checkout; the balance is invoiced when the seller releases the stock.
+BuyerAPI.listBuyerWholesaleDrops() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListBuyerWholesaleDropsResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listBuyerWholesaleFreightRequests**
+```swift
+    open class func listBuyerWholesaleFreightRequests(completion: @escaping (_ data: BuyerResponse3?, _ error: Error?) -> Void)
+```
+
+Your freight (LTL) quote requests to sellers, with the seller's figure in cents once quoted.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Your freight (LTL) quote requests to sellers, with the seller's figure in cents once quoted.
+BuyerAPI.listBuyerWholesaleFreightRequests() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**BuyerResponse3**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listBuyerWholesaleOrderSheets**
+```swift
+    open class func listBuyerWholesaleOrderSheets(completion: @escaping (_ data: BuyerResponse3?, _ error: Error?) -> Void)
+```
+
+Your saved wholesale order sheets (one seller each), newest first.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Your saved wholesale order sheets (one seller each), newest first.
+BuyerAPI.listBuyerWholesaleOrderSheets() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**BuyerResponse3**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listBuyerWholesaleOrders**
+```swift
+    open class func listBuyerWholesaleOrders(completion: @escaping (_ data: BuyerResponse3?, _ error: Error?) -> Void)
+```
+
+Your past wholesale orders (trade-priced or on account), newest first — the starting point for reorder.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Your past wholesale orders (trade-priced or on account), newest first — the starting point for reorder.
+BuyerAPI.listBuyerWholesaleOrders() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**BuyerResponse3**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listBuyerWholesalePrebooks**
+```swift
+    open class func listBuyerWholesalePrebooks(completion: @escaping (_ data: ListBuyerWholesalePrebooksResponse?, _ error: Error?) -> Void)
+```
+
+Your pre-books: the drop, item, quantity, deposit paid, balance, status (awaiting_release, invoiced, paid, cancelled, failed) and the balance invoice once the seller released the stock.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Your pre-books: the drop, item, quantity, deposit paid, balance, status (awaiting_release, invoiced, paid, cancelled, failed) and the balance invoice once the seller released the stock.
+BuyerAPI.listBuyerWholesalePrebooks() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListBuyerWholesalePrebooksResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listBuyerWholesaleQuotes**
+```swift
+    open class func listBuyerWholesaleQuotes(completion: @escaping (_ data: BuyerResponse3?, _ error: Error?) -> Void)
+```
+
+Your requests for a quote (RFQ) to wholesale sellers. ?status=open|all|requested|answered|accepted|declined|withdrawn|expired. An answered or accepted quote past expiresAt reads expired.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Your requests for a quote (RFQ) to wholesale sellers. ?status=open|all|requested|answered|accepted|declined|withdrawn|expired. An answered or accepted quote past expiresAt reads expired.
+BuyerAPI.listBuyerWholesaleQuotes() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**BuyerResponse3**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listBuyerWholesaleStatement**
+```swift
+    open class func listBuyerWholesaleStatement(completion: @escaping (_ data: BuyerResponse3?, _ error: Error?) -> Void)
+```
+
+Your open trade balances per seller in aging buckets (current, 1-30, 31-60, 61-90, 90+ days past due), with the invoices behind them.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Your open trade balances per seller in aging buckets (current, 1-30, 31-60, 61-90, 90+ days past due), with the invoices behind them.
+BuyerAPI.listBuyerWholesaleStatement() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**BuyerResponse3**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **listBuyerWholesaleSuppliers**
+```swift
+    open class func listBuyerWholesaleSuppliers(completion: @escaping (_ data: BuyerResponse3?, _ error: Error?) -> Void)
+```
+
+The sellers you trade with: catalogs you can open, your terms (net days, credit limit, discount), customer groups, and what you owe each.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// The sellers you trade with: catalogs you can open, your terms (net days, credit limit, discount), customer groups, and what you owe each.
+BuyerAPI.listBuyerWholesaleSuppliers() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**BuyerResponse3**
 
 ### Authorization
 
@@ -10478,6 +14399,196 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **updateBuyerCompany**
+```swift
+    open class func updateBuyerCompany(completion: @escaping (_ data: BuyerCompanyResponse?, _ error: Error?) -> Void)
+```
+
+Rename the company or change its tax id / website (owner).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Rename the company or change its tax id / website (owner).
+BuyerAPI.updateBuyerCompany() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**BuyerCompanyResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **updateBuyerCompanyAddress**
+```swift
+    open class func updateBuyerCompanyAddress(completion: @escaping (_ data: BuyerCompanyResponse?, _ error: Error?) -> Void)
+```
+
+Replace the shared address book (owner): addresses [{ id, label, name, line1, line2?, city, region, postalCode, country, phone?, isDefault? }], at most 20.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Replace the shared address book (owner): addresses [{ id, label, name, line1, line2?, city, region, postalCode, country, phone?, isDefault? }], at most 20.
+BuyerAPI.updateBuyerCompanyAddress() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**BuyerCompanyResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **updateBuyerCompanyMember**
+```swift
+    open class func updateBuyerCompanyMember(id: String, completion: @escaping (_ data: BuyerCompanyResponse?, _ error: Error?) -> Void)
+```
+
+Change a member's role or approval limit (owner). The last owner stays an owner.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let id = "id_example" // String | 
+
+// Change a member's role or approval limit (owner). The last owner stays an owner.
+BuyerAPI.updateBuyerCompanyMember(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**BuyerCompanyResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **updateBuyerCreationReview**
+```swift
+    open class func updateBuyerCreationReview(format: Format_updateBuyerCreationReview, id: String, updateBuyerCreationReviewRequest: UpdateBuyerCreationReviewRequest, completion: @escaping (_ data: UpdateBuyerCreationReviewResponse?, _ error: Error?) -> Void)
+```
+
+Review a creation you bought (or change your review): 1-5 stars and an optional comment.
+
+Only a buyer of it may review it (a bought copy, or a pack that held the card). One review per creation; a second call replaces it. The comment is moderated.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let format = "format_example" // String | The creation format.
+let id = "id_example" // String | The creation id (a card is <setId>.<slug>).
+let updateBuyerCreationReviewRequest = UpdateBuyerCreationReviewRequest(rating: 123, body: "body_example") // UpdateBuyerCreationReviewRequest | 
+
+// Review a creation you bought (or change your review): 1-5 stars and an optional comment.
+BuyerAPI.updateBuyerCreationReview(format: format, id: id, updateBuyerCreationReviewRequest: updateBuyerCreationReviewRequest) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **format** | **String** | The creation format. | 
+ **id** | **String** | The creation id (a card is &lt;setId&gt;.&lt;slug&gt;). | 
+ **updateBuyerCreationReviewRequest** | **UpdateBuyerCreationReviewRequest** |  | 
+
+### Return type
+
+**UpdateBuyerCreationReviewResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **updateBuyerFeedback**
 ```swift
     open class func updateBuyerFeedback(id: UUID, updateBuyerFeedbackRequest: UpdateBuyerFeedbackRequest, completion: @escaping (_ data: BuyerResponse?, _ error: Error?) -> Void)
@@ -10530,6 +14641,138 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **updateBuyerHome**
+```swift
+    open class func updateBuyerHome(completion: @escaping (_ data: BuyerHomeResponse?, _ error: Error?) -> Void)
+```
+
+Who may walk in (privacy), the lighting (theme), wallpaper/floor/mood decor and whether visitors see your vault wall values.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Who may walk in (privacy), the lighting (theme), wallpaper/floor/mood decor and whether visitors see your vault wall values.
+BuyerAPI.updateBuyerHome() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**BuyerHomeResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **updateBuyerHomeBuilder**
+```swift
+    open class func updateBuyerHomeBuilder(completion: @escaping (_ data: ListBuyerHomeBuildersResponse?, _ error: Error?) -> Void)
+```
+
+Set your co-builders (friends only, at most 4).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Set your co-builders (friends only, at most 4).
+BuyerAPI.updateBuyerHomeBuilder() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**ListBuyerHomeBuildersResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **updateBuyerHomeLayout**
+```swift
+    open class func updateBuyerHomeLayout(completion: @escaping (_ data: BuyerHomeResponse?, _ error: Error?) -> Void)
+```
+
+Arrange your home: the whole layout, checked against what you own.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Arrange your home: the whole layout, checked against what you own.
+BuyerAPI.updateBuyerHomeLayout() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**BuyerHomeResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **updateBuyerHunt**
 ```swift
     open class func updateBuyerHunt(id: String, completion: @escaping (_ data: BuyerResponse?, _ error: Error?) -> Void)
@@ -10566,6 +14809,56 @@ Name | Type | Description  | Notes
 ### Return type
 
 **BuyerResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **updateBuyerPaymentMethodDefault**
+```swift
+    open class func updateBuyerPaymentMethodDefault(id: String, completion: @escaping (_ data: UpdateBuyerPaymentMethodDefaultResponse?, _ error: Error?) -> Void)
+```
+
+Make one of your saved cards the default.
+
+The default is the card express checkout offers first. Only your own saved card: any other id is a 404.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let id = "id_example" // String | 
+
+// Make one of your saved cards the default.
+BuyerAPI.updateBuyerPaymentMethodDefault(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**UpdateBuyerPaymentMethodDefaultResponse**
 
 ### Authorization
 
@@ -10760,6 +15053,98 @@ Name | Type | Description  | Notes
 ### Return type
 
 **BuyerResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **updateBuyerWholesaleCartPo**
+```swift
+    open class func updateBuyerWholesaleCartPo(completion: @escaping (_ data: UpdateBuyerWholesaleCartPoResponse?, _ error: Error?) -> Void)
+```
+
+Set the PO reference for one seller's group of your cart: { sellerUserId, poReference } (empty clears it).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+
+// Set the PO reference for one seller's group of your cart: { sellerUserId, poReference } (empty clears it).
+BuyerAPI.updateBuyerWholesaleCartPo() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**UpdateBuyerWholesaleCartPoResponse**
+
+### Authorization
+
+[BuyerOAuth](../README.md#BuyerOAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **updateBuyerWholesaleOrderSheet**
+```swift
+    open class func updateBuyerWholesaleOrderSheet(id: String, completion: @escaping (_ data: BuyerWholesaleOrderSheetResponse?, _ error: Error?) -> Void)
+```
+
+Rename an order sheet, change its PO reference or note, or replace its lines.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import CrosslyBuyer
+
+let id = "id_example" // String | 
+
+// Rename an order sheet, change its PO reference or note, or replace its lines.
+BuyerAPI.updateBuyerWholesaleOrderSheet(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+
+### Return type
+
+**BuyerWholesaleOrderSheetResponse**
 
 ### Authorization
 

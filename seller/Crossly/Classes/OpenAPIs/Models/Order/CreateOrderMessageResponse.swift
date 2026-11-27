@@ -14,17 +14,25 @@ public struct CreateOrderMessageResponse: Codable, JSONEncodable, Hashable {
 
     public var orderId: String
     public var sent: Bool
-    public var platformConversationId: String
+    /** True when the managing app was asked to send it (action authority). */
+    public var relayed: Bool?
+    /** The managing-app command id, on a relay. */
+    public var commandId: String?
+    public var platformConversationId: String?
 
-    public init(orderId: String, sent: Bool, platformConversationId: String) {
+    public init(orderId: String, sent: Bool, relayed: Bool? = nil, commandId: String? = nil, platformConversationId: String? = nil) {
         self.orderId = orderId
         self.sent = sent
+        self.relayed = relayed
+        self.commandId = commandId
         self.platformConversationId = platformConversationId
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case orderId
         case sent
+        case relayed
+        case commandId
         case platformConversationId
     }
 
@@ -34,7 +42,9 @@ public struct CreateOrderMessageResponse: Codable, JSONEncodable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(orderId, forKey: .orderId)
         try container.encode(sent, forKey: .sent)
-        try container.encode(platformConversationId, forKey: .platformConversationId)
+        try container.encodeIfPresent(relayed, forKey: .relayed)
+        try container.encodeIfPresent(commandId, forKey: .commandId)
+        try container.encodeIfPresent(platformConversationId, forKey: .platformConversationId)
     }
 }
 

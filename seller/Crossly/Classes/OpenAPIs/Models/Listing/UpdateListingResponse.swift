@@ -12,13 +12,16 @@ import AnyCodable
 
 public struct UpdateListingResponse: Codable, JSONEncodable, Hashable {
 
+    public var warnings: [CreateListingResponseWarnings]?
     public var jobs: [UpdateListingResponseJobs]
 
-    public init(jobs: [UpdateListingResponseJobs]) {
+    public init(warnings: [CreateListingResponseWarnings]? = nil, jobs: [UpdateListingResponseJobs]) {
+        self.warnings = warnings
         self.jobs = jobs
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case warnings
         case jobs
     }
 
@@ -26,6 +29,7 @@ public struct UpdateListingResponse: Codable, JSONEncodable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(warnings, forKey: .warnings)
         try container.encode(jobs, forKey: .jobs)
     }
 }

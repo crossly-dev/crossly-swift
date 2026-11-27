@@ -14,10 +14,10 @@ public struct GetSpatialSpaceResponseDataWarehouseUnits: Codable, JSONEncodable,
 
     public enum SegmentKind: String, Codable, CaseIterable {
         case level = "level"
+        case bin = "bin"
         case zone = "zone"
         case aisle = "aisle"
         case bay = "bay"
-        case bin = "bin"
     }
     public var key: String
     public var label: String

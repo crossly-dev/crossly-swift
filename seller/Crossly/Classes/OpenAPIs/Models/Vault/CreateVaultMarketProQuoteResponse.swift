@@ -13,10 +13,10 @@ import AnyCodable
 public struct CreateVaultMarketProQuoteResponse: Codable, JSONEncodable, Hashable {
 
     public var bookKey: String
-    public var bid: CreateVaultMarketProQuoteResponseBid
-    public var ask: CreateVaultMarketProQuoteResponseBid
+    public var bid: OrderIdError
+    public var ask: OrderIdError
 
-    public init(bookKey: String, bid: CreateVaultMarketProQuoteResponseBid, ask: CreateVaultMarketProQuoteResponseBid) {
+    public init(bookKey: String, bid: OrderIdError, ask: OrderIdError) {
         self.bookKey = bookKey
         self.bid = bid
         self.ask = ask

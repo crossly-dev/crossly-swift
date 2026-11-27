@@ -13,9 +13,9 @@ import AnyCodable
 public struct CreateWorldDecorRetractResponseDataInventorySpaces: Codable, JSONEncodable, Hashable {
 
     public enum Kind: String, Codable, CaseIterable {
-        case shop = "shop"
         case home = "home"
         case street = "street"
+        case shop = "shop"
         case stall = "stall"
     }
     public var kind: Kind

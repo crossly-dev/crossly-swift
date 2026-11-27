@@ -12,33 +12,53 @@ import AnyCodable
 
 public struct CreateSpatialStreetPlotBuyResponseData: Codable, JSONEncodable, Hashable {
 
-    public var deedId: String
-    public var address: String
-    public var priceCents: Double
-    public var paidThrough: String
+    public var done: Bool?
+    public var paymentId: String?
+    public var requiresAction: Bool?
+    public var clientSecret: String?
+    public var deedId: String?
+    public var address: String?
+    public var priceCents: Double?
+    public var paidThrough: String?
+    public var placed: CreateWorldMarketPlotRentResponseDataOneOf2Placed?
 
-    public init(deedId: String, address: String, priceCents: Double, paidThrough: String) {
+    public init(done: Bool? = nil, paymentId: String? = nil, requiresAction: Bool? = nil, clientSecret: String? = nil, deedId: String? = nil, address: String? = nil, priceCents: Double? = nil, paidThrough: String? = nil, placed: CreateWorldMarketPlotRentResponseDataOneOf2Placed? = nil) {
+        self.done = done
+        self.paymentId = paymentId
+        self.requiresAction = requiresAction
+        self.clientSecret = clientSecret
         self.deedId = deedId
         self.address = address
         self.priceCents = priceCents
         self.paidThrough = paidThrough
+        self.placed = placed
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case done
+        case paymentId
+        case requiresAction
+        case clientSecret
         case deedId
         case address
         case priceCents
         case paidThrough
+        case placed
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(deedId, forKey: .deedId)
-        try container.encode(address, forKey: .address)
-        try container.encode(priceCents, forKey: .priceCents)
-        try container.encode(paidThrough, forKey: .paidThrough)
+        try container.encodeIfPresent(done, forKey: .done)
+        try container.encodeIfPresent(paymentId, forKey: .paymentId)
+        try container.encodeIfPresent(requiresAction, forKey: .requiresAction)
+        try container.encodeIfPresent(clientSecret, forKey: .clientSecret)
+        try container.encodeIfPresent(deedId, forKey: .deedId)
+        try container.encodeIfPresent(address, forKey: .address)
+        try container.encodeIfPresent(priceCents, forKey: .priceCents)
+        try container.encodeIfPresent(paidThrough, forKey: .paidThrough)
+        try container.encodeIfPresent(placed, forKey: .placed)
     }
 }
 

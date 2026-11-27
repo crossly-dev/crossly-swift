@@ -12,9 +12,9 @@ import AnyCodable
 
 public struct CreateWeb3WalletSyncResponse: Codable, JSONEncodable, Hashable {
 
-    public var summary: CreateWeb3WalletSyncResponseSummary
+    public var summary: CreateWeb3StoreWalletSyncResponseData
 
-    public init(summary: CreateWeb3WalletSyncResponseSummary) {
+    public init(summary: CreateWeb3StoreWalletSyncResponseData) {
         self.summary = summary
     }
 

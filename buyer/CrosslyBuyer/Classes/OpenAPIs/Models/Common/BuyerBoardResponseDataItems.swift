@@ -12,61 +12,61 @@ import AnyCodable
 
 public struct BuyerBoardResponseDataItems: Codable, JSONEncodable, Hashable {
 
-    public var available: Bool
-    public var title: String?
     public var platformListingId: String
     public var slug: String?
+    public var title: String?
     public var priceCents: Double
-    public var note: String?
     public var imageUrl: String?
+    public var available: Bool
     public var x: Double
     public var y: Double
     public var w: Double
     public var z: Double
+    public var note: String?
 
-    public init(available: Bool, title: String? = nil, platformListingId: String, slug: String? = nil, priceCents: Double, note: String? = nil, imageUrl: String? = nil, x: Double, y: Double, w: Double, z: Double) {
-        self.available = available
-        self.title = title
+    public init(platformListingId: String, slug: String? = nil, title: String? = nil, priceCents: Double, imageUrl: String? = nil, available: Bool, x: Double, y: Double, w: Double, z: Double, note: String? = nil) {
         self.platformListingId = platformListingId
         self.slug = slug
+        self.title = title
         self.priceCents = priceCents
-        self.note = note
         self.imageUrl = imageUrl
+        self.available = available
         self.x = x
         self.y = y
         self.w = w
         self.z = z
+        self.note = note
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case available
-        case title
         case platformListingId
         case slug
+        case title
         case priceCents
-        case note
         case imageUrl
+        case available
         case x
         case y
         case w
         case z
+        case note
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(available, forKey: .available)
-        try container.encodeIfPresent(title, forKey: .title)
         try container.encode(platformListingId, forKey: .platformListingId)
         try container.encodeIfPresent(slug, forKey: .slug)
+        try container.encodeIfPresent(title, forKey: .title)
         try container.encode(priceCents, forKey: .priceCents)
-        try container.encodeIfPresent(note, forKey: .note)
         try container.encodeIfPresent(imageUrl, forKey: .imageUrl)
+        try container.encode(available, forKey: .available)
         try container.encode(x, forKey: .x)
         try container.encode(y, forKey: .y)
         try container.encode(w, forKey: .w)
         try container.encode(z, forKey: .z)
+        try container.encodeIfPresent(note, forKey: .note)
     }
 }
 

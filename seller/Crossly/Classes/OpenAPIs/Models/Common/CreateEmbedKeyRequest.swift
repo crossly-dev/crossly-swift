@@ -20,9 +20,10 @@ public struct CreateEmbedKeyRequest: Codable, JSONEncodable, Hashable {
     public var name: String
     /** Origins permitted to use this key, e.g. [\"https://shop.example.com\"]. LEAVE EMPTY to allow any origin — necessary when embedding on a platform whose domain you do not control, and the reason this is not locked by default. */
     public var allowedOrigins: [String]?
-    public var environment: Environment? = .live
+    /** Omit for this server's own: live on crossly.net, test on sandbox.crossly.net. The other one is refused. */
+    public var environment: Environment?
 
-    public init(name: String, allowedOrigins: [String]? = nil, environment: Environment? = .live) {
+    public init(name: String, allowedOrigins: [String]? = nil, environment: Environment? = nil) {
         self.name = name
         self.allowedOrigins = allowedOrigins
         self.environment = environment

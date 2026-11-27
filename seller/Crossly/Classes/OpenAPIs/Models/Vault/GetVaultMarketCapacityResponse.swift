@@ -23,10 +23,10 @@ public struct GetVaultMarketCapacityResponse: Codable, JSONEncodable, Hashable {
     public var plannedCents: Double
     public var daysToComplete: Double
     public var unpriced: [String]
-    public var perKey: [AnyCodable]
+    public var perKey: [GetVaultMarketCapacityResponsePerKeyItem]
     public var notes: [String]
 
-    public init(index: String, notionalCents: Double, bandBps: Double, participation: Double, constituents: Double, fillableNowCents: Double, fillableNowBps: Double, plannedCents: Double, daysToComplete: Double, unpriced: [String], perKey: [AnyCodable], notes: [String]) {
+    public init(index: String, notionalCents: Double, bandBps: Double, participation: Double, constituents: Double, fillableNowCents: Double, fillableNowBps: Double, plannedCents: Double, daysToComplete: Double, unpriced: [String], perKey: [GetVaultMarketCapacityResponsePerKeyItem], notes: [String]) {
         self.index = index
         self.notionalCents = notionalCents
         self.bandBps = bandBps

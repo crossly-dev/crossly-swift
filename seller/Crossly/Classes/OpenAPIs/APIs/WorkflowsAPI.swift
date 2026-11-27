@@ -13,11 +13,158 @@ import AnyCodable
 open class WorkflowsAPI {
 
     /**
+     Create a workflow: from blank ({ name, graph? }), from a template ({ from: \"template\", templateId, setup?, activate? }) or from an export document ({ from: \"import\", document }). New workflows start paused; activate one with POST /v1/workflows/{id}/activate. Returns the workflow and its validation issues.
+     
+     - parameter createWorkflowRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createWorkflow(createWorkflowRequest: CreateWorkflowRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateWorkflowResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createWorkflowWithRequestBuilder(createWorkflowRequest: createWorkflowRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Create a workflow: from blank ({ name, graph? }), from a template ({ from: \"template\", templateId, setup?, activate? }) or from an export document ({ from: \"import\", document }). New workflows start paused; activate one with POST /v1/workflows/{id}/activate. Returns the workflow and its validation issues.
+     - POST /v1/workflows
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter createWorkflowRequest: (body)  
+     - returns: RequestBuilder<CreateWorkflowResponse> 
+     */
+    open class func createWorkflowWithRequestBuilder(createWorkflowRequest: CreateWorkflowRequest) -> RequestBuilder<CreateWorkflowResponse> {
+        let localVariablePath = "/v1/workflows"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createWorkflowRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateWorkflowResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Activate a workflow: its triggers start firing. A graph with blocking issues is refused (422, details.issues).
+     
+     - parameter id: (path) Workflow id. 
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createWorkflowActivate(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: WorkflowResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createWorkflowActivateWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Activate a workflow: its triggers start firing. A graph with blocking issues is refused (422, details.issues).
+     - POST /v1/workflows/{id}/activate
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path) Workflow id. 
+     - returns: RequestBuilder<WorkflowResponse> 
+     */
+    open class func createWorkflowActivateWithRequestBuilder(id: UUID) -> RequestBuilder<WorkflowResponse> {
+        var localVariablePath = "/v1/workflows/{id}/activate"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<WorkflowResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Approve or reject a pending flow.approval request: the waiting run resumes down the approved or rejected port. 409 when it was already decided (another device, Telegram, or the timeout).
+     
+     - parameter id: (path) Approval id from GET /v1/workflow-approvals. 
+     - parameter createWorkflowApprovalDecideRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createWorkflowApprovalDecide(id: UUID, createWorkflowApprovalDecideRequest: CreateWorkflowApprovalDecideRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateWorkflowApprovalDecideResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createWorkflowApprovalDecideWithRequestBuilder(id: id, createWorkflowApprovalDecideRequest: createWorkflowApprovalDecideRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Approve or reject a pending flow.approval request: the waiting run resumes down the approved or rejected port. 409 when it was already decided (another device, Telegram, or the timeout).
+     - POST /v1/workflow-approvals/{id}/decide
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path) Approval id from GET /v1/workflow-approvals. 
+     - parameter createWorkflowApprovalDecideRequest: (body)  
+     - returns: RequestBuilder<CreateWorkflowApprovalDecideResponse> 
+     */
+    open class func createWorkflowApprovalDecideWithRequestBuilder(id: UUID, createWorkflowApprovalDecideRequest: CreateWorkflowApprovalDecideRequest) -> RequestBuilder<CreateWorkflowApprovalDecideResponse> {
+        var localVariablePath = "/v1/workflow-approvals/{id}/decide"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createWorkflowApprovalDecideRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateWorkflowApprovalDecideResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Create a multi-step workflow chain.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @discardableResult
     open class func createWorkflowChain(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: IdResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return createWorkflowChainWithRequestBuilder().execute(apiResponseQueue) { result in
@@ -33,11 +180,13 @@ open class WorkflowsAPI {
     /**
      Create a multi-step workflow chain.
      - POST /v1/workflow-chains
+     - Deprecated: workflow chains are workflows now. Use /v1/workflows.
      - BASIC:
        - type: http
        - name: PersonalAccessToken
      - returns: RequestBuilder<IdResponse> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     open class func createWorkflowChainWithRequestBuilder() -> RequestBuilder<IdResponse> {
         let localVariablePath = "/v1/workflow-chains"
         let localVariableURLString = CrosslyAPI.basePath + localVariablePath
@@ -63,6 +212,7 @@ open class WorkflowsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @discardableResult
     open class func createWorkflowChainRunNow(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateWorkflowChainRunNowResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return createWorkflowChainRunNowWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
@@ -78,12 +228,14 @@ open class WorkflowsAPI {
     /**
      Enqueue an ad-hoc run of a workflow chain.
      - POST /v1/workflow-chains/{id}/run-now
+     - Deprecated: workflow chains are workflows now. Use /v1/workflows.
      - BASIC:
        - type: http
        - name: PersonalAccessToken
      - parameter id: (path)  
      - returns: RequestBuilder<CreateWorkflowChainRunNowResponse> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     open class func createWorkflowChainRunNowWithRequestBuilder(id: UUID) -> RequestBuilder<CreateWorkflowChainRunNowResponse> {
         var localVariablePath = "/v1/workflow-chains/{id}/run-now"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -112,6 +264,7 @@ open class WorkflowsAPI {
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @discardableResult
     open class func createWorkflowChainToggle(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateWorkflowChainToggleResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return createWorkflowChainToggleWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
@@ -127,12 +280,14 @@ open class WorkflowsAPI {
     /**
      Flip a workflow chain between active and inactive.
      - POST /v1/workflow-chains/{id}/toggle
+     - Deprecated: workflow chains are workflows now. Use /v1/workflows.
      - BASIC:
        - type: http
        - name: PersonalAccessToken
      - parameter id: (path)  
      - returns: RequestBuilder<CreateWorkflowChainToggleResponse> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     open class func createWorkflowChainToggleWithRequestBuilder(id: UUID) -> RequestBuilder<CreateWorkflowChainToggleResponse> {
         var localVariablePath = "/v1/workflow-chains/{id}/toggle"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -155,12 +310,756 @@ open class WorkflowsAPI {
     }
 
     /**
+     Pause a workflow: its triggers stop firing. Runs already started finish.
+     
+     - parameter id: (path) Workflow id. 
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createWorkflowDeactivate(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: WorkflowResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createWorkflowDeactivateWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Pause a workflow: its triggers stop firing. Runs already started finish.
+     - POST /v1/workflows/{id}/deactivate
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path) Workflow id. 
+     - returns: RequestBuilder<WorkflowResponse> 
+     */
+    open class func createWorkflowDeactivateWithRequestBuilder(id: UUID) -> RequestBuilder<WorkflowResponse> {
+        var localVariablePath = "/v1/workflows/{id}/deactivate"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<WorkflowResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Copy a workflow (graph, description, tags) into a new paused workflow.
+     
+     - parameter id: (path) Workflow id. 
+     - parameter createWorkflowDuplicateRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createWorkflowDuplicate(id: UUID, createWorkflowDuplicateRequest: CreateWorkflowDuplicateRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateWorkflowDuplicateResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createWorkflowDuplicateWithRequestBuilder(id: id, createWorkflowDuplicateRequest: createWorkflowDuplicateRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Copy a workflow (graph, description, tags) into a new paused workflow.
+     - POST /v1/workflows/{id}/duplicate
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path) Workflow id. 
+     - parameter createWorkflowDuplicateRequest: (body)  
+     - returns: RequestBuilder<CreateWorkflowDuplicateResponse> 
+     */
+    open class func createWorkflowDuplicateWithRequestBuilder(id: UUID, createWorkflowDuplicateRequest: CreateWorkflowDuplicateRequest) -> RequestBuilder<CreateWorkflowDuplicateResponse> {
+        var localVariablePath = "/v1/workflows/{id}/duplicate"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createWorkflowDuplicateRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateWorkflowDuplicateResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Resolve one param value (\"{{ $json.priceCents * 0.9 }}\") with the engine's evaluator against an item, the trigger item, earlier nodes' items or a stored run. A bad expression is an answer (ok=false with the message), not an HTTP error. Changes nothing.
+     
+     - parameter createWorkflowExpressionPreviewRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createWorkflowExpressionPreview(createWorkflowExpressionPreviewRequest: CreateWorkflowExpressionPreviewRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateWorkflowExpressionPreviewResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createWorkflowExpressionPreviewWithRequestBuilder(createWorkflowExpressionPreviewRequest: createWorkflowExpressionPreviewRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Resolve one param value (\"{{ $json.priceCents * 0.9 }}\") with the engine's evaluator against an item, the trigger item, earlier nodes' items or a stored run. A bad expression is an answer (ok=false with the message), not an HTTP error. Changes nothing.
+     - POST /v1/workflows/expressions/preview
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter createWorkflowExpressionPreviewRequest: (body)  
+     - returns: RequestBuilder<CreateWorkflowExpressionPreviewResponse> 
+     */
+    open class func createWorkflowExpressionPreviewWithRequestBuilder(createWorkflowExpressionPreviewRequest: CreateWorkflowExpressionPreviewRequest) -> RequestBuilder<CreateWorkflowExpressionPreviewResponse> {
+        let localVariablePath = "/v1/workflows/expressions/preview"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createWorkflowExpressionPreviewRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateWorkflowExpressionPreviewResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Import a crossly.workflow export document (or { document, name }) as a new, paused workflow. Integration and workflow references are cleared (they belong to the exporting account) and listed in stripped.
+     
+     - parameter requestBody: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createWorkflowImport(requestBody: [String: AnyCodable], apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateWorkflowImportResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createWorkflowImportWithRequestBuilder(requestBody: requestBody).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Import a crossly.workflow export document (or { document, name }) as a new, paused workflow. Integration and workflow references are cleared (they belong to the exporting account) and listed in stripped.
+     - POST /v1/workflows/import
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter requestBody: (body)  
+     - returns: RequestBuilder<CreateWorkflowImportResponse> 
+     */
+    open class func createWorkflowImportWithRequestBuilder(requestBody: [String: AnyCodable]) -> RequestBuilder<CreateWorkflowImportResponse> {
+        let localVariablePath = "/v1/workflows/import"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: requestBody)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateWorkflowImportResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Run a workflow (active or paused) live now, on items you pass or on selected listings / orders / inventory items (one kind per call, up to 1,000). The graph must validate (422 with issues otherwise).
+     
+     - parameter id: (path) Workflow id. 
+     - parameter createWorkflowRunRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createWorkflowRun(id: UUID, createWorkflowRunRequest: CreateWorkflowRunRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateWorkflowRunResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createWorkflowRunWithRequestBuilder(id: id, createWorkflowRunRequest: createWorkflowRunRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Run a workflow (active or paused) live now, on items you pass or on selected listings / orders / inventory items (one kind per call, up to 1,000). The graph must validate (422 with issues otherwise).
+     - POST /v1/workflows/{id}/run
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path) Workflow id. 
+     - parameter createWorkflowRunRequest: (body)  
+     - returns: RequestBuilder<CreateWorkflowRunResponse> 
+     */
+    open class func createWorkflowRunWithRequestBuilder(id: UUID, createWorkflowRunRequest: CreateWorkflowRunRequest) -> RequestBuilder<CreateWorkflowRunResponse> {
+        var localVariablePath = "/v1/workflows/{id}/run"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createWorkflowRunRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateWorkflowRunResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Cancel a queued, running or waiting run. 409 when it already finished.
+     
+     - parameter runId: (path) Workflow run id. 
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createWorkflowRunCancel(runId: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateWorkflowRunCancelResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createWorkflowRunCancelWithRequestBuilder(runId: runId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Cancel a queued, running or waiting run. 409 when it already finished.
+     - POST /v1/workflow-runs/{runId}/cancel
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter runId: (path) Workflow run id. 
+     - returns: RequestBuilder<CreateWorkflowRunCancelResponse> 
+     */
+    open class func createWorkflowRunCancelWithRequestBuilder(runId: UUID) -> RequestBuilder<CreateWorkflowRunCancelResponse> {
+        var localVariablePath = "/v1/workflow-runs/{runId}/cancel"
+        let runIdPreEscape = "\(APIHelper.mapValueToPathItem(runId))"
+        let runIdPostEscape = runIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{runId}", with: runIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateWorkflowRunCancelResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     \"Run workflow on…\": the same as POST /v1/workflows/{id}/run with the workflow named in the body.
+     
+     - parameter createWorkflowRunOnRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createWorkflowRunOn(createWorkflowRunOnRequest: CreateWorkflowRunOnRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateWorkflowRunOnResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createWorkflowRunOnWithRequestBuilder(createWorkflowRunOnRequest: createWorkflowRunOnRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     \"Run workflow on…\": the same as POST /v1/workflows/{id}/run with the workflow named in the body.
+     - POST /v1/workflows/run-on
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter createWorkflowRunOnRequest: (body)  
+     - returns: RequestBuilder<CreateWorkflowRunOnResponse> 
+     */
+    open class func createWorkflowRunOnWithRequestBuilder(createWorkflowRunOnRequest: CreateWorkflowRunOnRequest) -> RequestBuilder<CreateWorkflowRunOnResponse> {
+        let localVariablePath = "/v1/workflows/run-on"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createWorkflowRunOnRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateWorkflowRunOnResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Retry a failed run from the node that failed: a new run (retryOfRunId) seeded from the failed run's checkpoint, so nodes that succeeded are not repeated. 409 unless the run failed.
+     
+     - parameter runId: (path) Workflow run id. 
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createWorkflowRunRetry(runId: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateWorkflowRunRetryResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createWorkflowRunRetryWithRequestBuilder(runId: runId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Retry a failed run from the node that failed: a new run (retryOfRunId) seeded from the failed run's checkpoint, so nodes that succeeded are not repeated. 409 unless the run failed.
+     - POST /v1/workflow-runs/{runId}/retry
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter runId: (path) Workflow run id. 
+     - returns: RequestBuilder<CreateWorkflowRunRetryResponse> 
+     */
+    open class func createWorkflowRunRetryWithRequestBuilder(runId: UUID) -> RequestBuilder<CreateWorkflowRunRetryResponse> {
+        var localVariablePath = "/v1/workflow-runs/{runId}/retry"
+        let runIdPreEscape = "\(APIHelper.mapValueToPathItem(runId))"
+        let runIdPostEscape = runIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{runId}", with: runIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateWorkflowRunRetryResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     End a sale now. A sale that has not started is cancelled; a live one closes and every discounted price is put back now (reverted = how many listings were restored). 404 for a sale that is not yours.
+     
+     - parameter saleEventId: (path) Sale id from GET /v1/workflows/sales/active. 
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createWorkflowSaleEnd(saleEventId: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateWorkflowSaleEndResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createWorkflowSaleEndWithRequestBuilder(saleEventId: saleEventId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     End a sale now. A sale that has not started is cancelled; a live one closes and every discounted price is put back now (reverted = how many listings were restored). 404 for a sale that is not yours.
+     - POST /v1/workflows/sales/{saleEventId}/end
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter saleEventId: (path) Sale id from GET /v1/workflows/sales/active. 
+     - returns: RequestBuilder<CreateWorkflowSaleEndResponse> 
+     */
+    open class func createWorkflowSaleEndWithRequestBuilder(saleEventId: UUID) -> RequestBuilder<CreateWorkflowSaleEndResponse> {
+        var localVariablePath = "/v1/workflows/sales/{saleEventId}/end"
+        let saleEventIdPreEscape = "\(APIHelper.mapValueToPathItem(saleEventId))"
+        let saleEventIdPostEscape = saleEventIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{saleEventId}", with: saleEventIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateWorkflowSaleEndResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Create a workflow from a template, filling its setup fields; activate=true activates it when it validates.
+     
+     - parameter id: (path) Template id from GET /v1/workflows/templates. 
+     - parameter createWorkflowTemplateUseRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createWorkflowTemplateUse(id: String, createWorkflowTemplateUseRequest: CreateWorkflowTemplateUseRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateWorkflowResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createWorkflowTemplateUseWithRequestBuilder(id: id, createWorkflowTemplateUseRequest: createWorkflowTemplateUseRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Create a workflow from a template, filling its setup fields; activate=true activates it when it validates.
+     - POST /v1/workflows/templates/{id}/use
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path) Template id from GET /v1/workflows/templates. 
+     - parameter createWorkflowTemplateUseRequest: (body)  
+     - returns: RequestBuilder<CreateWorkflowResponse> 
+     */
+    open class func createWorkflowTemplateUseWithRequestBuilder(id: String, createWorkflowTemplateUseRequest: CreateWorkflowTemplateUseRequest) -> RequestBuilder<CreateWorkflowResponse> {
+        var localVariablePath = "/v1/workflows/templates/{id}/use"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createWorkflowTemplateUseRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateWorkflowResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Test a workflow (the saved graph, or a draft graph you pass). mode=test runs it for real, using pinned data where a node has it; mode=dry is a safe test: write, destructive and money nodes report what they would do and change nothing. Trigger items: the ones you pass, else pinned, else the last real ones, else the trigger sample.
+     
+     - parameter id: (path) Workflow id. 
+     - parameter createWorkflowTestRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createWorkflowTest(id: UUID, createWorkflowTestRequest: CreateWorkflowTestRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateWorkflowTestResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createWorkflowTestWithRequestBuilder(id: id, createWorkflowTestRequest: createWorkflowTestRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Test a workflow (the saved graph, or a draft graph you pass). mode=test runs it for real, using pinned data where a node has it; mode=dry is a safe test: write, destructive and money nodes report what they would do and change nothing. Trigger items: the ones you pass, else pinned, else the last real ones, else the trigger sample.
+     - POST /v1/workflows/{id}/test
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path) Workflow id. 
+     - parameter createWorkflowTestRequest: (body)  
+     - returns: RequestBuilder<CreateWorkflowTestResponse> 
+     */
+    open class func createWorkflowTestWithRequestBuilder(id: UUID, createWorkflowTestRequest: CreateWorkflowTestRequest) -> RequestBuilder<CreateWorkflowTestResponse> {
+        var localVariablePath = "/v1/workflows/{id}/test"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createWorkflowTestRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateWorkflowTestResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Validate a graph without saving it: unknown node types, missing required params, bad ports, cycles, expression errors. blocking=true means activation would be refused.
+     
+     - parameter createWorkflowValidateRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createWorkflowValidate(createWorkflowValidateRequest: CreateWorkflowValidateRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateWorkflowValidateResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createWorkflowValidateWithRequestBuilder(createWorkflowValidateRequest: createWorkflowValidateRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Validate a graph without saving it: unknown node types, missing required params, bad ports, cycles, expression errors. blocking=true means activation would be refused.
+     - POST /v1/workflows/validate
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter createWorkflowValidateRequest: (body)  
+     - returns: RequestBuilder<CreateWorkflowValidateResponse> 
+     */
+    open class func createWorkflowValidateWithRequestBuilder(createWorkflowValidateRequest: CreateWorkflowValidateRequest) -> RequestBuilder<CreateWorkflowValidateResponse> {
+        let localVariablePath = "/v1/workflows/validate"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createWorkflowValidateRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateWorkflowValidateResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Restore an earlier version's graph as a new version. Pass version (the current one you read) to refuse the restore when someone saved meanwhile (409). Body optional: { version?: integer }.
+     
+     - parameter id: (path) Workflow id. 
+     - parameter v: (path) The version number to restore. 
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createWorkflowVersionRestore(id: UUID, v: Int, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: WorkflowResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createWorkflowVersionRestoreWithRequestBuilder(id: id, v: v).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Restore an earlier version's graph as a new version. Pass version (the current one you read) to refuse the restore when someone saved meanwhile (409). Body optional: { version?: integer }.
+     - POST /v1/workflows/{id}/versions/{v}/restore
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path) Workflow id. 
+     - parameter v: (path) The version number to restore. 
+     - returns: RequestBuilder<WorkflowResponse> 
+     */
+    open class func createWorkflowVersionRestoreWithRequestBuilder(id: UUID, v: Int) -> RequestBuilder<WorkflowResponse> {
+        var localVariablePath = "/v1/workflows/{id}/versions/{v}/restore"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let vPreEscape = "\(APIHelper.mapValueToPathItem(v))"
+        let vPostEscape = vPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{v}", with: vPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<WorkflowResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Issue a new inbound URL for an on.webhook trigger node (the old one stops working). The URL, and the signing secret when withSecret=true, are returned ONCE: store them now.
+     
+     - parameter id: (path) Workflow id. 
+     - parameter nodeId: (path) The on.webhook trigger node id. 
+     - parameter createWorkflowWebhookRotateRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createWorkflowWebhookRotate(id: UUID, nodeId: String, createWorkflowWebhookRotateRequest: CreateWorkflowWebhookRotateRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateWorkflowWebhookRotateResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createWorkflowWebhookRotateWithRequestBuilder(id: id, nodeId: nodeId, createWorkflowWebhookRotateRequest: createWorkflowWebhookRotateRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Issue a new inbound URL for an on.webhook trigger node (the old one stops working). The URL, and the signing secret when withSecret=true, are returned ONCE: store them now.
+     - POST /v1/workflows/{id}/webhooks/{nodeId}/rotate
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path) Workflow id. 
+     - parameter nodeId: (path) The on.webhook trigger node id. 
+     - parameter createWorkflowWebhookRotateRequest: (body)  
+     - returns: RequestBuilder<CreateWorkflowWebhookRotateResponse> 
+     */
+    open class func createWorkflowWebhookRotateWithRequestBuilder(id: UUID, nodeId: String, createWorkflowWebhookRotateRequest: CreateWorkflowWebhookRotateRequest) -> RequestBuilder<CreateWorkflowWebhookRotateResponse> {
+        var localVariablePath = "/v1/workflows/{id}/webhooks/{nodeId}/rotate"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let nodeIdPreEscape = "\(APIHelper.mapValueToPathItem(nodeId))"
+        let nodeIdPostEscape = nodeIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{nodeId}", with: nodeIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createWorkflowWebhookRotateRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateWorkflowWebhookRotateResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Delete (archive) a workflow: its triggers stop, open runs are cancelled, run history stays readable.
+     
+     - parameter id: (path) Workflow id. 
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func deleteWorkflow(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: DeleteWorkflowResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return deleteWorkflowWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Delete (archive) a workflow: its triggers stop, open runs are cancelled, run history stays readable.
+     - DELETE /v1/workflows/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path) Workflow id. 
+     - returns: RequestBuilder<DeleteWorkflowResponse> 
+     */
+    open class func deleteWorkflowWithRequestBuilder(id: UUID) -> RequestBuilder<DeleteWorkflowResponse> {
+        var localVariablePath = "/v1/workflows/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<DeleteWorkflowResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Delete a workflow chain (cascades steps + runs).
      
      - parameter id: (path)  
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @discardableResult
     open class func deleteWorkflowChain(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: OkResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return deleteWorkflowChainWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
@@ -176,12 +1075,14 @@ open class WorkflowsAPI {
     /**
      Delete a workflow chain (cascades steps + runs).
      - DELETE /v1/workflow-chains/{id}
+     - Deprecated: workflow chains are workflows now. Use /v1/workflows.
      - BASIC:
        - type: http
        - name: PersonalAccessToken
      - parameter id: (path)  
      - returns: RequestBuilder<OkResponse> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     open class func deleteWorkflowChainWithRequestBuilder(id: UUID) -> RequestBuilder<OkResponse> {
         var localVariablePath = "/v1/workflow-chains/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -204,12 +1105,106 @@ open class WorkflowsAPI {
     }
 
     /**
+     Get one workflow with its full graph and current version.
+     
+     - parameter id: (path) Workflow id. 
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getWorkflow(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetWorkflowResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getWorkflowWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Get one workflow with its full graph and current version.
+     - GET /v1/workflows/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path) Workflow id. 
+     - returns: RequestBuilder<GetWorkflowResponse> 
+     */
+    open class func getWorkflowWithRequestBuilder(id: UUID) -> RequestBuilder<GetWorkflowResponse> {
+        var localVariablePath = "/v1/workflows/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetWorkflowResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Everything needed to build a workflow: every node type (params, ports, output fields, risk, platforms capability), which platforms each capability covers and which of those you have connected, the expression helpers and bindings ({{ $json.listingId }}…) and the condition operators. Read this before composing a graph rather than guessing node types or param keys.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getWorkflowCatalog(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetWorkflowCatalogResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getWorkflowCatalogWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Everything needed to build a workflow: every node type (params, ports, output fields, risk, platforms capability), which platforms each capability covers and which of those you have connected, the expression helpers and bindings ({{ $json.listingId }}…) and the condition operators. Read this before composing a graph rather than guessing node types or param keys.
+     - GET /v1/workflows/catalog
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetWorkflowCatalogResponse> 
+     */
+    open class func getWorkflowCatalogWithRequestBuilder() -> RequestBuilder<GetWorkflowCatalogResponse> {
+        let localVariablePath = "/v1/workflows/catalog"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetWorkflowCatalogResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Get one workflow chain with its steps.
      
      - parameter id: (path)  
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @discardableResult
     open class func getWorkflowChain(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetWorkflowChainResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return getWorkflowChainWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
@@ -225,12 +1220,14 @@ open class WorkflowsAPI {
     /**
      Get one workflow chain with its steps.
      - GET /v1/workflow-chains/{id}
+     - Deprecated: workflow chains are workflows now. Use /v1/workflows.
      - BASIC:
        - type: http
        - name: PersonalAccessToken
      - parameter id: (path)  
      - returns: RequestBuilder<GetWorkflowChainResponse> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     open class func getWorkflowChainWithRequestBuilder(id: UUID) -> RequestBuilder<GetWorkflowChainResponse> {
         var localVariablePath = "/v1/workflow-chains/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -253,11 +1250,235 @@ open class WorkflowsAPI {
     }
 
     /**
+     * enum for parameter pinnedData
+     */
+    public enum PinnedData_getWorkflowExport: String, CaseIterable {
+        case _true = "true"
+        case _false = "false"
+    }
+
+    /**
+     Export a workflow as a portable document (format crossly.workflow) that POST /v1/workflows/import accepts. Credentials and account handles are stripped; pinned test data only with pinnedData=true.
+     
+     - parameter id: (path) Workflow id. 
+     - parameter pinnedData: (query) Keep the nodes&#39; pinned test data. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getWorkflowExport(id: UUID, pinnedData: PinnedData_getWorkflowExport? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetWorkflowExportResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getWorkflowExportWithRequestBuilder(id: id, pinnedData: pinnedData).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Export a workflow as a portable document (format crossly.workflow) that POST /v1/workflows/import accepts. Credentials and account handles are stripped; pinned test data only with pinnedData=true.
+     - GET /v1/workflows/{id}/export
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path) Workflow id. 
+     - parameter pinnedData: (query) Keep the nodes&#39; pinned test data. (optional)
+     - returns: RequestBuilder<GetWorkflowExportResponse> 
+     */
+    open class func getWorkflowExportWithRequestBuilder(id: UUID, pinnedData: PinnedData_getWorkflowExport? = nil) -> RequestBuilder<GetWorkflowExportResponse> {
+        var localVariablePath = "/v1/workflows/{id}/export"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "pinnedData": pinnedData?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetWorkflowExportResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     One run: its summary, the graph version it ran, and every node execution (status, item counts per port, timing, errors). Item data per node: GET …/nodes/{nodeId}.
+     
+     - parameter runId: (path) Workflow run id. 
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getWorkflowRun(runId: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetWorkflowRunResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getWorkflowRunWithRequestBuilder(runId: runId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     One run: its summary, the graph version it ran, and every node execution (status, item counts per port, timing, errors). Item data per node: GET …/nodes/{nodeId}.
+     - GET /v1/workflow-runs/{runId}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter runId: (path) Workflow run id. 
+     - returns: RequestBuilder<GetWorkflowRunResponse> 
+     */
+    open class func getWorkflowRunWithRequestBuilder(runId: UUID) -> RequestBuilder<GetWorkflowRunResponse> {
+        var localVariablePath = "/v1/workflow-runs/{runId}"
+        let runIdPreEscape = "\(APIHelper.mapValueToPathItem(runId))"
+        let runIdPostEscape = runIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{runId}", with: runIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetWorkflowRunResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Every execution of one node in a run with its input and output items (each port keeps the first 50 items, 16 KB per item; truncated=true when cut). Data older than the retention window, or not kept by settings.saveSuccessData=false, is pruned: that execution has input/output null and pruned=true, and when every execution is pruned the response is { data: null, meta: { pruned: true } } (never an empty list).
+     
+     - parameter runId: (path) Workflow run id. 
+     - parameter nodeId: (path) Node id within the run&#39;s graph. 
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getWorkflowRunNode(runId: UUID, nodeId: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetWorkflowRunNodeResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getWorkflowRunNodeWithRequestBuilder(runId: runId, nodeId: nodeId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Every execution of one node in a run with its input and output items (each port keeps the first 50 items, 16 KB per item; truncated=true when cut). Data older than the retention window, or not kept by settings.saveSuccessData=false, is pruned: that execution has input/output null and pruned=true, and when every execution is pruned the response is { data: null, meta: { pruned: true } } (never an empty list).
+     - GET /v1/workflow-runs/{runId}/nodes/{nodeId}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter runId: (path) Workflow run id. 
+     - parameter nodeId: (path) Node id within the run&#39;s graph. 
+     - returns: RequestBuilder<GetWorkflowRunNodeResponse> 
+     */
+    open class func getWorkflowRunNodeWithRequestBuilder(runId: UUID, nodeId: String) -> RequestBuilder<GetWorkflowRunNodeResponse> {
+        var localVariablePath = "/v1/workflow-runs/{runId}/nodes/{nodeId}"
+        let runIdPreEscape = "\(APIHelper.mapValueToPathItem(runId))"
+        let runIdPostEscape = runIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{runId}", with: runIdPostEscape, options: .literal, range: nil)
+        let nodeIdPreEscape = "\(APIHelper.mapValueToPathItem(nodeId))"
+        let nodeIdPostEscape = nodeIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{nodeId}", with: nodeIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetWorkflowRunNodeResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Approval requests from flow.approval nodes, newest first (pending only unless status says otherwise). Decide one with POST /v1/workflow-approvals/{id}/decide.
+     
+     - parameter status: (query) Comma-separated: pending, approved, rejected, expired. Default pending. (optional)
+     - parameter workflowId: (query) Only approvals of this workflow. (optional)
+     - parameter page: (query) 1-indexed page. (optional, default to 1)
+     - parameter limit: (query) Rows per page (1-100). (optional, default to 25)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listWorkflowApprovals(status: String? = nil, workflowId: UUID? = nil, page: Int? = nil, limit: Int? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListWorkflowApprovalsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listWorkflowApprovalsWithRequestBuilder(status: status, workflowId: workflowId, page: page, limit: limit).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Approval requests from flow.approval nodes, newest first (pending only unless status says otherwise). Decide one with POST /v1/workflow-approvals/{id}/decide.
+     - GET /v1/workflow-approvals
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter status: (query) Comma-separated: pending, approved, rejected, expired. Default pending. (optional)
+     - parameter workflowId: (query) Only approvals of this workflow. (optional)
+     - parameter page: (query) 1-indexed page. (optional, default to 1)
+     - parameter limit: (query) Rows per page (1-100). (optional, default to 25)
+     - returns: RequestBuilder<ListWorkflowApprovalsResponse> 
+     */
+    open class func listWorkflowApprovalsWithRequestBuilder(status: String? = nil, workflowId: UUID? = nil, page: Int? = nil, limit: Int? = nil) -> RequestBuilder<ListWorkflowApprovalsResponse> {
+        let localVariablePath = "/v1/workflow-approvals"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "status": status?.encodeToJSON(),
+            "workflowId": workflowId?.encodeToJSON(),
+            "page": page?.encodeToJSON(),
+            "limit": limit?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListWorkflowApprovalsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      List workflow chains with their step graph.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @discardableResult
     open class func listWorkflowChains(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListWorkflowChainsResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return listWorkflowChainsWithRequestBuilder().execute(apiResponseQueue) { result in
@@ -273,11 +1494,13 @@ open class WorkflowsAPI {
     /**
      List workflow chains with their step graph.
      - GET /v1/workflow-chains
+     - Deprecated: workflow chains are workflows now. Use /v1/workflows.
      - BASIC:
        - type: http
        - name: PersonalAccessToken
      - returns: RequestBuilder<ListWorkflowChainsResponse> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     open class func listWorkflowChainsWithRequestBuilder() -> RequestBuilder<ListWorkflowChainsResponse> {
         let localVariablePath = "/v1/workflow-chains"
         let localVariableURLString = CrosslyAPI.basePath + localVariablePath
@@ -297,12 +1520,432 @@ open class WorkflowsAPI {
     }
 
     /**
+     * enum for parameter mode
+     */
+    public enum Mode_listWorkflowRuns: String, CaseIterable {
+        case live = "live"
+        case test = "test"
+        case dry = "dry"
+    }
+
+    /**
+     Run history of one workflow, newest first, with per-node status and item counts.
+     
+     - parameter id: (path) Workflow id. 
+     - parameter status: (query) Comma-separated run statuses: queued, running, waiting, succeeded, failed, cancelled. (optional)
+     - parameter mode: (query) live (triggers), test (editor test run) or dry (safe test: no writes). (optional)
+     - parameter since: (query) Runs queued at or after this time (ISO 8601). (optional)
+     - parameter until: (query) Runs queued at or before this time (ISO 8601). (optional)
+     - parameter page: (query) 1-indexed page. (optional, default to 1)
+     - parameter limit: (query) Rows per page (1-100). (optional, default to 25)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listWorkflowRuns(id: UUID, status: String? = nil, mode: Mode_listWorkflowRuns? = nil, since: Date? = nil, until: Date? = nil, page: Int? = nil, limit: Int? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListWorkflowRunsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listWorkflowRunsWithRequestBuilder(id: id, status: status, mode: mode, since: since, until: until, page: page, limit: limit).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Run history of one workflow, newest first, with per-node status and item counts.
+     - GET /v1/workflows/{id}/runs
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path) Workflow id. 
+     - parameter status: (query) Comma-separated run statuses: queued, running, waiting, succeeded, failed, cancelled. (optional)
+     - parameter mode: (query) live (triggers), test (editor test run) or dry (safe test: no writes). (optional)
+     - parameter since: (query) Runs queued at or after this time (ISO 8601). (optional)
+     - parameter until: (query) Runs queued at or before this time (ISO 8601). (optional)
+     - parameter page: (query) 1-indexed page. (optional, default to 1)
+     - parameter limit: (query) Rows per page (1-100). (optional, default to 25)
+     - returns: RequestBuilder<ListWorkflowRunsResponse> 
+     */
+    open class func listWorkflowRunsWithRequestBuilder(id: UUID, status: String? = nil, mode: Mode_listWorkflowRuns? = nil, since: Date? = nil, until: Date? = nil, page: Int? = nil, limit: Int? = nil) -> RequestBuilder<ListWorkflowRunsResponse> {
+        var localVariablePath = "/v1/workflows/{id}/runs"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "status": status?.encodeToJSON(),
+            "mode": mode?.encodeToJSON(),
+            "since": since?.encodeToJSON(),
+            "until": until?.encodeToJSON(),
+            "page": page?.encodeToJSON(),
+            "limit": limit?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListWorkflowRunsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     * enum for parameter mode
+     */
+    public enum Mode_listWorkflowRuns2: String, CaseIterable {
+        case live = "live"
+        case test = "test"
+        case dry = "dry"
+    }
+
+    /**
+     Runs of every workflow, newest first. Filter by workflow, status, mode and time.
+     
+     - parameter workflowId: (query) Only runs of this workflow. (optional)
+     - parameter status: (query) Comma-separated run statuses: queued, running, waiting, succeeded, failed, cancelled. (optional)
+     - parameter mode: (query) live (triggers), test (editor test run) or dry (safe test: no writes). (optional)
+     - parameter since: (query) Runs queued at or after this time (ISO 8601). (optional)
+     - parameter until: (query) Runs queued at or before this time (ISO 8601). (optional)
+     - parameter page: (query) 1-indexed page. (optional, default to 1)
+     - parameter limit: (query) Rows per page (1-100). (optional, default to 25)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listWorkflowRuns2(workflowId: UUID? = nil, status: String? = nil, mode: Mode_listWorkflowRuns2? = nil, since: Date? = nil, until: Date? = nil, page: Int? = nil, limit: Int? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListWorkflowRunsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listWorkflowRuns2WithRequestBuilder(workflowId: workflowId, status: status, mode: mode, since: since, until: until, page: page, limit: limit).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Runs of every workflow, newest first. Filter by workflow, status, mode and time.
+     - GET /v1/workflow-runs
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter workflowId: (query) Only runs of this workflow. (optional)
+     - parameter status: (query) Comma-separated run statuses: queued, running, waiting, succeeded, failed, cancelled. (optional)
+     - parameter mode: (query) live (triggers), test (editor test run) or dry (safe test: no writes). (optional)
+     - parameter since: (query) Runs queued at or after this time (ISO 8601). (optional)
+     - parameter until: (query) Runs queued at or before this time (ISO 8601). (optional)
+     - parameter page: (query) 1-indexed page. (optional, default to 1)
+     - parameter limit: (query) Rows per page (1-100). (optional, default to 25)
+     - returns: RequestBuilder<ListWorkflowRunsResponse> 
+     */
+    open class func listWorkflowRuns2WithRequestBuilder(workflowId: UUID? = nil, status: String? = nil, mode: Mode_listWorkflowRuns2? = nil, since: Date? = nil, until: Date? = nil, page: Int? = nil, limit: Int? = nil) -> RequestBuilder<ListWorkflowRunsResponse> {
+        let localVariablePath = "/v1/workflow-runs"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "workflowId": workflowId?.encodeToJSON(),
+            "status": status?.encodeToJSON(),
+            "mode": mode?.encodeToJSON(),
+            "since": since?.encodeToJSON(),
+            "until": until?.encodeToJSON(),
+            "page": page?.encodeToJSON(),
+            "limit": limit?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListWorkflowRunsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Every live or upcoming sale (a sales event started by a sale.start node) with the workflow that runs it: percent off, window, and how many listings it applies to.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listWorkflowSaleActive(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListWorkflowSaleActiveResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listWorkflowSaleActiveWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Every live or upcoming sale (a sales event started by a sale.start node) with the workflow that runs it: percent off, window, and how many listings it applies to.
+     - GET /v1/workflows/sales/active
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListWorkflowSaleActiveResponse> 
+     */
+    open class func listWorkflowSaleActiveWithRequestBuilder() -> RequestBuilder<ListWorkflowSaleActiveResponse> {
+        let localVariablePath = "/v1/workflows/sales/active"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListWorkflowSaleActiveResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Ready-made workflows (weekend sale, stale-listing markdowns, offer responder, ship-by alerts…), each a complete graph plus the setup fields its \"use\" call asks for.
+     
+     - parameter category: (query) Exact template category, e.g. \&quot;Sales &amp; markdowns\&quot;. (optional)
+     - parameter q: (query) Matches name, description, category or tags. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listWorkflowTemplates(category: String? = nil, q: String? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListWorkflowTemplatesResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listWorkflowTemplatesWithRequestBuilder(category: category, q: q).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Ready-made workflows (weekend sale, stale-listing markdowns, offer responder, ship-by alerts…), each a complete graph plus the setup fields its \"use\" call asks for.
+     - GET /v1/workflows/templates
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter category: (query) Exact template category, e.g. \&quot;Sales &amp; markdowns\&quot;. (optional)
+     - parameter q: (query) Matches name, description, category or tags. (optional)
+     - returns: RequestBuilder<ListWorkflowTemplatesResponse> 
+     */
+    open class func listWorkflowTemplatesWithRequestBuilder(category: String? = nil, q: String? = nil) -> RequestBuilder<ListWorkflowTemplatesResponse> {
+        let localVariablePath = "/v1/workflows/templates"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "category": category?.encodeToJSON(),
+            "q": q?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListWorkflowTemplatesResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The saved versions of a workflow, newest first (restore one with POST …/versions/{v}/restore).
+     
+     - parameter id: (path) Workflow id. 
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listWorkflowVersions(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListWorkflowVersionsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listWorkflowVersionsWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The saved versions of a workflow, newest first (restore one with POST …/versions/{v}/restore).
+     - GET /v1/workflows/{id}/versions
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path) Workflow id. 
+     - returns: RequestBuilder<ListWorkflowVersionsResponse> 
+     */
+    open class func listWorkflowVersionsWithRequestBuilder(id: UUID) -> RequestBuilder<ListWorkflowVersionsResponse> {
+        var localVariablePath = "/v1/workflows/{id}/versions"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListWorkflowVersionsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     * enum for parameter active
+     */
+    public enum Active_listWorkflows: String, CaseIterable {
+        case _true = "true"
+        case _false = "false"
+    }
+
+    /**
+     List workflows, newest change first. A workflow is a graph of nodes: one or more triggers, then actions, lookups and flow nodes (if, switch, wait, approval…). Each row carries its trigger and node types and a 7-day run sparkline, not the graph (GET /v1/workflows/{id} has it).
+     
+     - parameter active: (query) Only active (true) or paused (false) workflows. (optional)
+     - parameter tag: (query) Only workflows carrying this tag. (optional)
+     - parameter trigger: (query) Only workflows started by this trigger node type, e.g. on.listing.sold. (optional)
+     - parameter q: (query) Name contains (case-insensitive). (optional)
+     - parameter legacyRef: (query) The workflow an old automation became: rule:&lt;id&gt;, chain:&lt;id&gt; or sale_event:&lt;id&gt;. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listWorkflows(active: Active_listWorkflows? = nil, tag: String? = nil, trigger: String? = nil, q: String? = nil, legacyRef: String? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListWorkflowsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listWorkflowsWithRequestBuilder(active: active, tag: tag, trigger: trigger, q: q, legacyRef: legacyRef).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     List workflows, newest change first. A workflow is a graph of nodes: one or more triggers, then actions, lookups and flow nodes (if, switch, wait, approval…). Each row carries its trigger and node types and a 7-day run sparkline, not the graph (GET /v1/workflows/{id} has it).
+     - GET /v1/workflows
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter active: (query) Only active (true) or paused (false) workflows. (optional)
+     - parameter tag: (query) Only workflows carrying this tag. (optional)
+     - parameter trigger: (query) Only workflows started by this trigger node type, e.g. on.listing.sold. (optional)
+     - parameter q: (query) Name contains (case-insensitive). (optional)
+     - parameter legacyRef: (query) The workflow an old automation became: rule:&lt;id&gt;, chain:&lt;id&gt; or sale_event:&lt;id&gt;. (optional)
+     - returns: RequestBuilder<ListWorkflowsResponse> 
+     */
+    open class func listWorkflowsWithRequestBuilder(active: Active_listWorkflows? = nil, tag: String? = nil, trigger: String? = nil, q: String? = nil, legacyRef: String? = nil) -> RequestBuilder<ListWorkflowsResponse> {
+        let localVariablePath = "/v1/workflows"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "active": active?.encodeToJSON(),
+            "tag": tag?.encodeToJSON(),
+            "trigger": trigger?.encodeToJSON(),
+            "q": q?.encodeToJSON(),
+            "legacyRef": legacyRef?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListWorkflowsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Save a workflow. Pass the version you edited: a save over a newer version is 409 version_conflict (re-read and merge). Saving an active workflow validates it like activation does (422 with issues).
+     
+     - parameter id: (path) Workflow id. 
+     - parameter updateWorkflowRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateWorkflow(id: UUID, updateWorkflowRequest: UpdateWorkflowRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: WorkflowResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateWorkflowWithRequestBuilder(id: id, updateWorkflowRequest: updateWorkflowRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Save a workflow. Pass the version you edited: a save over a newer version is 409 version_conflict (re-read and merge). Saving an active workflow validates it like activation does (422 with issues).
+     - PUT /v1/workflows/{id}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path) Workflow id. 
+     - parameter updateWorkflowRequest: (body)  
+     - returns: RequestBuilder<WorkflowResponse> 
+     */
+    open class func updateWorkflowWithRequestBuilder(id: UUID, updateWorkflowRequest: UpdateWorkflowRequest) -> RequestBuilder<WorkflowResponse> {
+        var localVariablePath = "/v1/workflows/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: updateWorkflowRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<WorkflowResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Replace a workflow chain wholesale.
      
      - parameter id: (path)  
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @discardableResult
     open class func updateWorkflowChain(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: OkResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return updateWorkflowChainWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
@@ -318,12 +1961,14 @@ open class WorkflowsAPI {
     /**
      Replace a workflow chain wholesale.
      - PUT /v1/workflow-chains/{id}
+     - Deprecated: workflow chains are workflows now. Use /v1/workflows.
      - BASIC:
        - type: http
        - name: PersonalAccessToken
      - parameter id: (path)  
      - returns: RequestBuilder<OkResponse> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     open class func updateWorkflowChainWithRequestBuilder(id: UUID) -> RequestBuilder<OkResponse> {
         var localVariablePath = "/v1/workflow-chains/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"

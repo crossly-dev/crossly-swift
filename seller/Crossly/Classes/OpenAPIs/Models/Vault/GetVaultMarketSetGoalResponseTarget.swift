@@ -13,9 +13,9 @@ import AnyCodable
 public struct GetVaultMarketSetGoalResponseTarget: Codable, JSONEncodable, Hashable {
 
     public enum GradeMode: String, Codable, CaseIterable {
+        case any = "any"
         case exact = "exact"
         case ungraded = "ungraded"
-        case any = "any"
     }
     public var text: String
     public var condition: String?

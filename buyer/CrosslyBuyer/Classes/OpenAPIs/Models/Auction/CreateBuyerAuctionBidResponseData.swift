@@ -12,36 +12,36 @@ import AnyCodable
 
 public struct CreateBuyerAuctionBidResponseData: Codable, JSONEncodable, Hashable {
 
-    /** Possibly extended by anti-sniping. */
-    public var endsAt: String
-    /** The price now, in cents, after proxy bidding resolved. */
-    public var currentBidCents: Double
     public var ok: Bool
     /** false = a standing proxy bid outbid you straight away. */
     public var leading: Bool
+    /** The price now, in cents, after proxy bidding resolved. */
+    public var currentBidCents: Double
+    /** Possibly extended by anti-sniping. */
+    public var endsAt: String
 
-    public init(endsAt: String, currentBidCents: Double, ok: Bool, leading: Bool) {
-        self.endsAt = endsAt
-        self.currentBidCents = currentBidCents
+    public init(ok: Bool, leading: Bool, currentBidCents: Double, endsAt: String) {
         self.ok = ok
         self.leading = leading
+        self.currentBidCents = currentBidCents
+        self.endsAt = endsAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case endsAt
-        case currentBidCents
         case ok
         case leading
+        case currentBidCents
+        case endsAt
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(endsAt, forKey: .endsAt)
-        try container.encode(currentBidCents, forKey: .currentBidCents)
         try container.encode(ok, forKey: .ok)
         try container.encode(leading, forKey: .leading)
+        try container.encode(currentBidCents, forKey: .currentBidCents)
+        try container.encode(endsAt, forKey: .endsAt)
     }
 }
 

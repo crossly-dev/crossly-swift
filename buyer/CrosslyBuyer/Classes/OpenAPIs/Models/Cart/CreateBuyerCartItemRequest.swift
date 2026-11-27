@@ -14,18 +14,22 @@ public struct CreateBuyerCartItemRequest: Codable, JSONEncodable, Hashable {
 
     public var listingSlug: String
     public var quantity: Int? = 1
+    /** The option (variants[].id) on a listing with options. */
+    public var listingVariantId: String?
     /** Where in Crossly World it was added, e.g. room:<publicSlug>. */
     public var via: String?
 
-    public init(listingSlug: String, quantity: Int? = 1, via: String? = nil) {
+    public init(listingSlug: String, quantity: Int? = 1, listingVariantId: String? = nil, via: String? = nil) {
         self.listingSlug = listingSlug
         self.quantity = quantity
+        self.listingVariantId = listingVariantId
         self.via = via
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case listingSlug
         case quantity
+        case listingVariantId
         case via
     }
 
@@ -35,6 +39,7 @@ public struct CreateBuyerCartItemRequest: Codable, JSONEncodable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(listingSlug, forKey: .listingSlug)
         try container.encodeIfPresent(quantity, forKey: .quantity)
+        try container.encodeIfPresent(listingVariantId, forKey: .listingVariantId)
         try container.encodeIfPresent(via, forKey: .via)
     }
 }

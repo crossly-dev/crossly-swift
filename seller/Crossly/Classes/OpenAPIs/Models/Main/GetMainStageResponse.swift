@@ -20,8 +20,9 @@ public struct GetMainStageResponse: Codable, JSONEncodable, Hashable {
     public var live: GetMainStageResponseLive?
     public var upcoming: [GetMainStageResponseUpcoming]
     public var stream: GetMainStageResponseStream?
+    public var house: GetMainStageResponseHouse
 
-    public init(slug: String, name: String, capacity: Double, here: Double, live: GetMainStageResponseLive? = nil, upcoming: [GetMainStageResponseUpcoming], stream: GetMainStageResponseStream? = nil) {
+    public init(slug: String, name: String, capacity: Double, here: Double, live: GetMainStageResponseLive? = nil, upcoming: [GetMainStageResponseUpcoming], stream: GetMainStageResponseStream? = nil, house: GetMainStageResponseHouse) {
         self.slug = slug
         self.name = name
         self.capacity = capacity
@@ -29,6 +30,7 @@ public struct GetMainStageResponse: Codable, JSONEncodable, Hashable {
         self.live = live
         self.upcoming = upcoming
         self.stream = stream
+        self.house = house
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -39,6 +41,7 @@ public struct GetMainStageResponse: Codable, JSONEncodable, Hashable {
         case live
         case upcoming
         case stream
+        case house
     }
 
     // Encodable protocol methods
@@ -52,6 +55,7 @@ public struct GetMainStageResponse: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(live, forKey: .live)
         try container.encode(upcoming, forKey: .upcoming)
         try container.encodeIfPresent(stream, forKey: .stream)
+        try container.encode(house, forKey: .house)
     }
 }
 

@@ -13,9 +13,9 @@ import AnyCodable
 public struct CreateBuyerAgentSessionActResponseQuotePriceCheck: Codable, JSONEncodable, Hashable {
 
     public enum Verdict: String, Codable, CaseIterable {
-        case high = "high"
-        case fair = "fair"
         case good = "good"
+        case fair = "fair"
+        case high = "high"
         case great = "great"
     }
     public var verdict: Verdict

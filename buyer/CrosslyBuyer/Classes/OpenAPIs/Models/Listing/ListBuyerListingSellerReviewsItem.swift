@@ -13,34 +13,34 @@ import AnyCodable
 public struct ListBuyerListingSellerReviewsItem: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var createdAt: String
-    public var item: ListBuyerListingSellerReviewsItemItem
-    public var body: String?
     public var rating: Double
-    public var sellerReply: String?
+    public var body: String?
     public var media: [ListBuyerListingSellerReviewsItemMedia]
+    public var sellerReply: String?
     public var reviewer: String?
+    public var item: ListBuyerListingSellerReviewsItemItem
+    public var createdAt: String
 
-    public init(id: String, createdAt: String, item: ListBuyerListingSellerReviewsItemItem, body: String? = nil, rating: Double, sellerReply: String? = nil, media: [ListBuyerListingSellerReviewsItemMedia], reviewer: String? = nil) {
+    public init(id: String, rating: Double, body: String? = nil, media: [ListBuyerListingSellerReviewsItemMedia], sellerReply: String? = nil, reviewer: String? = nil, item: ListBuyerListingSellerReviewsItemItem, createdAt: String) {
         self.id = id
-        self.createdAt = createdAt
-        self.item = item
-        self.body = body
         self.rating = rating
-        self.sellerReply = sellerReply
+        self.body = body
         self.media = media
+        self.sellerReply = sellerReply
         self.reviewer = reviewer
+        self.item = item
+        self.createdAt = createdAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case createdAt
-        case item
-        case body
         case rating
-        case sellerReply
+        case body
         case media
+        case sellerReply
         case reviewer
+        case item
+        case createdAt
     }
 
     // Encodable protocol methods
@@ -48,13 +48,13 @@ public struct ListBuyerListingSellerReviewsItem: Codable, JSONEncodable, Hashabl
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(createdAt, forKey: .createdAt)
-        try container.encode(item, forKey: .item)
-        try container.encodeIfPresent(body, forKey: .body)
         try container.encode(rating, forKey: .rating)
-        try container.encodeIfPresent(sellerReply, forKey: .sellerReply)
+        try container.encodeIfPresent(body, forKey: .body)
         try container.encode(media, forKey: .media)
+        try container.encodeIfPresent(sellerReply, forKey: .sellerReply)
         try container.encodeIfPresent(reviewer, forKey: .reviewer)
+        try container.encode(item, forKey: .item)
+        try container.encode(createdAt, forKey: .createdAt)
     }
 }
 

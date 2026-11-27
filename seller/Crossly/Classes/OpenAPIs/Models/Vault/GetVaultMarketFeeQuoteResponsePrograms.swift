@@ -13,8 +13,8 @@ import AnyCodable
 public struct GetVaultMarketFeeQuoteResponsePrograms: Codable, JSONEncodable, Hashable {
 
     public enum MemberTier: String, Codable, CaseIterable {
-        case classic = "classic"
         case pro = "pro"
+        case classic = "classic"
     }
     public var lp: Bool
     public var dmm: Bool

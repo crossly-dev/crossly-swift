@@ -17,14 +17,18 @@ public struct ListWorldGamePackagesItem: Codable, JSONEncodable, Hashable {
     public var name: String
     public var designId: String
     public var createdAt: Date
+    public var updatedAt: Date
+    public var unpublishedAt: Date?
     public var versions: [GetWorldGamePackageResponseDataVersions]
 
-    public init(id: String, slug: String, name: String, designId: String, createdAt: Date, versions: [GetWorldGamePackageResponseDataVersions]) {
+    public init(id: String, slug: String, name: String, designId: String, createdAt: Date, updatedAt: Date, unpublishedAt: Date? = nil, versions: [GetWorldGamePackageResponseDataVersions]) {
         self.id = id
         self.slug = slug
         self.name = name
         self.designId = designId
         self.createdAt = createdAt
+        self.updatedAt = updatedAt
+        self.unpublishedAt = unpublishedAt
         self.versions = versions
     }
 
@@ -34,6 +38,8 @@ public struct ListWorldGamePackagesItem: Codable, JSONEncodable, Hashable {
         case name
         case designId
         case createdAt
+        case updatedAt
+        case unpublishedAt
         case versions
     }
 
@@ -46,6 +52,8 @@ public struct ListWorldGamePackagesItem: Codable, JSONEncodable, Hashable {
         try container.encode(name, forKey: .name)
         try container.encode(designId, forKey: .designId)
         try container.encode(createdAt, forKey: .createdAt)
+        try container.encode(updatedAt, forKey: .updatedAt)
+        try container.encodeIfPresent(unpublishedAt, forKey: .unpublishedAt)
         try container.encode(versions, forKey: .versions)
     }
 }

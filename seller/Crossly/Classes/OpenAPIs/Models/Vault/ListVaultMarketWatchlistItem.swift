@@ -14,9 +14,9 @@ public struct ListVaultMarketWatchlistItem: Codable, JSONEncodable, Hashable {
 
     public enum MarkQuality: String, Codable, CaseIterable {
         case _none = "none"
+        case c = "C"
         case a = "A"
         case b = "B"
-        case c = "C"
     }
     public var addedAt: String
     public var markQuality: MarkQuality?

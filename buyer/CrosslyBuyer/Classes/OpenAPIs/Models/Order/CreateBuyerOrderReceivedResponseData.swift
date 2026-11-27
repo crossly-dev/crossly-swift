@@ -15,21 +15,21 @@ public struct CreateBuyerOrderReceivedResponseData: Codable, JSONEncodable, Hash
     public var ok: Bool
     /** Feedback can now be left on this order. */
     public var canReview: Bool
-    public var buyerReceivedAt: String?
     public var alreadyConfirmed: Bool?
+    public var buyerReceivedAt: String?
 
-    public init(ok: Bool, canReview: Bool, buyerReceivedAt: String? = nil, alreadyConfirmed: Bool? = nil) {
+    public init(ok: Bool, canReview: Bool, alreadyConfirmed: Bool? = nil, buyerReceivedAt: String? = nil) {
         self.ok = ok
         self.canReview = canReview
-        self.buyerReceivedAt = buyerReceivedAt
         self.alreadyConfirmed = alreadyConfirmed
+        self.buyerReceivedAt = buyerReceivedAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case ok
         case canReview
-        case buyerReceivedAt
         case alreadyConfirmed
+        case buyerReceivedAt
     }
 
     // Encodable protocol methods
@@ -38,8 +38,8 @@ public struct CreateBuyerOrderReceivedResponseData: Codable, JSONEncodable, Hash
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(ok, forKey: .ok)
         try container.encode(canReview, forKey: .canReview)
-        try container.encodeIfPresent(buyerReceivedAt, forKey: .buyerReceivedAt)
         try container.encodeIfPresent(alreadyConfirmed, forKey: .alreadyConfirmed)
+        try container.encodeIfPresent(buyerReceivedAt, forKey: .buyerReceivedAt)
     }
 }
 

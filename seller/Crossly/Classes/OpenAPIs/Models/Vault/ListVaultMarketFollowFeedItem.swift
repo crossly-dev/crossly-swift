@@ -13,8 +13,8 @@ import AnyCodable
 public struct ListVaultMarketFollowFeedItem: Codable, JSONEncodable, Hashable {
 
     public enum Kind: String, Codable, CaseIterable {
-        case deposit = "deposit"
         case sale = "sale"
+        case deposit = "deposit"
         case buy = "buy"
         case hallLoan = "hall_loan"
     }
@@ -22,19 +22,21 @@ public struct ListVaultMarketFollowFeedItem: Codable, JSONEncodable, Hashable {
     public var kind: Kind
     public var verb: String
     public var at: String
+    public var by: ListVaultMarketFollowFeedItemBy
     public var bookKey: String
     public var name: String?
     public var label: String?
     public var imageUrl: String?
-    public var mark: ListVaultMarketFeedItemMark
+    public var mark: ListVaultMarketOpeningItemMark
     public var exhibition: ListVaultMarketFollowFeedItemExhibition?
     public var buyHref: String
 
-    public init(id: String, kind: Kind, verb: String, at: String, bookKey: String, name: String? = nil, label: String? = nil, imageUrl: String? = nil, mark: ListVaultMarketFeedItemMark, exhibition: ListVaultMarketFollowFeedItemExhibition? = nil, buyHref: String) {
+    public init(id: String, kind: Kind, verb: String, at: String, by: ListVaultMarketFollowFeedItemBy, bookKey: String, name: String? = nil, label: String? = nil, imageUrl: String? = nil, mark: ListVaultMarketOpeningItemMark, exhibition: ListVaultMarketFollowFeedItemExhibition? = nil, buyHref: String) {
         self.id = id
         self.kind = kind
         self.verb = verb
         self.at = at
+        self.by = by
         self.bookKey = bookKey
         self.name = name
         self.label = label
@@ -49,6 +51,7 @@ public struct ListVaultMarketFollowFeedItem: Codable, JSONEncodable, Hashable {
         case kind
         case verb
         case at
+        case by
         case bookKey
         case name
         case label
@@ -66,6 +69,7 @@ public struct ListVaultMarketFollowFeedItem: Codable, JSONEncodable, Hashable {
         try container.encode(kind, forKey: .kind)
         try container.encode(verb, forKey: .verb)
         try container.encode(at, forKey: .at)
+        try container.encode(by, forKey: .by)
         try container.encode(bookKey, forKey: .bookKey)
         try container.encodeIfPresent(name, forKey: .name)
         try container.encodeIfPresent(label, forKey: .label)

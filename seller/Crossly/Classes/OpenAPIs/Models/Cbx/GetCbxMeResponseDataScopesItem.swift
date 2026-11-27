@@ -11,9 +11,9 @@ import AnyCodable
 #endif
 
 public enum GetCbxMeResponseDataScopesItem: String, Codable, CaseIterable {
+    case read = "read"
     case spend = "spend"
     case campaign = "campaign"
-    case read = "read"
     case accrue = "accrue"
     case treasury = "treasury"
 }

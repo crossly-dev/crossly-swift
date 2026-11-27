@@ -15,26 +15,26 @@ public struct ListBuyerHuntsItem: Codable, JSONEncodable, Hashable {
     public var id: String
     public var name: String
     public var mode: String
-    public var status: String
     public var maxPriceCents: Double
     public var buysLeft: Double
+    public var status: String
 
-    public init(id: String, name: String, mode: String, status: String, maxPriceCents: Double, buysLeft: Double) {
+    public init(id: String, name: String, mode: String, maxPriceCents: Double, buysLeft: Double, status: String) {
         self.id = id
         self.name = name
         self.mode = mode
-        self.status = status
         self.maxPriceCents = maxPriceCents
         self.buysLeft = buysLeft
+        self.status = status
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
         case name
         case mode
-        case status
         case maxPriceCents
         case buysLeft
+        case status
     }
 
     // Encodable protocol methods
@@ -44,9 +44,9 @@ public struct ListBuyerHuntsItem: Codable, JSONEncodable, Hashable {
         try container.encode(id, forKey: .id)
         try container.encode(name, forKey: .name)
         try container.encode(mode, forKey: .mode)
-        try container.encode(status, forKey: .status)
         try container.encode(maxPriceCents, forKey: .maxPriceCents)
         try container.encode(buysLeft, forKey: .buysLeft)
+        try container.encode(status, forKey: .status)
     }
 }
 

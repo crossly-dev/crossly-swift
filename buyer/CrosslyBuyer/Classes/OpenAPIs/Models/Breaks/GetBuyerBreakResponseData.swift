@@ -13,58 +13,58 @@ import AnyCodable
 public struct GetBuyerBreakResponseData: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var createdAt: String
-    public var status: String
-    public var assignedAt: String?
     public var title: String
-    public var seller: GetBuyerBreakResponseDataSeller
+    public var product: String?
+    public var format: String
+    public var status: String
     public var slug: String?
     public var priceCents: Double
-    public var format: String
     public var streamId: String?
-    public var seed: String?
-    public var product: String?
-    public var seedCommit: String
+    public var seller: GetBuyerBreakResponseDataSeller
     public var spots: [GetBuyerBreakResponseDataSpots]
     public var spotsLeft: Double
+    public var seedCommit: String
+    public var seed: String?
     public var draw: [GetBuyerBreakResponseDataDraw]?
+    public var createdAt: String
+    public var assignedAt: String?
 
-    public init(id: String, createdAt: String, status: String, assignedAt: String? = nil, title: String, seller: GetBuyerBreakResponseDataSeller, slug: String? = nil, priceCents: Double, format: String, streamId: String? = nil, seed: String? = nil, product: String? = nil, seedCommit: String, spots: [GetBuyerBreakResponseDataSpots], spotsLeft: Double, draw: [GetBuyerBreakResponseDataDraw]? = nil) {
+    public init(id: String, title: String, product: String? = nil, format: String, status: String, slug: String? = nil, priceCents: Double, streamId: String? = nil, seller: GetBuyerBreakResponseDataSeller, spots: [GetBuyerBreakResponseDataSpots], spotsLeft: Double, seedCommit: String, seed: String? = nil, draw: [GetBuyerBreakResponseDataDraw]? = nil, createdAt: String, assignedAt: String? = nil) {
         self.id = id
-        self.createdAt = createdAt
-        self.status = status
-        self.assignedAt = assignedAt
         self.title = title
-        self.seller = seller
+        self.product = product
+        self.format = format
+        self.status = status
         self.slug = slug
         self.priceCents = priceCents
-        self.format = format
         self.streamId = streamId
-        self.seed = seed
-        self.product = product
-        self.seedCommit = seedCommit
+        self.seller = seller
         self.spots = spots
         self.spotsLeft = spotsLeft
+        self.seedCommit = seedCommit
+        self.seed = seed
         self.draw = draw
+        self.createdAt = createdAt
+        self.assignedAt = assignedAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case createdAt
-        case status
-        case assignedAt
         case title
-        case seller
+        case product
+        case format
+        case status
         case slug
         case priceCents
-        case format
         case streamId
-        case seed
-        case product
-        case seedCommit
+        case seller
         case spots
         case spotsLeft
+        case seedCommit
+        case seed
         case draw
+        case createdAt
+        case assignedAt
     }
 
     // Encodable protocol methods
@@ -72,21 +72,21 @@ public struct GetBuyerBreakResponseData: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(createdAt, forKey: .createdAt)
-        try container.encode(status, forKey: .status)
-        try container.encodeIfPresent(assignedAt, forKey: .assignedAt)
         try container.encode(title, forKey: .title)
-        try container.encode(seller, forKey: .seller)
+        try container.encodeIfPresent(product, forKey: .product)
+        try container.encode(format, forKey: .format)
+        try container.encode(status, forKey: .status)
         try container.encodeIfPresent(slug, forKey: .slug)
         try container.encode(priceCents, forKey: .priceCents)
-        try container.encode(format, forKey: .format)
         try container.encodeIfPresent(streamId, forKey: .streamId)
-        try container.encodeIfPresent(seed, forKey: .seed)
-        try container.encodeIfPresent(product, forKey: .product)
-        try container.encode(seedCommit, forKey: .seedCommit)
+        try container.encode(seller, forKey: .seller)
         try container.encode(spots, forKey: .spots)
         try container.encode(spotsLeft, forKey: .spotsLeft)
+        try container.encode(seedCommit, forKey: .seedCommit)
+        try container.encodeIfPresent(seed, forKey: .seed)
         try container.encodeIfPresent(draw, forKey: .draw)
+        try container.encode(createdAt, forKey: .createdAt)
+        try container.encodeIfPresent(assignedAt, forKey: .assignedAt)
     }
 }
 

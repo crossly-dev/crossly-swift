@@ -13,25 +13,30 @@ import AnyCodable
 public struct ListVaultMarketPaperMissionsItem: Codable, JSONEncodable, Hashable {
 
     public enum Key: String, Codable, CaseIterable {
-        case roundTrip = "round_trip"
         case firstFill = "first_fill"
         case readMark = "read_mark"
         case bidBelow = "bid_below"
         case makerFill = "maker_fill"
         case instantExit = "instant_exit"
         case priceWatch = "price_watch"
+        case roundTrip = "round_trip"
         case miniSet = "mini_set"
+        case shareFirst = "share_first"
+        case shareQueue = "share_queue"
+        case optionFirst = "option_first"
+        case optionExpiry = "option_expiry"
     }
     public enum Action: String, Codable, CaseIterable {
         case market = "market"
-        case assistant = "assistant"
         case paper = "paper"
-        case markCheck = "mark_check"
+        case assistant = "assistant"
         case sets = "sets"
+        case markCheck = "mark_check"
     }
     public enum Learn: String, Codable, CaseIterable {
         case instantExit = "instant-exit"
         case marks = "marks"
+        case vaultShares = "vault-shares"
     }
     public var key: Key
     public var order: Double

@@ -13,9 +13,10 @@ import AnyCodable
 public struct UpdateSpatialEmployeeConfigResponseDataConfig: Codable, JSONEncodable, Hashable {
 
     public enum BrainKind: String, Codable, CaseIterable {
-        case idle = "idle"
         case rules = "rules"
+        case idle = "idle"
         case agent = "agent"
+        case byok = "byok"
     }
     public var brainKind: BrainKind
     public var rules: [[String: AnyCodable]]

@@ -12,33 +12,69 @@ import AnyCodable
 
 public struct CreateOrderCancelResponse: Codable, JSONEncodable, Hashable {
 
-    public var orderId: String
+    public enum PlatformCancel: String, Codable, CaseIterable {
+        case sent = "sent"
+        case failed = "failed"
+        case queued = "queued"
+        case relayed = "relayed"
+        case unsupported = "unsupported"
+        case noPlatformOrderId = "no_platform_order_id"
+        case recordedOnly = "recorded_only"
+        case alreadyCancelled = "already_cancelled"
+    }
+    /** The marketplace outcome, or already_cancelled when the order was cancelled before this call. */
+    public var platformCancel: PlatformCancel
+    public var refund: CreateOrderCancelResponseRefund?
     public var platform: String
+    public var orderId: String
+    /** The platform's error, VERBATIM. Deliberately not summarised — the marketplace names what it objected to, and summarising throws that away. eBay reason codes are now fetched per order via checkCancelEligibility rather than guessed, but a rejection can still happen (order state changed between the probe and the cancel), and this is how it gets diagnosed. */
+    public var error: String?
+    /** Cookie track only. */
+    public var jobId: String?
+    /** True unless the cancel was relayed to the managing app (then false until it completes). */
     public var cancelledInCrossly: Bool
-    public var platformCancel: String
+    /** platformCancel 'relayed': the app command tracking it. */
+    public var commandId: String?
+    /** Platform payload (e.g. eBay's cancellationId) when it answered. */
+    public var platformResult: [String: AnyCodable]?
 
-    public init(orderId: String, platform: String, cancelledInCrossly: Bool, platformCancel: String) {
-        self.orderId = orderId
-        self.platform = platform
-        self.cancelledInCrossly = cancelledInCrossly
+    public init(platformCancel: PlatformCancel, refund: CreateOrderCancelResponseRefund? = nil, platform: String, orderId: String, error: String? = nil, jobId: String? = nil, cancelledInCrossly: Bool, commandId: String? = nil, platformResult: [String: AnyCodable]? = nil) {
         self.platformCancel = platformCancel
+        self.refund = refund
+        self.platform = platform
+        self.orderId = orderId
+        self.error = error
+        self.jobId = jobId
+        self.cancelledInCrossly = cancelledInCrossly
+        self.commandId = commandId
+        self.platformResult = platformResult
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case orderId
-        case platform
-        case cancelledInCrossly
         case platformCancel
+        case refund
+        case platform
+        case orderId
+        case error
+        case jobId
+        case cancelledInCrossly
+        case commandId
+        case platformResult
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(orderId, forKey: .orderId)
-        try container.encode(platform, forKey: .platform)
-        try container.encode(cancelledInCrossly, forKey: .cancelledInCrossly)
         try container.encode(platformCancel, forKey: .platformCancel)
+        try container.encodeIfPresent(refund, forKey: .refund)
+        try container.encode(platform, forKey: .platform)
+        try container.encode(orderId, forKey: .orderId)
+        try container.encodeIfPresent(error, forKey: .error)
+        try container.encodeIfPresent(jobId, forKey: .jobId)
+        try container.encode(cancelledInCrossly, forKey: .cancelledInCrossly)
+        try container.encodeIfPresent(commandId, forKey: .commandId)
+        try container.encodeIfPresent(platformResult, forKey: .platformResult)
     }
 }
 

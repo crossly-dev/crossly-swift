@@ -12,16 +12,18 @@ import AnyCodable
 
 public struct GetInventorySellThroughResponseData: Codable, JSONEncodable, Hashable {
 
-    public var current: GetAnalyticDashboardResponseSellThrough
-    public var previous: GetAnalyticDashboardResponseSellThrough
+    public var current: GetInventorySellThroughResponseDataCurrent
+    public var previous: GetInventorySellThroughResponseDataCurrent
     public var comparison: GetInventorySellThroughResponseDataComparison
-    public var window: GetInventorySellThroughResponseDataWindow
+    public var window: StartEnd
+    public var cohort: GetAnalyticDashboardResponseSellThroughCohort
 
-    public init(current: GetAnalyticDashboardResponseSellThrough, previous: GetAnalyticDashboardResponseSellThrough, comparison: GetInventorySellThroughResponseDataComparison, window: GetInventorySellThroughResponseDataWindow) {
+    public init(current: GetInventorySellThroughResponseDataCurrent, previous: GetInventorySellThroughResponseDataCurrent, comparison: GetInventorySellThroughResponseDataComparison, window: StartEnd, cohort: GetAnalyticDashboardResponseSellThroughCohort) {
         self.current = current
         self.previous = previous
         self.comparison = comparison
         self.window = window
+        self.cohort = cohort
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -29,6 +31,7 @@ public struct GetInventorySellThroughResponseData: Codable, JSONEncodable, Hasha
         case previous
         case comparison
         case window
+        case cohort
     }
 
     // Encodable protocol methods
@@ -39,6 +42,7 @@ public struct GetInventorySellThroughResponseData: Codable, JSONEncodable, Hasha
         try container.encode(previous, forKey: .previous)
         try container.encode(comparison, forKey: .comparison)
         try container.encode(window, forKey: .window)
+        try container.encode(cohort, forKey: .cohort)
     }
 }
 

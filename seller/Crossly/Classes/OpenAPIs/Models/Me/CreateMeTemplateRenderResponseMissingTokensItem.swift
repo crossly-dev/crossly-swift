@@ -13,6 +13,8 @@ import AnyCodable
 public enum CreateMeTemplateRenderResponseMissingTokensItem: String, Codable, CaseIterable {
     case date = "date"
     case brand = "brand"
+    case category = "category"
+    case month = "month"
     case sku = "sku"
     case condition = "condition"
     case size = "size"
@@ -20,9 +22,7 @@ public enum CreateMeTemplateRenderResponseMissingTokensItem: String, Codable, Ca
     case style = "style"
     case color = "color"
     case price = "price"
-    case category = "category"
     case year = "year"
     case model = "model"
     case itemName = "item_name"
-    case month = "month"
 }

@@ -13,8 +13,8 @@ import AnyCodable
 public struct CreateVariationGroupPublishResponseDataOutcomes: Codable, JSONEncodable, Hashable {
 
     public enum Mode: String, Codable, CaseIterable {
-        case grouped = "grouped"
         case separate = "separate"
+        case grouped = "grouped"
     }
     public var platform: String
     public var mode: Mode
@@ -23,15 +23,27 @@ public struct CreateVariationGroupPublishResponseDataOutcomes: Codable, JSONEnco
     public var listingId: String?
     /** Dispatcher job ids, on the separate path. */
     public var jobIds: [String]?
+    /** Grouped: every option that went live, with its own id on the platform. publishGroupToPlatform records one platform_listings row per entry (variation-publish-members.ts), so a sale or delist acts on that option. */
+    public var members: [[String: AnyCodable]]?
+    /** Grouped: options that did not go live. Reported in `warnings`; the live ones are still recorded. */
+    public var failed: [[String: AnyCodable]]?
+    /** Grouped: work that needs the option rows to exist (a POS stock base, markPosPushed), run right after they are recorded. Returns warnings for the seller; must not throw for one option. */
+    public var afterRecorded: [String: AnyCodable]?
+    /** The publisher tracks its options itself, not as platform_listings rows (Crossly: crossly_listing_variants with the member listing id, variation-publish-crossly.ts), so no `members` is not a gap. */
+    public var ownOptionRows: Bool?
     public var warnings: [String]
     public var error: String?
 
-    public init(platform: String, mode: Mode, ok: Bool, listingId: String? = nil, jobIds: [String]? = nil, warnings: [String], error: String? = nil) {
+    public init(platform: String, mode: Mode, ok: Bool, listingId: String? = nil, jobIds: [String]? = nil, members: [[String: AnyCodable]]? = nil, failed: [[String: AnyCodable]]? = nil, afterRecorded: [String: AnyCodable]? = nil, ownOptionRows: Bool? = nil, warnings: [String], error: String? = nil) {
         self.platform = platform
         self.mode = mode
         self.ok = ok
         self.listingId = listingId
         self.jobIds = jobIds
+        self.members = members
+        self.failed = failed
+        self.afterRecorded = afterRecorded
+        self.ownOptionRows = ownOptionRows
         self.warnings = warnings
         self.error = error
     }
@@ -42,6 +54,10 @@ public struct CreateVariationGroupPublishResponseDataOutcomes: Codable, JSONEnco
         case ok
         case listingId
         case jobIds
+        case members
+        case failed
+        case afterRecorded
+        case ownOptionRows
         case warnings
         case error
     }
@@ -55,6 +71,10 @@ public struct CreateVariationGroupPublishResponseDataOutcomes: Codable, JSONEnco
         try container.encode(ok, forKey: .ok)
         try container.encodeIfPresent(listingId, forKey: .listingId)
         try container.encodeIfPresent(jobIds, forKey: .jobIds)
+        try container.encodeIfPresent(members, forKey: .members)
+        try container.encodeIfPresent(failed, forKey: .failed)
+        try container.encodeIfPresent(afterRecorded, forKey: .afterRecorded)
+        try container.encodeIfPresent(ownOptionRows, forKey: .ownOptionRows)
         try container.encode(warnings, forKey: .warnings)
         try container.encodeIfPresent(error, forKey: .error)
     }

@@ -16,9 +16,9 @@ public struct ListVaultReceiptTokensItemToken: Codable, JSONEncodable, Hashable 
         case pending = "pending"
         case live = "live"
         case expired = "expired"
+        case conflict = "conflict"
         case frozen = "frozen"
         case burned = "burned"
-        case conflict = "conflict"
     }
     public var id: String
     public var vaultItemId: String

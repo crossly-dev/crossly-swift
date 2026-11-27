@@ -13,47 +13,59 @@ import AnyCodable
 public struct ListBuyerCartSavedItem: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var quantity: Double
-    public var title: String
     public var platformListingId: String
-    public var sellerUserId: String
     public var slug: String
+    public var title: String
     /** The listing's price NOW, in cents — what moving it back would charge. */
     public var priceCents: Double
+    public var quantity: Double
     public var inStock: Bool
     public var availableQuantity: Double
+    public var sellerUserId: String
     public var savedAt: String
-    public var sellerDisplayName: String?
     public var thumbnail: String?
+    public var sellerDisplayName: String?
+    /** The option it was saved as (catalog `variants[].id`), restored on move-to-cart; null otherwise. */
+    public var listingVariantId: String?
+    /** That option's label (\"M\"). */
+    public var variantName: String?
+    /** The listing has options and this item names none: add it again with an option (move-to-cart refuses). */
+    public var needsOption: Bool?
 
-    public init(id: String, quantity: Double, title: String, platformListingId: String, sellerUserId: String, slug: String, priceCents: Double, inStock: Bool, availableQuantity: Double, savedAt: String, sellerDisplayName: String? = nil, thumbnail: String? = nil) {
+    public init(id: String, platformListingId: String, slug: String, title: String, priceCents: Double, quantity: Double, inStock: Bool, availableQuantity: Double, sellerUserId: String, savedAt: String, thumbnail: String? = nil, sellerDisplayName: String? = nil, listingVariantId: String? = nil, variantName: String? = nil, needsOption: Bool? = nil) {
         self.id = id
-        self.quantity = quantity
-        self.title = title
         self.platformListingId = platformListingId
-        self.sellerUserId = sellerUserId
         self.slug = slug
+        self.title = title
         self.priceCents = priceCents
+        self.quantity = quantity
         self.inStock = inStock
         self.availableQuantity = availableQuantity
+        self.sellerUserId = sellerUserId
         self.savedAt = savedAt
-        self.sellerDisplayName = sellerDisplayName
         self.thumbnail = thumbnail
+        self.sellerDisplayName = sellerDisplayName
+        self.listingVariantId = listingVariantId
+        self.variantName = variantName
+        self.needsOption = needsOption
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case quantity
-        case title
         case platformListingId
-        case sellerUserId
         case slug
+        case title
         case priceCents
+        case quantity
         case inStock
         case availableQuantity
+        case sellerUserId
         case savedAt
-        case sellerDisplayName
         case thumbnail
+        case sellerDisplayName
+        case listingVariantId
+        case variantName
+        case needsOption
     }
 
     // Encodable protocol methods
@@ -61,17 +73,20 @@ public struct ListBuyerCartSavedItem: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(quantity, forKey: .quantity)
-        try container.encode(title, forKey: .title)
         try container.encode(platformListingId, forKey: .platformListingId)
-        try container.encode(sellerUserId, forKey: .sellerUserId)
         try container.encode(slug, forKey: .slug)
+        try container.encode(title, forKey: .title)
         try container.encode(priceCents, forKey: .priceCents)
+        try container.encode(quantity, forKey: .quantity)
         try container.encode(inStock, forKey: .inStock)
         try container.encode(availableQuantity, forKey: .availableQuantity)
+        try container.encode(sellerUserId, forKey: .sellerUserId)
         try container.encode(savedAt, forKey: .savedAt)
-        try container.encodeIfPresent(sellerDisplayName, forKey: .sellerDisplayName)
         try container.encodeIfPresent(thumbnail, forKey: .thumbnail)
+        try container.encodeIfPresent(sellerDisplayName, forKey: .sellerDisplayName)
+        try container.encodeIfPresent(listingVariantId, forKey: .listingVariantId)
+        try container.encodeIfPresent(variantName, forKey: .variantName)
+        try container.encodeIfPresent(needsOption, forKey: .needsOption)
     }
 }
 

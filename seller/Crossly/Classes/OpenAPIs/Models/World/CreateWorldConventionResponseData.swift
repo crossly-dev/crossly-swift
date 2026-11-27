@@ -13,65 +13,98 @@ import AnyCodable
 public struct CreateWorldConventionResponseData: Codable, JSONEncodable, Hashable {
 
     public enum Status: String, Codable, CaseIterable {
-        case live = "live"
         case draft = "draft"
-        case _open = "open"
+        case live = "live"
         case cancelled = "cancelled"
+        case _open = "open"
         case ended = "ended"
     }
     public enum EntryModel: String, Codable, CaseIterable {
         case free = "free"
-        case invite = "invite"
         case fee = "fee"
+        case invite = "invite"
         case revenueShare = "revenue_share"
     }
     public var id: String
     public var createdAt: Date
     public var updatedAt: Date
+    public var description: String?
     public var status: Status
     public var title: String
+    public var storefrontId: String?
     public var endsAt: Date
-    public var categorySlug: String?
-    public var hostUserId: String
     public var startsAt: Date
+    public var timezone: String
+    public var categorySlug: String?
+    public var theme: String
+    public var sellerEventId: String?
     public var sceneId: String
+    public var hostUserId: String
     public var entryModel: EntryModel
     public var entryFeeCents: Double?
     public var revenueShareBps: Double?
     public var tableCount: Double
+    public var venueBookingId: String?
+    public var opensHour: Double
+    public var closesHour: Double
+    public var floorPlanVersion: Double
+    public var bookingMode: String
+    public var walkIns: Double
 
-    public init(id: String, createdAt: Date, updatedAt: Date, status: Status, title: String, endsAt: Date, categorySlug: String? = nil, hostUserId: String, startsAt: Date, sceneId: String, entryModel: EntryModel, entryFeeCents: Double? = nil, revenueShareBps: Double? = nil, tableCount: Double) {
+    public init(id: String, createdAt: Date, updatedAt: Date, description: String? = nil, status: Status, title: String, storefrontId: String? = nil, endsAt: Date, startsAt: Date, timezone: String, categorySlug: String? = nil, theme: String, sellerEventId: String? = nil, sceneId: String, hostUserId: String, entryModel: EntryModel, entryFeeCents: Double? = nil, revenueShareBps: Double? = nil, tableCount: Double, venueBookingId: String? = nil, opensHour: Double, closesHour: Double, floorPlanVersion: Double, bookingMode: String, walkIns: Double) {
         self.id = id
         self.createdAt = createdAt
         self.updatedAt = updatedAt
+        self.description = description
         self.status = status
         self.title = title
+        self.storefrontId = storefrontId
         self.endsAt = endsAt
-        self.categorySlug = categorySlug
-        self.hostUserId = hostUserId
         self.startsAt = startsAt
+        self.timezone = timezone
+        self.categorySlug = categorySlug
+        self.theme = theme
+        self.sellerEventId = sellerEventId
         self.sceneId = sceneId
+        self.hostUserId = hostUserId
         self.entryModel = entryModel
         self.entryFeeCents = entryFeeCents
         self.revenueShareBps = revenueShareBps
         self.tableCount = tableCount
+        self.venueBookingId = venueBookingId
+        self.opensHour = opensHour
+        self.closesHour = closesHour
+        self.floorPlanVersion = floorPlanVersion
+        self.bookingMode = bookingMode
+        self.walkIns = walkIns
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
         case createdAt
         case updatedAt
+        case description
         case status
         case title
+        case storefrontId
         case endsAt
-        case categorySlug
-        case hostUserId
         case startsAt
+        case timezone
+        case categorySlug
+        case theme
+        case sellerEventId
         case sceneId
+        case hostUserId
         case entryModel
         case entryFeeCents
         case revenueShareBps
         case tableCount
+        case venueBookingId
+        case opensHour
+        case closesHour
+        case floorPlanVersion
+        case bookingMode
+        case walkIns
     }
 
     // Encodable protocol methods
@@ -81,17 +114,28 @@ public struct CreateWorldConventionResponseData: Codable, JSONEncodable, Hashabl
         try container.encode(id, forKey: .id)
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(updatedAt, forKey: .updatedAt)
+        try container.encodeIfPresent(description, forKey: .description)
         try container.encode(status, forKey: .status)
         try container.encode(title, forKey: .title)
+        try container.encodeIfPresent(storefrontId, forKey: .storefrontId)
         try container.encode(endsAt, forKey: .endsAt)
-        try container.encodeIfPresent(categorySlug, forKey: .categorySlug)
-        try container.encode(hostUserId, forKey: .hostUserId)
         try container.encode(startsAt, forKey: .startsAt)
+        try container.encode(timezone, forKey: .timezone)
+        try container.encodeIfPresent(categorySlug, forKey: .categorySlug)
+        try container.encode(theme, forKey: .theme)
+        try container.encodeIfPresent(sellerEventId, forKey: .sellerEventId)
         try container.encode(sceneId, forKey: .sceneId)
+        try container.encode(hostUserId, forKey: .hostUserId)
         try container.encode(entryModel, forKey: .entryModel)
         try container.encodeIfPresent(entryFeeCents, forKey: .entryFeeCents)
         try container.encodeIfPresent(revenueShareBps, forKey: .revenueShareBps)
         try container.encode(tableCount, forKey: .tableCount)
+        try container.encodeIfPresent(venueBookingId, forKey: .venueBookingId)
+        try container.encode(opensHour, forKey: .opensHour)
+        try container.encode(closesHour, forKey: .closesHour)
+        try container.encode(floorPlanVersion, forKey: .floorPlanVersion)
+        try container.encode(bookingMode, forKey: .bookingMode)
+        try container.encode(walkIns, forKey: .walkIns)
     }
 }
 

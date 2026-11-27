@@ -13,8 +13,8 @@ import AnyCodable
 public struct CreateBuyerGiftCardRedeemResponseData: Codable, JSONEncodable, Hashable {
 
     public enum Rail: String, Codable, CaseIterable {
-        case bucks = "bucks"
         case cbx = "cbx"
+        case bucks = "bucks"
     }
     public var giftCardId: String
     public var amountCents: Double

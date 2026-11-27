@@ -13,37 +13,37 @@ import AnyCodable
 public struct GetBuyerListingBreakResponseData: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var status: String
     public var title: String
+    public var format: String
+    public var status: String
     public var slug: String?
     public var priceCents: Double
-    public var format: String
-    public var seed: String?
-    public var seedCommit: String
     public var spotsLeft: Double
+    public var seedCommit: String
+    public var seed: String?
 
-    public init(id: String, status: String, title: String, slug: String? = nil, priceCents: Double, format: String, seed: String? = nil, seedCommit: String, spotsLeft: Double) {
+    public init(id: String, title: String, format: String, status: String, slug: String? = nil, priceCents: Double, spotsLeft: Double, seedCommit: String, seed: String? = nil) {
         self.id = id
-        self.status = status
         self.title = title
+        self.format = format
+        self.status = status
         self.slug = slug
         self.priceCents = priceCents
-        self.format = format
-        self.seed = seed
-        self.seedCommit = seedCommit
         self.spotsLeft = spotsLeft
+        self.seedCommit = seedCommit
+        self.seed = seed
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case status
         case title
+        case format
+        case status
         case slug
         case priceCents
-        case format
-        case seed
-        case seedCommit
         case spotsLeft
+        case seedCommit
+        case seed
     }
 
     // Encodable protocol methods
@@ -51,14 +51,14 @@ public struct GetBuyerListingBreakResponseData: Codable, JSONEncodable, Hashable
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(status, forKey: .status)
         try container.encode(title, forKey: .title)
+        try container.encode(format, forKey: .format)
+        try container.encode(status, forKey: .status)
         try container.encodeIfPresent(slug, forKey: .slug)
         try container.encode(priceCents, forKey: .priceCents)
-        try container.encode(format, forKey: .format)
-        try container.encodeIfPresent(seed, forKey: .seed)
-        try container.encode(seedCommit, forKey: .seedCommit)
         try container.encode(spotsLeft, forKey: .spotsLeft)
+        try container.encode(seedCommit, forKey: .seedCommit)
+        try container.encodeIfPresent(seed, forKey: .seed)
     }
 }
 

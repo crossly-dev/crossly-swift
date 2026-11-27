@@ -16,19 +16,37 @@ public struct CreateMagicScanResponseTopHits: Codable, JSONEncodable, Hashable {
         case active = "active"
         case sold = "sold"
     }
+    public enum Format: String, Codable, CaseIterable {
+        case auction = "auction"
+        case fixedPrice = "fixed_price"
+    }
     public var platform: String
     public var title: String
     public var priceCents: Double
     public var imageUrl: String?
     public var listingUrl: String?
-    /** Origin marker for the UI badge. */
+    /** Origin marker for the UI badge. Every eBay hit is an image-search hit ('ebay-image'); 'ebay-text' is kept in the union only for rows cached before that was fixed. */
     public var origin: String
-    /** CLIP cosine [0,1]; populated after the visual-rank pass. */
+    /** CLIP cosine [0,1]; populated after the visual-rank pass. ABSENT = unscored (no image, CLIP down) — never filled in with a made-up value. */
     public var visualSim: Double?
+    /** Title agreement with the match reference after the hard gates (rank.ts). */
+    public var agreement: Double?
+    /** True when the comp states the photo's own identifier (GTIN / style code). */
+    public var carriesIdentifier: Bool?
+    /** Price outlier within its condition / grade bucket: shown, but not used for pricing. */
+    public var priceOutlier: Bool?
+    /** Condition text the platform reported, for the pricing buckets. */
+    public var condition: String?
+    /** Brand the platform reported, for the brand gate at verdict time. */
+    public var brand: String?
     /** 'active' = currently for sale; 'sold' = historical comp. UI renders distinct badges so the seller can see both at a glance. */
     public var state: State
+    /** Shipping in cents (0 = free), where the platform reports it (ExternalSoldComp.shippingCents). */
+    public var shippingCents: Double?
+    /** Auction vs fixed price, where the platform says; an active auction's price is a bid (compPriceIsBid). */
+    public var format: Format?
 
-    public init(platform: String, title: String, priceCents: Double, imageUrl: String? = nil, listingUrl: String? = nil, origin: String, visualSim: Double? = nil, state: State) {
+    public init(platform: String, title: String, priceCents: Double, imageUrl: String? = nil, listingUrl: String? = nil, origin: String, visualSim: Double? = nil, agreement: Double? = nil, carriesIdentifier: Bool? = nil, priceOutlier: Bool? = nil, condition: String? = nil, brand: String? = nil, state: State, shippingCents: Double? = nil, format: Format? = nil) {
         self.platform = platform
         self.title = title
         self.priceCents = priceCents
@@ -36,7 +54,14 @@ public struct CreateMagicScanResponseTopHits: Codable, JSONEncodable, Hashable {
         self.listingUrl = listingUrl
         self.origin = origin
         self.visualSim = visualSim
+        self.agreement = agreement
+        self.carriesIdentifier = carriesIdentifier
+        self.priceOutlier = priceOutlier
+        self.condition = condition
+        self.brand = brand
         self.state = state
+        self.shippingCents = shippingCents
+        self.format = format
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -47,7 +72,14 @@ public struct CreateMagicScanResponseTopHits: Codable, JSONEncodable, Hashable {
         case listingUrl
         case origin
         case visualSim
+        case agreement
+        case carriesIdentifier
+        case priceOutlier
+        case condition
+        case brand
         case state
+        case shippingCents
+        case format
     }
 
     // Encodable protocol methods
@@ -61,7 +93,14 @@ public struct CreateMagicScanResponseTopHits: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(listingUrl, forKey: .listingUrl)
         try container.encode(origin, forKey: .origin)
         try container.encodeIfPresent(visualSim, forKey: .visualSim)
+        try container.encodeIfPresent(agreement, forKey: .agreement)
+        try container.encodeIfPresent(carriesIdentifier, forKey: .carriesIdentifier)
+        try container.encodeIfPresent(priceOutlier, forKey: .priceOutlier)
+        try container.encodeIfPresent(condition, forKey: .condition)
+        try container.encodeIfPresent(brand, forKey: .brand)
         try container.encode(state, forKey: .state)
+        try container.encodeIfPresent(shippingCents, forKey: .shippingCents)
+        try container.encodeIfPresent(format, forKey: .format)
     }
 }
 

@@ -15,21 +15,21 @@ public struct CreateBuyerAuctionPayResponseData: Codable, JSONEncodable, Hashabl
     public var paid: Bool
     /** Stripe PaymentIntent client secret — confirm it with Stripe on the buyer's device. */
     public var clientSecret: String?
-    public var amountCents: Double?
     public var paymentIntentId: String?
+    public var amountCents: Double?
 
-    public init(paid: Bool, clientSecret: String? = nil, amountCents: Double? = nil, paymentIntentId: String? = nil) {
+    public init(paid: Bool, clientSecret: String? = nil, paymentIntentId: String? = nil, amountCents: Double? = nil) {
         self.paid = paid
         self.clientSecret = clientSecret
-        self.amountCents = amountCents
         self.paymentIntentId = paymentIntentId
+        self.amountCents = amountCents
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case paid
         case clientSecret
-        case amountCents
         case paymentIntentId
+        case amountCents
     }
 
     // Encodable protocol methods
@@ -38,8 +38,8 @@ public struct CreateBuyerAuctionPayResponseData: Codable, JSONEncodable, Hashabl
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(paid, forKey: .paid)
         try container.encodeIfPresent(clientSecret, forKey: .clientSecret)
-        try container.encodeIfPresent(amountCents, forKey: .amountCents)
         try container.encodeIfPresent(paymentIntentId, forKey: .paymentIntentId)
+        try container.encodeIfPresent(amountCents, forKey: .amountCents)
     }
 }
 

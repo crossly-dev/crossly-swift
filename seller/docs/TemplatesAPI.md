@@ -12,6 +12,7 @@ Method | HTTP request | Description
 [**deleteMeTemplateShare**](TemplatesAPI.md#deletemetemplateshare) | **DELETE** /v1/me/templates/{id}/share | Revoke a template share link.
 [**getMeTemplate**](TemplatesAPI.md#getmetemplate) | **GET** /v1/me/templates/{id} | Fetch one template in full.
 [**getMeTemplateSuggest**](TemplatesAPI.md#getmetemplatesuggest) | **GET** /v1/me/templates/suggest | The seller&#39;s default template for a category.
+[**getPublicTemplate**](TemplatesAPI.md#getpublictemplate) | **GET** /v1/public/templates/{token} | A shared template by its share token (public, no auth).
 [**listMeTemplates**](TemplatesAPI.md#listmetemplates) | **GET** /v1/me/templates | List the seller&#39;s templates.
 [**updateMeTemplate**](TemplatesAPI.md#updatemetemplate) | **PATCH** /v1/me/templates/{id} | Patch a template.
 
@@ -386,6 +387,54 @@ This endpoint does not need any parameter.
 ### Authorization
 
 [PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getPublicTemplate**
+```swift
+    open class func getPublicTemplate(token: String, completion: @escaping (_ data: GetPublicTemplateResponse?, _ error: Error?) -> Void)
+```
+
+A shared template by its share token (public, no auth).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let token = "token_example" // String | 
+
+// A shared template by its share token (public, no auth).
+TemplatesAPI.getPublicTemplate(token: token) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **token** | **String** |  | 
+
+### Return type
+
+**GetPublicTemplateResponse**
+
+### Authorization
+
+No authorization required
 
 ### HTTP request headers
 

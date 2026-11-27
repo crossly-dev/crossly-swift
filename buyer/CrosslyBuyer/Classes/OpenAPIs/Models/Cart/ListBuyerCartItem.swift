@@ -17,16 +17,18 @@ public struct ListBuyerCartItem: Codable, JSONEncodable, Hashable {
     public var platformListingId: String
     public var quantity: Double
     public var unitPriceCents: Double
+    public var listingVariantId: String?
     public var slug: String?
     public var title: String?
     public var listingStatus: String?
 
-    public init(available: Bool, id: String, platformListingId: String, quantity: Double, unitPriceCents: Double, slug: String? = nil, title: String? = nil, listingStatus: String? = nil) {
+    public init(available: Bool, id: String, platformListingId: String, quantity: Double, unitPriceCents: Double, listingVariantId: String? = nil, slug: String? = nil, title: String? = nil, listingStatus: String? = nil) {
         self.available = available
         self.id = id
         self.platformListingId = platformListingId
         self.quantity = quantity
         self.unitPriceCents = unitPriceCents
+        self.listingVariantId = listingVariantId
         self.slug = slug
         self.title = title
         self.listingStatus = listingStatus
@@ -38,6 +40,7 @@ public struct ListBuyerCartItem: Codable, JSONEncodable, Hashable {
         case platformListingId
         case quantity
         case unitPriceCents
+        case listingVariantId
         case slug
         case title
         case listingStatus
@@ -52,6 +55,7 @@ public struct ListBuyerCartItem: Codable, JSONEncodable, Hashable {
         try container.encode(platformListingId, forKey: .platformListingId)
         try container.encode(quantity, forKey: .quantity)
         try container.encode(unitPriceCents, forKey: .unitPriceCents)
+        try container.encodeIfPresent(listingVariantId, forKey: .listingVariantId)
         try container.encodeIfPresent(slug, forKey: .slug)
         try container.encodeIfPresent(title, forKey: .title)
         try container.encodeIfPresent(listingStatus, forKey: .listingStatus)

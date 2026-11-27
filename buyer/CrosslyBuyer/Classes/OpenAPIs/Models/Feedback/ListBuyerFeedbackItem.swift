@@ -13,49 +13,49 @@ import AnyCodable
 public struct ListBuyerFeedbackItem: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var createdAt: String
     public var rating: Double
+    public var createdAt: String
     public var body: String?
+    public var revisedAt: String?
+    public var sellerReply: String?
+    public var sellerRepliedAt: String?
+    public var sellerName: String?
+    public var itemTitle: String?
+    public var ratingAsDescribed: Double?
     public var ratingCommunication: Double?
     public var ratingShipSpeed: Double?
     public var ratingShipCost: Double?
-    public var ratingAsDescribed: Double?
-    public var sellerReply: String?
-    public var sellerRepliedAt: String?
-    public var revisedAt: String?
-    public var itemTitle: String?
-    public var sellerName: String?
 
-    public init(id: String, createdAt: String, rating: Double, body: String? = nil, ratingCommunication: Double? = nil, ratingShipSpeed: Double? = nil, ratingShipCost: Double? = nil, ratingAsDescribed: Double? = nil, sellerReply: String? = nil, sellerRepliedAt: String? = nil, revisedAt: String? = nil, itemTitle: String? = nil, sellerName: String? = nil) {
+    public init(id: String, rating: Double, createdAt: String, body: String? = nil, revisedAt: String? = nil, sellerReply: String? = nil, sellerRepliedAt: String? = nil, sellerName: String? = nil, itemTitle: String? = nil, ratingAsDescribed: Double? = nil, ratingCommunication: Double? = nil, ratingShipSpeed: Double? = nil, ratingShipCost: Double? = nil) {
         self.id = id
-        self.createdAt = createdAt
         self.rating = rating
+        self.createdAt = createdAt
         self.body = body
+        self.revisedAt = revisedAt
+        self.sellerReply = sellerReply
+        self.sellerRepliedAt = sellerRepliedAt
+        self.sellerName = sellerName
+        self.itemTitle = itemTitle
+        self.ratingAsDescribed = ratingAsDescribed
         self.ratingCommunication = ratingCommunication
         self.ratingShipSpeed = ratingShipSpeed
         self.ratingShipCost = ratingShipCost
-        self.ratingAsDescribed = ratingAsDescribed
-        self.sellerReply = sellerReply
-        self.sellerRepliedAt = sellerRepliedAt
-        self.revisedAt = revisedAt
-        self.itemTitle = itemTitle
-        self.sellerName = sellerName
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case createdAt
         case rating
+        case createdAt
         case body
+        case revisedAt
+        case sellerReply
+        case sellerRepliedAt
+        case sellerName
+        case itemTitle
+        case ratingAsDescribed
         case ratingCommunication
         case ratingShipSpeed
         case ratingShipCost
-        case ratingAsDescribed
-        case sellerReply
-        case sellerRepliedAt
-        case revisedAt
-        case itemTitle
-        case sellerName
     }
 
     // Encodable protocol methods
@@ -63,18 +63,18 @@ public struct ListBuyerFeedbackItem: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(createdAt, forKey: .createdAt)
         try container.encode(rating, forKey: .rating)
+        try container.encode(createdAt, forKey: .createdAt)
         try container.encodeIfPresent(body, forKey: .body)
+        try container.encodeIfPresent(revisedAt, forKey: .revisedAt)
+        try container.encodeIfPresent(sellerReply, forKey: .sellerReply)
+        try container.encodeIfPresent(sellerRepliedAt, forKey: .sellerRepliedAt)
+        try container.encodeIfPresent(sellerName, forKey: .sellerName)
+        try container.encodeIfPresent(itemTitle, forKey: .itemTitle)
+        try container.encodeIfPresent(ratingAsDescribed, forKey: .ratingAsDescribed)
         try container.encodeIfPresent(ratingCommunication, forKey: .ratingCommunication)
         try container.encodeIfPresent(ratingShipSpeed, forKey: .ratingShipSpeed)
         try container.encodeIfPresent(ratingShipCost, forKey: .ratingShipCost)
-        try container.encodeIfPresent(ratingAsDescribed, forKey: .ratingAsDescribed)
-        try container.encodeIfPresent(sellerReply, forKey: .sellerReply)
-        try container.encodeIfPresent(sellerRepliedAt, forKey: .sellerRepliedAt)
-        try container.encodeIfPresent(revisedAt, forKey: .revisedAt)
-        try container.encodeIfPresent(itemTitle, forKey: .itemTitle)
-        try container.encodeIfPresent(sellerName, forKey: .sellerName)
     }
 }
 

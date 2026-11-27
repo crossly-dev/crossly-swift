@@ -13,15 +13,24 @@ import AnyCodable
 public struct CreateListingResponse: Codable, JSONEncodable, Hashable {
 
     public var listing: IdResponse
+    /** One dispatched crosspost job per accepted platform. */
     public var jobs: [CreateListingResponseJobs]
+    /** Platforms not dispatched, and why (category gate, dropship_not_allowed_on_platform, a dispatch refusal such as validation_error \"Add a weight before listing\", ...). The listing itself was created. */
     public var skipped: [CreateListingResponseSkipped]
     public var bulkJobId: String?
+    public var clientReferenceId: String?
+    public var existing: Bool?
+    /** Soft item-specifics problems (strictItemSpecifics off) and eBay fields accepted but mapped or ignored. */
+    public var warnings: [CreateListingResponseWarnings]?
 
-    public init(listing: IdResponse, jobs: [CreateListingResponseJobs], skipped: [CreateListingResponseSkipped], bulkJobId: String? = nil) {
+    public init(listing: IdResponse, jobs: [CreateListingResponseJobs], skipped: [CreateListingResponseSkipped], bulkJobId: String? = nil, clientReferenceId: String? = nil, existing: Bool? = nil, warnings: [CreateListingResponseWarnings]? = nil) {
         self.listing = listing
         self.jobs = jobs
         self.skipped = skipped
         self.bulkJobId = bulkJobId
+        self.clientReferenceId = clientReferenceId
+        self.existing = existing
+        self.warnings = warnings
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -29,6 +38,9 @@ public struct CreateListingResponse: Codable, JSONEncodable, Hashable {
         case jobs
         case skipped
         case bulkJobId
+        case clientReferenceId
+        case existing
+        case warnings
     }
 
     // Encodable protocol methods
@@ -39,6 +51,9 @@ public struct CreateListingResponse: Codable, JSONEncodable, Hashable {
         try container.encode(jobs, forKey: .jobs)
         try container.encode(skipped, forKey: .skipped)
         try container.encodeIfPresent(bulkJobId, forKey: .bulkJobId)
+        try container.encodeIfPresent(clientReferenceId, forKey: .clientReferenceId)
+        try container.encodeIfPresent(existing, forKey: .existing)
+        try container.encodeIfPresent(warnings, forKey: .warnings)
     }
 }
 

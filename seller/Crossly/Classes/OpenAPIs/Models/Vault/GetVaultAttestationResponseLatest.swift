@@ -12,37 +12,37 @@ import AnyCodable
 
 public struct GetVaultAttestationResponseLatest: Codable, JSONEncodable, Hashable {
 
-    public var physicalCount: GetVaultAttestationResponseLatestPhysicalCount?
-    public var insuranceCertificate: GetVaultAttestationResponseLatestPhysicalCount?
-    public var soc1Type2: GetVaultAttestationResponseLatestPhysicalCount?
-    public var soc2: GetVaultAttestationResponseLatestPhysicalCount?
-    public var other: GetVaultAttestationResponseLatestPhysicalCount?
+    public var other: GetVaultAttestationResponseLatestOther?
+    public var physicalCount: GetVaultAttestationResponseLatestOther?
+    public var insuranceCertificate: GetVaultAttestationResponseLatestOther?
+    public var soc1Type2: GetVaultAttestationResponseLatestOther?
+    public var soc2: GetVaultAttestationResponseLatestOther?
 
-    public init(physicalCount: GetVaultAttestationResponseLatestPhysicalCount? = nil, insuranceCertificate: GetVaultAttestationResponseLatestPhysicalCount? = nil, soc1Type2: GetVaultAttestationResponseLatestPhysicalCount? = nil, soc2: GetVaultAttestationResponseLatestPhysicalCount? = nil, other: GetVaultAttestationResponseLatestPhysicalCount? = nil) {
+    public init(other: GetVaultAttestationResponseLatestOther? = nil, physicalCount: GetVaultAttestationResponseLatestOther? = nil, insuranceCertificate: GetVaultAttestationResponseLatestOther? = nil, soc1Type2: GetVaultAttestationResponseLatestOther? = nil, soc2: GetVaultAttestationResponseLatestOther? = nil) {
+        self.other = other
         self.physicalCount = physicalCount
         self.insuranceCertificate = insuranceCertificate
         self.soc1Type2 = soc1Type2
         self.soc2 = soc2
-        self.other = other
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case other
         case physicalCount = "physical_count"
         case insuranceCertificate = "insurance_certificate"
         case soc1Type2 = "soc1_type2"
         case soc2
-        case other
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(other, forKey: .other)
         try container.encodeIfPresent(physicalCount, forKey: .physicalCount)
         try container.encodeIfPresent(insuranceCertificate, forKey: .insuranceCertificate)
         try container.encodeIfPresent(soc1Type2, forKey: .soc1Type2)
         try container.encodeIfPresent(soc2, forKey: .soc2)
-        try container.encodeIfPresent(other, forKey: .other)
     }
 }
 

@@ -16,12 +16,12 @@ public struct ListListingDiscrepanciesItem: Codable, JSONEncodable, Hashable {
     public var createdAt: Date
     public var updatedAt: Date
     public var userId: String
-    public var source: String
     public var platform: String
-    public var listingId: String
+    public var accountSlot: Double
     public var marketplaceId: String
     public var lastError: String?
-    public var accountSlot: Double
+    public var source: String
+    public var listingId: String
     public var field: String
     public var ourValue: String?
     public var remoteValue: String?
@@ -30,17 +30,17 @@ public struct ListListingDiscrepanciesItem: Codable, JSONEncodable, Hashable {
     public var dismissedAt: Date?
     public var dismissedRemoteValue: String?
 
-    public init(id: String, createdAt: Date, updatedAt: Date, userId: String, source: String, platform: String, listingId: String, marketplaceId: String, lastError: String? = nil, accountSlot: Double, field: String, ourValue: String? = nil, remoteValue: String? = nil, firstDetectedAt: Date, lastDetectedAt: Date, dismissedAt: Date? = nil, dismissedRemoteValue: String? = nil) {
+    public init(id: String, createdAt: Date, updatedAt: Date, userId: String, platform: String, accountSlot: Double, marketplaceId: String, lastError: String? = nil, source: String, listingId: String, field: String, ourValue: String? = nil, remoteValue: String? = nil, firstDetectedAt: Date, lastDetectedAt: Date, dismissedAt: Date? = nil, dismissedRemoteValue: String? = nil) {
         self.id = id
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.userId = userId
-        self.source = source
         self.platform = platform
-        self.listingId = listingId
+        self.accountSlot = accountSlot
         self.marketplaceId = marketplaceId
         self.lastError = lastError
-        self.accountSlot = accountSlot
+        self.source = source
+        self.listingId = listingId
         self.field = field
         self.ourValue = ourValue
         self.remoteValue = remoteValue
@@ -55,12 +55,12 @@ public struct ListListingDiscrepanciesItem: Codable, JSONEncodable, Hashable {
         case createdAt
         case updatedAt
         case userId
-        case source
         case platform
-        case listingId
+        case accountSlot
         case marketplaceId
         case lastError
-        case accountSlot
+        case source
+        case listingId
         case field
         case ourValue
         case remoteValue
@@ -78,12 +78,12 @@ public struct ListListingDiscrepanciesItem: Codable, JSONEncodable, Hashable {
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(updatedAt, forKey: .updatedAt)
         try container.encode(userId, forKey: .userId)
-        try container.encode(source, forKey: .source)
         try container.encode(platform, forKey: .platform)
-        try container.encode(listingId, forKey: .listingId)
+        try container.encode(accountSlot, forKey: .accountSlot)
         try container.encode(marketplaceId, forKey: .marketplaceId)
         try container.encodeIfPresent(lastError, forKey: .lastError)
-        try container.encode(accountSlot, forKey: .accountSlot)
+        try container.encode(source, forKey: .source)
+        try container.encode(listingId, forKey: .listingId)
         try container.encode(field, forKey: .field)
         try container.encodeIfPresent(ourValue, forKey: .ourValue)
         try container.encodeIfPresent(remoteValue, forKey: .remoteValue)

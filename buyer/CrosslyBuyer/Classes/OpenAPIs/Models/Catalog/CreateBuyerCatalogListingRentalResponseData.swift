@@ -16,12 +16,14 @@ public struct CreateBuyerCatalogListingRentalResponseData: Codable, JSONEncodabl
     public var clientSecret: String?
     public var totalCents: Double
     public var needsApproval: Bool
+    public var quote: CreateBuyerCatalogListingRentalResponseDataQuote
 
-    public init(rentalId: String, clientSecret: String? = nil, totalCents: Double, needsApproval: Bool) {
+    public init(rentalId: String, clientSecret: String? = nil, totalCents: Double, needsApproval: Bool, quote: CreateBuyerCatalogListingRentalResponseDataQuote) {
         self.rentalId = rentalId
         self.clientSecret = clientSecret
         self.totalCents = totalCents
         self.needsApproval = needsApproval
+        self.quote = quote
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -29,6 +31,7 @@ public struct CreateBuyerCatalogListingRentalResponseData: Codable, JSONEncodabl
         case clientSecret
         case totalCents
         case needsApproval
+        case quote
     }
 
     // Encodable protocol methods
@@ -39,6 +42,7 @@ public struct CreateBuyerCatalogListingRentalResponseData: Codable, JSONEncodabl
         try container.encodeIfPresent(clientSecret, forKey: .clientSecret)
         try container.encode(totalCents, forKey: .totalCents)
         try container.encode(needsApproval, forKey: .needsApproval)
+        try container.encode(quote, forKey: .quote)
     }
 }
 

@@ -14,8 +14,8 @@ public struct CreateVaultMarketPartnerApplyResponsePartner: Codable, JSONEncodab
 
     public enum Status: String, Codable, CaseIterable {
         case applied = "applied"
-        case approved = "approved"
         case rejected = "rejected"
+        case approved = "approved"
         case suspended = "suspended"
     }
     public var id: String
@@ -31,8 +31,12 @@ public struct CreateVaultMarketPartnerApplyResponsePartner: Codable, JSONEncodab
     public var appliedAt: String
     public var decidedAt: String?
     public var decisionNote: String?
+    public var postalCode: String?
+    public var hours: [String: AnyCodable]?
+    public var services: [String]
+    public var listed: Bool
 
-    public init(id: String, userId: String, status: Status, shopName: String, address: [String: AnyCodable]? = nil, website: String? = nil, note: String? = nil, code: String? = nil, shareBps: Double, capCents: Double, appliedAt: String, decidedAt: String? = nil, decisionNote: String? = nil) {
+    public init(id: String, userId: String, status: Status, shopName: String, address: [String: AnyCodable]? = nil, website: String? = nil, note: String? = nil, code: String? = nil, shareBps: Double, capCents: Double, appliedAt: String, decidedAt: String? = nil, decisionNote: String? = nil, postalCode: String? = nil, hours: [String: AnyCodable]? = nil, services: [String], listed: Bool) {
         self.id = id
         self.userId = userId
         self.status = status
@@ -46,6 +50,10 @@ public struct CreateVaultMarketPartnerApplyResponsePartner: Codable, JSONEncodab
         self.appliedAt = appliedAt
         self.decidedAt = decidedAt
         self.decisionNote = decisionNote
+        self.postalCode = postalCode
+        self.hours = hours
+        self.services = services
+        self.listed = listed
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -62,6 +70,10 @@ public struct CreateVaultMarketPartnerApplyResponsePartner: Codable, JSONEncodab
         case appliedAt
         case decidedAt
         case decisionNote
+        case postalCode
+        case hours
+        case services
+        case listed
     }
 
     // Encodable protocol methods
@@ -81,6 +93,10 @@ public struct CreateVaultMarketPartnerApplyResponsePartner: Codable, JSONEncodab
         try container.encode(appliedAt, forKey: .appliedAt)
         try container.encodeIfPresent(decidedAt, forKey: .decidedAt)
         try container.encodeIfPresent(decisionNote, forKey: .decisionNote)
+        try container.encodeIfPresent(postalCode, forKey: .postalCode)
+        try container.encodeIfPresent(hours, forKey: .hours)
+        try container.encode(services, forKey: .services)
+        try container.encode(listed, forKey: .listed)
     }
 }
 

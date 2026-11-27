@@ -14,9 +14,9 @@ public struct GetVaultMarketStatementByMonthResponseOneOf1Holdings: Codable, JSO
 
     public enum MarkQuality: String, Codable, CaseIterable {
         case _none = "none"
+        case c = "C"
         case a = "A"
         case b = "B"
-        case c = "C"
     }
     public var vaultItemId: String
     public var receiptNo: String?

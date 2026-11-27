@@ -14,15 +14,18 @@ public struct GetBuyerVaultMarketHistoryResponse: Codable, JSONEncodable, Hashab
 
     public var series: [GetBuyerVaultMarketHistoryResponseSeries]
     public var now: GetBuyerVaultMarketHistoryResponseNow
+    public var today: GetBuyerVaultMarketHistoryResponseToday
 
-    public init(series: [GetBuyerVaultMarketHistoryResponseSeries], now: GetBuyerVaultMarketHistoryResponseNow) {
+    public init(series: [GetBuyerVaultMarketHistoryResponseSeries], now: GetBuyerVaultMarketHistoryResponseNow, today: GetBuyerVaultMarketHistoryResponseToday) {
         self.series = series
         self.now = now
+        self.today = today
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case series
         case now
+        case today
     }
 
     // Encodable protocol methods
@@ -31,6 +34,7 @@ public struct GetBuyerVaultMarketHistoryResponse: Codable, JSONEncodable, Hashab
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(series, forKey: .series)
         try container.encode(now, forKey: .now)
+        try container.encode(today, forKey: .today)
     }
 }
 

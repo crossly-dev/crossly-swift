@@ -14,8 +14,8 @@ public struct CreateVaultMarketEntityKybResponse: Codable, JSONEncodable, Hashab
 
     public enum KybStatus: String, Codable, CaseIterable {
         case pending = "pending"
-        case approved = "approved"
         case rejected = "rejected"
+        case approved = "approved"
         case restricted = "restricted"
     }
     public var kybStatus: KybStatus

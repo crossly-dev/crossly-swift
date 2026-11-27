@@ -14,8 +14,8 @@ import AnyCodable
 public struct GetOrderEvidenceResponseDataSealAssessment: Codable, JSONEncodable, Hashable {
 
     public enum Verdict: String, Codable, CaseIterable {
-        case opened = "opened"
         case unknown = "unknown"
+        case opened = "opened"
         case intact = "intact"
         case suspect = "suspect"
     }

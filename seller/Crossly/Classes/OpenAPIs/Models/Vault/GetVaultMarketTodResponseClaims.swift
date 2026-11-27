@@ -14,11 +14,11 @@ public struct GetVaultMarketTodResponseClaims: Codable, JSONEncodable, Hashable 
 
     public enum Status: String, Codable, CaseIterable {
         case draft = "draft"
+        case submitted = "submitted"
         case rejected = "rejected"
         case withdrawn = "withdrawn"
         case released = "released"
         case waiting = "waiting"
-        case submitted = "submitted"
         case needsInfo = "needs_info"
         case partlyReleased = "partly_released"
         case objected = "objected"

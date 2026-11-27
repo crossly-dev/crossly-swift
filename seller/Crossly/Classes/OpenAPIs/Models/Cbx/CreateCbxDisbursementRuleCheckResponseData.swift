@@ -13,13 +13,13 @@ import AnyCodable
 public struct CreateCbxDisbursementRuleCheckResponseData: Codable, JSONEncodable, Hashable {
 
     public enum Outcome: String, Codable, CaseIterable {
-        case fired = "fired"
         case coverage = "coverage"
-        case noPrice = "no_price"
-        case belowThreshold = "below_threshold"
         case cadence = "cadence"
-        case noRecipients = "no_recipients"
+        case noPrice = "no_price"
         case inactive = "inactive"
+        case fired = "fired"
+        case belowThreshold = "below_threshold"
+        case noRecipients = "no_recipients"
     }
     public var outcome: Outcome
     public var fired: Bool

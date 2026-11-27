@@ -21,8 +21,9 @@ public struct GetVaultMarketProofOfReserveResponseLatest: Codable, JSONEncodable
     public var loansOpen: Double
     public var totalInsuredCents: Double
     public var memo: String
+    public var anchor: GetVaultMarketProofOfReserveResponseLatestAnchor
 
-    public init(day: String, root: String, leafCount: Double, methodVersion: Double, builtAt: String, units: GetVaultMarketProofOfReserveByDayResponseUnits, loansOpen: Double, totalInsuredCents: Double, memo: String) {
+    public init(day: String, root: String, leafCount: Double, methodVersion: Double, builtAt: String, units: GetVaultMarketProofOfReserveByDayResponseUnits, loansOpen: Double, totalInsuredCents: Double, memo: String, anchor: GetVaultMarketProofOfReserveResponseLatestAnchor) {
         self.day = day
         self.root = root
         self.leafCount = leafCount
@@ -32,6 +33,7 @@ public struct GetVaultMarketProofOfReserveResponseLatest: Codable, JSONEncodable
         self.loansOpen = loansOpen
         self.totalInsuredCents = totalInsuredCents
         self.memo = memo
+        self.anchor = anchor
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -44,6 +46,7 @@ public struct GetVaultMarketProofOfReserveResponseLatest: Codable, JSONEncodable
         case loansOpen
         case totalInsuredCents
         case memo
+        case anchor
     }
 
     // Encodable protocol methods
@@ -59,6 +62,7 @@ public struct GetVaultMarketProofOfReserveResponseLatest: Codable, JSONEncodable
         try container.encode(loansOpen, forKey: .loansOpen)
         try container.encode(totalInsuredCents, forKey: .totalInsuredCents)
         try container.encode(memo, forKey: .memo)
+        try container.encode(anchor, forKey: .anchor)
     }
 }
 

@@ -13,10 +13,10 @@ import AnyCodable
 public struct ListVaultMarketAgentWatchesItem: Codable, JSONEncodable, Hashable {
 
     public enum Metric: String, Codable, CaseIterable {
-        case mark = "mark"
         case ask = "ask"
-        case bid = "bid"
         case last = "last"
+        case mark = "mark"
+        case bid = "bid"
     }
     public enum Direction: String, Codable, CaseIterable {
         case above = "above"

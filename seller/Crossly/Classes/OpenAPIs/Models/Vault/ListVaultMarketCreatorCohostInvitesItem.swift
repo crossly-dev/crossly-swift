@@ -13,10 +13,10 @@ import AnyCodable
 public struct ListVaultMarketCreatorCohostInvitesItem: Codable, JSONEncodable, Hashable {
 
     public enum Status: String, Codable, CaseIterable {
-        case invited = "invited"
-        case withdrawn = "withdrawn"
         case accepted = "accepted"
         case declined = "declined"
+        case withdrawn = "withdrawn"
+        case invited = "invited"
     }
     public var key: ListVaultMarketCreatorCohostInvitesItemKey
     public var guidance: String

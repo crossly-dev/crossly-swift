@@ -14,12 +14,12 @@ public struct CreateWorldOutfitResponseDataPreset: Codable, JSONEncodable, Hasha
 
     public var id: String
     public var name: String
-    public var appearance: ListWorldOutfitsItemAppearance
+    public var appearance: CreateWorldOutfitResponseDataPresetAppearance
     public var items: [[String: AnyCodable]]
     public var createdAt: String
     public var updatedAt: String
 
-    public init(id: String, name: String, appearance: ListWorldOutfitsItemAppearance, items: [[String: AnyCodable]], createdAt: String, updatedAt: String) {
+    public init(id: String, name: String, appearance: CreateWorldOutfitResponseDataPresetAppearance, items: [[String: AnyCodable]], createdAt: String, updatedAt: String) {
         self.id = id
         self.name = name
         self.appearance = appearance

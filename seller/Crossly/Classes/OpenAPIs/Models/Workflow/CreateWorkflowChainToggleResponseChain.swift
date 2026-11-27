@@ -16,16 +16,20 @@ public struct CreateWorkflowChainToggleResponseChain: Codable, JSONEncodable, Ha
     public var userId: String
     public var name: String
     public var triggerId: String
+    public var triggerConfig: [String: AnyCodable]
     public var isActive: Bool
     public var createdAt: Date
+    public var workflowId: String
 
-    public init(id: String, userId: String, name: String, triggerId: String, isActive: Bool, createdAt: Date) {
+    public init(id: String, userId: String, name: String, triggerId: String, triggerConfig: [String: AnyCodable], isActive: Bool, createdAt: Date, workflowId: String) {
         self.id = id
         self.userId = userId
         self.name = name
         self.triggerId = triggerId
+        self.triggerConfig = triggerConfig
         self.isActive = isActive
         self.createdAt = createdAt
+        self.workflowId = workflowId
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -33,8 +37,10 @@ public struct CreateWorkflowChainToggleResponseChain: Codable, JSONEncodable, Ha
         case userId
         case name
         case triggerId
+        case triggerConfig
         case isActive
         case createdAt
+        case workflowId
     }
 
     // Encodable protocol methods
@@ -45,8 +51,10 @@ public struct CreateWorkflowChainToggleResponseChain: Codable, JSONEncodable, Ha
         try container.encode(userId, forKey: .userId)
         try container.encode(name, forKey: .name)
         try container.encode(triggerId, forKey: .triggerId)
+        try container.encode(triggerConfig, forKey: .triggerConfig)
         try container.encode(isActive, forKey: .isActive)
         try container.encode(createdAt, forKey: .createdAt)
+        try container.encode(workflowId, forKey: .workflowId)
     }
 }
 

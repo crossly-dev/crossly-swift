@@ -13,11 +13,11 @@ import AnyCodable
 public struct ListStreetDropsItem: Codable, JSONEncodable, Hashable {
 
     public enum Status: String, Codable, CaseIterable {
-        case scheduled = "scheduled"
         case cancelled = "cancelled"
+        case scheduled = "scheduled"
         case closed = "closed"
-        case released = "released"
         case lineOpen = "line_open"
+        case released = "released"
     }
     public var id: String
     public var title: String

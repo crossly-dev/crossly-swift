@@ -14,9 +14,9 @@ public struct CreateSpatialStreetOwnedUpkeepResponseData: Codable, JSONEncodable
 
     public enum Upkeep: String, Codable, CaseIterable {
         case active = "active"
-        case foreclosed = "foreclosed"
         case grace = "grace"
         case delinquent = "delinquent"
+        case foreclosed = "foreclosed"
     }
     public var paidThrough: String
     public var upkeep: Upkeep?

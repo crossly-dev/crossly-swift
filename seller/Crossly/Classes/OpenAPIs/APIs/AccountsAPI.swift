@@ -57,6 +57,50 @@ open class AccountsAPI {
     }
 
     /**
+     Connect CardNexus with a personal API key (validated live before it is stored).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createConnectionCardnexusApiKey(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateConnectionCardnexusApiKeyResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createConnectionCardnexusApiKeyWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Connect CardNexus with a personal API key (validated live before it is stored).
+     - POST /v1/connections/cardnexus/api-key
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateConnectionCardnexusApiKeyResponse> 
+     */
+    open class func createConnectionCardnexusApiKeyWithRequestBuilder() -> RequestBuilder<CreateConnectionCardnexusApiKeyResponse> {
+        let localVariablePath = "/v1/connections/cardnexus/api-key"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateConnectionCardnexusApiKeyResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Add an IMAP mailbox connection.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -140,6 +184,52 @@ open class AccountsAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<CreateConnectionEmailImapTestResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Connect Lightspeed X-Series with a personal token (Setup → Personal tokens, Plus plan) and the store prefix.
+     
+     - parameter createConnectionLightspeedXTokenRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createConnectionLightspeedXToken(createConnectionLightspeedXTokenRequest: CreateConnectionLightspeedXTokenRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateConnectionLightspeedXTokenResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createConnectionLightspeedXTokenWithRequestBuilder(createConnectionLightspeedXTokenRequest: createConnectionLightspeedXTokenRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Connect Lightspeed X-Series with a personal token (Setup → Personal tokens, Plus plan) and the store prefix.
+     - POST /v1/connections/lightspeed_x/token
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter createConnectionLightspeedXTokenRequest: (body)  
+     - returns: RequestBuilder<CreateConnectionLightspeedXTokenResponse> 
+     */
+    open class func createConnectionLightspeedXTokenWithRequestBuilder(createConnectionLightspeedXTokenRequest: CreateConnectionLightspeedXTokenRequest) -> RequestBuilder<CreateConnectionLightspeedXTokenResponse> {
+        let localVariablePath = "/v1/connections/lightspeed_x/token"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createConnectionLightspeedXTokenRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateConnectionLightspeedXTokenResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
@@ -243,7 +333,7 @@ open class AccountsAPI {
     }
 
     /**
-     Archive every active account row for a platform.
+     Disconnect every account of a platform (archives the rows and deletes their stored sessions).
      
      - parameter platform: (path)  
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -262,7 +352,7 @@ open class AccountsAPI {
     }
 
     /**
-     Archive every active account row for a platform.
+     Disconnect every account of a platform (archives the rows and deletes their stored sessions).
      - POST /v1/platform-accounts/{platform}/disconnect
      - BASIC:
        - type: http
@@ -622,6 +712,61 @@ open class AccountsAPI {
     }
 
     /**
+     List the live options a marketplace policy field offers (e.g. Allegro delivery methods).
+     
+     - parameter connectionId: (path)  
+     - parameter source: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getConnectionPolicyManagementOption(connectionId: String, source: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetConnectionPolicyManagementOptionResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getConnectionPolicyManagementOptionWithRequestBuilder(connectionId: connectionId, source: source).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     List the live options a marketplace policy field offers (e.g. Allegro delivery methods).
+     - GET /v1/connections/policy-management/{connectionId}/options/{source}
+     - For one of your managed connections, the choices a preset's `platformFields` picker offers, from the marketplace (`source` is the field's `optionsSource`, e.g. `delivery-methods`). An unknown connection or source is a 404.
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter connectionId: (path)  
+     - parameter source: (path)  
+     - returns: RequestBuilder<GetConnectionPolicyManagementOptionResponse> 
+     */
+    open class func getConnectionPolicyManagementOptionWithRequestBuilder(connectionId: String, source: String) -> RequestBuilder<GetConnectionPolicyManagementOptionResponse> {
+        var localVariablePath = "/v1/connections/policy-management/{connectionId}/options/{source}"
+        let connectionIdPreEscape = "\(APIHelper.mapValueToPathItem(connectionId))"
+        let connectionIdPostEscape = connectionIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{connectionId}", with: connectionIdPostEscape, options: .literal, range: nil)
+        let sourcePreEscape = "\(APIHelper.mapValueToPathItem(source))"
+        let sourcePostEscape = sourcePreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{source}", with: sourcePostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetConnectionPolicyManagementOptionResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Return the OAuth authorize URL for an API-track platform.
      
      - parameter platform: (path)  
@@ -646,7 +791,7 @@ open class AccountsAPI {
     /**
      Return the OAuth authorize URL for an API-track platform.
      - GET /v1/oauth/{platform}/init
-     - Most platforms return `{ url }`. Etsy adds `{ correlationId }` (PKCE verifier stashed in Redis). Bonanza adds `{ oneShot: true }`. WooCommerce requires `?siteUrl=...`. Walmart returns `{ status: \"request_only\", requestUrl, message }` instead of a URL because per-seller OAuth needs Solution Provider approval.
+     - Most platforms return `{ url }` (Shopify, Etsy, Amazon and the other marketplaces Atlas Connections connects: the URL Atlas returns for this seller). Bonanza adds `{ oneShot: true }`. WooCommerce requires `?siteUrl=...`. Walmart returns `{ status: \"request_only\", requestUrl, message }` instead of a URL because per-seller OAuth needs Solution Provider approval.
      - BASIC:
        - type: http
        - name: PersonalAccessToken
@@ -771,6 +916,51 @@ open class AccountsAPI {
     }
 
     /**
+     List eBay and Etsy accounts with whether Crossly manages their policies.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listConnectionPolicyManagement(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListConnectionPolicyManagementResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listConnectionPolicyManagementWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     List eBay and Etsy accounts with whether Crossly manages their policies.
+     - GET /v1/connections/policy-management
+     - One row per connected eBay or Etsy account: `eligible` (eBay only on EBAY_US), `managed` (Crossly keeps its policies / shipping profiles in step with your default presets) and sync `notes`.
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListConnectionPolicyManagementResponse> 
+     */
+    open class func listConnectionPolicyManagementWithRequestBuilder() -> RequestBuilder<ListConnectionPolicyManagementResponse> {
+        let localVariablePath = "/v1/connections/policy-management"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListConnectionPolicyManagementResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      List OAuth-connected API platforms.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -861,6 +1051,56 @@ open class AccountsAPI {
         let localVariableRequestBuilder: RequestBuilder<SuccessResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Turn Crossly policy management on or off for one eBay or Etsy account.
+     
+     - parameter connectionId: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateConnectionPolicyManagement(connectionId: String, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListConnectionPolicyManagementItem?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateConnectionPolicyManagementWithRequestBuilder(connectionId: connectionId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Turn Crossly policy management on or off for one eBay or Etsy account.
+     - PUT /v1/connections/policy-management/{connectionId}
+     - Body `{ managed: boolean }`. On: Crossly may overwrite that account's own policies with your default presets and queues a sync now (409 for an ineligible account, e.g. non-US eBay). Off: Crossly stops touching them. A connection that is not yours (or not eBay/Etsy) is a 404.
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter connectionId: (path)  
+     - returns: RequestBuilder<ListConnectionPolicyManagementItem> 
+     */
+    open class func updateConnectionPolicyManagementWithRequestBuilder(connectionId: String) -> RequestBuilder<ListConnectionPolicyManagementItem> {
+        var localVariablePath = "/v1/connections/policy-management/{connectionId}"
+        let connectionIdPreEscape = "\(APIHelper.mapValueToPathItem(connectionId))"
+        let connectionIdPostEscape = connectionIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{connectionId}", with: connectionIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListConnectionPolicyManagementItem>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
 
     /**

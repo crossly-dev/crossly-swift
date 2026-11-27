@@ -12,25 +12,25 @@ import AnyCodable
 
 public struct CreateBuyerTogetherResponseData: Codable, JSONEncodable, Hashable {
 
-    public var id: String
     public var code: String
+    public var id: String
 
-    public init(id: String, code: String) {
-        self.id = id
+    public init(code: String, id: String) {
         self.code = code
+        self.id = id
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case id
         case code
+        case id
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(id, forKey: .id)
         try container.encode(code, forKey: .code)
+        try container.encode(id, forKey: .id)
     }
 }
 

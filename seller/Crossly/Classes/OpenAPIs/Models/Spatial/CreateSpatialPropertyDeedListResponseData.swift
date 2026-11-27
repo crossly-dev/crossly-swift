@@ -15,19 +15,21 @@ public struct CreateSpatialPropertyDeedListResponseData: Codable, JSONEncodable,
     public var id: String
     public var createdAt: Date
     public var status: String
-    public var sellerUserId: String
+    public var storefrontId: String?
     public var buyerUserId: String?
     public var priceCents: Double
+    public var sellerUserId: String
     public var closedAt: Date?
     public var deedId: String
 
-    public init(id: String, createdAt: Date, status: String, sellerUserId: String, buyerUserId: String? = nil, priceCents: Double, closedAt: Date? = nil, deedId: String) {
+    public init(id: String, createdAt: Date, status: String, storefrontId: String? = nil, buyerUserId: String? = nil, priceCents: Double, sellerUserId: String, closedAt: Date? = nil, deedId: String) {
         self.id = id
         self.createdAt = createdAt
         self.status = status
-        self.sellerUserId = sellerUserId
+        self.storefrontId = storefrontId
         self.buyerUserId = buyerUserId
         self.priceCents = priceCents
+        self.sellerUserId = sellerUserId
         self.closedAt = closedAt
         self.deedId = deedId
     }
@@ -36,9 +38,10 @@ public struct CreateSpatialPropertyDeedListResponseData: Codable, JSONEncodable,
         case id
         case createdAt
         case status
-        case sellerUserId
+        case storefrontId
         case buyerUserId
         case priceCents
+        case sellerUserId
         case closedAt
         case deedId
     }
@@ -50,9 +53,10 @@ public struct CreateSpatialPropertyDeedListResponseData: Codable, JSONEncodable,
         try container.encode(id, forKey: .id)
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(status, forKey: .status)
-        try container.encode(sellerUserId, forKey: .sellerUserId)
+        try container.encodeIfPresent(storefrontId, forKey: .storefrontId)
         try container.encodeIfPresent(buyerUserId, forKey: .buyerUserId)
         try container.encode(priceCents, forKey: .priceCents)
+        try container.encode(sellerUserId, forKey: .sellerUserId)
         try container.encodeIfPresent(closedAt, forKey: .closedAt)
         try container.encode(deedId, forKey: .deedId)
     }

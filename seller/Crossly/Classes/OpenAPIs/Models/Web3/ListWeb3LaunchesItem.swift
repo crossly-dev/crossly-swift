@@ -13,24 +13,24 @@ import AnyCodable
 public struct ListWeb3LaunchesItem: Codable, JSONEncodable, Hashable {
 
     public enum Chain: String, Codable, CaseIterable {
-        case solana = "solana"
         case ethereum = "ethereum"
         case base = "base"
         case polygon = "polygon"
         case arbitrum = "arbitrum"
         case optimism = "optimism"
+        case solana = "solana"
     }
     public enum Status: String, Codable, CaseIterable {
-        case live = "live"
         case draft = "draft"
+        case live = "live"
         case failed = "failed"
         case deploying = "deploying"
     }
     public enum Phase: String, Codable, CaseIterable {
-        case ended = "ended"
-        case holder = "holder"
         case _public = "public"
+        case ended = "ended"
         case upcoming = "upcoming"
+        case holder = "holder"
         case soldOut = "sold_out"
     }
     public var id: String
@@ -47,20 +47,25 @@ public struct ListWeb3LaunchesItem: Codable, JSONEncodable, Hashable {
     public var holderStart: String?
     public var publicStart: String
     public var endTime: String?
-    public var holderGate: ListWeb3LaunchesItemHolderGate?
+    public var holderGate: ContractName?
     public var maxPerWallet: Double
     public var royaltyBps: Double
     public var platformBps: Double
     public var phase: Phase
-    public var creator: ListWeb3LaunchesItemCreator
+    public var creator: NameObject
     /** Card checkout (Crossmint) is set up and the collection is verified there. */
     public var card: Bool
     /** The creator set an early-phase allowlist (check a wallet with /launch/:id/allowlist/:address). */
     public var allowlist: Bool
     /** Per-token art has been revealed. */
     public var revealed: Bool
+    /** Creator Studio (migration 1163): the card set this collection takes on chain, and the creations it mints. */
+    public var cardSetId: String?
+    public var creationRefs: [String]?
+    /** Migration 1178 (R-studio-15): what holding a token gets you, decided at mint (shared/creator/holder-perks). */
+    public var holderPerks: [ListWeb3LaunchesItemHolderPerksItem]?
 
-    public init(id: String, chain: Chain, contract: String? = nil, status: Status, name: String, symbol: String, description: String? = nil, imageUrl: String? = nil, maxSupply: Double, minted: Double, priceWei: String, holderStart: String? = nil, publicStart: String, endTime: String? = nil, holderGate: ListWeb3LaunchesItemHolderGate? = nil, maxPerWallet: Double, royaltyBps: Double, platformBps: Double, phase: Phase, creator: ListWeb3LaunchesItemCreator, card: Bool, allowlist: Bool, revealed: Bool) {
+    public init(id: String, chain: Chain, contract: String? = nil, status: Status, name: String, symbol: String, description: String? = nil, imageUrl: String? = nil, maxSupply: Double, minted: Double, priceWei: String, holderStart: String? = nil, publicStart: String, endTime: String? = nil, holderGate: ContractName? = nil, maxPerWallet: Double, royaltyBps: Double, platformBps: Double, phase: Phase, creator: NameObject, card: Bool, allowlist: Bool, revealed: Bool, cardSetId: String? = nil, creationRefs: [String]? = nil, holderPerks: [ListWeb3LaunchesItemHolderPerksItem]? = nil) {
         self.id = id
         self.chain = chain
         self.contract = contract
@@ -84,6 +89,9 @@ public struct ListWeb3LaunchesItem: Codable, JSONEncodable, Hashable {
         self.card = card
         self.allowlist = allowlist
         self.revealed = revealed
+        self.cardSetId = cardSetId
+        self.creationRefs = creationRefs
+        self.holderPerks = holderPerks
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -110,6 +118,9 @@ public struct ListWeb3LaunchesItem: Codable, JSONEncodable, Hashable {
         case card
         case allowlist
         case revealed
+        case cardSetId
+        case creationRefs
+        case holderPerks
     }
 
     // Encodable protocol methods
@@ -139,6 +150,9 @@ public struct ListWeb3LaunchesItem: Codable, JSONEncodable, Hashable {
         try container.encode(card, forKey: .card)
         try container.encode(allowlist, forKey: .allowlist)
         try container.encode(revealed, forKey: .revealed)
+        try container.encodeIfPresent(cardSetId, forKey: .cardSetId)
+        try container.encodeIfPresent(creationRefs, forKey: .creationRefs)
+        try container.encodeIfPresent(holderPerks, forKey: .holderPerks)
     }
 }
 

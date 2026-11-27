@@ -17,29 +17,29 @@ public struct CreateTradeBlockSetRecipeResponseRecipe: Codable, JSONEncodable, H
     public var active: Bool
     public var createdAt: Date
     public var updatedAt: Date
-    public var note: String?
+    public var version: Double
     public var reviewedAt: Date?
+    public var note: String?
+    public var members: [CreateTradeBlockSetRecipeResponseRecipeMembers]
     public var merchantId: String
     public var creatorSubjectId: String
     public var outputCosmeticId: String
-    public var version: Double
     public var frozenAt: Date?
-    public var members: [CreateTradeBlockSetRecipeResponseRecipeMembers]
 
-    public init(id: String, name: String, active: Bool, createdAt: Date, updatedAt: Date, note: String? = nil, reviewedAt: Date? = nil, merchantId: String, creatorSubjectId: String, outputCosmeticId: String, version: Double, frozenAt: Date? = nil, members: [CreateTradeBlockSetRecipeResponseRecipeMembers]) {
+    public init(id: String, name: String, active: Bool, createdAt: Date, updatedAt: Date, version: Double, reviewedAt: Date? = nil, note: String? = nil, members: [CreateTradeBlockSetRecipeResponseRecipeMembers], merchantId: String, creatorSubjectId: String, outputCosmeticId: String, frozenAt: Date? = nil) {
         self.id = id
         self.name = name
         self.active = active
         self.createdAt = createdAt
         self.updatedAt = updatedAt
-        self.note = note
+        self.version = version
         self.reviewedAt = reviewedAt
+        self.note = note
+        self.members = members
         self.merchantId = merchantId
         self.creatorSubjectId = creatorSubjectId
         self.outputCosmeticId = outputCosmeticId
-        self.version = version
         self.frozenAt = frozenAt
-        self.members = members
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -48,14 +48,14 @@ public struct CreateTradeBlockSetRecipeResponseRecipe: Codable, JSONEncodable, H
         case active
         case createdAt
         case updatedAt
-        case note
+        case version
         case reviewedAt
+        case note
+        case members
         case merchantId
         case creatorSubjectId
         case outputCosmeticId
-        case version
         case frozenAt
-        case members
     }
 
     // Encodable protocol methods
@@ -67,14 +67,14 @@ public struct CreateTradeBlockSetRecipeResponseRecipe: Codable, JSONEncodable, H
         try container.encode(active, forKey: .active)
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(updatedAt, forKey: .updatedAt)
-        try container.encodeIfPresent(note, forKey: .note)
+        try container.encode(version, forKey: .version)
         try container.encodeIfPresent(reviewedAt, forKey: .reviewedAt)
+        try container.encodeIfPresent(note, forKey: .note)
+        try container.encode(members, forKey: .members)
         try container.encode(merchantId, forKey: .merchantId)
         try container.encode(creatorSubjectId, forKey: .creatorSubjectId)
         try container.encode(outputCosmeticId, forKey: .outputCosmeticId)
-        try container.encode(version, forKey: .version)
         try container.encodeIfPresent(frozenAt, forKey: .frozenAt)
-        try container.encode(members, forKey: .members)
     }
 }
 

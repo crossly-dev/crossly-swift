@@ -13,31 +13,31 @@ import AnyCodable
 public struct ListBuyerBoardsItem: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var updatedAt: String
-    public var isPublic: Bool
-    public var itemCount: Double
     public var title: String
+    public var isPublic: Bool
     public var shareToken: String
     public var coverUrl: String?
+    public var itemCount: Double
+    public var updatedAt: String
 
-    public init(id: String, updatedAt: String, isPublic: Bool, itemCount: Double, title: String, shareToken: String, coverUrl: String? = nil) {
+    public init(id: String, title: String, isPublic: Bool, shareToken: String, coverUrl: String? = nil, itemCount: Double, updatedAt: String) {
         self.id = id
-        self.updatedAt = updatedAt
-        self.isPublic = isPublic
-        self.itemCount = itemCount
         self.title = title
+        self.isPublic = isPublic
         self.shareToken = shareToken
         self.coverUrl = coverUrl
+        self.itemCount = itemCount
+        self.updatedAt = updatedAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case updatedAt
-        case isPublic
-        case itemCount
         case title
+        case isPublic
         case shareToken
         case coverUrl
+        case itemCount
+        case updatedAt
     }
 
     // Encodable protocol methods
@@ -45,12 +45,12 @@ public struct ListBuyerBoardsItem: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(updatedAt, forKey: .updatedAt)
-        try container.encode(isPublic, forKey: .isPublic)
-        try container.encode(itemCount, forKey: .itemCount)
         try container.encode(title, forKey: .title)
+        try container.encode(isPublic, forKey: .isPublic)
         try container.encode(shareToken, forKey: .shareToken)
         try container.encodeIfPresent(coverUrl, forKey: .coverUrl)
+        try container.encode(itemCount, forKey: .itemCount)
+        try container.encode(updatedAt, forKey: .updatedAt)
     }
 }
 

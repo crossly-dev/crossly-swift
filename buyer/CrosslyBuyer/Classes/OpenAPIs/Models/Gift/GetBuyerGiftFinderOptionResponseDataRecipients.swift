@@ -12,19 +12,19 @@ import AnyCodable
 
 public struct GetBuyerGiftFinderOptionResponseDataRecipients: Codable, JSONEncodable, Hashable {
 
-    public var label: String
     public var key: String
+    public var label: String
     public var interests: [[String: AnyCodable]]
 
-    public init(label: String, key: String, interests: [[String: AnyCodable]]) {
-        self.label = label
+    public init(key: String, label: String, interests: [[String: AnyCodable]]) {
         self.key = key
+        self.label = label
         self.interests = interests
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case label
         case key
+        case label
         case interests
     }
 
@@ -32,8 +32,8 @@ public struct GetBuyerGiftFinderOptionResponseDataRecipients: Codable, JSONEncod
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(label, forKey: .label)
         try container.encode(key, forKey: .key)
+        try container.encode(label, forKey: .label)
         try container.encode(interests, forKey: .interests)
     }
 }

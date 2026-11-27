@@ -20,8 +20,10 @@ public struct GetCustomerResponse: Codable, JSONEncodable, Hashable {
     public var contact: GetCustomerResponseContact
     public var profiles: [GetCustomerResponseProfiles]
     public var stats: GetCustomerResponseStats
+    public var notes: String
+    public var notesUpdatedAt: String?
 
-    public init(normalizedHandle: String, platforms: [String], totalOrders: Double, totalSpent: Double, orders: [GetCustomerResponseOrders], contact: GetCustomerResponseContact, profiles: [GetCustomerResponseProfiles], stats: GetCustomerResponseStats) {
+    public init(normalizedHandle: String, platforms: [String], totalOrders: Double, totalSpent: Double, orders: [GetCustomerResponseOrders], contact: GetCustomerResponseContact, profiles: [GetCustomerResponseProfiles], stats: GetCustomerResponseStats, notes: String, notesUpdatedAt: String? = nil) {
         self.normalizedHandle = normalizedHandle
         self.platforms = platforms
         self.totalOrders = totalOrders
@@ -30,6 +32,8 @@ public struct GetCustomerResponse: Codable, JSONEncodable, Hashable {
         self.contact = contact
         self.profiles = profiles
         self.stats = stats
+        self.notes = notes
+        self.notesUpdatedAt = notesUpdatedAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -41,6 +45,8 @@ public struct GetCustomerResponse: Codable, JSONEncodable, Hashable {
         case contact
         case profiles
         case stats
+        case notes
+        case notesUpdatedAt
     }
 
     // Encodable protocol methods
@@ -55,6 +61,8 @@ public struct GetCustomerResponse: Codable, JSONEncodable, Hashable {
         try container.encode(contact, forKey: .contact)
         try container.encode(profiles, forKey: .profiles)
         try container.encode(stats, forKey: .stats)
+        try container.encode(notes, forKey: .notes)
+        try container.encodeIfPresent(notesUpdatedAt, forKey: .notesUpdatedAt)
     }
 }
 

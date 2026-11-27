@@ -17,7 +17,7 @@ public struct GetHomeResponseVaultWallUnits: Codable, JSONEncodable, Hashable {
     public var label: String?
     public var imageUrl: String?
     public var units: Double
-    /** The book key, for a click through to its market (/shop/vault/markets/<bookKey>). */
+    /** The book key, for a click through to its market (/trading/<bookKey>). */
     public var bookKey: String?
     /** One unit's mark, cents -- only when the viewer may see values (else absent). */
     public var markCents: Double?

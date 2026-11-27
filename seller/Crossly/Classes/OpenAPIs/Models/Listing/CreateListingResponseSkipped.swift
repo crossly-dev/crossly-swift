@@ -14,15 +14,18 @@ public struct CreateListingResponseSkipped: Codable, JSONEncodable, Hashable {
 
     public var platform: String
     public var reason: String
+    public var code: String?
 
-    public init(platform: String, reason: String) {
+    public init(platform: String, reason: String, code: String? = nil) {
         self.platform = platform
         self.reason = reason
+        self.code = code
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case platform
         case reason
+        case code
     }
 
     // Encodable protocol methods
@@ -31,6 +34,7 @@ public struct CreateListingResponseSkipped: Codable, JSONEncodable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(platform, forKey: .platform)
         try container.encode(reason, forKey: .reason)
+        try container.encodeIfPresent(code, forKey: .code)
     }
 }
 

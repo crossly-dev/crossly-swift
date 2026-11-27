@@ -13,21 +13,21 @@ import AnyCodable
 public struct GetBuyerPurchaseDeliveryResponseData: Codable, JSONEncodable, Hashable {
 
     public var pickupPoint: [String: AnyCodable]?
-    public var carrier: String?
     public var trackingNumber: String?
+    public var carrier: String?
     public var consolidation: [String: AnyCodable]?
 
-    public init(pickupPoint: [String: AnyCodable]? = nil, carrier: String? = nil, trackingNumber: String? = nil, consolidation: [String: AnyCodable]? = nil) {
+    public init(pickupPoint: [String: AnyCodable]? = nil, trackingNumber: String? = nil, carrier: String? = nil, consolidation: [String: AnyCodable]? = nil) {
         self.pickupPoint = pickupPoint
-        self.carrier = carrier
         self.trackingNumber = trackingNumber
+        self.carrier = carrier
         self.consolidation = consolidation
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case pickupPoint
-        case carrier
         case trackingNumber
+        case carrier
         case consolidation
     }
 
@@ -36,8 +36,8 @@ public struct GetBuyerPurchaseDeliveryResponseData: Codable, JSONEncodable, Hash
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(pickupPoint, forKey: .pickupPoint)
-        try container.encodeIfPresent(carrier, forKey: .carrier)
         try container.encodeIfPresent(trackingNumber, forKey: .trackingNumber)
+        try container.encodeIfPresent(carrier, forKey: .carrier)
         try container.encodeIfPresent(consolidation, forKey: .consolidation)
     }
 }

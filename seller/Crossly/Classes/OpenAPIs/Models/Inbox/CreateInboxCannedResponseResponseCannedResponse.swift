@@ -17,17 +17,19 @@ public struct CreateInboxCannedResponseResponseCannedResponse: Codable, JSONEnco
     public var createdAt: Date
     public var userId: String
     public var title: String?
-    public var surface: String
     public var body: String
+    public var surface: String
+    public var sortOrder: Double
 
-    public init(id: String, name: String, createdAt: Date, userId: String, title: String? = nil, surface: String, body: String) {
+    public init(id: String, name: String, createdAt: Date, userId: String, title: String? = nil, body: String, surface: String, sortOrder: Double) {
         self.id = id
         self.name = name
         self.createdAt = createdAt
         self.userId = userId
         self.title = title
-        self.surface = surface
         self.body = body
+        self.surface = surface
+        self.sortOrder = sortOrder
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -36,8 +38,9 @@ public struct CreateInboxCannedResponseResponseCannedResponse: Codable, JSONEnco
         case createdAt
         case userId
         case title
-        case surface
         case body
+        case surface
+        case sortOrder
     }
 
     // Encodable protocol methods
@@ -49,8 +52,9 @@ public struct CreateInboxCannedResponseResponseCannedResponse: Codable, JSONEnco
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(userId, forKey: .userId)
         try container.encodeIfPresent(title, forKey: .title)
-        try container.encode(surface, forKey: .surface)
         try container.encode(body, forKey: .body)
+        try container.encode(surface, forKey: .surface)
+        try container.encode(sortOrder, forKey: .sortOrder)
     }
 }
 

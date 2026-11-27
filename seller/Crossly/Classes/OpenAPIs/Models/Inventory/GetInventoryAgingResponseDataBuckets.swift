@@ -13,38 +13,67 @@ import AnyCodable
 public struct GetInventoryAgingResponseDataBuckets: Codable, JSONEncodable, Hashable {
 
     public enum Bucket: String, Codable, CaseIterable {
+        case unlisted = "unlisted"
+        case _90Plus = "90+"
         case _07 = "0-7"
         case _730 = "7-30"
         case _3090 = "30-90"
-        case _90Plus = "90+"
+    }
+    public enum Key: String, Codable, CaseIterable {
         case unlisted = "unlisted"
+        case lt7 = "lt7"
+        case d730 = "d7_30"
+        case d3090 = "d30_90"
+        case gt90 = "gt90"
     }
     public var bucket: Bucket
     public var itemCount: Double
     public var unitCount: Double
-    /** What the seller PAID for the stock in this bucket — the number that makes 90+ feel urgent. Retail value flatters it; cost is the money actually stuck on the shelf. */
-    public var costCents: Double
-    /** What it would bring in at current prices, for the opportunity figure. */
+    /** Old name for listedValueCents. */
     public var retailCents: Double
-    /** One line the seller can act on. */
     public var recommendation: String
+    public var key: Key
+    public var items: Double
+    public var units: Double
+    /** Σ unit cost × units over the items whose cost is known. */
+    public var costCents: Double
+    public var costKnownItems: Double
+    public var costUnknownItems: Double
+    /** Σ ask × units; items with no ask add nothing. */
+    public var listedValueCents: Double
+    /** Σ market × units over the marked items; null when none in the bucket are marked. */
+    public var marketValueCents: Double?
 
-    public init(bucket: Bucket, itemCount: Double, unitCount: Double, costCents: Double, retailCents: Double, recommendation: String) {
+    public init(bucket: Bucket, itemCount: Double, unitCount: Double, retailCents: Double, recommendation: String, key: Key, items: Double, units: Double, costCents: Double, costKnownItems: Double, costUnknownItems: Double, listedValueCents: Double, marketValueCents: Double? = nil) {
         self.bucket = bucket
         self.itemCount = itemCount
         self.unitCount = unitCount
-        self.costCents = costCents
         self.retailCents = retailCents
         self.recommendation = recommendation
+        self.key = key
+        self.items = items
+        self.units = units
+        self.costCents = costCents
+        self.costKnownItems = costKnownItems
+        self.costUnknownItems = costUnknownItems
+        self.listedValueCents = listedValueCents
+        self.marketValueCents = marketValueCents
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case bucket
         case itemCount
         case unitCount
-        case costCents
         case retailCents
         case recommendation
+        case key
+        case items
+        case units
+        case costCents
+        case costKnownItems
+        case costUnknownItems
+        case listedValueCents
+        case marketValueCents
     }
 
     // Encodable protocol methods
@@ -54,9 +83,16 @@ public struct GetInventoryAgingResponseDataBuckets: Codable, JSONEncodable, Hash
         try container.encode(bucket, forKey: .bucket)
         try container.encode(itemCount, forKey: .itemCount)
         try container.encode(unitCount, forKey: .unitCount)
-        try container.encode(costCents, forKey: .costCents)
         try container.encode(retailCents, forKey: .retailCents)
         try container.encode(recommendation, forKey: .recommendation)
+        try container.encode(key, forKey: .key)
+        try container.encode(items, forKey: .items)
+        try container.encode(units, forKey: .units)
+        try container.encode(costCents, forKey: .costCents)
+        try container.encode(costKnownItems, forKey: .costKnownItems)
+        try container.encode(costUnknownItems, forKey: .costUnknownItems)
+        try container.encode(listedValueCents, forKey: .listedValueCents)
+        try container.encodeIfPresent(marketValueCents, forKey: .marketValueCents)
     }
 }
 

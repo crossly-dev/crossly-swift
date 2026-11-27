@@ -16,30 +16,32 @@ public struct GetOrderShipmentResponseData: Codable, JSONEncodable, Hashable {
     public var createdAt: Date
     public var userId: String
     public var source: String
-    public var orderId: String
     public var carrier: String?
     public var service: String?
     public var trackingNumber: String?
-    public var voidedAt: Date?
+    public var orderId: String
     public var labelCostCents: Double?
     public var labelUrl: String?
+    public var labelQrUrl: String?
     public var shippoShipmentId: String?
     public var trackingRegisteredAt: Date?
+    public var voidedAt: Date?
 
-    public init(id: String, createdAt: Date, userId: String, source: String, orderId: String, carrier: String? = nil, service: String? = nil, trackingNumber: String? = nil, voidedAt: Date? = nil, labelCostCents: Double? = nil, labelUrl: String? = nil, shippoShipmentId: String? = nil, trackingRegisteredAt: Date? = nil) {
+    public init(id: String, createdAt: Date, userId: String, source: String, carrier: String? = nil, service: String? = nil, trackingNumber: String? = nil, orderId: String, labelCostCents: Double? = nil, labelUrl: String? = nil, labelQrUrl: String? = nil, shippoShipmentId: String? = nil, trackingRegisteredAt: Date? = nil, voidedAt: Date? = nil) {
         self.id = id
         self.createdAt = createdAt
         self.userId = userId
         self.source = source
-        self.orderId = orderId
         self.carrier = carrier
         self.service = service
         self.trackingNumber = trackingNumber
-        self.voidedAt = voidedAt
+        self.orderId = orderId
         self.labelCostCents = labelCostCents
         self.labelUrl = labelUrl
+        self.labelQrUrl = labelQrUrl
         self.shippoShipmentId = shippoShipmentId
         self.trackingRegisteredAt = trackingRegisteredAt
+        self.voidedAt = voidedAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -47,15 +49,16 @@ public struct GetOrderShipmentResponseData: Codable, JSONEncodable, Hashable {
         case createdAt
         case userId
         case source
-        case orderId
         case carrier
         case service
         case trackingNumber
-        case voidedAt
+        case orderId
         case labelCostCents
         case labelUrl
+        case labelQrUrl
         case shippoShipmentId
         case trackingRegisteredAt
+        case voidedAt
     }
 
     // Encodable protocol methods
@@ -66,15 +69,16 @@ public struct GetOrderShipmentResponseData: Codable, JSONEncodable, Hashable {
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(userId, forKey: .userId)
         try container.encode(source, forKey: .source)
-        try container.encode(orderId, forKey: .orderId)
         try container.encodeIfPresent(carrier, forKey: .carrier)
         try container.encodeIfPresent(service, forKey: .service)
         try container.encodeIfPresent(trackingNumber, forKey: .trackingNumber)
-        try container.encodeIfPresent(voidedAt, forKey: .voidedAt)
+        try container.encode(orderId, forKey: .orderId)
         try container.encodeIfPresent(labelCostCents, forKey: .labelCostCents)
         try container.encodeIfPresent(labelUrl, forKey: .labelUrl)
+        try container.encodeIfPresent(labelQrUrl, forKey: .labelQrUrl)
         try container.encodeIfPresent(shippoShipmentId, forKey: .shippoShipmentId)
         try container.encodeIfPresent(trackingRegisteredAt, forKey: .trackingRegisteredAt)
+        try container.encodeIfPresent(voidedAt, forKey: .voidedAt)
     }
 }
 

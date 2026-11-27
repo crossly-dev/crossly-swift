@@ -14,8 +14,8 @@ public struct GetOrderEvidenceResponseDataGrade: Codable, JSONEncodable, Hashabl
 
     public enum Grade: String, Codable, CaseIterable {
         case _none = "none"
-        case strong = "strong"
         case basic = "basic"
+        case strong = "strong"
         case conclusive = "conclusive"
     }
     public var grade: Grade

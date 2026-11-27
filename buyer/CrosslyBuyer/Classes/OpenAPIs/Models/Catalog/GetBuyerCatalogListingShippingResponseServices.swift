@@ -19,8 +19,12 @@ public struct GetBuyerCatalogListingShippingResponseServices: Codable, JSONEncod
     public var costType: String
     public var minDays: Double?
     public var maxDays: Double?
+    /** Buyer pays: calculated: the carrier and service token the label is bought with, and the handling fee inside `cents`. */
+    public var carrier: String?
+    public var carrierService: String?
+    public var handlingFeeCents: Double?
 
-    public init(id: String, name: String, cents: Double, scope: String, costType: String, minDays: Double? = nil, maxDays: Double? = nil) {
+    public init(id: String, name: String, cents: Double, scope: String, costType: String, minDays: Double? = nil, maxDays: Double? = nil, carrier: String? = nil, carrierService: String? = nil, handlingFeeCents: Double? = nil) {
         self.id = id
         self.name = name
         self.cents = cents
@@ -28,6 +32,9 @@ public struct GetBuyerCatalogListingShippingResponseServices: Codable, JSONEncod
         self.costType = costType
         self.minDays = minDays
         self.maxDays = maxDays
+        self.carrier = carrier
+        self.carrierService = carrierService
+        self.handlingFeeCents = handlingFeeCents
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -38,6 +45,9 @@ public struct GetBuyerCatalogListingShippingResponseServices: Codable, JSONEncod
         case costType
         case minDays
         case maxDays
+        case carrier
+        case carrierService
+        case handlingFeeCents
     }
 
     // Encodable protocol methods
@@ -51,6 +61,9 @@ public struct GetBuyerCatalogListingShippingResponseServices: Codable, JSONEncod
         try container.encode(costType, forKey: .costType)
         try container.encodeIfPresent(minDays, forKey: .minDays)
         try container.encodeIfPresent(maxDays, forKey: .maxDays)
+        try container.encodeIfPresent(carrier, forKey: .carrier)
+        try container.encodeIfPresent(carrierService, forKey: .carrierService)
+        try container.encodeIfPresent(handlingFeeCents, forKey: .handlingFeeCents)
     }
 }
 

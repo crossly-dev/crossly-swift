@@ -14,8 +14,8 @@ import AnyCodable
 public struct GetWorldGameLeaderboardResponseDataScoring: Codable, JSONEncodable, Hashable {
 
     public enum Kind: String, Codable, CaseIterable {
-        case wins = "wins"
         case points = "points"
+        case wins = "wins"
         case time = "time"
     }
     public enum Order: String, Codable, CaseIterable {

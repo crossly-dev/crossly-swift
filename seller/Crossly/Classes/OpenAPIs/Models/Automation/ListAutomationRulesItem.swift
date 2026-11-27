@@ -13,49 +13,62 @@ import AnyCodable
 public struct ListAutomationRulesItem: Codable, JSONEncodable, Hashable {
 
     public var id: String
+    public var userId: String
     public var name: String
+    public var isActive: Bool
+    public var triggerType: String
+    public var triggerConfig: [String: AnyCodable]
+    public var conditionType: String?
+    public var conditionConfig: [String: AnyCodable]?
+    public var actionType: String
+    public var actionConfig: [String: AnyCodable]
+    public var platforms: [String]?
+    public var lastRunAt: Date?
+    public var nextRunAt: Date?
+    public var runCount: Double
     public var createdAt: Date
     public var updatedAt: Date
-    public var userId: String
-    public var isActive: Bool
-    public var platforms: [String]?
-    public var nextRunAt: Date?
-    public var lastRunAt: Date?
-    public var triggerType: String
-    public var conditionType: String?
-    public var actionType: String
-    public var runCount: Double
+    /** The workflow this rule is (open it in /v1/workflows). */
+    public var workflowId: String
 
-    public init(id: String, name: String, createdAt: Date, updatedAt: Date, userId: String, isActive: Bool, platforms: [String]? = nil, nextRunAt: Date? = nil, lastRunAt: Date? = nil, triggerType: String, conditionType: String? = nil, actionType: String, runCount: Double) {
+    public init(id: String, userId: String, name: String, isActive: Bool, triggerType: String, triggerConfig: [String: AnyCodable], conditionType: String? = nil, conditionConfig: [String: AnyCodable]? = nil, actionType: String, actionConfig: [String: AnyCodable], platforms: [String]? = nil, lastRunAt: Date? = nil, nextRunAt: Date? = nil, runCount: Double, createdAt: Date, updatedAt: Date, workflowId: String) {
         self.id = id
+        self.userId = userId
         self.name = name
+        self.isActive = isActive
+        self.triggerType = triggerType
+        self.triggerConfig = triggerConfig
+        self.conditionType = conditionType
+        self.conditionConfig = conditionConfig
+        self.actionType = actionType
+        self.actionConfig = actionConfig
+        self.platforms = platforms
+        self.lastRunAt = lastRunAt
+        self.nextRunAt = nextRunAt
+        self.runCount = runCount
         self.createdAt = createdAt
         self.updatedAt = updatedAt
-        self.userId = userId
-        self.isActive = isActive
-        self.platforms = platforms
-        self.nextRunAt = nextRunAt
-        self.lastRunAt = lastRunAt
-        self.triggerType = triggerType
-        self.conditionType = conditionType
-        self.actionType = actionType
-        self.runCount = runCount
+        self.workflowId = workflowId
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
+        case userId
         case name
+        case isActive
+        case triggerType
+        case triggerConfig
+        case conditionType
+        case conditionConfig
+        case actionType
+        case actionConfig
+        case platforms
+        case lastRunAt
+        case nextRunAt
+        case runCount
         case createdAt
         case updatedAt
-        case userId
-        case isActive
-        case platforms
-        case nextRunAt
-        case lastRunAt
-        case triggerType
-        case conditionType
-        case actionType
-        case runCount
+        case workflowId
     }
 
     // Encodable protocol methods
@@ -63,18 +76,22 @@ public struct ListAutomationRulesItem: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
+        try container.encode(userId, forKey: .userId)
         try container.encode(name, forKey: .name)
+        try container.encode(isActive, forKey: .isActive)
+        try container.encode(triggerType, forKey: .triggerType)
+        try container.encode(triggerConfig, forKey: .triggerConfig)
+        try container.encodeIfPresent(conditionType, forKey: .conditionType)
+        try container.encodeIfPresent(conditionConfig, forKey: .conditionConfig)
+        try container.encode(actionType, forKey: .actionType)
+        try container.encode(actionConfig, forKey: .actionConfig)
+        try container.encodeIfPresent(platforms, forKey: .platforms)
+        try container.encodeIfPresent(lastRunAt, forKey: .lastRunAt)
+        try container.encodeIfPresent(nextRunAt, forKey: .nextRunAt)
+        try container.encode(runCount, forKey: .runCount)
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(updatedAt, forKey: .updatedAt)
-        try container.encode(userId, forKey: .userId)
-        try container.encode(isActive, forKey: .isActive)
-        try container.encodeIfPresent(platforms, forKey: .platforms)
-        try container.encodeIfPresent(nextRunAt, forKey: .nextRunAt)
-        try container.encodeIfPresent(lastRunAt, forKey: .lastRunAt)
-        try container.encode(triggerType, forKey: .triggerType)
-        try container.encodeIfPresent(conditionType, forKey: .conditionType)
-        try container.encode(actionType, forKey: .actionType)
-        try container.encode(runCount, forKey: .runCount)
+        try container.encode(workflowId, forKey: .workflowId)
     }
 }
 

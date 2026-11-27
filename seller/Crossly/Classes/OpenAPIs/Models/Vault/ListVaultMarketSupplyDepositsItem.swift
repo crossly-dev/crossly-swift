@@ -14,14 +14,15 @@ public struct ListVaultMarketSupplyDepositsItem: Codable, JSONEncodable, Hashabl
 
     public enum Status: String, Codable, CaseIterable {
         case stored = "stored"
-        case listed = "listed"
-        case inbound = "inbound"
         case cancelled = "cancelled"
+        case listed = "listed"
+        case shipped = "shipped"
+        case inbound = "inbound"
         case soldOnBook = "sold_on_book"
         case channelSold = "channel_sold"
-        case shipped = "shipped"
     }
     public var id: String
+    public var storefrontId: String?
     public var vaultItemId: String
     public var inventoryItemId: String?
     public var batchId: String?
@@ -43,8 +44,9 @@ public struct ListVaultMarketSupplyDepositsItem: Codable, JSONEncodable, Hashabl
     public var exit: ListVaultMarketSupplyDepositsItemExit?
     public var createdAt: String
 
-    public init(id: String, vaultItemId: String, inventoryItemId: String? = nil, batchId: String? = nil, partnerId: String? = nil, bookKey: String, status: Status, unitStatus: String, lendEnabled: Bool, name: String? = nil, imageUrl: String? = nil, variantLabel: String? = nil, autoListBps: Double? = nil, lendWhenIdle: Bool, setupNote: String? = nil, setUpAt: String? = nil, channelPlatform: String? = nil, channelSoldAt: String? = nil, outboundTracking: String? = nil, exit: ListVaultMarketSupplyDepositsItemExit? = nil, createdAt: String) {
+    public init(id: String, storefrontId: String? = nil, vaultItemId: String, inventoryItemId: String? = nil, batchId: String? = nil, partnerId: String? = nil, bookKey: String, status: Status, unitStatus: String, lendEnabled: Bool, name: String? = nil, imageUrl: String? = nil, variantLabel: String? = nil, autoListBps: Double? = nil, lendWhenIdle: Bool, setupNote: String? = nil, setUpAt: String? = nil, channelPlatform: String? = nil, channelSoldAt: String? = nil, outboundTracking: String? = nil, exit: ListVaultMarketSupplyDepositsItemExit? = nil, createdAt: String) {
         self.id = id
+        self.storefrontId = storefrontId
         self.vaultItemId = vaultItemId
         self.inventoryItemId = inventoryItemId
         self.batchId = batchId
@@ -69,6 +71,7 @@ public struct ListVaultMarketSupplyDepositsItem: Codable, JSONEncodable, Hashabl
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
+        case storefrontId
         case vaultItemId
         case inventoryItemId
         case batchId
@@ -96,6 +99,7 @@ public struct ListVaultMarketSupplyDepositsItem: Codable, JSONEncodable, Hashabl
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
+        try container.encodeIfPresent(storefrontId, forKey: .storefrontId)
         try container.encode(vaultItemId, forKey: .vaultItemId)
         try container.encodeIfPresent(inventoryItemId, forKey: .inventoryItemId)
         try container.encodeIfPresent(batchId, forKey: .batchId)

@@ -14,10 +14,10 @@ public struct ListWorldFriendsItem: Codable, JSONEncodable, Hashable {
 
     public var userId: String
     public var displayName: String?
-    public var room: NameSlug?
+    public var room: NameSlug2?
     public var homeSlug: String?
 
-    public init(userId: String, displayName: String? = nil, room: NameSlug? = nil, homeSlug: String? = nil) {
+    public init(userId: String, displayName: String? = nil, room: NameSlug2? = nil, homeSlug: String? = nil) {
         self.userId = userId
         self.displayName = displayName
         self.room = room

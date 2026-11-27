@@ -13,9 +13,9 @@ import AnyCodable
 public struct CreateVaultMarketPortfolioMarginEnrollResponseOneOfCurrent: Codable, JSONEncodable, Hashable {
 
     public enum State: String, Codable, CaseIterable {
-        case buyIn = "buy_in"
         case healthy = "healthy"
         case call = "call"
+        case buyIn = "buy_in"
     }
     public var equityCents: Double?
     public var requirementCents: Double?

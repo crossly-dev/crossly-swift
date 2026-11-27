@@ -30,9 +30,11 @@ public struct ListDaoProposalsItem: Codable, JSONEncodable, Hashable {
     public var talliedAt: String?
     public var vetoedReason: String?
     public var charityGoalId: String?
+    public var proposalKind: String
+    public var params: [String: AnyCodable]?
     public var createdAt: String
 
-    public init(id: String, title: String, body: String, beneficiaryKind: String, beneficiaryNote: String? = nil, requestedBaseUnits: String? = nil, status: String, totalVotingPower: String, powerFor: String, powerAgainst: String, powerAbstain: String, quorumBps: Double, passThresholdBps: Double, opensAt: String? = nil, closesAt: String? = nil, talliedAt: String? = nil, vetoedReason: String? = nil, charityGoalId: String? = nil, createdAt: String) {
+    public init(id: String, title: String, body: String, beneficiaryKind: String, beneficiaryNote: String? = nil, requestedBaseUnits: String? = nil, status: String, totalVotingPower: String, powerFor: String, powerAgainst: String, powerAbstain: String, quorumBps: Double, passThresholdBps: Double, opensAt: String? = nil, closesAt: String? = nil, talliedAt: String? = nil, vetoedReason: String? = nil, charityGoalId: String? = nil, proposalKind: String, params: [String: AnyCodable]? = nil, createdAt: String) {
         self.id = id
         self.title = title
         self.body = body
@@ -51,6 +53,8 @@ public struct ListDaoProposalsItem: Codable, JSONEncodable, Hashable {
         self.talliedAt = talliedAt
         self.vetoedReason = vetoedReason
         self.charityGoalId = charityGoalId
+        self.proposalKind = proposalKind
+        self.params = params
         self.createdAt = createdAt
     }
 
@@ -73,6 +77,8 @@ public struct ListDaoProposalsItem: Codable, JSONEncodable, Hashable {
         case talliedAt
         case vetoedReason
         case charityGoalId
+        case proposalKind
+        case params
         case createdAt
     }
 
@@ -98,6 +104,8 @@ public struct ListDaoProposalsItem: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(talliedAt, forKey: .talliedAt)
         try container.encodeIfPresent(vetoedReason, forKey: .vetoedReason)
         try container.encodeIfPresent(charityGoalId, forKey: .charityGoalId)
+        try container.encode(proposalKind, forKey: .proposalKind)
+        try container.encodeIfPresent(params, forKey: .params)
         try container.encode(createdAt, forKey: .createdAt)
     }
 }

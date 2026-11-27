@@ -14,15 +14,27 @@ public struct CreateOrderRefundResponse: Codable, JSONEncodable, Hashable {
 
     public var refundId: String
     public var amount: Double
+    public var id: String
+    public var totalRefunded: Double
+    public var remaining: Double?
+    public var replayed: Bool
 
-    public init(refundId: String, amount: Double) {
+    public init(refundId: String, amount: Double, id: String, totalRefunded: Double, remaining: Double? = nil, replayed: Bool) {
         self.refundId = refundId
         self.amount = amount
+        self.id = id
+        self.totalRefunded = totalRefunded
+        self.remaining = remaining
+        self.replayed = replayed
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case refundId
         case amount
+        case id
+        case totalRefunded
+        case remaining
+        case replayed
     }
 
     // Encodable protocol methods
@@ -31,6 +43,10 @@ public struct CreateOrderRefundResponse: Codable, JSONEncodable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(refundId, forKey: .refundId)
         try container.encode(amount, forKey: .amount)
+        try container.encode(id, forKey: .id)
+        try container.encode(totalRefunded, forKey: .totalRefunded)
+        try container.encodeIfPresent(remaining, forKey: .remaining)
+        try container.encode(replayed, forKey: .replayed)
     }
 }
 

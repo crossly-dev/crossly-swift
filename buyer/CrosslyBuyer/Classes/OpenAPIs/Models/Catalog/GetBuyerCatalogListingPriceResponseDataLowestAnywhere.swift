@@ -13,13 +13,16 @@ import AnyCodable
 public struct GetBuyerCatalogListingPriceResponseDataLowestAnywhere: Codable, JSONEncodable, Hashable {
 
     public var platforms: [String]
+    public var platformNames: [String]?
 
-    public init(platforms: [String]) {
+    public init(platforms: [String], platformNames: [String]? = nil) {
         self.platforms = platforms
+        self.platformNames = platformNames
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case platforms
+        case platformNames
     }
 
     // Encodable protocol methods
@@ -27,6 +30,7 @@ public struct GetBuyerCatalogListingPriceResponseDataLowestAnywhere: Codable, JS
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(platforms, forKey: .platforms)
+        try container.encodeIfPresent(platformNames, forKey: .platformNames)
     }
 }
 

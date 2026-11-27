@@ -13,11 +13,11 @@ import AnyCodable
 public struct GetDropResponseDrop: Codable, JSONEncodable, Hashable {
 
     public enum Status: String, Codable, CaseIterable {
-        case scheduled = "scheduled"
         case cancelled = "cancelled"
+        case scheduled = "scheduled"
         case closed = "closed"
-        case released = "released"
         case lineOpen = "line_open"
+        case released = "released"
     }
     public enum Eligibility: String, Codable, CaseIterable {
         case verified = "verified"

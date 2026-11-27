@@ -12,23 +12,23 @@ import AnyCodable
 
 public struct GetBuyerListingBoughtTogetherResponseDataItems: Codable, JSONEncodable, Hashable {
 
-    public var title: String?
     public var slug: String
+    public var title: String?
     public var priceCents: Double
     public var image: String?
     public var sameSeller: Bool
 
-    public init(title: String? = nil, slug: String, priceCents: Double, image: String? = nil, sameSeller: Bool) {
-        self.title = title
+    public init(slug: String, title: String? = nil, priceCents: Double, image: String? = nil, sameSeller: Bool) {
         self.slug = slug
+        self.title = title
         self.priceCents = priceCents
         self.image = image
         self.sameSeller = sameSeller
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case title
         case slug
+        case title
         case priceCents
         case image
         case sameSeller
@@ -38,8 +38,8 @@ public struct GetBuyerListingBoughtTogetherResponseDataItems: Codable, JSONEncod
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(title, forKey: .title)
         try container.encode(slug, forKey: .slug)
+        try container.encodeIfPresent(title, forKey: .title)
         try container.encode(priceCents, forKey: .priceCents)
         try container.encodeIfPresent(image, forKey: .image)
         try container.encode(sameSeller, forKey: .sameSeller)

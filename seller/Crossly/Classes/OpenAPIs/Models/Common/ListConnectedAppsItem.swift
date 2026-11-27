@@ -22,8 +22,10 @@ public struct ListConnectedAppsItem: Codable, JSONEncodable, Hashable {
     public var homepageUrl: String?
     public var developerName: String?
     public var developerEmail: String
+    /** The share of take-home THIS install agreed to (frozen at consent), not the app's current terms. Null = free. */
+    public var revShareBps: Double?
 
-    public init(grantId: String, scopes: [String], connectedAt: Date, lastUsedAt: Date? = nil, appId: String, appName: String, appDescription: String? = nil, homepageUrl: String? = nil, developerName: String? = nil, developerEmail: String) {
+    public init(grantId: String, scopes: [String], connectedAt: Date, lastUsedAt: Date? = nil, appId: String, appName: String, appDescription: String? = nil, homepageUrl: String? = nil, developerName: String? = nil, developerEmail: String, revShareBps: Double? = nil) {
         self.grantId = grantId
         self.scopes = scopes
         self.connectedAt = connectedAt
@@ -34,6 +36,7 @@ public struct ListConnectedAppsItem: Codable, JSONEncodable, Hashable {
         self.homepageUrl = homepageUrl
         self.developerName = developerName
         self.developerEmail = developerEmail
+        self.revShareBps = revShareBps
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -47,6 +50,7 @@ public struct ListConnectedAppsItem: Codable, JSONEncodable, Hashable {
         case homepageUrl
         case developerName
         case developerEmail
+        case revShareBps
     }
 
     // Encodable protocol methods
@@ -63,6 +67,7 @@ public struct ListConnectedAppsItem: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(homepageUrl, forKey: .homepageUrl)
         try container.encodeIfPresent(developerName, forKey: .developerName)
         try container.encode(developerEmail, forKey: .developerEmail)
+        try container.encodeIfPresent(revShareBps, forKey: .revShareBps)
     }
 }
 

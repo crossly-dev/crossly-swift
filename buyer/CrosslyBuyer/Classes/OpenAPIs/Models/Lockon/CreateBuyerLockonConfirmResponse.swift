@@ -14,9 +14,9 @@ public struct CreateBuyerLockonConfirmResponse: Codable, JSONEncodable, Hashable
 
     public enum IdentitySource: String, Codable, CaseIterable {
         case confirmed = "confirmed"
+        case barcode = "barcode"
         case visual = "visual"
         case ocr = "ocr"
-        case barcode = "barcode"
     }
     public enum Verdict: String, Codable, CaseIterable {
         case crosslyBest = "crossly_best"

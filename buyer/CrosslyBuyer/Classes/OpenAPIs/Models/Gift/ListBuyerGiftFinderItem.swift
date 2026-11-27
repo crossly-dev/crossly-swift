@@ -15,23 +15,23 @@ public struct ListBuyerGiftFinderItem: Codable, JSONEncodable, Hashable {
     public var slug: String
     public var priceCents: Double
     public var title: String?
-    public var salePriceCents: Double?
     public var thumbnail: String?
+    public var salePriceCents: Double?
 
-    public init(slug: String, priceCents: Double, title: String? = nil, salePriceCents: Double? = nil, thumbnail: String? = nil) {
+    public init(slug: String, priceCents: Double, title: String? = nil, thumbnail: String? = nil, salePriceCents: Double? = nil) {
         self.slug = slug
         self.priceCents = priceCents
         self.title = title
-        self.salePriceCents = salePriceCents
         self.thumbnail = thumbnail
+        self.salePriceCents = salePriceCents
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case slug
         case priceCents
         case title
-        case salePriceCents
         case thumbnail
+        case salePriceCents
     }
 
     // Encodable protocol methods
@@ -41,8 +41,8 @@ public struct ListBuyerGiftFinderItem: Codable, JSONEncodable, Hashable {
         try container.encode(slug, forKey: .slug)
         try container.encode(priceCents, forKey: .priceCents)
         try container.encodeIfPresent(title, forKey: .title)
-        try container.encodeIfPresent(salePriceCents, forKey: .salePriceCents)
         try container.encodeIfPresent(thumbnail, forKey: .thumbnail)
+        try container.encodeIfPresent(salePriceCents, forKey: .salePriceCents)
     }
 }
 

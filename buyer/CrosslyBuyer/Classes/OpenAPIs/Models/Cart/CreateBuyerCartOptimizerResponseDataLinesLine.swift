@@ -12,25 +12,25 @@ import AnyCodable
 
 public struct CreateBuyerCartOptimizerResponseDataLinesLine: Codable, JSONEncodable, Hashable {
 
-    public var quantity: Double
     public var query: String
+    public var quantity: Double
 
-    public init(quantity: Double, query: String) {
-        self.quantity = quantity
+    public init(query: String, quantity: Double) {
         self.query = query
+        self.quantity = quantity
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case quantity
         case query
+        case quantity
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(quantity, forKey: .quantity)
         try container.encode(query, forKey: .query)
+        try container.encode(quantity, forKey: .quantity)
     }
 }
 

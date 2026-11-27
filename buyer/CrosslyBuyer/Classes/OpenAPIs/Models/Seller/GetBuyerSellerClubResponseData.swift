@@ -12,37 +12,37 @@ import AnyCodable
 
 public struct GetBuyerSellerClubResponseData: Codable, JSONEncodable, Hashable {
 
+    public var sellerUserId: String
     public var name: String
     public var description: String?
-    public var sellerUserId: String
-    public var member: CreateBuyerSellerClubJoinResponseDataMember?
     public var tiers: [CreateBuyerSellerClubJoinResponseDataTiers]
+    public var member: CreateBuyerSellerClubJoinResponseDataMember?
 
-    public init(name: String, description: String? = nil, sellerUserId: String, member: CreateBuyerSellerClubJoinResponseDataMember? = nil, tiers: [CreateBuyerSellerClubJoinResponseDataTiers]) {
+    public init(sellerUserId: String, name: String, description: String? = nil, tiers: [CreateBuyerSellerClubJoinResponseDataTiers], member: CreateBuyerSellerClubJoinResponseDataMember? = nil) {
+        self.sellerUserId = sellerUserId
         self.name = name
         self.description = description
-        self.sellerUserId = sellerUserId
-        self.member = member
         self.tiers = tiers
+        self.member = member
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case sellerUserId
         case name
         case description
-        case sellerUserId
-        case member
         case tiers
+        case member
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(sellerUserId, forKey: .sellerUserId)
         try container.encode(name, forKey: .name)
         try container.encodeIfPresent(description, forKey: .description)
-        try container.encode(sellerUserId, forKey: .sellerUserId)
-        try container.encodeIfPresent(member, forKey: .member)
         try container.encode(tiers, forKey: .tiers)
+        try container.encodeIfPresent(member, forKey: .member)
     }
 }
 

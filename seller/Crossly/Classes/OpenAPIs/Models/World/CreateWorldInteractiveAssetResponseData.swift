@@ -13,8 +13,8 @@ import AnyCodable
 public struct CreateWorldInteractiveAssetResponseData: Codable, JSONEncodable, Hashable {
 
     public enum Kind: String, Codable, CaseIterable {
-        case png = "png"
         case glb = "glb"
+        case png = "png"
         case wav = "wav"
     }
     public var sha256: String

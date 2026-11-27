@@ -15,10 +15,10 @@ public struct CreateVaultMarketPartnerBatchResponse: Codable, JSONEncodable, Has
     public var batchId: String
     public var partnerCode: String
     public var created: [CreateVaultMarketPartnerBatchResponseCreated]
-    public var label: CreateVaultMarketPartnerBatchResponseLabel?
+    public var label: LabelUrlTrackingCode?
     public var labelError: String?
 
-    public init(batchId: String, partnerCode: String, created: [CreateVaultMarketPartnerBatchResponseCreated], label: CreateVaultMarketPartnerBatchResponseLabel? = nil, labelError: String? = nil) {
+    public init(batchId: String, partnerCode: String, created: [CreateVaultMarketPartnerBatchResponseCreated], label: LabelUrlTrackingCode? = nil, labelError: String? = nil) {
         self.batchId = batchId
         self.partnerCode = partnerCode
         self.created = created

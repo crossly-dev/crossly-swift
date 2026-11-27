@@ -20,6 +20,7 @@ public struct CreateVaultMarketLearnQuizResponse: Codable, JSONEncodable, Hashab
         case auctions = "auctions"
         case indexes = "indexes"
         case marks = "marks"
+        case vaultShares = "vault-shares"
     }
     public var concept: Concept
     public var correct: [Bool]

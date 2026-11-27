@@ -17,16 +17,16 @@ public struct ListNeighbourhoodsItemNextEvent: Codable, JSONEncodable, Hashable 
         case swapMeet = "swap_meet"
     }
     public var id: String
-    public var live: Bool
     public var title: String
+    public var live: Bool
     public var endsAt: String
     public var kind: Kind
     public var startsAt: String
 
-    public init(id: String, live: Bool, title: String, endsAt: String, kind: Kind, startsAt: String) {
+    public init(id: String, title: String, live: Bool, endsAt: String, kind: Kind, startsAt: String) {
         self.id = id
-        self.live = live
         self.title = title
+        self.live = live
         self.endsAt = endsAt
         self.kind = kind
         self.startsAt = startsAt
@@ -34,8 +34,8 @@ public struct ListNeighbourhoodsItemNextEvent: Codable, JSONEncodable, Hashable 
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case live
         case title
+        case live
         case endsAt
         case kind
         case startsAt
@@ -46,8 +46,8 @@ public struct ListNeighbourhoodsItemNextEvent: Codable, JSONEncodable, Hashable 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(live, forKey: .live)
         try container.encode(title, forKey: .title)
+        try container.encode(live, forKey: .live)
         try container.encode(endsAt, forKey: .endsAt)
         try container.encode(kind, forKey: .kind)
         try container.encode(startsAt, forKey: .startsAt)

@@ -13,22 +13,22 @@ import AnyCodable
 public struct CreateVaultMarketValuationStatementResponseTotalsByQuality: Codable, JSONEncodable, Hashable {
 
     public var _none: UnitsCents
+    public var C: UnitsCents
     public var A: UnitsCents
     public var B: UnitsCents
-    public var C: UnitsCents
 
-    public init(_none: UnitsCents, A: UnitsCents, B: UnitsCents, C: UnitsCents) {
+    public init(_none: UnitsCents, C: UnitsCents, A: UnitsCents, B: UnitsCents) {
         self._none = _none
+        self.C = C
         self.A = A
         self.B = B
-        self.C = C
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case _none = "none"
+        case C
         case A
         case B
-        case C
     }
 
     // Encodable protocol methods
@@ -36,9 +36,9 @@ public struct CreateVaultMarketValuationStatementResponseTotalsByQuality: Codabl
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(_none, forKey: ._none)
+        try container.encode(C, forKey: .C)
         try container.encode(A, forKey: .A)
         try container.encode(B, forKey: .B)
-        try container.encode(C, forKey: .C)
     }
 }
 

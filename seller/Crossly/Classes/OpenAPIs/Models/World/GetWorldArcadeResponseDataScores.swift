@@ -13,9 +13,9 @@ import AnyCodable
 public struct GetWorldArcadeResponseDataScores: Codable, JSONEncodable, Hashable {
 
     public enum Kind: String, Codable, CaseIterable {
+        case record = "record"
         case top = "top"
         case leaderboard = "leaderboard"
-        case record = "record"
     }
     /** The cabinet's `game`. */
     public var game: String

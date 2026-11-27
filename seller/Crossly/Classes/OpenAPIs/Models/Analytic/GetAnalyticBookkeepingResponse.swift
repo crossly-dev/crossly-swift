@@ -16,12 +16,18 @@ public struct GetAnalyticBookkeepingResponse: Codable, JSONEncodable, Hashable {
     public var monthlyPL: [GetAnalyticBookkeepingResponseMonthlyPL]
     public var annualTotals: GetAnalyticBookkeepingResponseAnnualTotals
     public var platformBreakdown: [GetAnalyticBookkeepingResponsePlatformBreakdown]
+    /** Sales of the year whose price and buyer are not known yet: in no line above. \"N sales pending details\". */
+    public var pendingDetailsCount: Double
+    /** The books timezone the year was cut in. */
+    public var tz: String
 
-    public init(year: Double, monthlyPL: [GetAnalyticBookkeepingResponseMonthlyPL], annualTotals: GetAnalyticBookkeepingResponseAnnualTotals, platformBreakdown: [GetAnalyticBookkeepingResponsePlatformBreakdown]) {
+    public init(year: Double, monthlyPL: [GetAnalyticBookkeepingResponseMonthlyPL], annualTotals: GetAnalyticBookkeepingResponseAnnualTotals, platformBreakdown: [GetAnalyticBookkeepingResponsePlatformBreakdown], pendingDetailsCount: Double, tz: String) {
         self.year = year
         self.monthlyPL = monthlyPL
         self.annualTotals = annualTotals
         self.platformBreakdown = platformBreakdown
+        self.pendingDetailsCount = pendingDetailsCount
+        self.tz = tz
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -29,6 +35,8 @@ public struct GetAnalyticBookkeepingResponse: Codable, JSONEncodable, Hashable {
         case monthlyPL
         case annualTotals
         case platformBreakdown
+        case pendingDetailsCount
+        case tz
     }
 
     // Encodable protocol methods
@@ -39,6 +47,8 @@ public struct GetAnalyticBookkeepingResponse: Codable, JSONEncodable, Hashable {
         try container.encode(monthlyPL, forKey: .monthlyPL)
         try container.encode(annualTotals, forKey: .annualTotals)
         try container.encode(platformBreakdown, forKey: .platformBreakdown)
+        try container.encode(pendingDetailsCount, forKey: .pendingDetailsCount)
+        try container.encode(tz, forKey: .tz)
     }
 }
 

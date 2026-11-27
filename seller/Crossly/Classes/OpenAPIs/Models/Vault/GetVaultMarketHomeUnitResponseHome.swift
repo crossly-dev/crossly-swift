@@ -14,8 +14,8 @@ public struct GetVaultMarketHomeUnitResponseHome: Codable, JSONEncodable, Hashab
 
     public enum Privacy: String, Codable, CaseIterable {
         case _open = "open"
-        case locked = "locked"
         case friends = "friends"
+        case locked = "locked"
     }
     public var slug: String
     public var privacy: Privacy

@@ -17,13 +17,17 @@ public struct GetAnalyticBookkeepingResponsePlatformBreakdown: Codable, JSONEnco
     public var count: Double
     public var platformFees: Double
     public var netProfit: Double
+    public var refunds: Double
+    public var taxCollected: Double
 
-    public init(platform: String, revenue: Double, count: Double, platformFees: Double, netProfit: Double) {
+    public init(platform: String, revenue: Double, count: Double, platformFees: Double, netProfit: Double, refunds: Double, taxCollected: Double) {
         self.platform = platform
         self.revenue = revenue
         self.count = count
         self.platformFees = platformFees
         self.netProfit = netProfit
+        self.refunds = refunds
+        self.taxCollected = taxCollected
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -32,6 +36,8 @@ public struct GetAnalyticBookkeepingResponsePlatformBreakdown: Codable, JSONEnco
         case count
         case platformFees
         case netProfit
+        case refunds
+        case taxCollected
     }
 
     // Encodable protocol methods
@@ -43,6 +49,8 @@ public struct GetAnalyticBookkeepingResponsePlatformBreakdown: Codable, JSONEnco
         try container.encode(count, forKey: .count)
         try container.encode(platformFees, forKey: .platformFees)
         try container.encode(netProfit, forKey: .netProfit)
+        try container.encode(refunds, forKey: .refunds)
+        try container.encode(taxCollected, forKey: .taxCollected)
     }
 }
 

@@ -14,9 +14,9 @@ public struct CreateWeb3OrderFulfillmentBatchResponseFulfillments: Codable, JSON
 
     public enum Kind: String, Codable, CaseIterable {
         case bundle = "bundle"
+        case offer = "offer"
         case listing = "listing"
         case privateListing = "private_listing"
-        case offer = "offer"
         case collectionOffer = "collection_offer"
         case traitOffer = "trait_offer"
     }

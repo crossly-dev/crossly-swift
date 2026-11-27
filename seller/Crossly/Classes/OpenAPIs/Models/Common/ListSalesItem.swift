@@ -12,109 +12,129 @@ import AnyCodable
 
 public struct ListSalesItem: Codable, JSONEncodable, Hashable {
 
+    public var appShare: GetOrderResponseAppShare?
     public var id: String
     public var userId: String
     public var platform: String
-    public var cancelledAt: Date?
-    public var orderId: String?
-    public var listingId: String?
+    public var netProfit: String?
+    public var shippingCost: String?
+    public var shippingCharged: String?
     public var inventoryItemId: String?
     public var currency: String?
+    public var listingId: String?
     public var platformListingId: String?
+    public var storefrontId: String?
     public var platformOrderId: String?
     public var costOfGoods: String?
+    public var cancelledAt: Date?
     public var deletedAt: Date?
+    public var orderId: String?
     public var salePrice: String?
     public var platformFee: String?
-    public var shippingCost: String?
-    public var netProfit: String?
     public var taxCollected: String?
-    public var shippingCharged: String?
     public var feeSource: String?
     public var detectedBy: String
     public var detectedAt: Date
     public var documents: [ListSalesItemDocuments]?
     public var refundedAmount: String?
+    public var detailsPending: Bool
+    public var variantSku: String?
+    public var variantId: String?
 
-    public init(id: String, userId: String, platform: String, cancelledAt: Date? = nil, orderId: String? = nil, listingId: String? = nil, inventoryItemId: String? = nil, currency: String? = nil, platformListingId: String? = nil, platformOrderId: String? = nil, costOfGoods: String? = nil, deletedAt: Date? = nil, salePrice: String? = nil, platformFee: String? = nil, shippingCost: String? = nil, netProfit: String? = nil, taxCollected: String? = nil, shippingCharged: String? = nil, feeSource: String? = nil, detectedBy: String, detectedAt: Date, documents: [ListSalesItemDocuments]? = nil, refundedAmount: String? = nil) {
+    public init(appShare: GetOrderResponseAppShare? = nil, id: String, userId: String, platform: String, netProfit: String? = nil, shippingCost: String? = nil, shippingCharged: String? = nil, inventoryItemId: String? = nil, currency: String? = nil, listingId: String? = nil, platformListingId: String? = nil, storefrontId: String? = nil, platformOrderId: String? = nil, costOfGoods: String? = nil, cancelledAt: Date? = nil, deletedAt: Date? = nil, orderId: String? = nil, salePrice: String? = nil, platformFee: String? = nil, taxCollected: String? = nil, feeSource: String? = nil, detectedBy: String, detectedAt: Date, documents: [ListSalesItemDocuments]? = nil, refundedAmount: String? = nil, detailsPending: Bool, variantSku: String? = nil, variantId: String? = nil) {
+        self.appShare = appShare
         self.id = id
         self.userId = userId
         self.platform = platform
-        self.cancelledAt = cancelledAt
-        self.orderId = orderId
-        self.listingId = listingId
+        self.netProfit = netProfit
+        self.shippingCost = shippingCost
+        self.shippingCharged = shippingCharged
         self.inventoryItemId = inventoryItemId
         self.currency = currency
+        self.listingId = listingId
         self.platformListingId = platformListingId
+        self.storefrontId = storefrontId
         self.platformOrderId = platformOrderId
         self.costOfGoods = costOfGoods
+        self.cancelledAt = cancelledAt
         self.deletedAt = deletedAt
+        self.orderId = orderId
         self.salePrice = salePrice
         self.platformFee = platformFee
-        self.shippingCost = shippingCost
-        self.netProfit = netProfit
         self.taxCollected = taxCollected
-        self.shippingCharged = shippingCharged
         self.feeSource = feeSource
         self.detectedBy = detectedBy
         self.detectedAt = detectedAt
         self.documents = documents
         self.refundedAmount = refundedAmount
+        self.detailsPending = detailsPending
+        self.variantSku = variantSku
+        self.variantId = variantId
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case appShare
         case id
         case userId
         case platform
-        case cancelledAt
-        case orderId
-        case listingId
+        case netProfit
+        case shippingCost
+        case shippingCharged
         case inventoryItemId
         case currency
+        case listingId
         case platformListingId
+        case storefrontId
         case platformOrderId
         case costOfGoods
+        case cancelledAt
         case deletedAt
+        case orderId
         case salePrice
         case platformFee
-        case shippingCost
-        case netProfit
         case taxCollected
-        case shippingCharged
         case feeSource
         case detectedBy
         case detectedAt
         case documents
         case refundedAmount
+        case detailsPending
+        case variantSku
+        case variantId
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(appShare, forKey: .appShare)
         try container.encode(id, forKey: .id)
         try container.encode(userId, forKey: .userId)
         try container.encode(platform, forKey: .platform)
-        try container.encodeIfPresent(cancelledAt, forKey: .cancelledAt)
-        try container.encodeIfPresent(orderId, forKey: .orderId)
-        try container.encodeIfPresent(listingId, forKey: .listingId)
+        try container.encodeIfPresent(netProfit, forKey: .netProfit)
+        try container.encodeIfPresent(shippingCost, forKey: .shippingCost)
+        try container.encodeIfPresent(shippingCharged, forKey: .shippingCharged)
         try container.encodeIfPresent(inventoryItemId, forKey: .inventoryItemId)
         try container.encodeIfPresent(currency, forKey: .currency)
+        try container.encodeIfPresent(listingId, forKey: .listingId)
         try container.encodeIfPresent(platformListingId, forKey: .platformListingId)
+        try container.encodeIfPresent(storefrontId, forKey: .storefrontId)
         try container.encodeIfPresent(platformOrderId, forKey: .platformOrderId)
         try container.encodeIfPresent(costOfGoods, forKey: .costOfGoods)
+        try container.encodeIfPresent(cancelledAt, forKey: .cancelledAt)
         try container.encodeIfPresent(deletedAt, forKey: .deletedAt)
+        try container.encodeIfPresent(orderId, forKey: .orderId)
         try container.encodeIfPresent(salePrice, forKey: .salePrice)
         try container.encodeIfPresent(platformFee, forKey: .platformFee)
-        try container.encodeIfPresent(shippingCost, forKey: .shippingCost)
-        try container.encodeIfPresent(netProfit, forKey: .netProfit)
         try container.encodeIfPresent(taxCollected, forKey: .taxCollected)
-        try container.encodeIfPresent(shippingCharged, forKey: .shippingCharged)
         try container.encodeIfPresent(feeSource, forKey: .feeSource)
         try container.encode(detectedBy, forKey: .detectedBy)
         try container.encode(detectedAt, forKey: .detectedAt)
         try container.encodeIfPresent(documents, forKey: .documents)
         try container.encodeIfPresent(refundedAmount, forKey: .refundedAmount)
+        try container.encode(detailsPending, forKey: .detailsPending)
+        try container.encodeIfPresent(variantSku, forKey: .variantSku)
+        try container.encodeIfPresent(variantId, forKey: .variantId)
     }
 }
 

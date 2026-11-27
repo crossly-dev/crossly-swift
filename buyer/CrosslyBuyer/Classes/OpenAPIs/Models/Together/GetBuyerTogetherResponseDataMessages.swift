@@ -14,24 +14,24 @@ public struct GetBuyerTogetherResponseDataMessages: Codable, JSONEncodable, Hash
 
     public var id: String
     public var name: String
-    public var createdAt: String
-    public var body: String
     public var me: Bool
+    public var body: String
+    public var createdAt: String
 
-    public init(id: String, name: String, createdAt: String, body: String, me: Bool) {
+    public init(id: String, name: String, me: Bool, body: String, createdAt: String) {
         self.id = id
         self.name = name
-        self.createdAt = createdAt
-        self.body = body
         self.me = me
+        self.body = body
+        self.createdAt = createdAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
         case name
-        case createdAt
-        case body
         case me
+        case body
+        case createdAt
     }
 
     // Encodable protocol methods
@@ -40,9 +40,9 @@ public struct GetBuyerTogetherResponseDataMessages: Codable, JSONEncodable, Hash
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
         try container.encode(name, forKey: .name)
-        try container.encode(createdAt, forKey: .createdAt)
-        try container.encode(body, forKey: .body)
         try container.encode(me, forKey: .me)
+        try container.encode(body, forKey: .body)
+        try container.encode(createdAt, forKey: .createdAt)
     }
 }
 

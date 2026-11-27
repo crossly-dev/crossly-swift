@@ -13,22 +13,22 @@ import AnyCodable
 public struct ListVaultMarketShareCardsItemChange: Codable, JSONEncodable, Hashable {
 
     public enum Since: String, Codable, CaseIterable {
-        case fill = "fill"
         case entry = "entry"
         case cost = "cost"
+        case fill = "fill"
         case inception = "inception"
     }
     public enum State: String, Codable, CaseIterable {
         case live = "live"
         case _open = "open"
         case closed = "closed"
-        case held = "held"
         case sold = "sold"
+        case held = "held"
         case gone = "gone"
     }
     public enum Side: String, Codable, CaseIterable {
-        case long = "long"
         case short = "short"
+        case long = "long"
         case own = "own"
     }
     public var bps: Double?

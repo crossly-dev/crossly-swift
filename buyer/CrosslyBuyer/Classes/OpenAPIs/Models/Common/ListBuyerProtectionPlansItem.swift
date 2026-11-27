@@ -13,46 +13,46 @@ import AnyCodable
 public struct ListBuyerProtectionPlansItem: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var createdAt: String
+    public var purchaseId: String?
     public var status: String
     public var title: String
-    public var purchaseId: String?
+    public var termMonths: Double?
+    public var coverage: String?
     public var termsUrl: String?
     public var priceCents: Double
     public var refundCents: Double?
-    public var termMonths: Double?
-    public var coverage: String?
     public var contractId: String?
     public var itemTitle: String?
+    public var createdAt: String
 
-    public init(id: String, createdAt: String, status: String, title: String, purchaseId: String? = nil, termsUrl: String? = nil, priceCents: Double, refundCents: Double? = nil, termMonths: Double? = nil, coverage: String? = nil, contractId: String? = nil, itemTitle: String? = nil) {
+    public init(id: String, purchaseId: String? = nil, status: String, title: String, termMonths: Double? = nil, coverage: String? = nil, termsUrl: String? = nil, priceCents: Double, refundCents: Double? = nil, contractId: String? = nil, itemTitle: String? = nil, createdAt: String) {
         self.id = id
-        self.createdAt = createdAt
+        self.purchaseId = purchaseId
         self.status = status
         self.title = title
-        self.purchaseId = purchaseId
+        self.termMonths = termMonths
+        self.coverage = coverage
         self.termsUrl = termsUrl
         self.priceCents = priceCents
         self.refundCents = refundCents
-        self.termMonths = termMonths
-        self.coverage = coverage
         self.contractId = contractId
         self.itemTitle = itemTitle
+        self.createdAt = createdAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case createdAt
+        case purchaseId
         case status
         case title
-        case purchaseId
+        case termMonths
+        case coverage
         case termsUrl
         case priceCents
         case refundCents
-        case termMonths
-        case coverage
         case contractId
         case itemTitle
+        case createdAt
     }
 
     // Encodable protocol methods
@@ -60,17 +60,17 @@ public struct ListBuyerProtectionPlansItem: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(createdAt, forKey: .createdAt)
+        try container.encodeIfPresent(purchaseId, forKey: .purchaseId)
         try container.encode(status, forKey: .status)
         try container.encode(title, forKey: .title)
-        try container.encodeIfPresent(purchaseId, forKey: .purchaseId)
+        try container.encodeIfPresent(termMonths, forKey: .termMonths)
+        try container.encodeIfPresent(coverage, forKey: .coverage)
         try container.encodeIfPresent(termsUrl, forKey: .termsUrl)
         try container.encode(priceCents, forKey: .priceCents)
         try container.encodeIfPresent(refundCents, forKey: .refundCents)
-        try container.encodeIfPresent(termMonths, forKey: .termMonths)
-        try container.encodeIfPresent(coverage, forKey: .coverage)
         try container.encodeIfPresent(contractId, forKey: .contractId)
         try container.encodeIfPresent(itemTitle, forKey: .itemTitle)
+        try container.encode(createdAt, forKey: .createdAt)
     }
 }
 

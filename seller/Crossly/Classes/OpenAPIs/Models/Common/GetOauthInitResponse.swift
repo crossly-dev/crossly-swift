@@ -13,15 +13,13 @@ import AnyCodable
 public struct GetOauthInitResponse: Codable, JSONEncodable, Hashable {
 
     public var url: String?
-    public var correlationId: String?
     public var oneShot: Bool?
     public var status: String?
     public var requestUrl: String?
     public var message: String?
 
-    public init(url: String? = nil, correlationId: String? = nil, oneShot: Bool? = nil, status: String? = nil, requestUrl: String? = nil, message: String? = nil) {
+    public init(url: String? = nil, oneShot: Bool? = nil, status: String? = nil, requestUrl: String? = nil, message: String? = nil) {
         self.url = url
-        self.correlationId = correlationId
         self.oneShot = oneShot
         self.status = status
         self.requestUrl = requestUrl
@@ -30,7 +28,6 @@ public struct GetOauthInitResponse: Codable, JSONEncodable, Hashable {
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case url
-        case correlationId
         case oneShot
         case status
         case requestUrl
@@ -42,7 +39,6 @@ public struct GetOauthInitResponse: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(url, forKey: .url)
-        try container.encodeIfPresent(correlationId, forKey: .correlationId)
         try container.encodeIfPresent(oneShot, forKey: .oneShot)
         try container.encodeIfPresent(status, forKey: .status)
         try container.encodeIfPresent(requestUrl, forKey: .requestUrl)

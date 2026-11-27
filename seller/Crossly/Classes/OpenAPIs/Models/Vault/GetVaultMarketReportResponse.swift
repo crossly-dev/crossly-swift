@@ -14,7 +14,7 @@ public struct GetVaultMarketReportResponse: Codable, JSONEncodable, Hashable {
 
     public var quarter: String
     public var label: String
-    public var range: GetInventorySellThroughResponseDataWindow
+    public var range: StartEnd
     public var inProgress: Bool
     public var generatedAt: String
     public var totals: GetVaultMarketReportResponseTotals
@@ -27,7 +27,7 @@ public struct GetVaultMarketReportResponse: Codable, JSONEncodable, Hashable {
     public var printable: GetVaultMarketReportResponsePrintable
     public var quarters: [String]
 
-    public init(quarter: String, label: String, range: GetInventorySellThroughResponseDataWindow, inProgress: Bool, generatedAt: String, totals: GetVaultMarketReportResponseTotals, indexes: [GetVaultMarketReportResponseIndexes], risers: [GetVaultMarketReportResponseRisers], fallers: [GetVaultMarketReportResponseRisers], mostLent: [GetVaultMarketReportResponseMostLent], gradePremiums: [GetVaultMarketReportResponseGradePremiums], method: [String], printable: GetVaultMarketReportResponsePrintable, quarters: [String]) {
+    public init(quarter: String, label: String, range: StartEnd, inProgress: Bool, generatedAt: String, totals: GetVaultMarketReportResponseTotals, indexes: [GetVaultMarketReportResponseIndexes], risers: [GetVaultMarketReportResponseRisers], fallers: [GetVaultMarketReportResponseRisers], mostLent: [GetVaultMarketReportResponseMostLent], gradePremiums: [GetVaultMarketReportResponseGradePremiums], method: [String], printable: GetVaultMarketReportResponsePrintable, quarters: [String]) {
         self.quarter = quarter
         self.label = label
         self.range = range

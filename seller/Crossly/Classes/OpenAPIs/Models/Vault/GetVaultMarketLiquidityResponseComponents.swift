@@ -13,19 +13,19 @@ import AnyCodable
 public struct GetVaultMarketLiquidityResponseComponents: Codable, JSONEncodable, Hashable {
 
     public enum Name: String, Codable, CaseIterable {
-        case spreadbps = "spreadBps"
         case trades30d = "trades30d"
         case trades90d = "trades90d"
         case counterparties90d = "counterparties90d"
         case mediangapdays = "medianGapDays"
+        case spreadbps = "spreadBps"
         case twosidedshare = "twoSidedShare"
         case depthcents = "depthCents"
         case amihud = "amihud"
         case rollbps = "rollBps"
     }
     public enum Better: String, Codable, CaseIterable {
-        case high = "high"
         case low = "low"
+        case high = "high"
     }
     public var name: Name
     public var value: Double?

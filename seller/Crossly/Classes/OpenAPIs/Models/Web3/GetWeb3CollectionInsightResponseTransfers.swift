@@ -13,10 +13,10 @@ import AnyCodable
 public struct GetWeb3CollectionInsightResponseTransfers: Codable, JSONEncodable, Hashable {
 
     public enum Kind: String, Codable, CaseIterable {
-        case transfer = "transfer"
-        case listing = "listing"
         case sale = "sale"
+        case listing = "listing"
         case mint = "mint"
+        case transfer = "transfer"
         case burn = "burn"
     }
     public var kind: Kind

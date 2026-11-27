@@ -13,27 +13,27 @@ import AnyCodable
 public struct ListBuyerTryOnsItem: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var createdAt: String
-    public var status: String
     public var listingId: String
     public var resultUrl: String?
+    public var status: String
+    public var createdAt: String
     public var listingTitle: String?
 
-    public init(id: String, createdAt: String, status: String, listingId: String, resultUrl: String? = nil, listingTitle: String? = nil) {
+    public init(id: String, listingId: String, resultUrl: String? = nil, status: String, createdAt: String, listingTitle: String? = nil) {
         self.id = id
-        self.createdAt = createdAt
-        self.status = status
         self.listingId = listingId
         self.resultUrl = resultUrl
+        self.status = status
+        self.createdAt = createdAt
         self.listingTitle = listingTitle
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case createdAt
-        case status
         case listingId
         case resultUrl
+        case status
+        case createdAt
         case listingTitle
     }
 
@@ -42,10 +42,10 @@ public struct ListBuyerTryOnsItem: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(createdAt, forKey: .createdAt)
-        try container.encode(status, forKey: .status)
         try container.encode(listingId, forKey: .listingId)
         try container.encodeIfPresent(resultUrl, forKey: .resultUrl)
+        try container.encode(status, forKey: .status)
+        try container.encode(createdAt, forKey: .createdAt)
         try container.encodeIfPresent(listingTitle, forKey: .listingTitle)
     }
 }

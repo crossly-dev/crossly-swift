@@ -14,9 +14,9 @@ import AnyCodable
 public struct CreateBuyerAgentSessionResponseBriefPending: Codable, JSONEncodable, Hashable {
 
     public enum Kind: String, Codable, CaseIterable {
-        case dispute = "dispute"
-        case cancel = "cancel"
         case _return = "return"
+        case cancel = "cancel"
+        case dispute = "dispute"
     }
     public var kind: Kind
     public var purchaseId: String

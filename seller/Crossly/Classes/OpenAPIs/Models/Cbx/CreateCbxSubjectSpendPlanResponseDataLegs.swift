@@ -13,9 +13,9 @@ import AnyCodable
 public struct CreateCbxSubjectSpendPlanResponseDataLegs: Codable, JSONEncodable, Hashable {
 
     public enum Source: String, Codable, CaseIterable {
-        case granted = "granted"
         case earned = "earned"
         case connected = "connected"
+        case granted = "granted"
     }
     public var source: Source
     public var baseUnits: String

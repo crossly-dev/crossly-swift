@@ -13,17 +13,17 @@ import AnyCodable
 public struct CreateWeb3OrderResponseOrder: Codable, JSONEncodable, Hashable {
 
     public enum Status: String, Codable, CaseIterable {
-        case _open = "open"
-        case filled = "filled"
         case cancelled = "cancelled"
+        case _open = "open"
         case expired = "expired"
+        case filled = "filled"
         case invalid = "invalid"
     }
     public enum Kind: String, Codable, CaseIterable {
         case bundle = "bundle"
+        case offer = "offer"
         case listing = "listing"
         case privateListing = "private_listing"
-        case offer = "offer"
         case collectionOffer = "collection_offer"
         case traitOffer = "trait_offer"
     }
@@ -31,21 +31,21 @@ public struct CreateWeb3OrderResponseOrder: Codable, JSONEncodable, Hashable {
     public var createdAt: Date
     public var updatedAt: Date
     public var userId: String?
-    public var quantity: Double
     public var status: Status
+    public var quantity: Double
     public var inventoryItemId: String?
     public var currency: String
     public var bundle: [CreateWeb3OrderResponseOrderBundle]?
     public var lastCheckedAt: Date?
+    public var storefrontId: String?
     public var kind: Kind
+    public var marketplace: String
+    public var tokenId: String?
     public var externalUrl: String?
-    public var walletId: String?
     public var chain: String
     public var contract: String
-    public var tokenId: String?
-    public var collectionName: String?
     public var orderHash: String
-    public var marketplace: String
+    public var walletId: String?
     public var maker: String
     public var priceWei: String
     public var endPriceWei: String?
@@ -55,32 +55,33 @@ public struct CreateWeb3OrderResponseOrder: Codable, JSONEncodable, Hashable {
     public var statusReason: String?
     public var itemName: String?
     public var itemImage: String?
+    public var collectionName: String?
     public var taker: String?
     public var filledTx: String?
     public var filledAt: Date?
     public var criteria: CreateWeb3OrderResponseOrderCriteria?
     public var reservedFor: String?
 
-    public init(id: String, createdAt: Date, updatedAt: Date, userId: String? = nil, quantity: Double, status: Status, inventoryItemId: String? = nil, currency: String, bundle: [CreateWeb3OrderResponseOrderBundle]? = nil, lastCheckedAt: Date? = nil, kind: Kind, externalUrl: String? = nil, walletId: String? = nil, chain: String, contract: String, tokenId: String? = nil, collectionName: String? = nil, orderHash: String, marketplace: String, maker: String, priceWei: String, endPriceWei: String? = nil, startTime: Date, endTime: Date, signature: String, statusReason: String? = nil, itemName: String? = nil, itemImage: String? = nil, taker: String? = nil, filledTx: String? = nil, filledAt: Date? = nil, criteria: CreateWeb3OrderResponseOrderCriteria? = nil, reservedFor: String? = nil) {
+    public init(id: String, createdAt: Date, updatedAt: Date, userId: String? = nil, status: Status, quantity: Double, inventoryItemId: String? = nil, currency: String, bundle: [CreateWeb3OrderResponseOrderBundle]? = nil, lastCheckedAt: Date? = nil, storefrontId: String? = nil, kind: Kind, marketplace: String, tokenId: String? = nil, externalUrl: String? = nil, chain: String, contract: String, orderHash: String, walletId: String? = nil, maker: String, priceWei: String, endPriceWei: String? = nil, startTime: Date, endTime: Date, signature: String, statusReason: String? = nil, itemName: String? = nil, itemImage: String? = nil, collectionName: String? = nil, taker: String? = nil, filledTx: String? = nil, filledAt: Date? = nil, criteria: CreateWeb3OrderResponseOrderCriteria? = nil, reservedFor: String? = nil) {
         self.id = id
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.userId = userId
-        self.quantity = quantity
         self.status = status
+        self.quantity = quantity
         self.inventoryItemId = inventoryItemId
         self.currency = currency
         self.bundle = bundle
         self.lastCheckedAt = lastCheckedAt
+        self.storefrontId = storefrontId
         self.kind = kind
+        self.marketplace = marketplace
+        self.tokenId = tokenId
         self.externalUrl = externalUrl
-        self.walletId = walletId
         self.chain = chain
         self.contract = contract
-        self.tokenId = tokenId
-        self.collectionName = collectionName
         self.orderHash = orderHash
-        self.marketplace = marketplace
+        self.walletId = walletId
         self.maker = maker
         self.priceWei = priceWei
         self.endPriceWei = endPriceWei
@@ -90,6 +91,7 @@ public struct CreateWeb3OrderResponseOrder: Codable, JSONEncodable, Hashable {
         self.statusReason = statusReason
         self.itemName = itemName
         self.itemImage = itemImage
+        self.collectionName = collectionName
         self.taker = taker
         self.filledTx = filledTx
         self.filledAt = filledAt
@@ -102,21 +104,21 @@ public struct CreateWeb3OrderResponseOrder: Codable, JSONEncodable, Hashable {
         case createdAt
         case updatedAt
         case userId
-        case quantity
         case status
+        case quantity
         case inventoryItemId
         case currency
         case bundle
         case lastCheckedAt
+        case storefrontId
         case kind
+        case marketplace
+        case tokenId
         case externalUrl
-        case walletId
         case chain
         case contract
-        case tokenId
-        case collectionName
         case orderHash
-        case marketplace
+        case walletId
         case maker
         case priceWei
         case endPriceWei
@@ -126,6 +128,7 @@ public struct CreateWeb3OrderResponseOrder: Codable, JSONEncodable, Hashable {
         case statusReason
         case itemName
         case itemImage
+        case collectionName
         case taker
         case filledTx
         case filledAt
@@ -141,21 +144,21 @@ public struct CreateWeb3OrderResponseOrder: Codable, JSONEncodable, Hashable {
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(updatedAt, forKey: .updatedAt)
         try container.encodeIfPresent(userId, forKey: .userId)
-        try container.encode(quantity, forKey: .quantity)
         try container.encode(status, forKey: .status)
+        try container.encode(quantity, forKey: .quantity)
         try container.encodeIfPresent(inventoryItemId, forKey: .inventoryItemId)
         try container.encode(currency, forKey: .currency)
         try container.encodeIfPresent(bundle, forKey: .bundle)
         try container.encodeIfPresent(lastCheckedAt, forKey: .lastCheckedAt)
+        try container.encodeIfPresent(storefrontId, forKey: .storefrontId)
         try container.encode(kind, forKey: .kind)
+        try container.encode(marketplace, forKey: .marketplace)
+        try container.encodeIfPresent(tokenId, forKey: .tokenId)
         try container.encodeIfPresent(externalUrl, forKey: .externalUrl)
-        try container.encodeIfPresent(walletId, forKey: .walletId)
         try container.encode(chain, forKey: .chain)
         try container.encode(contract, forKey: .contract)
-        try container.encodeIfPresent(tokenId, forKey: .tokenId)
-        try container.encodeIfPresent(collectionName, forKey: .collectionName)
         try container.encode(orderHash, forKey: .orderHash)
-        try container.encode(marketplace, forKey: .marketplace)
+        try container.encodeIfPresent(walletId, forKey: .walletId)
         try container.encode(maker, forKey: .maker)
         try container.encode(priceWei, forKey: .priceWei)
         try container.encodeIfPresent(endPriceWei, forKey: .endPriceWei)
@@ -165,6 +168,7 @@ public struct CreateWeb3OrderResponseOrder: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(statusReason, forKey: .statusReason)
         try container.encodeIfPresent(itemName, forKey: .itemName)
         try container.encodeIfPresent(itemImage, forKey: .itemImage)
+        try container.encodeIfPresent(collectionName, forKey: .collectionName)
         try container.encodeIfPresent(taker, forKey: .taker)
         try container.encodeIfPresent(filledTx, forKey: .filledTx)
         try container.encodeIfPresent(filledAt, forKey: .filledAt)

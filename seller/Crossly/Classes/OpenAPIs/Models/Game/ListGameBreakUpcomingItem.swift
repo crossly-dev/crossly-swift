@@ -18,20 +18,23 @@ public struct ListGameBreakUpcomingItem: Codable, JSONEncodable, Hashable {
     public var status: String
     /** Scheduled start (ISO), and whether the seller is breaking right now. */
     public var startsAt: String?
+    /** When the viewer gets in (ISO): the start, or earlier for a loyalty member with the seller's `live_early_entry` perk. Null with no start. Optional: a board read without a viewer leaves it at the start. */
+    public var doorsOpenAt: String?
     public var live: Bool
-    public var shop: SlugName
+    public var shop: NameSlug
     /** The listing the spots are bought through, on crossly.net. Never a world checkout. */
     public var buyUrl: String?
     public var spotsLeft: Double
     public var spots: [ListGameBreakUpcomingItemSpots]
     public var hits: [ListGameBreakUpcomingItemHits]
 
-    public init(breakId: String, title: String, product: String? = nil, status: String, startsAt: String? = nil, live: Bool, shop: SlugName, buyUrl: String? = nil, spotsLeft: Double, spots: [ListGameBreakUpcomingItemSpots], hits: [ListGameBreakUpcomingItemHits]) {
+    public init(breakId: String, title: String, product: String? = nil, status: String, startsAt: String? = nil, doorsOpenAt: String? = nil, live: Bool, shop: NameSlug, buyUrl: String? = nil, spotsLeft: Double, spots: [ListGameBreakUpcomingItemSpots], hits: [ListGameBreakUpcomingItemHits]) {
         self.breakId = breakId
         self.title = title
         self.product = product
         self.status = status
         self.startsAt = startsAt
+        self.doorsOpenAt = doorsOpenAt
         self.live = live
         self.shop = shop
         self.buyUrl = buyUrl
@@ -46,6 +49,7 @@ public struct ListGameBreakUpcomingItem: Codable, JSONEncodable, Hashable {
         case product
         case status
         case startsAt
+        case doorsOpenAt
         case live
         case shop
         case buyUrl
@@ -63,6 +67,7 @@ public struct ListGameBreakUpcomingItem: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(product, forKey: .product)
         try container.encode(status, forKey: .status)
         try container.encodeIfPresent(startsAt, forKey: .startsAt)
+        try container.encodeIfPresent(doorsOpenAt, forKey: .doorsOpenAt)
         try container.encode(live, forKey: .live)
         try container.encode(shop, forKey: .shop)
         try container.encodeIfPresent(buyUrl, forKey: .buyUrl)

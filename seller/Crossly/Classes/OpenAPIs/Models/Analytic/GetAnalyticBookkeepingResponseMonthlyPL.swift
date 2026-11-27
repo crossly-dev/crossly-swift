@@ -17,14 +17,17 @@ public struct GetAnalyticBookkeepingResponseMonthlyPL: Codable, JSONEncodable, H
     public var cogs: Double
     public var platformFees: Double
     public var shippingCosts: Double
+    /** Mileage and manual expenses. */
+    public var otherExpenses: Double
     public var netProfit: Double
 
-    public init(month: Double, revenue: Double, cogs: Double, platformFees: Double, shippingCosts: Double, netProfit: Double) {
+    public init(month: Double, revenue: Double, cogs: Double, platformFees: Double, shippingCosts: Double, otherExpenses: Double, netProfit: Double) {
         self.month = month
         self.revenue = revenue
         self.cogs = cogs
         self.platformFees = platformFees
         self.shippingCosts = shippingCosts
+        self.otherExpenses = otherExpenses
         self.netProfit = netProfit
     }
 
@@ -34,6 +37,7 @@ public struct GetAnalyticBookkeepingResponseMonthlyPL: Codable, JSONEncodable, H
         case cogs
         case platformFees
         case shippingCosts
+        case otherExpenses
         case netProfit
     }
 
@@ -46,6 +50,7 @@ public struct GetAnalyticBookkeepingResponseMonthlyPL: Codable, JSONEncodable, H
         try container.encode(cogs, forKey: .cogs)
         try container.encode(platformFees, forKey: .platformFees)
         try container.encode(shippingCosts, forKey: .shippingCosts)
+        try container.encode(otherExpenses, forKey: .otherExpenses)
         try container.encode(netProfit, forKey: .netProfit)
     }
 }

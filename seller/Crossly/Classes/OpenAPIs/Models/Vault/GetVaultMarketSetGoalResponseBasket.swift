@@ -13,10 +13,10 @@ import AnyCodable
 public struct GetVaultMarketSetGoalResponseBasket: Codable, JSONEncodable, Hashable {
 
     public enum Status: String, Codable, CaseIterable {
+        case completed = "completed"
         case cancelled = "cancelled"
         case ended = "ended"
         case working = "working"
-        case completed = "completed"
     }
     public enum Funding: String, Codable, CaseIterable {
         case card = "card"

@@ -14,9 +14,9 @@ public struct GetAnalyticDashboardResponseAvgSalePriceByPlatform: Codable, JSONE
 
     public var platform: String
     public var avgPrice: Double
-    public var count: String
+    public var count: Double
 
-    public init(platform: String, avgPrice: Double, count: String) {
+    public init(platform: String, avgPrice: Double, count: Double) {
         self.platform = platform
         self.avgPrice = avgPrice
         self.count = count

@@ -12,33 +12,33 @@ import AnyCodable
 
 public struct GetBuyerImpactResponseData: Codable, JSONEncodable, Hashable {
 
-    public var co2Kg: Double
-    public var waterL: Double
     public var itemsBought: Double
     public var itemsWithFigures: Double
+    public var co2Kg: Double
+    public var waterL: Double
 
-    public init(co2Kg: Double, waterL: Double, itemsBought: Double, itemsWithFigures: Double) {
-        self.co2Kg = co2Kg
-        self.waterL = waterL
+    public init(itemsBought: Double, itemsWithFigures: Double, co2Kg: Double, waterL: Double) {
         self.itemsBought = itemsBought
         self.itemsWithFigures = itemsWithFigures
+        self.co2Kg = co2Kg
+        self.waterL = waterL
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case co2Kg
-        case waterL
         case itemsBought
         case itemsWithFigures
+        case co2Kg
+        case waterL
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(co2Kg, forKey: .co2Kg)
-        try container.encode(waterL, forKey: .waterL)
         try container.encode(itemsBought, forKey: .itemsBought)
         try container.encode(itemsWithFigures, forKey: .itemsWithFigures)
+        try container.encode(co2Kg, forKey: .co2Kg)
+        try container.encode(waterL, forKey: .waterL)
     }
 }
 

@@ -17,10 +17,10 @@ public struct GetVaultMarketFeeQuoteResponseMaker: Codable, JSONEncodable, Hasha
         case taker = "taker"
     }
     public enum Program: String, Codable, CaseIterable {
+        case retail = "retail"
         case volume = "volume"
         case lp = "lp"
         case dmm = "dmm"
-        case retail = "retail"
     }
     public var role: Role
     public var program: Program

@@ -14,8 +14,8 @@ public struct ListVaultMarketOracleHistoryItem: Codable, JSONEncodable, Hashable
 
     public enum Status: String, Codable, CaseIterable {
         case skipped = "skipped"
-        case failed = "failed"
         case published = "published"
+        case failed = "failed"
     }
     public var id: String
     public var indexSlug: String

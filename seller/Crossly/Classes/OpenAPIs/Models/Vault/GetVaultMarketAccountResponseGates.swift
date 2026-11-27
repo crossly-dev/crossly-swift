@@ -12,33 +12,61 @@ import AnyCodable
 
 public struct GetVaultMarketAccountResponseGates: Codable, JSONEncodable, Hashable {
 
+    public var shares: ListVaultMarketGradeToVaultItemGatesGradingRuns
     public var custody: ListVaultMarketGradeToVaultItemGatesGradingRuns
     public var lending: ListVaultMarketGradeToVaultItemGatesGradingRuns
     public var leverage: ListVaultMarketGradeToVaultItemGatesGradingRuns
     public var staking: ListVaultMarketGradeToVaultItemGatesGradingRuns
+    public var sharesPartner: ListVaultMarketGradeToVaultItemGatesGradingRuns
+    public var sharesSelf: ListVaultMarketGradeToVaultItemGatesGradingRuns
+    public var optionsRouting: ListVaultMarketGradeToVaultItemGatesGradingRuns
+    public var optionsVenue: ListVaultMarketGradeToVaultItemGatesGradingRuns
+    public var predictionPartner: ListVaultMarketGradeToVaultItemGatesGradingRuns
+    public var predictionSelf: ListVaultMarketGradeToVaultItemGatesGradingRuns
 
-    public init(custody: ListVaultMarketGradeToVaultItemGatesGradingRuns, lending: ListVaultMarketGradeToVaultItemGatesGradingRuns, leverage: ListVaultMarketGradeToVaultItemGatesGradingRuns, staking: ListVaultMarketGradeToVaultItemGatesGradingRuns) {
+    public init(shares: ListVaultMarketGradeToVaultItemGatesGradingRuns, custody: ListVaultMarketGradeToVaultItemGatesGradingRuns, lending: ListVaultMarketGradeToVaultItemGatesGradingRuns, leverage: ListVaultMarketGradeToVaultItemGatesGradingRuns, staking: ListVaultMarketGradeToVaultItemGatesGradingRuns, sharesPartner: ListVaultMarketGradeToVaultItemGatesGradingRuns, sharesSelf: ListVaultMarketGradeToVaultItemGatesGradingRuns, optionsRouting: ListVaultMarketGradeToVaultItemGatesGradingRuns, optionsVenue: ListVaultMarketGradeToVaultItemGatesGradingRuns, predictionPartner: ListVaultMarketGradeToVaultItemGatesGradingRuns, predictionSelf: ListVaultMarketGradeToVaultItemGatesGradingRuns) {
+        self.shares = shares
         self.custody = custody
         self.lending = lending
         self.leverage = leverage
         self.staking = staking
+        self.sharesPartner = sharesPartner
+        self.sharesSelf = sharesSelf
+        self.optionsRouting = optionsRouting
+        self.optionsVenue = optionsVenue
+        self.predictionPartner = predictionPartner
+        self.predictionSelf = predictionSelf
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case shares
         case custody
         case lending
         case leverage
         case staking
+        case sharesPartner = "shares_partner"
+        case sharesSelf = "shares_self"
+        case optionsRouting = "options_routing"
+        case optionsVenue = "options_venue"
+        case predictionPartner = "prediction_partner"
+        case predictionSelf = "prediction_self"
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(shares, forKey: .shares)
         try container.encode(custody, forKey: .custody)
         try container.encode(lending, forKey: .lending)
         try container.encode(leverage, forKey: .leverage)
         try container.encode(staking, forKey: .staking)
+        try container.encode(sharesPartner, forKey: .sharesPartner)
+        try container.encode(sharesSelf, forKey: .sharesSelf)
+        try container.encode(optionsRouting, forKey: .optionsRouting)
+        try container.encode(optionsVenue, forKey: .optionsVenue)
+        try container.encode(predictionPartner, forKey: .predictionPartner)
+        try container.encode(predictionSelf, forKey: .predictionSelf)
     }
 }
 

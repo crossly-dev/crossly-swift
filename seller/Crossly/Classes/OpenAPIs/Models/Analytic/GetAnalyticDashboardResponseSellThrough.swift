@@ -10,7 +10,6 @@ import Foundation
 import AnyCodable
 #endif
 
-/** The context the bare rate can&#39;t carry. &#x60;tooYoungToJudge&#x60; is the important one: a cohort measured the day its window closed has had no time to sell, and a low number there means \&quot;wait\&quot;, not \&quot;bad buys\&quot; — a seller acting on it would stop sourcing for no reason. */
 public struct GetAnalyticDashboardResponseSellThrough: Codable, JSONEncodable, Hashable {
 
     public var rate: Double?
@@ -18,13 +17,15 @@ public struct GetAnalyticDashboardResponseSellThrough: Codable, JSONEncodable, H
     public var cohortSold: Double
     public var maturityDays: Double
     public var tooYoungToJudge: Bool
+    public var immature: Double
 
-    public init(rate: Double? = nil, cohortSize: Double, cohortSold: Double, maturityDays: Double, tooYoungToJudge: Bool) {
+    public init(rate: Double? = nil, cohortSize: Double, cohortSold: Double, maturityDays: Double, tooYoungToJudge: Bool, immature: Double) {
         self.rate = rate
         self.cohortSize = cohortSize
         self.cohortSold = cohortSold
         self.maturityDays = maturityDays
         self.tooYoungToJudge = tooYoungToJudge
+        self.immature = immature
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -33,6 +34,7 @@ public struct GetAnalyticDashboardResponseSellThrough: Codable, JSONEncodable, H
         case cohortSold
         case maturityDays
         case tooYoungToJudge
+        case immature
     }
 
     // Encodable protocol methods
@@ -44,6 +46,7 @@ public struct GetAnalyticDashboardResponseSellThrough: Codable, JSONEncodable, H
         try container.encode(cohortSold, forKey: .cohortSold)
         try container.encode(maturityDays, forKey: .maturityDays)
         try container.encode(tooYoungToJudge, forKey: .tooYoungToJudge)
+        try container.encode(immature, forKey: .immature)
     }
 }
 

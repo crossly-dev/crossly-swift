@@ -12,49 +12,49 @@ import AnyCodable
 
 public struct ListBuyerPackOpeningsItemProof: Codable, JSONEncodable, Hashable {
 
-    public var nonce: Double
-    public var tierId: String?
-    public var serverSeed: String?
     public var serverSeedHash: String
+    public var serverSeed: String?
     public var clientSeed: String
-    public var poolItemId: String?
+    public var nonce: Double
     public var tierItemIds: [String]?
     public var tierWeights: [ListBuyerPackOpeningsItemProofTierWeights]?
+    public var tierId: String?
+    public var poolItemId: String?
 
-    public init(nonce: Double, tierId: String? = nil, serverSeed: String? = nil, serverSeedHash: String, clientSeed: String, poolItemId: String? = nil, tierItemIds: [String]? = nil, tierWeights: [ListBuyerPackOpeningsItemProofTierWeights]? = nil) {
-        self.nonce = nonce
-        self.tierId = tierId
-        self.serverSeed = serverSeed
+    public init(serverSeedHash: String, serverSeed: String? = nil, clientSeed: String, nonce: Double, tierItemIds: [String]? = nil, tierWeights: [ListBuyerPackOpeningsItemProofTierWeights]? = nil, tierId: String? = nil, poolItemId: String? = nil) {
         self.serverSeedHash = serverSeedHash
+        self.serverSeed = serverSeed
         self.clientSeed = clientSeed
-        self.poolItemId = poolItemId
+        self.nonce = nonce
         self.tierItemIds = tierItemIds
         self.tierWeights = tierWeights
+        self.tierId = tierId
+        self.poolItemId = poolItemId
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case nonce
-        case tierId
-        case serverSeed
         case serverSeedHash
+        case serverSeed
         case clientSeed
-        case poolItemId
+        case nonce
         case tierItemIds
         case tierWeights
+        case tierId
+        case poolItemId
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(nonce, forKey: .nonce)
-        try container.encodeIfPresent(tierId, forKey: .tierId)
-        try container.encodeIfPresent(serverSeed, forKey: .serverSeed)
         try container.encode(serverSeedHash, forKey: .serverSeedHash)
+        try container.encodeIfPresent(serverSeed, forKey: .serverSeed)
         try container.encode(clientSeed, forKey: .clientSeed)
-        try container.encodeIfPresent(poolItemId, forKey: .poolItemId)
+        try container.encode(nonce, forKey: .nonce)
         try container.encodeIfPresent(tierItemIds, forKey: .tierItemIds)
         try container.encodeIfPresent(tierWeights, forKey: .tierWeights)
+        try container.encodeIfPresent(tierId, forKey: .tierId)
+        try container.encodeIfPresent(poolItemId, forKey: .poolItemId)
     }
 }
 

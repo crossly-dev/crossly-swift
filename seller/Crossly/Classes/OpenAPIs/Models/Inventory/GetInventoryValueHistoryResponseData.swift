@@ -13,9 +13,9 @@ import AnyCodable
 public struct GetInventoryValueHistoryResponseData: Codable, JSONEncodable, Hashable {
 
     public var points: [GetInventoryValueHistoryResponseDataPoints]
-    public var collectingSince: String
+    public var collectingSince: String?
 
-    public init(points: [GetInventoryValueHistoryResponseDataPoints], collectingSince: String) {
+    public init(points: [GetInventoryValueHistoryResponseDataPoints], collectingSince: String? = nil) {
         self.points = points
         self.collectingSince = collectingSince
     }
@@ -30,7 +30,7 @@ public struct GetInventoryValueHistoryResponseData: Codable, JSONEncodable, Hash
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(points, forKey: .points)
-        try container.encode(collectingSince, forKey: .collectingSince)
+        try container.encodeIfPresent(collectingSince, forKey: .collectingSince)
     }
 }
 

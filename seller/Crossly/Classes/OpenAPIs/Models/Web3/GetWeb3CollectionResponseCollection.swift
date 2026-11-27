@@ -17,20 +17,20 @@ public struct GetWeb3CollectionResponseCollection: Codable, JSONEncodable, Hasha
     public var description: String?
     public var category: String?
     public var slug: String?
-    public var hiddenAt: Date?
     public var imageUrl: String?
+    public var verified: Bool
+    public var hiddenAt: Date?
     public var refreshedAt: Date
     public var externalUrl: String?
     public var chain: String
     public var contract: String
-    public var firstSeenAt: Date
     public var tokenType: String?
     public var totalSupply: String?
     public var featuredRank: Double?
+    public var firstSeenAt: Date
     public var bannerUrl: String?
     public var twitter: String?
     public var discord: String?
-    public var verified: Bool
     public var deployedBlock: Double?
     public var collectors: Double
     public var indexedAt: Date?
@@ -43,26 +43,26 @@ public struct GetWeb3CollectionResponseCollection: Codable, JSONEncodable, Hasha
     public var hiddenReason: String?
     public var hiddenCategory: String?
 
-    public init(symbol: String? = nil, name: String? = nil, description: String? = nil, category: String? = nil, slug: String? = nil, hiddenAt: Date? = nil, imageUrl: String? = nil, refreshedAt: Date, externalUrl: String? = nil, chain: String, contract: String, firstSeenAt: Date, tokenType: String? = nil, totalSupply: String? = nil, featuredRank: Double? = nil, bannerUrl: String? = nil, twitter: String? = nil, discord: String? = nil, verified: Bool, deployedBlock: Double? = nil, collectors: Double, indexedAt: Date? = nil, indexedCount: Double? = nil, imageSource: String? = nil, bannerSource: String? = nil, imageThumbUrl: String? = nil, bannerThumbUrl: String? = nil, rehostCheckedAt: Date? = nil, hiddenReason: String? = nil, hiddenCategory: String? = nil) {
+    public init(symbol: String? = nil, name: String? = nil, description: String? = nil, category: String? = nil, slug: String? = nil, imageUrl: String? = nil, verified: Bool, hiddenAt: Date? = nil, refreshedAt: Date, externalUrl: String? = nil, chain: String, contract: String, tokenType: String? = nil, totalSupply: String? = nil, featuredRank: Double? = nil, firstSeenAt: Date, bannerUrl: String? = nil, twitter: String? = nil, discord: String? = nil, deployedBlock: Double? = nil, collectors: Double, indexedAt: Date? = nil, indexedCount: Double? = nil, imageSource: String? = nil, bannerSource: String? = nil, imageThumbUrl: String? = nil, bannerThumbUrl: String? = nil, rehostCheckedAt: Date? = nil, hiddenReason: String? = nil, hiddenCategory: String? = nil) {
         self.symbol = symbol
         self.name = name
         self.description = description
         self.category = category
         self.slug = slug
-        self.hiddenAt = hiddenAt
         self.imageUrl = imageUrl
+        self.verified = verified
+        self.hiddenAt = hiddenAt
         self.refreshedAt = refreshedAt
         self.externalUrl = externalUrl
         self.chain = chain
         self.contract = contract
-        self.firstSeenAt = firstSeenAt
         self.tokenType = tokenType
         self.totalSupply = totalSupply
         self.featuredRank = featuredRank
+        self.firstSeenAt = firstSeenAt
         self.bannerUrl = bannerUrl
         self.twitter = twitter
         self.discord = discord
-        self.verified = verified
         self.deployedBlock = deployedBlock
         self.collectors = collectors
         self.indexedAt = indexedAt
@@ -82,20 +82,20 @@ public struct GetWeb3CollectionResponseCollection: Codable, JSONEncodable, Hasha
         case description
         case category
         case slug
-        case hiddenAt
         case imageUrl
+        case verified
+        case hiddenAt
         case refreshedAt
         case externalUrl
         case chain
         case contract
-        case firstSeenAt
         case tokenType
         case totalSupply
         case featuredRank
+        case firstSeenAt
         case bannerUrl
         case twitter
         case discord
-        case verified
         case deployedBlock
         case collectors
         case indexedAt
@@ -118,20 +118,20 @@ public struct GetWeb3CollectionResponseCollection: Codable, JSONEncodable, Hasha
         try container.encodeIfPresent(description, forKey: .description)
         try container.encodeIfPresent(category, forKey: .category)
         try container.encodeIfPresent(slug, forKey: .slug)
-        try container.encodeIfPresent(hiddenAt, forKey: .hiddenAt)
         try container.encodeIfPresent(imageUrl, forKey: .imageUrl)
+        try container.encode(verified, forKey: .verified)
+        try container.encodeIfPresent(hiddenAt, forKey: .hiddenAt)
         try container.encode(refreshedAt, forKey: .refreshedAt)
         try container.encodeIfPresent(externalUrl, forKey: .externalUrl)
         try container.encode(chain, forKey: .chain)
         try container.encode(contract, forKey: .contract)
-        try container.encode(firstSeenAt, forKey: .firstSeenAt)
         try container.encodeIfPresent(tokenType, forKey: .tokenType)
         try container.encodeIfPresent(totalSupply, forKey: .totalSupply)
         try container.encodeIfPresent(featuredRank, forKey: .featuredRank)
+        try container.encode(firstSeenAt, forKey: .firstSeenAt)
         try container.encodeIfPresent(bannerUrl, forKey: .bannerUrl)
         try container.encodeIfPresent(twitter, forKey: .twitter)
         try container.encodeIfPresent(discord, forKey: .discord)
-        try container.encode(verified, forKey: .verified)
         try container.encodeIfPresent(deployedBlock, forKey: .deployedBlock)
         try container.encode(collectors, forKey: .collectors)
         try container.encodeIfPresent(indexedAt, forKey: .indexedAt)

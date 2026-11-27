@@ -14,6 +14,7 @@ public struct CreateMagicScanResponse: Codable, JSONEncodable, Hashable {
 
     public var runId: String
     public var photoIdentifier: CreateMagicScanResponsePhotoIdentifier?
+    public var matchReference: CreateMagicScanResponseMatchReference?
     public var ebayMatch: CreateMagicScanResponseEbayMatch?
     /** Unified top-10-globally list, ranked by CLIP visual similarity to the seller's source photo. Each hit carries its origin platform. */
     public var topHits: [CreateMagicScanResponseTopHits]
@@ -27,10 +28,13 @@ public struct CreateMagicScanResponse: Codable, JSONEncodable, Hashable {
     /** The seller's OWN listings/inventory that this scan probably duplicates (image + fuzzy-title self-dedup). Empty when nothing matched. Drives the \"you may already have this\" prompt. */
     public var possibleDuplicates: [CreateMagicScanResponsePossibleDuplicates]
     public var cached: Bool
+    /** Monthly vision calls (vision-quota.ts) this scan spent: the seller's Activity Log shows them as credits used. 0 for a single-photo scan and for a re-scan of the same photos. */
+    public var visionCallsUsed: Double?
 
-    public init(runId: String, photoIdentifier: CreateMagicScanResponsePhotoIdentifier? = nil, ebayMatch: CreateMagicScanResponseEbayMatch? = nil, topHits: [CreateMagicScanResponseTopHits], ebayHits: [CreateMagicScanResponseEbayHits], otherMatches: [String: AnyCodable], imageUrls: [String], visionAspects: [String: AnyCodable], possibleDuplicates: [CreateMagicScanResponsePossibleDuplicates], cached: Bool) {
+    public init(runId: String, photoIdentifier: CreateMagicScanResponsePhotoIdentifier? = nil, matchReference: CreateMagicScanResponseMatchReference? = nil, ebayMatch: CreateMagicScanResponseEbayMatch? = nil, topHits: [CreateMagicScanResponseTopHits], ebayHits: [CreateMagicScanResponseEbayHits], otherMatches: [String: AnyCodable], imageUrls: [String], visionAspects: [String: AnyCodable], possibleDuplicates: [CreateMagicScanResponsePossibleDuplicates], cached: Bool, visionCallsUsed: Double? = nil) {
         self.runId = runId
         self.photoIdentifier = photoIdentifier
+        self.matchReference = matchReference
         self.ebayMatch = ebayMatch
         self.topHits = topHits
         self.ebayHits = ebayHits
@@ -39,11 +43,13 @@ public struct CreateMagicScanResponse: Codable, JSONEncodable, Hashable {
         self.visionAspects = visionAspects
         self.possibleDuplicates = possibleDuplicates
         self.cached = cached
+        self.visionCallsUsed = visionCallsUsed
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case runId
         case photoIdentifier
+        case matchReference
         case ebayMatch
         case topHits
         case ebayHits
@@ -52,6 +58,7 @@ public struct CreateMagicScanResponse: Codable, JSONEncodable, Hashable {
         case visionAspects
         case possibleDuplicates
         case cached
+        case visionCallsUsed
     }
 
     // Encodable protocol methods
@@ -60,6 +67,7 @@ public struct CreateMagicScanResponse: Codable, JSONEncodable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(runId, forKey: .runId)
         try container.encodeIfPresent(photoIdentifier, forKey: .photoIdentifier)
+        try container.encodeIfPresent(matchReference, forKey: .matchReference)
         try container.encodeIfPresent(ebayMatch, forKey: .ebayMatch)
         try container.encode(topHits, forKey: .topHits)
         try container.encode(ebayHits, forKey: .ebayHits)
@@ -68,6 +76,7 @@ public struct CreateMagicScanResponse: Codable, JSONEncodable, Hashable {
         try container.encode(visionAspects, forKey: .visionAspects)
         try container.encode(possibleDuplicates, forKey: .possibleDuplicates)
         try container.encode(cached, forKey: .cached)
+        try container.encodeIfPresent(visionCallsUsed, forKey: .visionCallsUsed)
     }
 }
 

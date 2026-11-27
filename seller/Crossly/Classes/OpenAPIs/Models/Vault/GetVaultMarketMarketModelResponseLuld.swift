@@ -14,8 +14,8 @@ public struct GetVaultMarketMarketModelResponseLuld: Codable, JSONEncodable, Has
 
     public enum Phase: String, Codable, CaseIterable {
         case limit = "limit"
-        case normal = "normal"
         case paused = "paused"
+        case normal = "normal"
     }
     public var referenceCents: Double?
     public var band: GetVaultMarketMarketModelResponseLuldBand?

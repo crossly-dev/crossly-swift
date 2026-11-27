@@ -12,19 +12,38 @@ import AnyCodable
 
 public struct GetListingResponsePlatformListings: Codable, JSONEncodable, Hashable {
 
+    public enum Origin: String, Codable, CaseIterable {
+        case unknown = "unknown"
+        case published = "published"
+        case imported = "imported"
+        case externalStub = "external_stub"
+        case appLinked = "app_linked"
+    }
+    public enum ViewsSemantics: String, Codable, CaseIterable {
+        case lifetime = "lifetime"
+        case rolling7d = "rolling7d"
+        case rolling30d = "rolling30d"
+        case clicks = "clicks"
+    }
+    public enum DelistState: String, Codable, CaseIterable {
+        case pending = "pending"
+        case failed = "failed"
+    }
     public var id: String
     public var userId: String
-    public var quantity: Double
-    public var status: String
     public var platform: String
-    public var errorMessage: String?
-    public var listingId: String
-    public var marketplaceId: String?
     public var accountSlot: Double
+    public var status: String
+    public var marketplaceId: String?
+    public var origin: Origin
+    public var views: Double
+    public var favorites: Double
+    public var quantity: Double
     public var inventoryItemId: String?
     public var currency: String?
     public var delistedAt: Date?
     public var soldAt: Date?
+    public var listingId: String
     public var platformListingId: String
     public var platformListingUrl: String?
     public var stockLocation: String
@@ -32,13 +51,22 @@ public struct GetListingResponsePlatformListings: Codable, JSONEncodable, Hashab
     public var sharedAt: Date?
     public var delistReason: String?
     public var lastCheckedAt: Date?
-    public var views: Double
-    public var favorites: Double
     public var commentsCount: Double
+    public var impressions: Double?
+    public var ctrBps: Double?
+    public var viewsSemantics: ViewsSemantics?
     public var lastStatsSyncedAt: Date?
+    public var errorMessage: String?
+    public var delistRequestedAt: Date?
+    public var delistRequestedReason: String?
+    public var delistFailedAt: Date?
+    public var delistError: String?
+    public var delistErrorCode: String?
     public var listedPrice: String?
     public var crosslyPriceUsdCents: Double?
     public var crosslyPriceFxAsOf: String?
+    public var bundlePromo: GetInventoryResponsePlatformListingsBundlePromo?
+    public var storefrontId: String?
     public var hashtags: [String]?
     public var isDraft: Bool
     public var scheduledPublishAt: Date?
@@ -58,7 +86,6 @@ public struct GetListingResponsePlatformListings: Codable, JSONEncodable, Hashab
     public var bestOfferAutoDeclineCents: Double?
     public var aestheticTags: [String]?
     public var personalization: GetInventoryResponsePlatformListingsPersonalization?
-    public var digitalFile: GetInventoryResponsePlatformListingsDigitalFile?
     public var tryDays: Double?
     public var tryFeeCents: Double?
     public var subscribeDiscountBps: Double?
@@ -98,21 +125,25 @@ public struct GetListingResponsePlatformListings: Codable, JSONEncodable, Hashab
     public var verificationFailed: Bool
     public var detailsPending: Bool
     public var publishedOverrides: [String: AnyCodable]?
+    public var delistState: DelistState?
+    public var unmatchedSale: GetListingResponsePlatformListingsUnmatchedSale?
 
-    public init(id: String, userId: String, quantity: Double, status: String, platform: String, errorMessage: String? = nil, listingId: String, marketplaceId: String? = nil, accountSlot: Double, inventoryItemId: String? = nil, currency: String? = nil, delistedAt: Date? = nil, soldAt: Date? = nil, platformListingId: String, platformListingUrl: String? = nil, stockLocation: String, listedAt: Date? = nil, sharedAt: Date? = nil, delistReason: String? = nil, lastCheckedAt: Date? = nil, views: Double, favorites: Double, commentsCount: Double, lastStatsSyncedAt: Date? = nil, listedPrice: String? = nil, crosslyPriceUsdCents: Double? = nil, crosslyPriceFxAsOf: String? = nil, hashtags: [String]? = nil, isDraft: Bool, scheduledPublishAt: Date? = nil, isDutchAuction: Bool, dutchStartCents: Double? = nil, dutchFloorCents: Double? = nil, dutchEndsAt: Date? = nil, isPreOrder: Bool, expectedShipBy: String? = nil, preorderDepositPercentBps: Double? = nil, boostedAt: Date? = nil, imageCaption: String? = nil, durationDays: Double? = nil, endsAt: Date? = nil, bestOfferEnabled: Bool, bestOfferAutoAcceptCents: Double? = nil, bestOfferAutoDeclineCents: Double? = nil, aestheticTags: [String]? = nil, personalization: GetInventoryResponsePlatformListingsPersonalization? = nil, digitalFile: GetInventoryResponsePlatformListingsDigitalFile? = nil, tryDays: Double? = nil, tryFeeCents: Double? = nil, subscribeDiscountBps: Double? = nil, measurements: GetInventoryResponsePlatformListingsMeasurements? = nil, allowsLocalPickup: Bool, pickupRadiusMiles: Double? = nil, pickupLat: String? = nil, pickupLng: String? = nil, refurbishedTier: String? = nil, refurbWarrantyMonths: Double? = nil, refurbBatteryPct: Double? = nil, charitySlug: String? = nil, charityPercentBps: Double? = nil, crosslyReturnPolicyId: String? = nil, crosslyShippingPolicyId: String? = nil, crosslyPaymentPolicyId: String? = nil, retailPriceCents: Double? = nil, restrictedCountries: [String]? = nil, auctionExtendSeconds: Double? = nil, authenticationProviderSlug: String? = nil, authenticationRequired: Bool, hasVariants: Bool, charityId: String? = nil, minOrderQuantity: Double, wholesaleUnitPriceCents: Double? = nil, wholesaleMinQuantity: Double? = nil, auctionReserveCents: Double? = nil, isGtc: Bool, handlingTimeDays: Double, itemLocation: String? = nil, itemLocationZip: String? = nil, itemLocationCountry: String? = nil, declaredShippingCost: String? = nil, returnPolicyText: String? = nil, lastDriftCheckedAt: Date? = nil, web3OrderId: String? = nil, verificationFailed: Bool, detailsPending: Bool, publishedOverrides: [String: AnyCodable]? = nil) {
+    public init(id: String, userId: String, platform: String, accountSlot: Double, status: String, marketplaceId: String? = nil, origin: Origin, views: Double, favorites: Double, quantity: Double, inventoryItemId: String? = nil, currency: String? = nil, delistedAt: Date? = nil, soldAt: Date? = nil, listingId: String, platformListingId: String, platformListingUrl: String? = nil, stockLocation: String, listedAt: Date? = nil, sharedAt: Date? = nil, delistReason: String? = nil, lastCheckedAt: Date? = nil, commentsCount: Double, impressions: Double? = nil, ctrBps: Double? = nil, viewsSemantics: ViewsSemantics? = nil, lastStatsSyncedAt: Date? = nil, errorMessage: String? = nil, delistRequestedAt: Date? = nil, delistRequestedReason: String? = nil, delistFailedAt: Date? = nil, delistError: String? = nil, delistErrorCode: String? = nil, listedPrice: String? = nil, crosslyPriceUsdCents: Double? = nil, crosslyPriceFxAsOf: String? = nil, bundlePromo: GetInventoryResponsePlatformListingsBundlePromo? = nil, storefrontId: String? = nil, hashtags: [String]? = nil, isDraft: Bool, scheduledPublishAt: Date? = nil, isDutchAuction: Bool, dutchStartCents: Double? = nil, dutchFloorCents: Double? = nil, dutchEndsAt: Date? = nil, isPreOrder: Bool, expectedShipBy: String? = nil, preorderDepositPercentBps: Double? = nil, boostedAt: Date? = nil, imageCaption: String? = nil, durationDays: Double? = nil, endsAt: Date? = nil, bestOfferEnabled: Bool, bestOfferAutoAcceptCents: Double? = nil, bestOfferAutoDeclineCents: Double? = nil, aestheticTags: [String]? = nil, personalization: GetInventoryResponsePlatformListingsPersonalization? = nil, tryDays: Double? = nil, tryFeeCents: Double? = nil, subscribeDiscountBps: Double? = nil, measurements: GetInventoryResponsePlatformListingsMeasurements? = nil, allowsLocalPickup: Bool, pickupRadiusMiles: Double? = nil, pickupLat: String? = nil, pickupLng: String? = nil, refurbishedTier: String? = nil, refurbWarrantyMonths: Double? = nil, refurbBatteryPct: Double? = nil, charitySlug: String? = nil, charityPercentBps: Double? = nil, crosslyReturnPolicyId: String? = nil, crosslyShippingPolicyId: String? = nil, crosslyPaymentPolicyId: String? = nil, retailPriceCents: Double? = nil, restrictedCountries: [String]? = nil, auctionExtendSeconds: Double? = nil, authenticationProviderSlug: String? = nil, authenticationRequired: Bool, hasVariants: Bool, charityId: String? = nil, minOrderQuantity: Double, wholesaleUnitPriceCents: Double? = nil, wholesaleMinQuantity: Double? = nil, auctionReserveCents: Double? = nil, isGtc: Bool, handlingTimeDays: Double, itemLocation: String? = nil, itemLocationZip: String? = nil, itemLocationCountry: String? = nil, declaredShippingCost: String? = nil, returnPolicyText: String? = nil, lastDriftCheckedAt: Date? = nil, web3OrderId: String? = nil, verificationFailed: Bool, detailsPending: Bool, publishedOverrides: [String: AnyCodable]? = nil, delistState: DelistState? = nil, unmatchedSale: GetListingResponsePlatformListingsUnmatchedSale? = nil) {
         self.id = id
         self.userId = userId
-        self.quantity = quantity
-        self.status = status
         self.platform = platform
-        self.errorMessage = errorMessage
-        self.listingId = listingId
-        self.marketplaceId = marketplaceId
         self.accountSlot = accountSlot
+        self.status = status
+        self.marketplaceId = marketplaceId
+        self.origin = origin
+        self.views = views
+        self.favorites = favorites
+        self.quantity = quantity
         self.inventoryItemId = inventoryItemId
         self.currency = currency
         self.delistedAt = delistedAt
         self.soldAt = soldAt
+        self.listingId = listingId
         self.platformListingId = platformListingId
         self.platformListingUrl = platformListingUrl
         self.stockLocation = stockLocation
@@ -120,13 +151,22 @@ public struct GetListingResponsePlatformListings: Codable, JSONEncodable, Hashab
         self.sharedAt = sharedAt
         self.delistReason = delistReason
         self.lastCheckedAt = lastCheckedAt
-        self.views = views
-        self.favorites = favorites
         self.commentsCount = commentsCount
+        self.impressions = impressions
+        self.ctrBps = ctrBps
+        self.viewsSemantics = viewsSemantics
         self.lastStatsSyncedAt = lastStatsSyncedAt
+        self.errorMessage = errorMessage
+        self.delistRequestedAt = delistRequestedAt
+        self.delistRequestedReason = delistRequestedReason
+        self.delistFailedAt = delistFailedAt
+        self.delistError = delistError
+        self.delistErrorCode = delistErrorCode
         self.listedPrice = listedPrice
         self.crosslyPriceUsdCents = crosslyPriceUsdCents
         self.crosslyPriceFxAsOf = crosslyPriceFxAsOf
+        self.bundlePromo = bundlePromo
+        self.storefrontId = storefrontId
         self.hashtags = hashtags
         self.isDraft = isDraft
         self.scheduledPublishAt = scheduledPublishAt
@@ -146,7 +186,6 @@ public struct GetListingResponsePlatformListings: Codable, JSONEncodable, Hashab
         self.bestOfferAutoDeclineCents = bestOfferAutoDeclineCents
         self.aestheticTags = aestheticTags
         self.personalization = personalization
-        self.digitalFile = digitalFile
         self.tryDays = tryDays
         self.tryFeeCents = tryFeeCents
         self.subscribeDiscountBps = subscribeDiscountBps
@@ -186,22 +225,26 @@ public struct GetListingResponsePlatformListings: Codable, JSONEncodable, Hashab
         self.verificationFailed = verificationFailed
         self.detailsPending = detailsPending
         self.publishedOverrides = publishedOverrides
+        self.delistState = delistState
+        self.unmatchedSale = unmatchedSale
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
         case userId
-        case quantity
-        case status
         case platform
-        case errorMessage
-        case listingId
-        case marketplaceId
         case accountSlot
+        case status
+        case marketplaceId
+        case origin
+        case views
+        case favorites
+        case quantity
         case inventoryItemId
         case currency
         case delistedAt
         case soldAt
+        case listingId
         case platformListingId
         case platformListingUrl
         case stockLocation
@@ -209,13 +252,22 @@ public struct GetListingResponsePlatformListings: Codable, JSONEncodable, Hashab
         case sharedAt
         case delistReason
         case lastCheckedAt
-        case views
-        case favorites
         case commentsCount
+        case impressions
+        case ctrBps
+        case viewsSemantics
         case lastStatsSyncedAt
+        case errorMessage
+        case delistRequestedAt
+        case delistRequestedReason
+        case delistFailedAt
+        case delistError
+        case delistErrorCode
         case listedPrice
         case crosslyPriceUsdCents
         case crosslyPriceFxAsOf
+        case bundlePromo
+        case storefrontId
         case hashtags
         case isDraft
         case scheduledPublishAt
@@ -235,7 +287,6 @@ public struct GetListingResponsePlatformListings: Codable, JSONEncodable, Hashab
         case bestOfferAutoDeclineCents
         case aestheticTags
         case personalization
-        case digitalFile
         case tryDays
         case tryFeeCents
         case subscribeDiscountBps
@@ -275,6 +326,8 @@ public struct GetListingResponsePlatformListings: Codable, JSONEncodable, Hashab
         case verificationFailed
         case detailsPending
         case publishedOverrides
+        case delistState
+        case unmatchedSale
     }
 
     // Encodable protocol methods
@@ -283,17 +336,19 @@ public struct GetListingResponsePlatformListings: Codable, JSONEncodable, Hashab
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
         try container.encode(userId, forKey: .userId)
-        try container.encode(quantity, forKey: .quantity)
-        try container.encode(status, forKey: .status)
         try container.encode(platform, forKey: .platform)
-        try container.encodeIfPresent(errorMessage, forKey: .errorMessage)
-        try container.encode(listingId, forKey: .listingId)
-        try container.encodeIfPresent(marketplaceId, forKey: .marketplaceId)
         try container.encode(accountSlot, forKey: .accountSlot)
+        try container.encode(status, forKey: .status)
+        try container.encodeIfPresent(marketplaceId, forKey: .marketplaceId)
+        try container.encode(origin, forKey: .origin)
+        try container.encode(views, forKey: .views)
+        try container.encode(favorites, forKey: .favorites)
+        try container.encode(quantity, forKey: .quantity)
         try container.encodeIfPresent(inventoryItemId, forKey: .inventoryItemId)
         try container.encodeIfPresent(currency, forKey: .currency)
         try container.encodeIfPresent(delistedAt, forKey: .delistedAt)
         try container.encodeIfPresent(soldAt, forKey: .soldAt)
+        try container.encode(listingId, forKey: .listingId)
         try container.encode(platformListingId, forKey: .platformListingId)
         try container.encodeIfPresent(platformListingUrl, forKey: .platformListingUrl)
         try container.encode(stockLocation, forKey: .stockLocation)
@@ -301,13 +356,22 @@ public struct GetListingResponsePlatformListings: Codable, JSONEncodable, Hashab
         try container.encodeIfPresent(sharedAt, forKey: .sharedAt)
         try container.encodeIfPresent(delistReason, forKey: .delistReason)
         try container.encodeIfPresent(lastCheckedAt, forKey: .lastCheckedAt)
-        try container.encode(views, forKey: .views)
-        try container.encode(favorites, forKey: .favorites)
         try container.encode(commentsCount, forKey: .commentsCount)
+        try container.encodeIfPresent(impressions, forKey: .impressions)
+        try container.encodeIfPresent(ctrBps, forKey: .ctrBps)
+        try container.encodeIfPresent(viewsSemantics, forKey: .viewsSemantics)
         try container.encodeIfPresent(lastStatsSyncedAt, forKey: .lastStatsSyncedAt)
+        try container.encodeIfPresent(errorMessage, forKey: .errorMessage)
+        try container.encodeIfPresent(delistRequestedAt, forKey: .delistRequestedAt)
+        try container.encodeIfPresent(delistRequestedReason, forKey: .delistRequestedReason)
+        try container.encodeIfPresent(delistFailedAt, forKey: .delistFailedAt)
+        try container.encodeIfPresent(delistError, forKey: .delistError)
+        try container.encodeIfPresent(delistErrorCode, forKey: .delistErrorCode)
         try container.encodeIfPresent(listedPrice, forKey: .listedPrice)
         try container.encodeIfPresent(crosslyPriceUsdCents, forKey: .crosslyPriceUsdCents)
         try container.encodeIfPresent(crosslyPriceFxAsOf, forKey: .crosslyPriceFxAsOf)
+        try container.encodeIfPresent(bundlePromo, forKey: .bundlePromo)
+        try container.encodeIfPresent(storefrontId, forKey: .storefrontId)
         try container.encodeIfPresent(hashtags, forKey: .hashtags)
         try container.encode(isDraft, forKey: .isDraft)
         try container.encodeIfPresent(scheduledPublishAt, forKey: .scheduledPublishAt)
@@ -327,7 +391,6 @@ public struct GetListingResponsePlatformListings: Codable, JSONEncodable, Hashab
         try container.encodeIfPresent(bestOfferAutoDeclineCents, forKey: .bestOfferAutoDeclineCents)
         try container.encodeIfPresent(aestheticTags, forKey: .aestheticTags)
         try container.encodeIfPresent(personalization, forKey: .personalization)
-        try container.encodeIfPresent(digitalFile, forKey: .digitalFile)
         try container.encodeIfPresent(tryDays, forKey: .tryDays)
         try container.encodeIfPresent(tryFeeCents, forKey: .tryFeeCents)
         try container.encodeIfPresent(subscribeDiscountBps, forKey: .subscribeDiscountBps)
@@ -367,6 +430,8 @@ public struct GetListingResponsePlatformListings: Codable, JSONEncodable, Hashab
         try container.encode(verificationFailed, forKey: .verificationFailed)
         try container.encode(detailsPending, forKey: .detailsPending)
         try container.encodeIfPresent(publishedOverrides, forKey: .publishedOverrides)
+        try container.encodeIfPresent(delistState, forKey: .delistState)
+        try container.encodeIfPresent(unmatchedSale, forKey: .unmatchedSale)
     }
 }
 

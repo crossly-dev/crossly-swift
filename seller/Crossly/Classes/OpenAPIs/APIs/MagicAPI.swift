@@ -13,6 +13,197 @@ import AnyCodable
 open class MagicAPI {
 
     /**
+     Undo an automated Magic List decision, deleting its unpublished draft.
+     
+     - parameter decisionId: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createMagicAutoDecisionUndo(decisionId: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateMagicAutoDecisionUndoResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createMagicAutoDecisionUndoWithRequestBuilder(decisionId: decisionId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Undo an automated Magic List decision, deleting its unpublished draft.
+     - POST /v1/magic/auto/decisions/{decisionId}/undo
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter decisionId: (path)  
+     - returns: RequestBuilder<CreateMagicAutoDecisionUndoResponse> 
+     */
+    open class func createMagicAutoDecisionUndoWithRequestBuilder(decisionId: UUID) -> RequestBuilder<CreateMagicAutoDecisionUndoResponse> {
+        var localVariablePath = "/v1/magic/auto/decisions/{decisionId}/undo"
+        let decisionIdPreEscape = "\(APIHelper.mapValueToPathItem(decisionId))"
+        let decisionIdPostEscape = decisionIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{decisionId}", with: decisionIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateMagicAutoDecisionUndoResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Scan one item and match it automatically (drafts only, never publishes).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createMagicAutoItem(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateMagicAutoItemResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createMagicAutoItemWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Scan one item and match it automatically (drafts only, never publishes).
+     - POST /v1/magic/auto/items
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<CreateMagicAutoItemResponse> 
+     */
+    open class func createMagicAutoItemWithRequestBuilder() -> RequestBuilder<CreateMagicAutoItemResponse> {
+        let localVariablePath = "/v1/magic/auto/items"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateMagicAutoItemResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Score a Magic List run automatically; a confident match in auto mode becomes a draft.
+     
+     - parameter runId: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createMagicAutoRun(runId: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateMagicAutoRunResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createMagicAutoRunWithRequestBuilder(runId: runId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Score a Magic List run automatically; a confident match in auto mode becomes a draft.
+     - POST /v1/magic/auto/runs/{runId}
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter runId: (path)  
+     - returns: RequestBuilder<CreateMagicAutoRunResponse> 
+     */
+    open class func createMagicAutoRunWithRequestBuilder(runId: UUID) -> RequestBuilder<CreateMagicAutoRunResponse> {
+        var localVariablePath = "/v1/magic/auto/runs/{runId}"
+        let runIdPreEscape = "\(APIHelper.mapValueToPathItem(runId))"
+        let runIdPostEscape = runIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{runId}", with: runIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateMagicAutoRunResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Record a seller swipe session (kept and rejected match keys) for a Magic List run.
+     
+     - parameter runId: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createMagicAutoRunSwipe(runId: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: CreateMagicAutoRunSwipeResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createMagicAutoRunSwipeWithRequestBuilder(runId: runId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Record a seller swipe session (kept and rejected match keys) for a Magic List run.
+     - POST /v1/magic/auto/runs/{runId}/swipes
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter runId: (path)  
+     - returns: RequestBuilder<CreateMagicAutoRunSwipeResponse> 
+     */
+    open class func createMagicAutoRunSwipeWithRequestBuilder(runId: UUID) -> RequestBuilder<CreateMagicAutoRunSwipeResponse> {
+        var localVariablePath = "/v1/magic/auto/runs/{runId}/swipes"
+        let runIdPreEscape = "\(APIHelper.mapValueToPathItem(runId))"
+        let runIdPostEscape = runIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{runId}", with: runIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreateMagicAutoRunSwipeResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Run a Magic List image scan.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -106,6 +297,51 @@ open class MagicAPI {
     }
 
     /**
+     The seller’s Magic List automated-matching mode.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getMagicAutoSetting(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetMagicAutoSettingResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getMagicAutoSettingWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The seller’s Magic List automated-matching mode.
+     - GET /v1/magic/auto/settings
+     - mode: off (every match is swiped by hand), auto (confident matches become DRAFTS on their own, never published, always undoable) or review_all (Crossly pre-marks its picks; the seller confirms). Default review_all.
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetMagicAutoSettingResponse> 
+     */
+    open class func getMagicAutoSettingWithRequestBuilder() -> RequestBuilder<GetMagicAutoSettingResponse> {
+        let localVariablePath = "/v1/magic/auto/settings"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetMagicAutoSettingResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Get a synthesized Magic List draft.
      
      - parameter draftId: (path)  
@@ -155,6 +391,55 @@ open class MagicAPI {
     }
 
     /**
+     Every match decision round (automated and seller) for a Magic List run.
+     
+     - parameter runId: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listMagicAutoRunDecisions(runId: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListMagicAutoRunDecisionsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listMagicAutoRunDecisionsWithRequestBuilder(runId: runId).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Every match decision round (automated and seller) for a Magic List run.
+     - GET /v1/magic/auto/runs/{runId}/decisions
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter runId: (path)  
+     - returns: RequestBuilder<ListMagicAutoRunDecisionsResponse> 
+     */
+    open class func listMagicAutoRunDecisionsWithRequestBuilder(runId: UUID) -> RequestBuilder<ListMagicAutoRunDecisionsResponse> {
+        var localVariablePath = "/v1/magic/auto/runs/{runId}/decisions"
+        let runIdPreEscape = "\(APIHelper.mapValueToPathItem(runId))"
+        let runIdPostEscape = runIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{runId}", with: runIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListMagicAutoRunDecisionsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
      Recent Magic List scans for this seller.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -196,5 +481,51 @@ open class MagicAPI {
         let localVariableRequestBuilder: RequestBuilder<ListMagicRecentResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Set the Magic List automated-matching mode (off | auto | review_all).
+     
+     - parameter updateMagicAutoSettingRequest: (body)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateMagicAutoSetting(updateMagicAutoSettingRequest: UpdateMagicAutoSettingRequest, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetMagicAutoSettingResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateMagicAutoSettingWithRequestBuilder(updateMagicAutoSettingRequest: updateMagicAutoSettingRequest).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Set the Magic List automated-matching mode (off | auto | review_all).
+     - PUT /v1/magic/auto/settings
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter updateMagicAutoSettingRequest: (body)  
+     - returns: RequestBuilder<GetMagicAutoSettingResponse> 
+     */
+    open class func updateMagicAutoSettingWithRequestBuilder(updateMagicAutoSettingRequest: UpdateMagicAutoSettingRequest) -> RequestBuilder<GetMagicAutoSettingResponse> {
+        let localVariablePath = "/v1/magic/auto/settings"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: updateMagicAutoSettingRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetMagicAutoSettingResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
 }

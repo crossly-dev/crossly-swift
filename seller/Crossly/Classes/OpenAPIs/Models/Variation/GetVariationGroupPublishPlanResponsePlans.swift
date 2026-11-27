@@ -13,8 +13,8 @@ import AnyCodable
 public struct GetVariationGroupPublishPlanResponsePlans: Codable, JSONEncodable, Hashable {
 
     public enum Mode: String, Codable, CaseIterable {
-        case grouped = "grouped"
         case separate = "separate"
+        case grouped = "grouped"
     }
     public var platform: String
     public var mode: Mode

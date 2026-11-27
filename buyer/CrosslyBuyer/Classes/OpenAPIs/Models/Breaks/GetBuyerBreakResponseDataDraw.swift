@@ -12,25 +12,25 @@ import AnyCodable
 
 public struct GetBuyerBreakResponseDataDraw: Codable, JSONEncodable, Hashable {
 
-    public var position: Double
     public var entry: Double
+    public var position: Double
 
-    public init(position: Double, entry: Double) {
-        self.position = position
+    public init(entry: Double, position: Double) {
         self.entry = entry
+        self.position = position
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case position
         case entry
+        case position
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(position, forKey: .position)
         try container.encode(entry, forKey: .entry)
+        try container.encode(position, forKey: .position)
     }
 }
 

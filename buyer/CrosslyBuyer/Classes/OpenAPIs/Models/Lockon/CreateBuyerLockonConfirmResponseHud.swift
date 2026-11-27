@@ -13,8 +13,8 @@ import AnyCodable
 public struct CreateBuyerLockonConfirmResponseHud: Codable, JSONEncodable, Hashable {
 
     public enum Tone: String, Codable, CaseIterable {
-        case _none = "none"
         case info = "info"
+        case _none = "none"
         case win = "win"
     }
     public var headline: String

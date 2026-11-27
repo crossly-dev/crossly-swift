@@ -13,14 +13,16 @@ import AnyCodable
 public struct GetCbxSubjectBalanceBySubjectIdResponseData: Codable, JSONEncodable, Hashable {
 
     public var grantedBaseUnits: String
+    public var fundingRestrictedBaseUnits: String
     public var earnedBaseUnits: String
     public var stakedBaseUnits: String
     public var earnedAvailableBaseUnits: String
     public var connectedAvailableBaseUnits: String
     public var totalSpendableBaseUnits: String
 
-    public init(grantedBaseUnits: String, earnedBaseUnits: String, stakedBaseUnits: String, earnedAvailableBaseUnits: String, connectedAvailableBaseUnits: String, totalSpendableBaseUnits: String) {
+    public init(grantedBaseUnits: String, fundingRestrictedBaseUnits: String, earnedBaseUnits: String, stakedBaseUnits: String, earnedAvailableBaseUnits: String, connectedAvailableBaseUnits: String, totalSpendableBaseUnits: String) {
         self.grantedBaseUnits = grantedBaseUnits
+        self.fundingRestrictedBaseUnits = fundingRestrictedBaseUnits
         self.earnedBaseUnits = earnedBaseUnits
         self.stakedBaseUnits = stakedBaseUnits
         self.earnedAvailableBaseUnits = earnedAvailableBaseUnits
@@ -30,6 +32,7 @@ public struct GetCbxSubjectBalanceBySubjectIdResponseData: Codable, JSONEncodabl
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case grantedBaseUnits
+        case fundingRestrictedBaseUnits
         case earnedBaseUnits
         case stakedBaseUnits
         case earnedAvailableBaseUnits
@@ -42,6 +45,7 @@ public struct GetCbxSubjectBalanceBySubjectIdResponseData: Codable, JSONEncodabl
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(grantedBaseUnits, forKey: .grantedBaseUnits)
+        try container.encode(fundingRestrictedBaseUnits, forKey: .fundingRestrictedBaseUnits)
         try container.encode(earnedBaseUnits, forKey: .earnedBaseUnits)
         try container.encode(stakedBaseUnits, forKey: .stakedBaseUnits)
         try container.encode(earnedAvailableBaseUnits, forKey: .earnedAvailableBaseUnits)

@@ -32,12 +32,12 @@ public struct ListVaultMarketOpeningItem: Codable, JSONEncodable, Hashable {
     public var unitsOnShelf: Double
     public var dealersQuoting: Double
     public var waitlist: Double
-    public var mark: ListVaultMarketFeedItemMark
+    public var mark: ListVaultMarketOpeningItemMark
     public var marketHref: String
     public var me: ListVaultMarketOpeningItemMe?
     public var earlyAccess: ListVaultMarketOpeningItemEarlyAccess?
 
-    public init(slug: String, title: String, blurb: String? = nil, status: Status, bookKey: String, key: ListVaultMarketOpeningItemKey, name: String? = nil, variantLabel: String? = nil, imageUrl: String? = nil, opensAt: String? = nil, unitsOnShelf: Double, dealersQuoting: Double, waitlist: Double, mark: ListVaultMarketFeedItemMark, marketHref: String, me: ListVaultMarketOpeningItemMe? = nil, earlyAccess: ListVaultMarketOpeningItemEarlyAccess? = nil) {
+    public init(slug: String, title: String, blurb: String? = nil, status: Status, bookKey: String, key: ListVaultMarketOpeningItemKey, name: String? = nil, variantLabel: String? = nil, imageUrl: String? = nil, opensAt: String? = nil, unitsOnShelf: Double, dealersQuoting: Double, waitlist: Double, mark: ListVaultMarketOpeningItemMark, marketHref: String, me: ListVaultMarketOpeningItemMe? = nil, earlyAccess: ListVaultMarketOpeningItemEarlyAccess? = nil) {
         self.slug = slug
         self.title = title
         self.blurb = blurb

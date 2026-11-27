@@ -18,8 +18,8 @@ public struct GetVaultMarketDcmContractResponseContract: Codable, JSONEncodable,
         case future = "future"
     }
     public enum OptionType: String, Codable, CaseIterable {
-        case call = "call"
         case put = "put"
+        case call = "call"
     }
     public var symbol: String
     public var name: String?

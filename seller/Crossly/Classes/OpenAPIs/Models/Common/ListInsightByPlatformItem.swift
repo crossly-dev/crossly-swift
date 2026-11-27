@@ -13,19 +13,21 @@ import AnyCodable
 public struct ListInsightByPlatformItem: Codable, JSONEncodable, Hashable {
 
     public var platform: String
-    public var sales: String
-    public var grossCents: String
-    public var avgDaysToSale: Double
-    public var avgSaleCents: Double
-    public var netCents: String
+    public var sales: Double
+    public var grossCents: Double
+    public var avgDaysToSale: Double?
+    public var avgSaleCents: Double?
+    public var netCents: Double
+    public var netProfitCents: Double?
 
-    public init(platform: String, sales: String, grossCents: String, avgDaysToSale: Double, avgSaleCents: Double, netCents: String) {
+    public init(platform: String, sales: Double, grossCents: Double, avgDaysToSale: Double? = nil, avgSaleCents: Double? = nil, netCents: Double, netProfitCents: Double? = nil) {
         self.platform = platform
         self.sales = sales
         self.grossCents = grossCents
         self.avgDaysToSale = avgDaysToSale
         self.avgSaleCents = avgSaleCents
         self.netCents = netCents
+        self.netProfitCents = netProfitCents
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -35,6 +37,7 @@ public struct ListInsightByPlatformItem: Codable, JSONEncodable, Hashable {
         case avgDaysToSale = "avg_days_to_sale"
         case avgSaleCents = "avg_sale_cents"
         case netCents = "net_cents"
+        case netProfitCents = "net_profit_cents"
     }
 
     // Encodable protocol methods
@@ -44,9 +47,10 @@ public struct ListInsightByPlatformItem: Codable, JSONEncodable, Hashable {
         try container.encode(platform, forKey: .platform)
         try container.encode(sales, forKey: .sales)
         try container.encode(grossCents, forKey: .grossCents)
-        try container.encode(avgDaysToSale, forKey: .avgDaysToSale)
-        try container.encode(avgSaleCents, forKey: .avgSaleCents)
+        try container.encodeIfPresent(avgDaysToSale, forKey: .avgDaysToSale)
+        try container.encodeIfPresent(avgSaleCents, forKey: .avgSaleCents)
         try container.encode(netCents, forKey: .netCents)
+        try container.encodeIfPresent(netProfitCents, forKey: .netProfitCents)
     }
 }
 

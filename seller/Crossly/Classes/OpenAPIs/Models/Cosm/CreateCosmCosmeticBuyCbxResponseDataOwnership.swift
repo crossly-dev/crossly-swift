@@ -14,31 +14,31 @@ public struct CreateCosmCosmeticBuyCbxResponseDataOwnership: Codable, JSONEncoda
 
     public var id: String
     public var acquiredAt: Date
-    public var retiredAt: Date?
-    public var merchantId: String
     public var cosmeticId: String
+    public var merchantId: String
+    public var retiredAt: Date?
     public var subjectId: String
-    public var ledgerId: String?
-    public var editionNumber: Double?
     public var acquiredVia: String
     public var bound: Bool
     public var paidCents: Double?
+    public var ledgerId: String?
+    public var editionNumber: Double?
     public var paymentRef: String?
     public var retiredReason: String?
     public var requestRef: String?
 
-    public init(id: String, acquiredAt: Date, retiredAt: Date? = nil, merchantId: String, cosmeticId: String, subjectId: String, ledgerId: String? = nil, editionNumber: Double? = nil, acquiredVia: String, bound: Bool, paidCents: Double? = nil, paymentRef: String? = nil, retiredReason: String? = nil, requestRef: String? = nil) {
+    public init(id: String, acquiredAt: Date, cosmeticId: String, merchantId: String, retiredAt: Date? = nil, subjectId: String, acquiredVia: String, bound: Bool, paidCents: Double? = nil, ledgerId: String? = nil, editionNumber: Double? = nil, paymentRef: String? = nil, retiredReason: String? = nil, requestRef: String? = nil) {
         self.id = id
         self.acquiredAt = acquiredAt
-        self.retiredAt = retiredAt
-        self.merchantId = merchantId
         self.cosmeticId = cosmeticId
+        self.merchantId = merchantId
+        self.retiredAt = retiredAt
         self.subjectId = subjectId
-        self.ledgerId = ledgerId
-        self.editionNumber = editionNumber
         self.acquiredVia = acquiredVia
         self.bound = bound
         self.paidCents = paidCents
+        self.ledgerId = ledgerId
+        self.editionNumber = editionNumber
         self.paymentRef = paymentRef
         self.retiredReason = retiredReason
         self.requestRef = requestRef
@@ -47,15 +47,15 @@ public struct CreateCosmCosmeticBuyCbxResponseDataOwnership: Codable, JSONEncoda
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
         case acquiredAt
-        case retiredAt
-        case merchantId
         case cosmeticId
+        case merchantId
+        case retiredAt
         case subjectId
-        case ledgerId
-        case editionNumber
         case acquiredVia
         case bound
         case paidCents
+        case ledgerId
+        case editionNumber
         case paymentRef
         case retiredReason
         case requestRef
@@ -67,15 +67,15 @@ public struct CreateCosmCosmeticBuyCbxResponseDataOwnership: Codable, JSONEncoda
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
         try container.encode(acquiredAt, forKey: .acquiredAt)
-        try container.encodeIfPresent(retiredAt, forKey: .retiredAt)
-        try container.encode(merchantId, forKey: .merchantId)
         try container.encode(cosmeticId, forKey: .cosmeticId)
+        try container.encode(merchantId, forKey: .merchantId)
+        try container.encodeIfPresent(retiredAt, forKey: .retiredAt)
         try container.encode(subjectId, forKey: .subjectId)
-        try container.encodeIfPresent(ledgerId, forKey: .ledgerId)
-        try container.encodeIfPresent(editionNumber, forKey: .editionNumber)
         try container.encode(acquiredVia, forKey: .acquiredVia)
         try container.encode(bound, forKey: .bound)
         try container.encodeIfPresent(paidCents, forKey: .paidCents)
+        try container.encodeIfPresent(ledgerId, forKey: .ledgerId)
+        try container.encodeIfPresent(editionNumber, forKey: .editionNumber)
         try container.encodeIfPresent(paymentRef, forKey: .paymentRef)
         try container.encodeIfPresent(retiredReason, forKey: .retiredReason)
         try container.encodeIfPresent(requestRef, forKey: .requestRef)

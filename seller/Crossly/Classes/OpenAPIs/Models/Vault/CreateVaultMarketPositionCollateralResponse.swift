@@ -13,8 +13,8 @@ import AnyCodable
 public struct CreateVaultMarketPositionCollateralResponse: Codable, JSONEncodable, Hashable {
 
     public enum Kind: String, Codable, CaseIterable {
-        case long = "long"
         case short = "short"
+        case long = "long"
     }
     public var topUp: StatusResponse
     public var id: String

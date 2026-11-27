@@ -13,37 +13,44 @@ import AnyCodable
 public struct ListAutomationRunsItem: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var createdAt: Date
     public var userId: String
+    public var ruleId: String?
+    public var chainId: String?
     public var status: String
+    public var actionType: String
+    public var summary: [String: AnyCodable]
     public var errorMessage: String?
     public var durationMs: Double?
-    public var ruleId: String?
-    public var actionType: String
-    public var chainId: String?
+    public var createdAt: Date
+    /** Set for runs of the converted workflow. */
+    public var workflowRunId: String?
 
-    public init(id: String, createdAt: Date, userId: String, status: String, errorMessage: String? = nil, durationMs: Double? = nil, ruleId: String? = nil, actionType: String, chainId: String? = nil) {
+    public init(id: String, userId: String, ruleId: String? = nil, chainId: String? = nil, status: String, actionType: String, summary: [String: AnyCodable], errorMessage: String? = nil, durationMs: Double? = nil, createdAt: Date, workflowRunId: String? = nil) {
         self.id = id
-        self.createdAt = createdAt
         self.userId = userId
+        self.ruleId = ruleId
+        self.chainId = chainId
         self.status = status
+        self.actionType = actionType
+        self.summary = summary
         self.errorMessage = errorMessage
         self.durationMs = durationMs
-        self.ruleId = ruleId
-        self.actionType = actionType
-        self.chainId = chainId
+        self.createdAt = createdAt
+        self.workflowRunId = workflowRunId
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case createdAt
         case userId
+        case ruleId
+        case chainId
         case status
+        case actionType
+        case summary
         case errorMessage
         case durationMs
-        case ruleId
-        case actionType
-        case chainId
+        case createdAt
+        case workflowRunId
     }
 
     // Encodable protocol methods
@@ -51,14 +58,16 @@ public struct ListAutomationRunsItem: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(createdAt, forKey: .createdAt)
         try container.encode(userId, forKey: .userId)
+        try container.encodeIfPresent(ruleId, forKey: .ruleId)
+        try container.encodeIfPresent(chainId, forKey: .chainId)
         try container.encode(status, forKey: .status)
+        try container.encode(actionType, forKey: .actionType)
+        try container.encode(summary, forKey: .summary)
         try container.encodeIfPresent(errorMessage, forKey: .errorMessage)
         try container.encodeIfPresent(durationMs, forKey: .durationMs)
-        try container.encodeIfPresent(ruleId, forKey: .ruleId)
-        try container.encode(actionType, forKey: .actionType)
-        try container.encodeIfPresent(chainId, forKey: .chainId)
+        try container.encode(createdAt, forKey: .createdAt)
+        try container.encodeIfPresent(workflowRunId, forKey: .workflowRunId)
     }
 }
 

@@ -13,9 +13,9 @@ import AnyCodable
 public struct ListDropMineItemSeller: Codable, JSONEncodable, Hashable {
 
     public var name: String
-    public var shop: NameSlug?
+    public var shop: NameSlug2?
 
-    public init(name: String, shop: NameSlug? = nil) {
+    public init(name: String, shop: NameSlug2? = nil) {
         self.name = name
         self.shop = shop
     }

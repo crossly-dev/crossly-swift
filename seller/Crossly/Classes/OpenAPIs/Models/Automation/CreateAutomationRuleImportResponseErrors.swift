@@ -13,9 +13,9 @@ import AnyCodable
 public struct CreateAutomationRuleImportResponseErrors: Codable, JSONEncodable, Hashable {
 
     public var name: String
-    public var errors: [[String: AnyCodable]]
+    public var errors: [AnyCodable]
 
-    public init(name: String, errors: [[String: AnyCodable]]) {
+    public init(name: String, errors: [AnyCodable]) {
         self.name = name
         self.errors = errors
     }

@@ -16,22 +16,22 @@ public struct ListInventoryActivityItem: Codable, JSONEncodable, Hashable {
     public var createdAt: Date
     public var userId: String
     public var platform: String?
-    public var type: String
-    public var orderId: String?
     public var inventoryItemId: String?
+    public var orderId: String?
+    public var type: String
     public var delta: Double?
     public var quantityBefore: Double?
     public var quantityAfter: Double?
     public var saleId: String?
 
-    public init(id: String, createdAt: Date, userId: String, platform: String? = nil, type: String, orderId: String? = nil, inventoryItemId: String? = nil, delta: Double? = nil, quantityBefore: Double? = nil, quantityAfter: Double? = nil, saleId: String? = nil) {
+    public init(id: String, createdAt: Date, userId: String, platform: String? = nil, inventoryItemId: String? = nil, orderId: String? = nil, type: String, delta: Double? = nil, quantityBefore: Double? = nil, quantityAfter: Double? = nil, saleId: String? = nil) {
         self.id = id
         self.createdAt = createdAt
         self.userId = userId
         self.platform = platform
-        self.type = type
-        self.orderId = orderId
         self.inventoryItemId = inventoryItemId
+        self.orderId = orderId
+        self.type = type
         self.delta = delta
         self.quantityBefore = quantityBefore
         self.quantityAfter = quantityAfter
@@ -43,9 +43,9 @@ public struct ListInventoryActivityItem: Codable, JSONEncodable, Hashable {
         case createdAt
         case userId
         case platform
-        case type
-        case orderId
         case inventoryItemId
+        case orderId
+        case type
         case delta
         case quantityBefore
         case quantityAfter
@@ -60,9 +60,9 @@ public struct ListInventoryActivityItem: Codable, JSONEncodable, Hashable {
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(userId, forKey: .userId)
         try container.encodeIfPresent(platform, forKey: .platform)
-        try container.encode(type, forKey: .type)
-        try container.encodeIfPresent(orderId, forKey: .orderId)
         try container.encodeIfPresent(inventoryItemId, forKey: .inventoryItemId)
+        try container.encodeIfPresent(orderId, forKey: .orderId)
+        try container.encode(type, forKey: .type)
         try container.encodeIfPresent(delta, forKey: .delta)
         try container.encodeIfPresent(quantityBefore, forKey: .quantityBefore)
         try container.encodeIfPresent(quantityAfter, forKey: .quantityAfter)

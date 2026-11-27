@@ -14,13 +14,13 @@ import AnyCodable
 public struct ListWorldCapabilityDeclarationsItemDeclarationCollection: Codable, JSONEncodable, Hashable {
 
     public enum Chain: String, Codable, CaseIterable {
-        case solana = "solana"
-        case cosm = "cosm"
         case ethereum = "ethereum"
         case base = "base"
         case polygon = "polygon"
         case arbitrum = "arbitrum"
         case optimism = "optimism"
+        case solana = "solana"
+        case cosm = "cosm"
     }
     public var chain: Chain
     public var address: String

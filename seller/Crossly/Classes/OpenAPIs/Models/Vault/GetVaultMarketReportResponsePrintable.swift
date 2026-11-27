@@ -16,32 +16,32 @@ public struct GetVaultMarketReportResponsePrintable: Codable, JSONEncodable, Has
         case letter = "letter"
         case a4 = "a4"
     }
-    /** Closing paragraphs, small and grey. */
-    public var notes: [String]
     public var title: String
     /** Small grey lines under the title (order id, date, seller…). */
     public var meta: [String]
     /** Labelled blocks: \"Shipped to\" + its lines. */
     public var sections: [GetVaultMarketOrderHandlingResponseSections]
+    /** Closing paragraphs, small and grey. */
+    public var notes: [String]
     public var paper: Paper
     public var table: GetVaultMarketReportResponsePrintableTable?
     public var qr: GetVaultMarketReportResponsePrintableQr?
 
-    public init(notes: [String], title: String, meta: [String], sections: [GetVaultMarketOrderHandlingResponseSections], paper: Paper, table: GetVaultMarketReportResponsePrintableTable? = nil, qr: GetVaultMarketReportResponsePrintableQr? = nil) {
-        self.notes = notes
+    public init(title: String, meta: [String], sections: [GetVaultMarketOrderHandlingResponseSections], notes: [String], paper: Paper, table: GetVaultMarketReportResponsePrintableTable? = nil, qr: GetVaultMarketReportResponsePrintableQr? = nil) {
         self.title = title
         self.meta = meta
         self.sections = sections
+        self.notes = notes
         self.paper = paper
         self.table = table
         self.qr = qr
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case notes
         case title
         case meta
         case sections
+        case notes
         case paper
         case table
         case qr
@@ -51,10 +51,10 @@ public struct GetVaultMarketReportResponsePrintable: Codable, JSONEncodable, Has
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(notes, forKey: .notes)
         try container.encode(title, forKey: .title)
         try container.encode(meta, forKey: .meta)
         try container.encode(sections, forKey: .sections)
+        try container.encode(notes, forKey: .notes)
         try container.encode(paper, forKey: .paper)
         try container.encodeIfPresent(table, forKey: .table)
         try container.encodeIfPresent(qr, forKey: .qr)

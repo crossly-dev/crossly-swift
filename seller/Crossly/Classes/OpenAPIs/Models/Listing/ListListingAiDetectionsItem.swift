@@ -18,9 +18,9 @@ public struct ListListingAiDetectionsItem: Codable, JSONEncodable, Hashable {
         case clear = "clear"
     }
     public enum Status: String, Codable, CaseIterable {
-        case flagged = "flagged"
         case review = "review"
         case clear = "clear"
+        case flagged = "flagged"
         case disputed = "disputed"
         case cleared = "cleared"
     }

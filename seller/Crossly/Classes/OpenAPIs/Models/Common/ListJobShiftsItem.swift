@@ -17,12 +17,12 @@ public struct ListJobShiftsItem: Codable, JSONEncodable, Hashable {
         case hubHelper = "hub_helper"
     }
     public enum Rail: String, Codable, CaseIterable {
-        case bucks = "bucks"
         case cbx = "cbx"
+        case bucks = "bucks"
     }
     public enum Status: String, Codable, CaseIterable {
-        case _open = "open"
         case cancelled = "cancelled"
+        case _open = "open"
         case paid = "paid"
         case claimed = "claimed"
         case worked = "worked"
@@ -31,7 +31,7 @@ public struct ListJobShiftsItem: Codable, JSONEncodable, Hashable {
     public var id: String
     public var role: Role
     public var title: String
-    public var place: SlugName
+    public var place: NameSlug
     public var startsAt: String
     public var endsAt: String
     public var payCents: Double
@@ -45,7 +45,7 @@ public struct ListJobShiftsItem: Codable, JSONEncodable, Hashable {
     public var worker: String?
     public var paid: Bool
 
-    public init(id: String, role: Role, title: String, place: SlugName, startsAt: String, endsAt: String, payCents: Double, rail: Rail, status: Status, presentSeconds: Double, requiredSeconds: Double, claimedByYou: Bool, postedByYou: Bool, worker: String? = nil, paid: Bool) {
+    public init(id: String, role: Role, title: String, place: NameSlug, startsAt: String, endsAt: String, payCents: Double, rail: Rail, status: Status, presentSeconds: Double, requiredSeconds: Double, claimedByYou: Bool, postedByYou: Bool, worker: String? = nil, paid: Bool) {
         self.id = id
         self.role = role
         self.title = title

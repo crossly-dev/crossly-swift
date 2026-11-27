@@ -13,27 +13,27 @@ import AnyCodable
 public struct CreateBuyerOfferResponseDataOffer: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var status: String
     public var platformListingId: String
     public var buyerUserId: String
     public var amountCents: Double
+    public var status: String
     public var message: String?
 
-    public init(id: String, status: String, platformListingId: String, buyerUserId: String, amountCents: Double, message: String? = nil) {
+    public init(id: String, platformListingId: String, buyerUserId: String, amountCents: Double, status: String, message: String? = nil) {
         self.id = id
-        self.status = status
         self.platformListingId = platformListingId
         self.buyerUserId = buyerUserId
         self.amountCents = amountCents
+        self.status = status
         self.message = message
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case status
         case platformListingId
         case buyerUserId
         case amountCents
+        case status
         case message
     }
 
@@ -42,10 +42,10 @@ public struct CreateBuyerOfferResponseDataOffer: Codable, JSONEncodable, Hashabl
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(status, forKey: .status)
         try container.encode(platformListingId, forKey: .platformListingId)
         try container.encode(buyerUserId, forKey: .buyerUserId)
         try container.encode(amountCents, forKey: .amountCents)
+        try container.encode(status, forKey: .status)
         try container.encodeIfPresent(message, forKey: .message)
     }
 }

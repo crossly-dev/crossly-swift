@@ -13,8 +13,8 @@ import AnyCodable
 public struct GetVaultMarketDcmOptionsInputResponseListed: Codable, JSONEncodable, Hashable {
 
     public enum OptionType: String, Codable, CaseIterable {
-        case call = "call"
         case put = "put"
+        case call = "call"
     }
     public var symbol: String
     public var optionType: OptionType?

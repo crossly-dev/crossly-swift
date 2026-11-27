@@ -12,30 +12,30 @@ import AnyCodable
 
 public struct ListBuyerCatalogListingSoldHistoryItem: Codable, JSONEncodable, Hashable {
 
-    public var quantity: Double
-    public var soldAt: String
     /** Per-unit item price the buyer paid, in cents — excludes shipping and tax. */
     public var priceCents: Double
+    public var quantity: Double
+    public var soldAt: String
 
-    public init(quantity: Double, soldAt: String, priceCents: Double) {
+    public init(priceCents: Double, quantity: Double, soldAt: String) {
+        self.priceCents = priceCents
         self.quantity = quantity
         self.soldAt = soldAt
-        self.priceCents = priceCents
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case priceCents
         case quantity
         case soldAt
-        case priceCents
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(priceCents, forKey: .priceCents)
         try container.encode(quantity, forKey: .quantity)
         try container.encode(soldAt, forKey: .soldAt)
-        try container.encode(priceCents, forKey: .priceCents)
     }
 }
 

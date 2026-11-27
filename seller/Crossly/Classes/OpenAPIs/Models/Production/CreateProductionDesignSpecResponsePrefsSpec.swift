@@ -29,11 +29,12 @@ public struct CreateProductionDesignSpecResponsePrefsSpec: Codable, JSONEncodabl
         case slides = "slides"
         case figureResin = "figure_resin"
         case figureVinyl = "figure_vinyl"
+        case tradingCards = "trading_cards"
     }
     public enum MaterialTier: String, Codable, CaseIterable {
         case standard = "standard"
-        case luxury = "luxury"
         case premium = "premium"
+        case luxury = "luxury"
     }
     public enum Complexity: String, Codable, CaseIterable {
         case simple = "simple"

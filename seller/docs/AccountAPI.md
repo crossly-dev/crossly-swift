@@ -5,12 +5,16 @@ All URIs are relative to *https://crossly.net/api*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**createAccountCancelDeletion**](AccountAPI.md#createaccountcanceldeletion) | **POST** /v1/account/cancel-deletion | Cancel a pending account deletion.
+[**createAccountIdentityVerificationStart**](AccountAPI.md#createaccountidentityverificationstart) | **POST** /v1/account/identity-verification/start | Start the identity check (photo ID + selfie). Returns a Stripe-hosted URL the person completes.
 [**createAccountLogoutAll**](AccountAPI.md#createaccountlogoutall) | **POST** /v1/account/logout-all | Revoke every browser auth session for this user.
-[**createAccountRequestDeletion**](AccountAPI.md#createaccountrequestdeletion) | **POST** /v1/account/request-deletion | Schedule account deletion after a grace period.
+[**createAccountReconfirmDeletion**](AccountAPI.md#createaccountreconfirmdeletion) | **POST** /v1/account/reconfirm-deletion | Confirm again a deletion paused because the account was in use.
+[**createAccountRequestDeletion**](AccountAPI.md#createaccountrequestdeletion) | **POST** /v1/account/request-deletion | Schedule account deletion after a grace period. Requires confirmEmail.
 [**deleteAuthSession**](AccountAPI.md#deleteauthsession) | **DELETE** /v1/auth/sessions | Revoke all active browser sessions.
 [**deleteAuthSessionBySessionId**](AccountAPI.md#deleteauthsessionbysessionid) | **DELETE** /v1/auth/sessions/{sessionId} | Revoke a single browser session by id.
 [**deleteConnectedApp**](AccountAPI.md#deleteconnectedapp) | **DELETE** /v1/connected-apps/{grantId} | Disconnect a third-party app. Its tokens stop working immediately.
+[**getAccountClosureChecklist**](AccountAPI.md#getaccountclosurechecklist) | **GET** /v1/account/closure-checklist | What closing the account will and will not do, before you request it.
 [**getAccountDeletionStatus**](AccountAPI.md#getaccountdeletionstatus) | **GET** /v1/account/deletion-status | Get the currently-pending deletion request, if any.
+[**getAccountIdentityVerification**](AccountAPI.md#getaccountidentityverification) | **GET** /v1/account/identity-verification | Your identity verification: one status for the whole account, read by every feature that needs ID.
 [**getMe**](AccountAPI.md#getme) | **GET** /v1/me | Identity check — authenticated user + PAT scopes + account state.
 [**getMembership**](AccountAPI.md#getmembership) | **GET** /v1/membership | The caller&#39;s Crossly One membership status and benefits.
 [**listAuthSessions**](AccountAPI.md#listauthsessions) | **GET** /v1/auth/sessions | List active browser auth sessions.
@@ -19,7 +23,7 @@ Method | HTTP request | Description
 
 # **createAccountCancelDeletion**
 ```swift
-    open class func createAccountCancelDeletion(completion: @escaping (_ data: DeleteDropResponse?, _ error: Error?) -> Void)
+    open class func createAccountCancelDeletion(completion: @escaping (_ data: CreateAccountCancelDeletionResponse?, _ error: Error?) -> Void)
 ```
 
 Cancel a pending account deletion.
@@ -48,7 +52,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-**DeleteDropResponse**
+**CreateAccountCancelDeletionResponse**
 
 ### Authorization
 
@@ -57,6 +61,56 @@ This endpoint does not need any parameter.
 ### HTTP request headers
 
  - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createAccountIdentityVerificationStart**
+```swift
+    open class func createAccountIdentityVerificationStart(createAccountIdentityVerificationStartRequest: CreateAccountIdentityVerificationStartRequest, completion: @escaping (_ data: CreateWorldMatureVerifyResponse?, _ error: Error?) -> Void)
+```
+
+Start the identity check (photo ID + selfie). Returns a Stripe-hosted URL the person completes.
+
+alreadyVerified:true when there is nothing to do. Nothing is verified until a person completes the link.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+let createAccountIdentityVerificationStartRequest = CreateAccountIdentityVerificationStartRequest(returnPath: "returnPath_example") // CreateAccountIdentityVerificationStartRequest | 
+
+// Start the identity check (photo ID + selfie). Returns a Stripe-hosted URL the person completes.
+AccountAPI.createAccountIdentityVerificationStart(createAccountIdentityVerificationStartRequest: createAccountIdentityVerificationStartRequest) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **createAccountIdentityVerificationStartRequest** | **CreateAccountIdentityVerificationStartRequest** |  | 
+
+### Return type
+
+**CreateWorldMatureVerifyResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
@@ -105,12 +159,12 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
-# **createAccountRequestDeletion**
+# **createAccountReconfirmDeletion**
 ```swift
-    open class func createAccountRequestDeletion(completion: @escaping (_ data: CreateAccountRequestDeletionResponse?, _ error: Error?) -> Void)
+    open class func createAccountReconfirmDeletion(completion: @escaping (_ data: CreateAccountReconfirmDeletionResponse?, _ error: Error?) -> Void)
 ```
 
-Schedule account deletion after a grace period.
+Confirm again a deletion paused because the account was in use.
 
 ### Example
 ```swift
@@ -118,7 +172,51 @@ Schedule account deletion after a grace period.
 import Crossly
 
 
-// Schedule account deletion after a grace period.
+// Confirm again a deletion paused because the account was in use.
+AccountAPI.createAccountReconfirmDeletion() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**CreateAccountReconfirmDeletionResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **createAccountRequestDeletion**
+```swift
+    open class func createAccountRequestDeletion(completion: @escaping (_ data: CreateAccountRequestDeletionResponse?, _ error: Error?) -> Void)
+```
+
+Schedule account deletion after a grace period. Requires confirmEmail.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Schedule account deletion after a grace period. Requires confirmEmail.
 AccountAPI.createAccountRequestDeletion() { (response, error) in
     guard error == nil else {
         print(error)
@@ -195,7 +293,7 @@ This endpoint does not need any parameter.
 
 # **deleteAuthSessionBySessionId**
 ```swift
-    open class func deleteAuthSessionBySessionId(sessionId: UUID, completion: @escaping (_ data: SuccessResponse?, _ error: Error?) -> Void)
+    open class func deleteAuthSessionBySessionId(sessionId: String, completion: @escaping (_ data: SuccessResponse?, _ error: Error?) -> Void)
 ```
 
 Revoke a single browser session by id.
@@ -205,7 +303,7 @@ Revoke a single browser session by id.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import Crossly
 
-let sessionId = 987 // UUID | 
+let sessionId = "sessionId_example" // String | 
 
 // Revoke a single browser session by id.
 AccountAPI.deleteAuthSessionBySessionId(sessionId: sessionId) { (response, error) in
@@ -224,7 +322,7 @@ AccountAPI.deleteAuthSessionBySessionId(sessionId: sessionId) { (response, error
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **sessionId** | **UUID** |  | 
+ **sessionId** | **String** |  | 
 
 ### Return type
 
@@ -289,6 +387,50 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
+# **getAccountClosureChecklist**
+```swift
+    open class func getAccountClosureChecklist(completion: @escaping (_ data: GetAccountClosureChecklistResponse?, _ error: Error?) -> Void)
+```
+
+What closing the account will and will not do, before you request it.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// What closing the account will and will not do, before you request it.
+AccountAPI.getAccountClosureChecklist() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetAccountClosureChecklistResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
 # **getAccountDeletionStatus**
 ```swift
     open class func getAccountDeletionStatus(completion: @escaping (_ data: GetAccountDeletionStatusResponse?, _ error: Error?) -> Void)
@@ -321,6 +463,52 @@ This endpoint does not need any parameter.
 ### Return type
 
 **GetAccountDeletionStatusResponse**
+
+### Authorization
+
+[PersonalAccessToken](../README.md#PersonalAccessToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+# **getAccountIdentityVerification**
+```swift
+    open class func getAccountIdentityVerification(completion: @escaping (_ data: GetAccountIdentityVerificationResponse?, _ error: Error?) -> Void)
+```
+
+Your identity verification: one status for the whole account, read by every feature that needs ID.
+
+status is unverified, requires_input, processing, verified or canceled. requires_input with a lastError { code, reason } is a failed try the person can redo on the same link (start returns it); processing is being reviewed; neither is a decline, only canceled is. attempts counts the failed tries. ageVerified passes the age-restricted checkout gate. message is the next step in words (null once verified).
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import Crossly
+
+
+// Your identity verification: one status for the whole account, read by every feature that needs ID.
+AccountAPI.getAccountIdentityVerification() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+**GetAccountIdentityVerificationResponse**
 
 ### Authorization
 

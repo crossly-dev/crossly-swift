@@ -13,27 +13,30 @@ import AnyCodable
 public struct GetWorkflowChainResponseSteps: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var position: Double
     public var chainId: String
+    public var position: Double
     public var stepType: String
     public var actionId: String?
+    public var actionConfig: [String: AnyCodable]
     public var waitMs: Double?
 
-    public init(id: String, position: Double, chainId: String, stepType: String, actionId: String? = nil, waitMs: Double? = nil) {
+    public init(id: String, chainId: String, position: Double, stepType: String, actionId: String? = nil, actionConfig: [String: AnyCodable], waitMs: Double? = nil) {
         self.id = id
-        self.position = position
         self.chainId = chainId
+        self.position = position
         self.stepType = stepType
         self.actionId = actionId
+        self.actionConfig = actionConfig
         self.waitMs = waitMs
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case position
         case chainId
+        case position
         case stepType
         case actionId
+        case actionConfig
         case waitMs
     }
 
@@ -42,10 +45,11 @@ public struct GetWorkflowChainResponseSteps: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(position, forKey: .position)
         try container.encode(chainId, forKey: .chainId)
+        try container.encode(position, forKey: .position)
         try container.encode(stepType, forKey: .stepType)
         try container.encodeIfPresent(actionId, forKey: .actionId)
+        try container.encode(actionConfig, forKey: .actionConfig)
         try container.encodeIfPresent(waitMs, forKey: .waitMs)
     }
 }

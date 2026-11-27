@@ -12,11 +12,11 @@ import AnyCodable
 
 public struct GetVaultMarketIndexFeedSettlementResponse: Codable, JSONEncodable, Hashable {
 
-    public var index: SlugName
+    public var index: NameSlug
     public var method: String
     public var series: [GetVaultMarketIndexFeedSettlementResponseSeries]
 
-    public init(index: SlugName, method: String, series: [GetVaultMarketIndexFeedSettlementResponseSeries]) {
+    public init(index: NameSlug, method: String, series: [GetVaultMarketIndexFeedSettlementResponseSeries]) {
         self.index = index
         self.method = method
         self.series = series

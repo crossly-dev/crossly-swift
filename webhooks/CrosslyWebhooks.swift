@@ -1,5 +1,10 @@
 import Foundation
-import Crypto  // swift-crypto; on Apple platforms `import CryptoKit` works unchanged
+// CryptoKit on Apple platforms (macOS 10.15+, iOS 13+); swift-crypto, which has the same API, elsewhere.
+#if canImport(CryptoKit)
+import CryptoKit
+#else
+import Crypto
+#endif
 
 /// Verify a Crossly webhook.
 ///
@@ -133,11 +138,12 @@ public enum CrosslyWebhooks {
     private static func constantTimeEquals(_ a: String, _ b: String) -> Bool {
         let lhs = Array(a.utf8)
         let rhs = Array(b.utf8)
-        var diff = UInt8(truncatingIfNeeded: lhs.count ^ rhs.count)
+        // The length difference is folded in as a whole Int: truncated to a byte, 0 ^ 256 would be 0.
+        var diff = lhs.count ^ rhs.count
         for i in 0..<max(lhs.count, rhs.count) {
             let x = i < lhs.count ? lhs[i] : 0
             let y = i < rhs.count ? rhs[i] : 0
-            diff |= x ^ y
+            diff |= Int(x ^ y)
         }
         return diff == 0
     }

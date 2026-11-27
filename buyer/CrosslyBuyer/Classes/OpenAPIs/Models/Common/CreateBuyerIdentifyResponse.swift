@@ -13,8 +13,8 @@ import AnyCodable
 public struct CreateBuyerIdentifyResponse: Codable, JSONEncodable, Hashable {
 
     public enum Tier: String, Codable, CaseIterable {
-        case identifier = "identifier"
         case _none = "none"
+        case identifier = "identifier"
         case visual = "visual"
         case vision = "vision"
     }

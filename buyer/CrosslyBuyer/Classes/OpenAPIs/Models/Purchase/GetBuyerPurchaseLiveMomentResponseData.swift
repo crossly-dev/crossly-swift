@@ -12,45 +12,45 @@ import AnyCodable
 
 public struct GetBuyerPurchaseLiveMomentResponseData: Codable, JSONEncodable, Hashable {
 
-    public var status: String
-    public var title: String
-    public var soldAt: String
-    public var sellerUserId: String
-    public var replayUrl: String?
     public var streamId: String
+    public var title: String
+    public var sellerUserId: String
+    public var status: String
+    public var replayUrl: String?
     public var offsetSeconds: Double
+    public var soldAt: String
 
-    public init(status: String, title: String, soldAt: String, sellerUserId: String, replayUrl: String? = nil, streamId: String, offsetSeconds: Double) {
-        self.status = status
-        self.title = title
-        self.soldAt = soldAt
-        self.sellerUserId = sellerUserId
-        self.replayUrl = replayUrl
+    public init(streamId: String, title: String, sellerUserId: String, status: String, replayUrl: String? = nil, offsetSeconds: Double, soldAt: String) {
         self.streamId = streamId
+        self.title = title
+        self.sellerUserId = sellerUserId
+        self.status = status
+        self.replayUrl = replayUrl
         self.offsetSeconds = offsetSeconds
+        self.soldAt = soldAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case status
-        case title
-        case soldAt
-        case sellerUserId
-        case replayUrl
         case streamId
+        case title
+        case sellerUserId
+        case status
+        case replayUrl
         case offsetSeconds
+        case soldAt
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(status, forKey: .status)
-        try container.encode(title, forKey: .title)
-        try container.encode(soldAt, forKey: .soldAt)
-        try container.encode(sellerUserId, forKey: .sellerUserId)
-        try container.encodeIfPresent(replayUrl, forKey: .replayUrl)
         try container.encode(streamId, forKey: .streamId)
+        try container.encode(title, forKey: .title)
+        try container.encode(sellerUserId, forKey: .sellerUserId)
+        try container.encode(status, forKey: .status)
+        try container.encodeIfPresent(replayUrl, forKey: .replayUrl)
         try container.encode(offsetSeconds, forKey: .offsetSeconds)
+        try container.encode(soldAt, forKey: .soldAt)
     }
 }
 

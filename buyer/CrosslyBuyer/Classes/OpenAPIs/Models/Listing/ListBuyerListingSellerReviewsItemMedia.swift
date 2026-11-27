@@ -12,25 +12,25 @@ import AnyCodable
 
 public struct ListBuyerListingSellerReviewsItemMedia: Codable, JSONEncodable, Hashable {
 
-    public var url: String
     public var kind: String
+    public var url: String
 
-    public init(url: String, kind: String) {
-        self.url = url
+    public init(kind: String, url: String) {
         self.kind = kind
+        self.url = url
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case url
         case kind
+        case url
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(url, forKey: .url)
         try container.encode(kind, forKey: .kind)
+        try container.encode(url, forKey: .url)
     }
 }
 

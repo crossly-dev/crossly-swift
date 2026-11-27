@@ -13,8 +13,8 @@ import AnyCodable
 public struct GetVaultMarketValuationStatementResponse: Codable, JSONEncodable, Hashable {
 
     public enum Purpose: String, Codable, CaseIterable {
-        case insurance = "insurance"
         case appraisal = "appraisal"
+        case insurance = "insurance"
     }
     public var issued: Bool
     public var hash: String
@@ -36,8 +36,9 @@ public struct GetVaultMarketValuationStatementResponse: Codable, JSONEncodable, 
     public var notes: [String]
     public var verifyUrl: String?
     public var venue: String
+    public var shares: CreateVaultMarketValuationStatementResponseShares?
 
-    public init(issued: Bool, hash: String, seal: GetVaultMarketValuationStatementResponseSeal, verify: GetVaultMarketValuationStatementResponseVerify, kind: String, version: String, id: String? = nil, purpose: Purpose, title: String, asOf: String, issuedAt: String, account: CreateVaultMarketValuationStatementResponseAccount, preparedFor: String? = nil, policyRef: String? = nil, units: [CreateVaultMarketValuationStatementResponseUnits], totals: CreateVaultMarketValuationStatementResponseTotals, methodology: [String], notes: [String], verifyUrl: String? = nil, venue: String) {
+    public init(issued: Bool, hash: String, seal: GetVaultMarketValuationStatementResponseSeal, verify: GetVaultMarketValuationStatementResponseVerify, kind: String, version: String, id: String? = nil, purpose: Purpose, title: String, asOf: String, issuedAt: String, account: CreateVaultMarketValuationStatementResponseAccount, preparedFor: String? = nil, policyRef: String? = nil, units: [CreateVaultMarketValuationStatementResponseUnits], totals: CreateVaultMarketValuationStatementResponseTotals, methodology: [String], notes: [String], verifyUrl: String? = nil, venue: String, shares: CreateVaultMarketValuationStatementResponseShares? = nil) {
         self.issued = issued
         self.hash = hash
         self.seal = seal
@@ -58,6 +59,7 @@ public struct GetVaultMarketValuationStatementResponse: Codable, JSONEncodable, 
         self.notes = notes
         self.verifyUrl = verifyUrl
         self.venue = venue
+        self.shares = shares
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -81,6 +83,7 @@ public struct GetVaultMarketValuationStatementResponse: Codable, JSONEncodable, 
         case notes
         case verifyUrl
         case venue
+        case shares
     }
 
     // Encodable protocol methods
@@ -107,6 +110,7 @@ public struct GetVaultMarketValuationStatementResponse: Codable, JSONEncodable, 
         try container.encode(notes, forKey: .notes)
         try container.encodeIfPresent(verifyUrl, forKey: .verifyUrl)
         try container.encode(venue, forKey: .venue)
+        try container.encodeIfPresent(shares, forKey: .shares)
     }
 }
 

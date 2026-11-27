@@ -13,14 +13,14 @@ import AnyCodable
 public struct CreateVaultMarketPaperMissionMarkCheckResponse: Codable, JSONEncodable, Hashable {
 
     public enum Answer: String, Codable, CaseIterable {
+        case c = "C"
         case a = "A"
         case b = "B"
-        case c = "C"
     }
     public enum Quality: String, Codable, CaseIterable {
+        case c = "C"
         case a = "A"
         case b = "B"
-        case c = "C"
     }
     public var bookKey: String
     public var answer: Answer

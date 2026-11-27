@@ -13,19 +13,19 @@ import AnyCodable
 public struct GetBuyerCollectionOfferResponseDataOffer: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var expiresAt: String
     public var cents: Double
+    public var expiresAt: String
 
-    public init(id: String, expiresAt: String, cents: Double) {
+    public init(id: String, cents: Double, expiresAt: String) {
         self.id = id
-        self.expiresAt = expiresAt
         self.cents = cents
+        self.expiresAt = expiresAt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case expiresAt
         case cents
+        case expiresAt
     }
 
     // Encodable protocol methods
@@ -33,8 +33,8 @@ public struct GetBuyerCollectionOfferResponseDataOffer: Codable, JSONEncodable, 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(expiresAt, forKey: .expiresAt)
         try container.encode(cents, forKey: .cents)
+        try container.encode(expiresAt, forKey: .expiresAt)
     }
 }
 

@@ -14,8 +14,8 @@ public struct ListVaultMarketIndexJudgmentsItem: Codable, JSONEncodable, Hashabl
 
     public enum Action: String, Codable, CaseIterable {
         case method = "method"
-        case halt = "halt"
         case resume = "resume"
+        case halt = "halt"
         case excludeKey = "exclude_key"
         case voidTrade = "void_trade"
         case restate = "restate"

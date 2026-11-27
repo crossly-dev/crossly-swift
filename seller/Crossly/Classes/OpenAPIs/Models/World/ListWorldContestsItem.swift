@@ -13,14 +13,14 @@ import AnyCodable
 public struct ListWorldContestsItem: Codable, JSONEncodable, Hashable {
 
     public enum Status: String, Codable, CaseIterable {
-        case _open = "open"
         case cancelled = "cancelled"
+        case _open = "open"
         case settled = "settled"
     }
     public enum EntryMode: String, Codable, CaseIterable {
         case free = "free"
-        case sponsored = "sponsored"
         case paid = "paid"
+        case sponsored = "sponsored"
     }
     public enum ScoreOrder: String, Codable, CaseIterable {
         case asc = "asc"
@@ -29,24 +29,24 @@ public struct ListWorldContestsItem: Codable, JSONEncodable, Hashable {
     public var id: String
     public var createdAt: Date
     public var status: Status
+    public var ownerUserId: String
     public var endsAt: Date
     public var startsAt: Date
     public var feeCents: Double?
-    public var ownerUserId: String
     public var settledAt: Date?
     public var gamePlace: String
     public var gameObject: String
     public var entryMode: EntryMode
     public var scoreOrder: ScoreOrder
 
-    public init(id: String, createdAt: Date, status: Status, endsAt: Date, startsAt: Date, feeCents: Double? = nil, ownerUserId: String, settledAt: Date? = nil, gamePlace: String, gameObject: String, entryMode: EntryMode, scoreOrder: ScoreOrder) {
+    public init(id: String, createdAt: Date, status: Status, ownerUserId: String, endsAt: Date, startsAt: Date, feeCents: Double? = nil, settledAt: Date? = nil, gamePlace: String, gameObject: String, entryMode: EntryMode, scoreOrder: ScoreOrder) {
         self.id = id
         self.createdAt = createdAt
         self.status = status
+        self.ownerUserId = ownerUserId
         self.endsAt = endsAt
         self.startsAt = startsAt
         self.feeCents = feeCents
-        self.ownerUserId = ownerUserId
         self.settledAt = settledAt
         self.gamePlace = gamePlace
         self.gameObject = gameObject
@@ -58,10 +58,10 @@ public struct ListWorldContestsItem: Codable, JSONEncodable, Hashable {
         case id
         case createdAt
         case status
+        case ownerUserId
         case endsAt
         case startsAt
         case feeCents
-        case ownerUserId
         case settledAt
         case gamePlace
         case gameObject
@@ -76,10 +76,10 @@ public struct ListWorldContestsItem: Codable, JSONEncodable, Hashable {
         try container.encode(id, forKey: .id)
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(status, forKey: .status)
+        try container.encode(ownerUserId, forKey: .ownerUserId)
         try container.encode(endsAt, forKey: .endsAt)
         try container.encode(startsAt, forKey: .startsAt)
         try container.encodeIfPresent(feeCents, forKey: .feeCents)
-        try container.encode(ownerUserId, forKey: .ownerUserId)
         try container.encodeIfPresent(settledAt, forKey: .settledAt)
         try container.encode(gamePlace, forKey: .gamePlace)
         try container.encode(gameObject, forKey: .gameObject)

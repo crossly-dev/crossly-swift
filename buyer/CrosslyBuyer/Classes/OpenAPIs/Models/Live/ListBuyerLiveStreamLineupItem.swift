@@ -12,34 +12,34 @@ import AnyCodable
 
 public struct ListBuyerLiveStreamLineupItem: Codable, JSONEncodable, Hashable {
 
-    public var available: Bool
-    public var title: String?
     public var platformListingId: String
     public var position: Double
     public var slug: String?
+    public var title: String?
     public var priceCents: Double
     public var imageUrl: String?
+    public var available: Bool
     public var pinned: Bool
 
-    public init(available: Bool, title: String? = nil, platformListingId: String, position: Double, slug: String? = nil, priceCents: Double, imageUrl: String? = nil, pinned: Bool) {
-        self.available = available
-        self.title = title
+    public init(platformListingId: String, position: Double, slug: String? = nil, title: String? = nil, priceCents: Double, imageUrl: String? = nil, available: Bool, pinned: Bool) {
         self.platformListingId = platformListingId
         self.position = position
         self.slug = slug
+        self.title = title
         self.priceCents = priceCents
         self.imageUrl = imageUrl
+        self.available = available
         self.pinned = pinned
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case available
-        case title
         case platformListingId
         case position
         case slug
+        case title
         case priceCents
         case imageUrl
+        case available
         case pinned
     }
 
@@ -47,13 +47,13 @@ public struct ListBuyerLiveStreamLineupItem: Codable, JSONEncodable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(available, forKey: .available)
-        try container.encodeIfPresent(title, forKey: .title)
         try container.encode(platformListingId, forKey: .platformListingId)
         try container.encode(position, forKey: .position)
         try container.encodeIfPresent(slug, forKey: .slug)
+        try container.encodeIfPresent(title, forKey: .title)
         try container.encode(priceCents, forKey: .priceCents)
         try container.encodeIfPresent(imageUrl, forKey: .imageUrl)
+        try container.encode(available, forKey: .available)
         try container.encode(pinned, forKey: .pinned)
     }
 }

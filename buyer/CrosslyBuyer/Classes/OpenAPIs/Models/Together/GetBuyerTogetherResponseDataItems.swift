@@ -13,23 +13,23 @@ import AnyCodable
 public struct GetBuyerTogetherResponseDataItems: Codable, JSONEncodable, Hashable {
 
     public var id: String
-    public var available: Bool
-    public var title: String?
     public var slug: String
+    public var title: String?
     public var priceCents: Double
     public var image: String?
+    public var available: Bool
     public var addedBy: String
     public var up: Double
     public var down: Double
     public var myVote: Double
 
-    public init(id: String, available: Bool, title: String? = nil, slug: String, priceCents: Double, image: String? = nil, addedBy: String, up: Double, down: Double, myVote: Double) {
+    public init(id: String, slug: String, title: String? = nil, priceCents: Double, image: String? = nil, available: Bool, addedBy: String, up: Double, down: Double, myVote: Double) {
         self.id = id
-        self.available = available
-        self.title = title
         self.slug = slug
+        self.title = title
         self.priceCents = priceCents
         self.image = image
+        self.available = available
         self.addedBy = addedBy
         self.up = up
         self.down = down
@@ -38,11 +38,11 @@ public struct GetBuyerTogetherResponseDataItems: Codable, JSONEncodable, Hashabl
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case available
-        case title
         case slug
+        case title
         case priceCents
         case image
+        case available
         case addedBy
         case up
         case down
@@ -54,11 +54,11 @@ public struct GetBuyerTogetherResponseDataItems: Codable, JSONEncodable, Hashabl
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(available, forKey: .available)
-        try container.encodeIfPresent(title, forKey: .title)
         try container.encode(slug, forKey: .slug)
+        try container.encodeIfPresent(title, forKey: .title)
         try container.encode(priceCents, forKey: .priceCents)
         try container.encodeIfPresent(image, forKey: .image)
+        try container.encode(available, forKey: .available)
         try container.encode(addedBy, forKey: .addedBy)
         try container.encode(up, forKey: .up)
         try container.encode(down, forKey: .down)

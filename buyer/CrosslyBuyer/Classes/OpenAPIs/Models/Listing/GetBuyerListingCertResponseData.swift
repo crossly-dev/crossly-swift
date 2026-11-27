@@ -14,8 +14,8 @@ public struct GetBuyerListingCertResponseData: Codable, JSONEncodable, Hashable 
 
     public enum Status: String, Codable, CaseIterable {
         case verified = "verified"
-        case notFound = "not_found"
         case mismatch = "mismatch"
+        case notFound = "not_found"
         case unchecked = "unchecked"
     }
     public var graderSlug: String

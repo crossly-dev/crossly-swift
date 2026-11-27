@@ -13,8 +13,8 @@ import AnyCodable
 public struct GetVaultMarketSetGoalBasketPlanResponseSkipped: Codable, JSONEncodable, Hashable {
 
     public enum Reason: String, Codable, CaseIterable {
-        case tooMany = "too_many"
         case noPrice = "no_price"
+        case tooMany = "too_many"
         case overBudget = "over_budget"
         case notChosen = "not_chosen"
     }

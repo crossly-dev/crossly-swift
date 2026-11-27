@@ -15,27 +15,25 @@ public struct GetAnalyticDashboardResponseRecentSales: Codable, JSONEncodable, H
     public var saleId: String
     public var platform: String
     public var platformOrderId: String?
+    public var detailsPending: Bool
     public var salePrice: Double?
     public var platformFee: Double?
     public var shippingCost: Double?
     public var costOfGoods: Double?
     public var netProfit: Double?
-    public var detectedBy: String
-    public var detectedAt: Date
     public var itemTitle: String?
-    public var itemImage: String
+    public var itemImage: String?
 
-    public init(saleId: String, platform: String, platformOrderId: String? = nil, salePrice: Double? = nil, platformFee: Double? = nil, shippingCost: Double? = nil, costOfGoods: Double? = nil, netProfit: Double? = nil, detectedBy: String, detectedAt: Date, itemTitle: String? = nil, itemImage: String) {
+    public init(saleId: String, platform: String, platformOrderId: String? = nil, detailsPending: Bool, salePrice: Double? = nil, platformFee: Double? = nil, shippingCost: Double? = nil, costOfGoods: Double? = nil, netProfit: Double? = nil, itemTitle: String? = nil, itemImage: String? = nil) {
         self.saleId = saleId
         self.platform = platform
         self.platformOrderId = platformOrderId
+        self.detailsPending = detailsPending
         self.salePrice = salePrice
         self.platformFee = platformFee
         self.shippingCost = shippingCost
         self.costOfGoods = costOfGoods
         self.netProfit = netProfit
-        self.detectedBy = detectedBy
-        self.detectedAt = detectedAt
         self.itemTitle = itemTitle
         self.itemImage = itemImage
     }
@@ -44,13 +42,12 @@ public struct GetAnalyticDashboardResponseRecentSales: Codable, JSONEncodable, H
         case saleId
         case platform
         case platformOrderId
+        case detailsPending
         case salePrice
         case platformFee
         case shippingCost
         case costOfGoods
         case netProfit
-        case detectedBy
-        case detectedAt
         case itemTitle
         case itemImage
     }
@@ -62,15 +59,14 @@ public struct GetAnalyticDashboardResponseRecentSales: Codable, JSONEncodable, H
         try container.encode(saleId, forKey: .saleId)
         try container.encode(platform, forKey: .platform)
         try container.encodeIfPresent(platformOrderId, forKey: .platformOrderId)
+        try container.encode(detailsPending, forKey: .detailsPending)
         try container.encodeIfPresent(salePrice, forKey: .salePrice)
         try container.encodeIfPresent(platformFee, forKey: .platformFee)
         try container.encodeIfPresent(shippingCost, forKey: .shippingCost)
         try container.encodeIfPresent(costOfGoods, forKey: .costOfGoods)
         try container.encodeIfPresent(netProfit, forKey: .netProfit)
-        try container.encode(detectedBy, forKey: .detectedBy)
-        try container.encode(detectedAt, forKey: .detectedAt)
         try container.encodeIfPresent(itemTitle, forKey: .itemTitle)
-        try container.encode(itemImage, forKey: .itemImage)
+        try container.encodeIfPresent(itemImage, forKey: .itemImage)
     }
 }
 

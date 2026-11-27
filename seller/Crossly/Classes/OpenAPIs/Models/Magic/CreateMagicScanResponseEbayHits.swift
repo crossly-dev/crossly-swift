@@ -16,16 +16,16 @@ public struct CreateMagicScanResponseEbayHits: Codable, JSONEncodable, Hashable 
     public var legacyItemId: String?
     public var title: String
     public var brand: String?
-    /** Normalized cents. eBay returns string + currency on `price.value`. */
+    /** Integer cents. */
     public var priceCents: Double?
     public var currency: String?
     public var condition: String?
-    /** Top-level category eBay assigned to the match (id + path). */
+    /** The category the marketplace filed the match under (id + path), when the provider returns it. */
     public var categoryId: String?
     public var categoryPath: String?
     public var itemUrl: String
     public var thumbnailUrl: String?
-    /** Loosely-typed aspect bag — Brand, Color, Material, etc. when eBay inlines them. Always inspected defensively by the synthesizer. */
+    /** Item specifics, when the provider returns them. Always read defensively. */
     public var aspects: [String: AnyCodable]?
 
     public init(itemId: String, legacyItemId: String? = nil, title: String, brand: String? = nil, priceCents: Double? = nil, currency: String? = nil, condition: String? = nil, categoryId: String? = nil, categoryPath: String? = nil, itemUrl: String, thumbnailUrl: String? = nil, aspects: [String: AnyCodable]? = nil) {

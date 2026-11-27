@@ -12,29 +12,29 @@ import AnyCodable
 
 public struct ListBuyerTogetherItem: Codable, JSONEncodable, Hashable {
 
+    public var code: String
     public var name: String
     public var endsAt: String
-    public var code: String
 
-    public init(name: String, endsAt: String, code: String) {
+    public init(code: String, name: String, endsAt: String) {
+        self.code = code
         self.name = name
         self.endsAt = endsAt
-        self.code = code
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case code
         case name
         case endsAt
-        case code
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(code, forKey: .code)
         try container.encode(name, forKey: .name)
         try container.encode(endsAt, forKey: .endsAt)
-        try container.encode(code, forKey: .code)
     }
 }
 

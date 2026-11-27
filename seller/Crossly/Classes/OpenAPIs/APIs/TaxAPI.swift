@@ -106,14 +106,14 @@ open class TaxAPI {
     }
 
     /**
-     Annual mileage totals + IRS deduction.
+     Your tax profile: time zone for books boundaries, filing status, state, set-aside and rate assumptions, accounting method, and business name, EIN and address.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func getMileageSummary(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetMileageSummaryResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getMileageSummaryWithRequestBuilder().execute(apiResponseQueue) { result in
+    open class func getBookTaxProfile(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetBookTaxProfileResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getBookTaxProfileWithRequestBuilder().execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -124,19 +124,68 @@ open class TaxAPI {
     }
 
     /**
-     Annual mileage totals + IRS deduction.
-     - GET /v1/mileage/summary
+     Your tax profile: time zone for books boundaries, filing status, state, set-aside and rate assumptions, accounting method, and business name, EIN and address.
+     - GET /v1/books/tax-profile
      - BASIC:
        - type: http
        - name: PersonalAccessToken
-     - returns: RequestBuilder<GetMileageSummaryResponse> 
+     - returns: RequestBuilder<GetBookTaxProfileResponse> 
      */
-    open class func getMileageSummaryWithRequestBuilder() -> RequestBuilder<GetMileageSummaryResponse> {
-        let localVariablePath = "/v1/mileage/summary"
+    open class func getBookTaxProfileWithRequestBuilder() -> RequestBuilder<GetBookTaxProfileResponse> {
+        let localVariablePath = "/v1/books/tax-profile"
         let localVariableURLString = CrosslyAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetBookTaxProfileResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Annual mileage totals + IRS deduction. Each trip is priced at the IRS rate on its own date (2026 has two rates, listed in `rates`); `ratePerMile` is the January rate.
+     
+     - parameter year: (query) Calendar tax year. Default the current year. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getMileageSummary(year: Int? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetMileageSummaryResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getMileageSummaryWithRequestBuilder(year: year).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Annual mileage totals + IRS deduction. Each trip is priced at the IRS rate on its own date (2026 has two rates, listed in `rates`); `ratePerMile` is the January rate.
+     - GET /v1/mileage/summary
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter year: (query) Calendar tax year. Default the current year. (optional)
+     - returns: RequestBuilder<GetMileageSummaryResponse> 
+     */
+    open class func getMileageSummaryWithRequestBuilder(year: Int? = nil) -> RequestBuilder<GetMileageSummaryResponse> {
+        let localVariablePath = "/v1/mileage/summary"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "year": year?.encodeToJSON(),
+        ])
 
         let localVariableNillableHeaders: [String: Any?] = [
             :
@@ -150,7 +199,108 @@ open class TaxAPI {
     }
 
     /**
-     Schedule C JSON for a tax year.
+     Who collected sales tax on one Crossly marketplace order, where, and the seller notice.
+     
+     - parameter id: (path)  
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getOrderSalesTax(id: UUID, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetOrderSalesTaxResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getOrderSalesTaxWithRequestBuilder(id: id).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Who collected sales tax on one Crossly marketplace order, where, and the seller notice.
+     - GET /v1/orders/{id}/sales-tax
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter id: (path)  
+     - returns: RequestBuilder<GetOrderSalesTaxResponse> 
+     */
+    open class func getOrderSalesTaxWithRequestBuilder(id: UUID) -> RequestBuilder<GetOrderSalesTaxResponse> {
+        var localVariablePath = "/v1/orders/{id}/sales-tax"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetOrderSalesTaxResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Crossly marketplace sales Crossly did not collect sales tax on, by jurisdiction.
+     
+     - parameter from: (query) YYYY-MM-DD, inclusive. Default 1 January this year. (optional)
+     - parameter to: (query) YYYY-MM-DD, inclusive. Default now. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getTaxSalesTax(from: String? = nil, to: String? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetTaxSalesTaxResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getTaxSalesTaxWithRequestBuilder(from: from, to: to).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Crossly marketplace sales Crossly did not collect sales tax on, by jurisdiction.
+     - GET /v1/tax/sales-tax
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter from: (query) YYYY-MM-DD, inclusive. Default 1 January this year. (optional)
+     - parameter to: (query) YYYY-MM-DD, inclusive. Default now. (optional)
+     - returns: RequestBuilder<GetTaxSalesTaxResponse> 
+     */
+    open class func getTaxSalesTaxWithRequestBuilder(from: String? = nil, to: String? = nil) -> RequestBuilder<GetTaxSalesTaxResponse> {
+        let localVariablePath = "/v1/tax/sales-tax"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "from": from?.encodeToJSON(),
+            "to": to?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetTaxSalesTaxResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Schedule C JSON for a tax year (default the current year), from the same P&L as GET /v1/books: line 1 gross receipts before refunds, line 2 refunds, COGS in Part III, completed sales only. GET /v1/books has the full P&L by period.
      
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
@@ -168,7 +318,7 @@ open class TaxAPI {
     }
 
     /**
-     Schedule C JSON for a tax year.
+     Schedule C JSON for a tax year (default the current year), from the same P&L as GET /v1/books: line 1 gross receipts before refunds, line 2 refunds, COGS in Part III, completed sales only. GET /v1/books has the full P&L by period.
      - GET /v1/tax/schedule-c
      - BASIC:
        - type: http
@@ -194,14 +344,19 @@ open class TaxAPI {
     }
 
     /**
-     List mileage entries.
+     List mileage entries, newest trip first, paged (limit up to 500). Narrow by year and/or an inclusive from/to date range.
      
+     - parameter year: (query) Only trips dated in this calendar year. (optional)
+     - parameter from: (query) YYYY-MM-DD, inclusive. Only trips on or after this date. Combines with year. (optional)
+     - parameter to: (query) YYYY-MM-DD, inclusive. Only trips on or before this date; from &lt;&#x3D; to. (optional)
+     - parameter page: (query) 1-indexed page. Default 1. (optional)
+     - parameter limit: (query) Rows per page, default 100, clamped to 500. (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func listMileage(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListMileageResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return listMileageWithRequestBuilder().execute(apiResponseQueue) { result in
+    open class func listMileage(year: Int? = nil, from: String? = nil, to: String? = nil, page: Int? = nil, limit: Int? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListMileageResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listMileageWithRequestBuilder(year: year, from: from, to: to, page: page, limit: limit).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -212,15 +367,71 @@ open class TaxAPI {
     }
 
     /**
-     List mileage entries.
+     List mileage entries, newest trip first, paged (limit up to 500). Narrow by year and/or an inclusive from/to date range.
      - GET /v1/mileage
      - BASIC:
        - type: http
        - name: PersonalAccessToken
+     - parameter year: (query) Only trips dated in this calendar year. (optional)
+     - parameter from: (query) YYYY-MM-DD, inclusive. Only trips on or after this date. Combines with year. (optional)
+     - parameter to: (query) YYYY-MM-DD, inclusive. Only trips on or before this date; from &lt;&#x3D; to. (optional)
+     - parameter page: (query) 1-indexed page. Default 1. (optional)
+     - parameter limit: (query) Rows per page, default 100, clamped to 500. (optional)
      - returns: RequestBuilder<ListMileageResponse> 
      */
-    open class func listMileageWithRequestBuilder() -> RequestBuilder<ListMileageResponse> {
+    open class func listMileageWithRequestBuilder(year: Int? = nil, from: String? = nil, to: String? = nil, page: Int? = nil, limit: Int? = nil) -> RequestBuilder<ListMileageResponse> {
         let localVariablePath = "/v1/mileage"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "year": year?.encodeToJSON(),
+            "from": from?.encodeToJSON(),
+            "to": to?.encodeToJSON(),
+            "page": page?.encodeToJSON(),
+            "limit": limit?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListMileageResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Where Crossly collects sales tax today (its active Stripe Tax registrations).
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listTaxCrosslyCollects(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListTaxCrosslyCollectsResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listTaxCrosslyCollectsWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Where Crossly collects sales tax today (its active Stripe Tax registrations).
+     - GET /v1/tax/crossly-collects
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<ListTaxCrosslyCollectsResponse> 
+     */
+    open class func listTaxCrosslyCollectsWithRequestBuilder() -> RequestBuilder<ListTaxCrosslyCollectsResponse> {
+        let localVariablePath = "/v1/tax/crossly-collects"
         let localVariableURLString = CrosslyAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
@@ -232,9 +443,111 @@ open class TaxAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ListMileageResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<ListTaxCrosslyCollectsResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     The individual Crossly sales Crossly did not collect sales tax on, newest first.
+     
+     - parameter from: (query)  (optional)
+     - parameter to: (query)  (optional)
+     - parameter page: (query)  (optional)
+     - parameter limit: (query)  (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func listTaxSalesTaxNotCollected(from: String? = nil, to: String? = nil, page: Int? = nil, limit: Int? = nil, apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: ListTaxSalesTaxNotCollectedResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return listTaxSalesTaxNotCollectedWithRequestBuilder(from: from, to: to, page: page, limit: limit).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     The individual Crossly sales Crossly did not collect sales tax on, newest first.
+     - GET /v1/tax/sales-tax/not-collected
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - parameter from: (query)  (optional)
+     - parameter to: (query)  (optional)
+     - parameter page: (query)  (optional)
+     - parameter limit: (query)  (optional)
+     - returns: RequestBuilder<ListTaxSalesTaxNotCollectedResponse> 
+     */
+    open class func listTaxSalesTaxNotCollectedWithRequestBuilder(from: String? = nil, to: String? = nil, page: Int? = nil, limit: Int? = nil) -> RequestBuilder<ListTaxSalesTaxNotCollectedResponse> {
+        let localVariablePath = "/v1/tax/sales-tax/not-collected"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "from": from?.encodeToJSON(),
+            "to": to?.encodeToJSON(),
+            "page": page?.encodeToJSON(),
+            "limit": limit?.encodeToJSON(),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListTaxSalesTaxNotCollectedResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Update your tax profile: time zone, filing status, state, set-aside and rate assumptions (basis points), accounting method, business name, EIN and address. Fields left out are unchanged.
+     
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateBookTaxProfile(apiResponseQueue: DispatchQueue = CrosslyAPI.apiResponseQueue, completion: @escaping ((_ data: GetBookTaxProfileResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateBookTaxProfileWithRequestBuilder().execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Update your tax profile: time zone, filing status, state, set-aside and rate assumptions (basis points), accounting method, business name, EIN and address. Fields left out are unchanged.
+     - PUT /v1/books/tax-profile
+     - BASIC:
+       - type: http
+       - name: PersonalAccessToken
+     - returns: RequestBuilder<GetBookTaxProfileResponse> 
+     */
+    open class func updateBookTaxProfileWithRequestBuilder() -> RequestBuilder<GetBookTaxProfileResponse> {
+        let localVariablePath = "/v1/books/tax-profile"
+        let localVariableURLString = CrosslyAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetBookTaxProfileResponse>.Type = CrosslyAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
 
     /**

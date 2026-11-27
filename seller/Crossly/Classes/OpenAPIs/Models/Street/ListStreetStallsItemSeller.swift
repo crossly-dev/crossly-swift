@@ -13,10 +13,10 @@ import AnyCodable
 public struct ListStreetStallsItemSeller: Codable, JSONEncodable, Hashable {
 
     public var name: String
-    public var shop: NameSlug?
+    public var shop: NameSlug2?
     public var level: Double
 
-    public init(name: String, shop: NameSlug? = nil, level: Double) {
+    public init(name: String, shop: NameSlug2? = nil, level: Double) {
         self.name = name
         self.shop = shop
         self.level = level

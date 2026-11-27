@@ -14,9 +14,9 @@ public struct ListSpatialDeedListingsItem: Codable, JSONEncodable, Hashable {
 
     public enum Status: String, Codable, CaseIterable {
         case active = "active"
-        case foreclosed = "foreclosed"
         case grace = "grace"
         case delinquent = "delinquent"
+        case foreclosed = "foreclosed"
     }
     public var id: String
     public var priceCents: Double

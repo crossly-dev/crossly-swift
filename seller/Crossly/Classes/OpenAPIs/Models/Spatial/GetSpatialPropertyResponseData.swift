@@ -14,9 +14,9 @@ public struct GetSpatialPropertyResponseData: Codable, JSONEncodable, Hashable {
 
     public var enabled: Bool
     public var deeds: [GetSpatialPropertyResponseDataDeeds]
-    public var tenancies: [CreateSpatialPropertyDeedLeaseResponseData]
+    public var tenancies: [GetSpatialPropertyResponseDataTenancies]
 
-    public init(enabled: Bool, deeds: [GetSpatialPropertyResponseDataDeeds], tenancies: [CreateSpatialPropertyDeedLeaseResponseData]) {
+    public init(enabled: Bool, deeds: [GetSpatialPropertyResponseDataDeeds], tenancies: [GetSpatialPropertyResponseDataTenancies]) {
         self.enabled = enabled
         self.deeds = deeds
         self.tenancies = tenancies

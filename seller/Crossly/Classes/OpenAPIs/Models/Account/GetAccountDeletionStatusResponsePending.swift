@@ -15,17 +15,31 @@ public struct GetAccountDeletionStatusResponsePending: Codable, JSONEncodable, H
     public var id: String
     public var requestedAt: Date
     public var scheduledFor: Date
+    /** Set when the account was found in use: it waits for a re-confirmation. */
+    public var pausedAt: Date?
+    public var pauseReason: String?
+    /** What the cascade will take. */
+    public var listingCount: Double
+    public var inventoryCount: Double
 
-    public init(id: String, requestedAt: Date, scheduledFor: Date) {
+    public init(id: String, requestedAt: Date, scheduledFor: Date, pausedAt: Date? = nil, pauseReason: String? = nil, listingCount: Double, inventoryCount: Double) {
         self.id = id
         self.requestedAt = requestedAt
         self.scheduledFor = scheduledFor
+        self.pausedAt = pausedAt
+        self.pauseReason = pauseReason
+        self.listingCount = listingCount
+        self.inventoryCount = inventoryCount
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
         case requestedAt
         case scheduledFor
+        case pausedAt
+        case pauseReason
+        case listingCount
+        case inventoryCount
     }
 
     // Encodable protocol methods
@@ -35,6 +49,10 @@ public struct GetAccountDeletionStatusResponsePending: Codable, JSONEncodable, H
         try container.encode(id, forKey: .id)
         try container.encode(requestedAt, forKey: .requestedAt)
         try container.encode(scheduledFor, forKey: .scheduledFor)
+        try container.encodeIfPresent(pausedAt, forKey: .pausedAt)
+        try container.encodeIfPresent(pauseReason, forKey: .pauseReason)
+        try container.encode(listingCount, forKey: .listingCount)
+        try container.encode(inventoryCount, forKey: .inventoryCount)
     }
 }
 

@@ -14,9 +14,9 @@ public struct GetVaultMarketHealthResponseMarksParts: Codable, JSONEncodable, Ha
 
     public enum Quality: String, Codable, CaseIterable {
         case _none = "none"
+        case c = "C"
         case a = "A"
         case b = "B"
-        case c = "C"
     }
     public var items: Double
     public var units: Double

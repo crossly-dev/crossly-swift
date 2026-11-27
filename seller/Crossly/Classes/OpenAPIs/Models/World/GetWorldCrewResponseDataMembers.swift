@@ -15,9 +15,9 @@ public struct GetWorldCrewResponseDataMembers: Codable, JSONEncodable, Hashable 
     public var userId: String
     public var name: String
     public var you: Bool
-    public var room: NameSlug?
+    public var room: NameSlug2?
 
-    public init(userId: String, name: String, you: Bool, room: NameSlug? = nil) {
+    public init(userId: String, name: String, you: Bool, room: NameSlug2? = nil) {
         self.userId = userId
         self.name = name
         self.you = you
